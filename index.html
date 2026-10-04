@@ -2272,6 +2272,21 @@ button.ui-disabled { pointer-events:none !important; opacity:.58 !important; }
 @keyframes weddingCaptionIn { from{opacity:0;transform:translateX(-50%) translateY(8px)} to{opacity:1;transform:translateX(-50%) translateY(0)} }
 @keyframes confettiFloat { 0%,100%{transform:translateY(0) rotate(0)} 50%{transform:translateY(-16px) rotate(8deg)} }
 @keyframes weddingUiIn { from{opacity:0;pointer-events:none} to{opacity:1;pointer-events:auto} }
+#weddingBackButton {
+    position:absolute;
+    right:22px;
+    bottom:22px;
+    z-index:20;
+    display:none;
+    min-width:120px;
+    opacity:.95;
+}
+#weddingBackButton.visible { display:block; animation:weddingBackIn .35s ease-out both; }
+@keyframes weddingBackIn { from{opacity:0;transform:translateY(8px)} to{opacity:.95;transform:translateY(0)} }
+@media (max-width:700px) {
+    #weddingBackButton { right:12px; bottom:12px; min-width:105px; }
+}
+
 @keyframes doveFly1 { 0%{opacity:0;transform:translate(-20px,10px) scale(.65)} 12%{opacity:1} 100%{opacity:1;transform:translate(-260px,-230px) scale(1.1) rotate(-8deg)} }
 @keyframes doveFly2 { 0%{opacity:0;transform:translate(0,12px) scale(.6)} 12%{opacity:1} 100%{opacity:1;transform:translate(-90px,-285px) scale(1.05) rotate(-4deg)} }
 @keyframes doveFly3 { 0%{opacity:0;transform:translate(20px,10px) scale(.65)} 12%{opacity:1} 100%{opacity:1;transform:translate(120px,-275px) scale(1.12) rotate(5deg)} }
@@ -2343,12 +2358,267 @@ body.smartphone #lookPad { pointer-events:none; opacity:.58; }
     content:"";
     position:absolute; inset:0;
     background:radial-gradient(circle at 50% 48%, rgba(255,255,255,.08), transparent 42%);
-    animation:classroomBuzz .55s ease-in-out 8;
+    animation:classroomBuzz 2.25s ease-in-out 1 both;
 }
 @keyframes classroomBuzz {
     0%,100%{transform:translateX(0);opacity:.35}
     50%{transform:translateX(3px);opacity:.7}
 }
+
+/* REVISION 5: stronger but still non-graphic punch exchange. */
+#fightOverlay.active {
+    animation: fightScreenShakeRev5 3.35s linear both;
+}
+#fightOverlay.active .fightTitle {
+    animation: fightTitlePulse 3.35s ease-in-out both;
+}
+#fightOverlay.active .fightSpeedLines {
+    animation: fightSpeedPulse .42s linear infinite;
+}
+#fightOverlay.active .impactOne { animation-delay:.32s; }
+#fightOverlay.active .impactTwo { animation-delay:1.05s; }
+#fightOverlay.active .impactThree { animation-delay:1.78s; }
+.fightImpact {
+    z-index:10;
+    filter:drop-shadow(3px 3px 0 rgba(233,75,114,.75));
+}
+.fightImpact::after {
+    content:"";
+    position:absolute;
+    left:50%; top:50%;
+    width:14px; height:14px;
+    border-radius:50%;
+    border:4px solid rgba(255,255,255,.9);
+    transform:translate(-50%,-50%) scale(.2);
+    opacity:0;
+    animation:impactBurst .48s ease-out infinite;
+    pointer-events:none;
+}
+@keyframes fightScreenShakeRev5 {
+    0%,100%{transform:translate(0,0)}
+    8%{transform:translate(-5px,2px)} 12%{transform:translate(6px,-2px)}
+    20%{transform:translate(-7px,2px)} 24%{transform:translate(7px,0)}
+    32%{transform:translate(-4px,-2px)} 36%{transform:translate(5px,2px)}
+    44%{transform:translate(-6px,0)} 48%{transform:translate(6px,-2px)}
+    56%{transform:translate(-5px,2px)} 60%{transform:translate(5px,0)}
+    68%{transform:translate(-6px,-2px)} 72%{transform:translate(6px,2px)}
+    80%{transform:translate(-3px,0)} 84%{transform:translate(3px,0)}
+}
+@keyframes fightTitlePulse {
+    0%,100%{transform:scale(1);opacity:1}
+    18%{transform:scale(1.12) rotate(-2deg)}
+    28%{transform:scale(.96) rotate(2deg)}
+    48%{transform:scale(1.1) rotate(-1deg)}
+    62%{transform:scale(.98)}
+}
+@keyframes fightSpeedPulse {
+    0%,100%{opacity:.15;transform:translateX(0)}
+    50%{opacity:.75;transform:translateX(-12px)}
+}
+@keyframes impactBurst {
+    0%{opacity:.85;transform:translate(-50%,-50%) scale(.2)}
+    100%{opacity:0;transform:translate(-50%,-50%) scale(8)}
+}
+
+/* REVISION 4: clearer, non-graphic cartoon punch exchange. */
+#fightOverlay.active {
+    animation: fightScreenShake 3.0s linear both;
+}
+.fightStage {
+    overflow:visible;
+}
+.fightCharacter.left {
+    left:4%;
+    animation: fighterLeftRev4 1.5s ease-in-out 0s 2 both;
+}
+.fightCharacter.right {
+    right:4%;
+    animation: fighterRightRev4 1.5s ease-in-out .74s 2 both;
+}
+.fightCharacter .fightArt {
+    object-fit:contain;
+}
+.fightFist {
+    top:46%;
+    width:90px;
+    height:90px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:clamp(42px,8vw,76px);
+    line-height:1;
+    opacity:0;
+    filter:drop-shadow(4px 4px 0 rgba(233,75,114,.8));
+    z-index:8;
+}
+.fistLeft {
+    left:34%;
+    animation:punchLeftRev4 1.5s ease-in-out 0s 2 both;
+}
+.fistRight {
+    right:34%;
+    animation:punchRightRev4 1.5s ease-in-out .74s 2 both;
+}
+.fightImpact {
+    left:50%;
+    top:45%;
+    z-index:10;
+    pointer-events:none;
+    font-size:clamp(48px,10vw,100px);
+    text-shadow:5px 5px 0 #e94b72, -3px -3px 0 #fff;
+}
+.impactOne { animation:impactBurstRev4 .48s ease-out .47s 1 both; }
+.impactTwo { animation:impactBurstRev4 .48s ease-out 1.21s 1 both; }
+.impactThree { animation:impactBurstRev4 .48s ease-out 2.18s 1 both; }
+.fightSpeedLines {
+    position:absolute;
+    inset:10% 8%;
+    pointer-events:none;
+    z-index:2;
+    opacity:0;
+    background:
+        linear-gradient(90deg, transparent 0 38%, rgba(255,255,255,.65) 39% 40%, transparent 41% 59%, rgba(255,255,255,.65) 60% 61%, transparent 62%),
+        linear-gradient(90deg, transparent 0 46%, rgba(255,213,72,.5) 47% 48%, transparent 49%);
+    transform:skewX(-18deg);
+    animation:fightSpeedRev4 3s ease-out both;
+}
+.fightCaption {
+    position:absolute;
+    bottom:5%;
+    left:50%;
+    transform:translateX(-50%);
+    padding:8px 14px;
+    border-radius:999px;
+    background:rgba(255,255,255,.84);
+    color:#7a3b4e;
+    font-size:12px;
+    font-weight:900;
+    letter-spacing:1.5px;
+    z-index:20;
+}
+@keyframes fighterLeftRev4 {
+    0%,100% { transform:translateX(0) rotate(0); }
+    18% { transform:translateX(22px) rotate(-2deg); }
+    30% { transform:translateX(128px) rotate(-8deg); }
+    38% { transform:translateX(82px) rotate(5deg); }
+    50% { transform:translateX(-18px) rotate(1deg); }
+    66% { transform:translateX(20px) rotate(-2deg); }
+    78% { transform:translateX(128px) rotate(-8deg); }
+    86% { transform:translateX(70px) rotate(4deg); }
+}
+@keyframes fighterRightRev4 {
+    0%,100% { transform:translateX(0) rotate(0); }
+    18% { transform:translateX(-22px) rotate(2deg); }
+    30% { transform:translateX(-118px) rotate(8deg); }
+    38% { transform:translateX(-72px) rotate(-5deg); }
+    50% { transform:translateX(18px) rotate(-1deg); }
+    66% { transform:translateX(-20px) rotate(2deg); }
+    78% { transform:translateX(-118px) rotate(8deg); }
+    86% { transform:translateX(-65px) rotate(-4deg); }
+}
+@keyframes punchLeftRev4 {
+    0%,12%,100% { opacity:0; transform:translateX(-28px) scale(.58) rotate(-18deg); }
+    24% { opacity:1; transform:translateX(18px) scale(.82) rotate(-8deg); }
+    34% { opacity:1; transform:translateX(126px) scale(1.18) rotate(10deg); }
+    42% { opacity:0; transform:translateX(155px) scale(.72) rotate(16deg); }
+    62%,70% { opacity:0; transform:translateX(-28px) scale(.58) rotate(-18deg); }
+    78% { opacity:1; transform:translateX(18px) scale(.82) rotate(-8deg); }
+    88% { opacity:1; transform:translateX(126px) scale(1.18) rotate(10deg); }
+    96% { opacity:0; transform:translateX(155px) scale(.72) rotate(16deg); }
+}
+@keyframes punchRightRev4 {
+    0%,12%,100% { opacity:0; transform:translateX(28px) scale(.58) rotate(18deg); }
+    24% { opacity:1; transform:translateX(-18px) scale(.82) rotate(8deg); }
+    34% { opacity:1; transform:translateX(-122px) scale(1.18) rotate(-10deg); }
+    42% { opacity:0; transform:translateX(-150px) scale(.72) rotate(-16deg); }
+    62%,70% { opacity:0; transform:translateX(28px) scale(.58) rotate(18deg); }
+    78% { opacity:1; transform:translateX(-18px) scale(.82) rotate(8deg); }
+    88% { opacity:1; transform:translateX(-122px) scale(1.18) rotate(-10deg); }
+    96% { opacity:0; transform:translateX(-150px) scale(.72) rotate(-16deg); }
+}
+@keyframes impactBurstRev4 {
+    0% { opacity:0; transform:translate(-50%,-50%) scale(.25) rotate(-12deg); }
+    25% { opacity:1; transform:translate(-50%,-50%) scale(1.18) rotate(7deg); }
+    58% { opacity:1; transform:translate(-50%,-50%) scale(.98) rotate(-4deg); }
+    100% { opacity:0; transform:translate(-50%,-50%) scale(1.38) rotate(4deg); }
+}
+@keyframes fightSpeedRev4 {
+    0%,10%,100% { opacity:0; transform:skewX(-18deg) scaleX(.8); }
+    18%,46%,56%,84% { opacity:.42; transform:skewX(-18deg) scaleX(1); }
+    25%,53%,63%,91% { opacity:0; }
+}
+@keyframes fightScreenShake {
+    0%,100% { transform:translate(0,0); }
+    16% { transform:translate(-4px,1px); }
+    18% { transform:translate(5px,-1px); }
+    50% { transform:translate(0,0); }
+    52% { transform:translate(5px,1px); }
+    54% { transform:translate(-5px,-1px); }
+    82% { transform:translate(0,0); }
+    84% { transform:translate(-4px,1px); }
+    86% { transform:translate(4px,-1px); }
+}
+
+/* REVISION 5 FINAL OVERRIDES: make the punch exchange visibly land. */
+#fightOverlay.active { animation: fightScreenShakeRev5 3.35s linear both !important; }
+#fightOverlay.active .fightTitle { animation: fightTitlePulse 3.35s ease-in-out both !important; }
+#fightOverlay.active .fightSpeedLines { animation: fightSpeedPulse .34s linear infinite !important; }
+#fightOverlay.active .fightCharacter.left { animation: fighterLeftRev5 1.675s ease-in-out 0s 2 both !important; }
+#fightOverlay.active .fightCharacter.right { animation: fighterRightRev5 1.675s ease-in-out .16s 2 both !important; }
+#fightOverlay.active .fistLeft { animation: punchLeftRev5 1.675s ease-in-out 0s 2 both !important; }
+#fightOverlay.active .fistRight { animation: punchRightRev5 1.675s ease-in-out .16s 2 both !important; }
+#fightOverlay.active .impactOne { animation: impactBurstRev5 .42s ease-out .36s 1 both !important; }
+#fightOverlay.active .impactTwo { animation: impactBurstRev5 .42s ease-out 1.12s 1 both !important; }
+#fightOverlay.active .impactThree { animation: impactBurstRev5 .42s ease-out 1.88s 1 both !important; }
+#fightOverlay.active::after {
+    content:""; position:absolute; inset:0; pointer-events:none; z-index:30;
+    background:rgba(255,255,255,0); animation:fightFlashRev5 3.35s linear both;
+}
+@keyframes fighterLeftRev5 {
+    0%,100%{transform:translateX(0) rotate(0)}
+    18%{transform:translateX(28px) rotate(-3deg)}
+    34%{transform:translateX(132px) rotate(-10deg)}
+    46%{transform:translateX(74px) rotate(5deg)}
+    58%{transform:translateX(-8px) rotate(0)}
+    72%{transform:translateX(30px) rotate(-3deg)}
+    88%{transform:translateX(132px) rotate(-10deg)}
+}
+@keyframes fighterRightRev5 {
+    0%,100%{transform:translateX(0) rotate(0)}
+    18%{transform:translateX(-28px) rotate(3deg)}
+    34%{transform:translateX(-132px) rotate(10deg)}
+    46%{transform:translateX(-74px) rotate(-5deg)}
+    58%{transform:translateX(8px) rotate(0)}
+    72%{transform:translateX(-30px) rotate(3deg)}
+    88%{transform:translateX(-132px) rotate(10deg)}
+}
+@keyframes punchLeftRev5 {
+    0%,12%,100%{opacity:0;transform:translateX(-28px) scale(.58) rotate(-18deg)}
+    22%{opacity:1;transform:translateX(20px) scale(.82) rotate(-8deg)}
+    34%{opacity:1;transform:translateX(126px) scale(1.24) rotate(10deg)}
+    45%{opacity:0;transform:translateX(158px) scale(.70) rotate(18deg)}
+    62%,70%{opacity:0;transform:translateX(-28px) scale(.58) rotate(-18deg)}
+    82%{opacity:1;transform:translateX(20px) scale(.82) rotate(-8deg)}
+    94%{opacity:1;transform:translateX(126px) scale(1.24) rotate(10deg)}
+}
+@keyframes punchRightRev5 {
+    0%,12%,100%{opacity:0;transform:translateX(28px) scale(.58) rotate(18deg)}
+    38%,50%{opacity:0;transform:translateX(28px) scale(.58) rotate(18deg)}
+    62%{opacity:1;transform:translateX(-20px) scale(.82) rotate(8deg)}
+    78%{opacity:1;transform:translateX(-126px) scale(1.24) rotate(-10deg)}
+    89%{opacity:0;transform:translateX(-158px) scale(.70) rotate(-18deg)}
+}
+@keyframes impactBurstRev5 {
+    0%{opacity:0;transform:translate(-50%,-50%) scale(.18) rotate(-12deg)}
+    25%{opacity:1;transform:translate(-50%,-50%) scale(1.2) rotate(7deg)}
+    58%{opacity:1;transform:translate(-50%,-50%) scale(.98) rotate(-4deg)}
+    100%{opacity:0;transform:translate(-50%,-50%) scale(1.48) rotate(5deg)}
+}
+@keyframes fightFlashRev5 {
+    0%,20%,44%,67%,100%{background:rgba(255,255,255,0)}
+    23%,47%,70%{background:rgba(255,255,255,.22)}
+}
+
 </style>
 </head>
 
@@ -2594,12 +2864,16 @@ body.smartphone #lookPad { pointer-events:none; opacity:.58; }
         <div id="fightOverlay">
             <div class="fightTitle">FIGHT!</div>
             <div class="fightStage">
+                <div class="fightSpeedLines" aria-hidden="true"></div>
                 <div id="fightHanako" class="fightCharacter left"></div>
-                <div class="fightFist fistLeft">✦</div>
-                <div class="fightImpact" id="fightImpactText">POW!</div>
-                <div class="fightFist fistRight">✦</div>
+                <div class="fightFist fistLeft" aria-hidden="true">👊</div>
+                <div class="fightImpact impactOne" aria-hidden="true">POW!</div>
+                <div class="fightImpact impactTwo" aria-hidden="true">BAM!</div>
+                <div class="fightImpact impactThree" aria-hidden="true">WHAM!</div>
+                <div class="fightFist fistRight" aria-hidden="true">👊</div>
                 <div id="fightBoy" class="fightCharacter right"></div>
             </div>
+            <div class="fightCaption">A VERY CARTOONISH FIGHT!</div>
         </div>
     </div>
 </section>
@@ -2623,6 +2897,7 @@ body.smartphone #lookPad { pointer-events:none; opacity:.58; }
             <span>🕊</span><span>🕊</span><span>🕊</span><span>🕊</span>
         </div>
         <div class="weddingCaption">MARRIAGE END</div>
+        <button id="weddingBackButton" class="menuButton weddingBackButton" onclick="backToTitle()" aria-label="Back to title">← BACK</button>
     </div>
     <div id="heartBreak" class="hidden">💔</div>
     <h1 id="endingTitle">GAME OVER</h1>
@@ -2736,6 +3011,7 @@ function backFromArcade(){
 }
 
 function backToTitle() {
+    if (window._weddingBackTimer) { clearTimeout(window._weddingBackTimer); window._weddingBackTimer = null; }
     clearDialogueState();
     if (dialogueTimer) clearInterval(dialogueTimer);
     dialogueTimer = null;
@@ -2750,6 +3026,8 @@ function backToTitle() {
     document.getElementById("captureOverlay").style.display = "none";
     document.getElementById("fightOverlay").classList.remove("active");
     document.getElementById("marriageScene").classList.remove("active");
+    const weddingBackButton = document.getElementById("weddingBackButton");
+    if (weddingBackButton) { weddingBackButton.classList.remove("visible"); weddingBackButton.style.display="none"; }
     document.getElementById("endingScreen").classList.remove("marriageMode");
     document.getElementById("gameOverContinueButton").style.display="block";
     document.getElementById("playAgainButton").style.display="none";
@@ -3254,10 +3532,12 @@ function playClassroomChatter() {
     chatter.classList.remove("active");
     void chatter.offsetWidth;
     chatter.classList.add("active");
+    // The final chatter bubble finishes at 0.80s + 1.45s = 2.25s.
+    // End the whole classroom-buzz overlay at exactly the same moment.
     return new Promise(resolve => setTimeout(() => {
         chatter.classList.remove("active");
         resolve();
-    }, 4500));
+    }, 2250));
 }
 async function playStory() {
     if (inArcade || ending) return;
@@ -3332,10 +3612,21 @@ function talkChoice(){
    FIGHT
 ===================================================== */
 async function fightEnding(){
-    if(ending||inArcade)return; const overlay=document.getElementById("fightOverlay"); document.getElementById("heartBreak").classList.add("hidden");
-    document.getElementById("choiceBox").style.display="none"; document.getElementById("dialogueBox").style.display="none";
-    document.getElementById("fightHanako").innerHTML=characterArtSvg("Hanako"); document.getElementById("fightBoy").innerHTML=`<img class="fightArt" src="${boyData().image}" alt="${boyName()}">`;
-    overlay.classList.remove("active"); void overlay.offsetWidth; overlay.classList.add("active"); await new Promise(r=>setTimeout(r,2050)); overlay.classList.remove("active"); await new Promise(r=>setTimeout(r,350)); showGameOver("The fight ended your love story.",true);
+    if(ending||inArcade)return;
+    const overlay=document.getElementById("fightOverlay");
+    document.getElementById("heartBreak").classList.add("hidden");
+    document.getElementById("choiceBox").style.display="none";
+    document.getElementById("dialogueBox").style.display="none";
+    document.getElementById("fightHanako").innerHTML=characterArtSvg("Hanako");
+    document.getElementById("fightBoy").innerHTML=`<img class="fightArt" src="${boyData().image}" alt="${boyName()}">`;
+    overlay.classList.remove("active");
+    void overlay.offsetWidth;
+    overlay.classList.add("active");
+    // Let the full cartoon punch exchange play before the game-over screen.
+    await new Promise(r=>setTimeout(r,3450));
+    overlay.classList.remove("active");
+    await new Promise(r=>setTimeout(r,250));
+    showGameOver("The fight ended your love story.",true);
 }
 /* =====================================================
    CONFESSION
@@ -3348,11 +3639,14 @@ async function marriageEnding(){await say(boyName(),"Yes.","shy","right");await 
    GAME OVER / ENDING
 ===================================================== */
 function showGameOver(text,showHeart=true){
+    if (window._weddingBackTimer) { clearTimeout(window._weddingBackTimer); window._weddingBackTimer = null; }
     document.getElementById("gameOverContinueButton").style.display = "block";
     document.getElementById("playAgainButton").style.display = "none";
     document.getElementById("endingScreen").classList.remove("marriageMode");
     ending=true; actionLocked=true; arcadeIntroPlaying=false; inArcade=false; arcadeRunning=false; document.getElementById("arcadeScreen").style.display="none"; document.getElementById("miniMap").style.display="none"; document.getElementById("darkFade").style.opacity="0"; showScreen("endingScreen"); document.getElementById("endingTitle").textContent="GAME OVER"; document.getElementById("endingText").textContent=text;
     document.getElementById("marriageScene").classList.remove("active");
+    const weddingBackButton = document.getElementById("weddingBackButton");
+    if (weddingBackButton) { weddingBackButton.classList.remove("visible"); weddingBackButton.style.display="none"; }
     const heart=document.getElementById("heartBreak"); heart.classList.add("hidden"); if(showHeart){void heart.offsetWidth;heart.classList.remove("hidden");}
 }
 function showEnding(title,text,type){
@@ -3369,6 +3663,8 @@ function showEnding(title,text,type){
     document.getElementById("heartBreak").classList.add("hidden");
     const marriage=document.getElementById("marriageScene");
     marriage.classList.remove("active");
+    const weddingBackButton = document.getElementById("weddingBackButton");
+    if (weddingBackButton) { weddingBackButton.classList.remove("visible"); weddingBackButton.style.display="none"; }
     if (type === "marriage") {
         document.getElementById("marriageHanako").innerHTML=characterArtSvg("Hanako");
         const boy=document.createElement("img");
@@ -3385,12 +3681,21 @@ function showEnding(title,text,type){
         void timeCard.offsetWidth;
         timeCard.classList.add("replay");
         marriage.classList.add("active");
+        // Marriage ending: reveal a dedicated BACK button after 3 seconds.
+        if (window._weddingBackTimer) clearTimeout(window._weddingBackTimer);
+        window._weddingBackTimer = setTimeout(() => {
+            if (ending && document.getElementById("endingScreen").classList.contains("marriageMode")) {
+                const back = document.getElementById("weddingBackButton");
+                if (back) { back.style.display="block"; back.classList.add("visible"); }
+            }
+        }, 3000);
     }
 }
 /* =====================================================
    RESTART
 ===================================================== */
 function playAgain(){
+    if (window._weddingBackTimer) { clearTimeout(window._weddingBackTimer); window._weddingBackTimer = null; }
     // A clear can always be replayed from boyfriend selection.
     ending=false;
     inArcade=false;
@@ -3398,6 +3703,8 @@ function playAgain(){
     arcadeIntroPlaying=false;
     actionLocked=false;
     document.getElementById("marriageScene").classList.remove("active");
+    const weddingBackButton = document.getElementById("weddingBackButton");
+    if (weddingBackButton) { weddingBackButton.classList.remove("visible"); weddingBackButton.style.display="none"; }
     document.getElementById("endingScreen").classList.remove("marriageMode");
     document.getElementById("playAgainButton").style.display="none";
     document.getElementById("arcadeScreen").style.display="none";
@@ -3412,6 +3719,7 @@ function playAgain(){
 }
 
 function restartGame(){
+    if (window._weddingBackTimer) { clearTimeout(window._weddingBackTimer); window._weddingBackTimer = null; }
     ending = false;
     inArcade = false;
     arcadeRunning = false;
@@ -3435,6 +3743,8 @@ function restartGame(){
     document.getElementById("arcadeScreen").style.display = "none";
     document.getElementById("miniMap").style.display = "none";
     document.getElementById("marriageScene").classList.remove("active");
+    const weddingBackButton = document.getElementById("weddingBackButton");
+    if (weddingBackButton) { weddingBackButton.classList.remove("visible"); weddingBackButton.style.display="none"; }
     document.getElementById("endingScreen").classList.remove("marriageMode");
     document.getElementById("fightOverlay").classList.remove("active");
     document.getElementById("darkFade").style.opacity = "0";
@@ -3498,6 +3808,7 @@ arcadeBgImage.src = "./images/arcade_bg.png";
 
 const NORMAL_SPEED = 2;
 const DASH_SPEED = 3;
+const TEACHER_DETECTION_DISTANCE = 23.0;
 
 const FIELD_OF_VIEW = Math.PI / 3;
 const HALF_FOV = FIELD_OF_VIEW / 2;
@@ -4033,7 +4344,9 @@ function updateTeachers(dt) {
         const distance = distanceBetween(teacher, player);
 
         // Until a teacher actually sees Hanako, it simply wanders around.
-        if (!teacher.chasing && distance < 6.5 && hasLineOfSight(teacher, player)) {
+        // The teacher has a wider field of detection now.
+        // She still needs a clear line of sight, so walls remain useful for hiding.
+        if (!teacher.chasing && distance < TEACHER_DETECTION_DISTANCE && hasLineOfSight(teacher, player)) {
             teacher.chasing = true;
             teacher.path = null;
             teacher.pathTimer = 0;
@@ -4049,9 +4362,11 @@ function updateTeachers(dt) {
             (keys["shift"] || dashTouch) &&
             player.stamina > 0;
 
+        // Once she notices Hanako, the teacher is a little faster than Hanako
+        // so the chase is tense, but still escapable with good routing.
         const speed = teacher.chasing
-            ? (playerDashing ? DASH_SPEED : NORMAL_SPEED)
-            : NORMAL_SPEED * .62;
+            ? (playerDashing ? DASH_SPEED * 1.07 : NORMAL_SPEED * 1.10)
+            : NORMAL_SPEED * .70;
 
         teacher.pathTimer -= dt;
         teacher.wanderTimer -= dt;
@@ -5502,18 +5817,40 @@ function heartBreakArcade() {
 
 async function arcadeSuccess(){
     if(!inArcade||!arcadeRunning)return;
+
+    // The maze is over, but do not jump straight back to the four choices.
+    // Let Hanako and the boy have a short escape conversation first.
     arcadeRunning=false;
     inArcade=false;
     actionLocked=true;
     love=80;
     updateLove();
+
     document.getElementById("arcadeScreen").style.display="none";
     document.getElementById("miniMap").style.display="none";
-    document.getElementById("dialogueBox").style.display="none";
-    document.getElementById("background").className="city";
-    clearCharacters();
+    document.getElementById("choiceBox").style.display="none";
     document.getElementById("choiceBriefing").classList.remove("active");
     choiceBriefingActive=false;
+    document.getElementById("dialogueBox").style.display="block";
+    document.getElementById("background").className="city";
+    clearCharacters();
+
+    await say(mainName(),"We made it! That was really close.","happy","left");
+    await waitForDialogueAdvance();
+    await say(boyName(),"Yeah... I thought our teacher was going to catch us.","relieved","right");
+    await waitForDialogueAdvance();
+    await say(mainName(),"That was exciting! But we should calm down now.","normal","left");
+    await waitForDialogueAdvance();
+    await say(boyName(),"Good idea. We should probably act like normal students now.","normal","right");
+    await waitForDialogueAdvance();
+    await say(mainName(),"Let's go back to class.","normal","left");
+    await waitForDialogueAdvance();
+
+    // Return to the classroom for the four-choice section.
+    clearDialogueState();
+    clearCharacters();
+    document.getElementById("dialogueBox").style.display="none";
+    document.getElementById("background").className="school";
     restoreMainChoices();
     actionLocked=false;
 }
