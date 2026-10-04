@@ -965,87 +965,6 @@ button {
 }
 
 /* =====================================================
-   FIGHT ANIMATION
-===================================================== */
-
-#fightOverlay {
-    position: absolute;
-    inset: 0;
-    z-index: 500;
-    display: none;
-    align-items: center;
-    justify-content: center;
-    overflow: hidden;
-    background: linear-gradient(180deg, rgba(255,247,213,.96), rgba(255,186,194,.96));
-}
-
-#fightOverlay.active { display: flex; }
-
-.fightTitle {
-    position: absolute;
-    top: 12%;
-    font-size: clamp(32px, 8vw, 72px);
-    color: #e54f73;
-    font-weight: 900;
-    transform: rotate(-4deg);
-    text-shadow: 3px 3px 0 #fff;
-}
-
-.fightStage {
-    position: relative;
-    width: min(850px, 92vw);
-    height: min(420px, 58vh);
-}
-
-.fightCharacter {
-    position: absolute;
-    bottom: 20px;
-    width: 210px;
-    height: 330px;
-    display: flex;
-    align-items: flex-end;
-    justify-content: center;
-}
-
-.fightCharacter.left { left: 4%; animation: fighterLeft 1.7s infinite; }
-.fightCharacter.right { right: 4%; animation: fighterRight 1.7s infinite; }
-
-.fightCharacter .fightArt {
-    width: 190px;
-    height: 310px;
-}
-
-.fightImpact {
-    position: absolute;
-    left: 50%;
-    top: 47%;
-    transform: translate(-50%,-50%) scale(.2);
-    font-size: clamp(50px, 11vw, 100px);
-    font-weight: 900;
-    color: #ffcf3d;
-    text-shadow: 4px 4px 0 #e94b72, -3px -3px 0 white;
-    animation: fightImpact .85s .25s infinite;
-}
-
-@keyframes fighterLeft {
-    0%,100% { transform: translateX(0) rotate(0); }
-    42% { transform: translateX(105px) rotate(-8deg); }
-    58% { transform: translateX(70px) rotate(8deg); }
-}
-
-@keyframes fighterRight {
-    0%,100% { transform: translateX(0) rotate(0); }
-    42% { transform: translateX(-105px) rotate(8deg); }
-    58% { transform: translateX(-70px) rotate(-8deg); }
-}
-
-@keyframes fightImpact {
-    0%, 30% { opacity: 0; transform: translate(-50%,-50%) scale(.2) rotate(-10deg); }
-    45% { opacity: 1; transform: translate(-50%,-50%) scale(1.15) rotate(6deg); }
-    65%,100% { opacity: 0; transform: translate(-50%,-50%) scale(.9) rotate(-4deg); }
-}
-
-/* =====================================================
    ARCADE HUD / MINI MAP / LOOK PAD
 ===================================================== */
 
@@ -1747,8 +1666,8 @@ body.smartphone #arcadeCrosshair {
 
 #storyBackButton {
     position: absolute;
-    top: max(10px, env(safe-area-inset-top));
-    right: max(10px, env(safe-area-inset-right));
+    top: 12px;
+    right: 14px;
     left: auto;
     z-index: 240;
     border: 2px solid rgba(255,255,255,.95);
@@ -1941,16 +1860,14 @@ body.smartphone #arcadeCrosshair {
     box-shadow: 0 0 0 3px rgba(255,49,93,.28), 0 8px 22px rgba(0,0,0,.24);
 }
 
-#fightOverlay,
 #captureOverlay,
 #runTransition,
 #missionCard { pointer-events: auto; }
 
-#fightOverlay.active,
 #captureOverlay[style*="block"] { cursor: pointer; }
 
 @media (max-width: 700px) {
-    #storyBackButton { top: max(8px, env(safe-area-inset-top)); right: max(8px, env(safe-area-inset-right)); left: auto; padding: 6px 9px; font-size: 10px; }
+    #storyBackButton { top: 8px; right: 8px; left: auto; padding: 7px 10px; font-size: 11px; }
     #choiceBox { bottom: 145px; }
     .characterSprite { width: min(46vw, 300px); height: 52vh; }
 }
@@ -2042,43 +1959,6 @@ body.smartphone #arcadeCrosshair {
 }
 @keyframes collisionFlash { 0%,100%{background:rgba(255,245,195,0)} 30%{background:rgba(255,245,195,.58)} 55%{background:rgba(255,255,255,.10)} }
 
-/* Fight: alternating punches and impact bursts. */
-.fightCharacter.left { animation:fighterLeft .95s ease-in-out 0s 2; }
-.fightCharacter.right { animation:fighterRight .95s ease-in-out .08s 2; }
-.fightImpact { animation:fightImpact .48s ease-out .18s 4; }
-.fightFist {
-    position:absolute;
-    z-index:4;
-    top:46%;
-    font-size:clamp(40px,8vw,80px);
-    font-weight:900;
-    color:#fff;
-    text-shadow:3px 3px 0 #e94b72;
-    opacity:0;
-}
-.fistLeft { left:34%; animation:punchLeft .95s ease-in-out .08s 2; }
-.fistRight { right:34%; animation:punchRight .95s ease-in-out .50s 2; }
-@keyframes punchLeft { 0%,20%,100%{opacity:0;transform:translateX(-30px) scale(.6) rotate(-20deg)} 45%,58%{opacity:1;transform:translateX(80px) scale(1.2) rotate(15deg)} 70%{opacity:0;transform:translateX(105px) scale(.8)} }
-@keyframes punchRight { 0%,20%,100%{opacity:0;transform:translateX(30px) scale(.6) rotate(20deg)} 45%,58%{opacity:1;transform:translateX(-80px) scale(1.2) rotate(-15deg)} 70%{opacity:0;transform:translateX(-105px) scale(.8)} }
-
-/* Typewriter dialogue. */
-#dialogue { min-height:70px; }
-#continueHint { transition:opacity .15s; }
-
-/* Prevent double-clicks / delayed-action input during transitions. */
-#choiceBox.ui-locked { pointer-events:none; opacity:.72; }
-button.ui-disabled { pointer-events:none !important; opacity:.58 !important; }
-
-/* =====================================================
-   2026-10-05 REVISION 2
-===================================================== */
-
-/* The supplied background images are the complete scene. Remove the older
-   procedural pseudo-backgrounds so they cannot draw a second scene over them. */
-#background.city::before,
-#background.city::after,
-#background.school::before,
-#background.school::after,
 #background.arcade::before,
 #background.arcade::after {
     display:none !important;
@@ -2272,21 +2152,6 @@ button.ui-disabled { pointer-events:none !important; opacity:.58 !important; }
 @keyframes weddingCaptionIn { from{opacity:0;transform:translateX(-50%) translateY(8px)} to{opacity:1;transform:translateX(-50%) translateY(0)} }
 @keyframes confettiFloat { 0%,100%{transform:translateY(0) rotate(0)} 50%{transform:translateY(-16px) rotate(8deg)} }
 @keyframes weddingUiIn { from{opacity:0;pointer-events:none} to{opacity:1;pointer-events:auto} }
-#weddingBackButton {
-    position:absolute;
-    right:22px;
-    bottom:18px;
-    z-index:40;
-    display:none;
-    min-width:120px;
-    opacity:.95;
-}
-#weddingBackButton.visible { display:block; animation:weddingBackIn .35s ease-out both; }
-@keyframes weddingBackIn { from{opacity:0;transform:translateY(8px)} to{opacity:.95;transform:translateY(0)} }
-@media (max-width:700px) {
-    #weddingBackButton { right:12px; bottom:12px; min-width:105px; }
-}
-
 @keyframes doveFly1 { 0%{opacity:0;transform:translate(-20px,10px) scale(.65)} 12%{opacity:1} 100%{opacity:1;transform:translate(-260px,-230px) scale(1.1) rotate(-8deg)} }
 @keyframes doveFly2 { 0%{opacity:0;transform:translate(0,12px) scale(.6)} 12%{opacity:1} 100%{opacity:1;transform:translate(-90px,-285px) scale(1.05) rotate(-4deg)} }
 @keyframes doveFly3 { 0%{opacity:0;transform:translate(20px,10px) scale(.65)} 12%{opacity:1} 100%{opacity:1;transform:translate(120px,-275px) scale(1.12) rotate(5deg)} }
@@ -2358,281 +2223,19 @@ body.smartphone #lookPad { pointer-events:none; opacity:.58; }
     content:"";
     position:absolute; inset:0;
     background:radial-gradient(circle at 50% 48%, rgba(255,255,255,.08), transparent 42%);
-    animation:classroomBuzz 2.5s ease-in-out 1 both;
+    animation:classroomBuzz .55s ease-in-out 8;
 }
-/* Four bubbles now finish together at exactly 2.5 seconds. */
-#classroomChatter .chatter1 { animation-duration:2.4s; animation-delay:.10s; }
-#classroomChatter .chatter2 { animation-duration:2.15s; animation-delay:.35s; }
-#classroomChatter .chatter3 { animation-duration:1.90s; animation-delay:.60s; }
-#classroomChatter .chatter4 { animation-duration:1.65s; animation-delay:.85s; }
 @keyframes classroomBuzz {
     0%,100%{transform:translateX(0);opacity:.35}
     50%{transform:translateX(3px);opacity:.7}
 }
-
-/* REVISION 5: stronger but still non-graphic punch exchange. */
-#fightOverlay.active {
-    animation: fightScreenShakeRev5 3.35s linear both;
-}
-#fightOverlay.active .fightTitle {
-    animation: fightTitlePulse 3.35s ease-in-out both;
-}
-#fightOverlay.active .fightSpeedLines {
-    animation: fightSpeedPulse .42s linear infinite;
-}
-#fightOverlay.active .impactOne { animation-delay:.32s; }
-#fightOverlay.active .impactTwo { animation-delay:1.05s; }
-#fightOverlay.active .impactThree { animation-delay:1.78s; }
-.fightImpact {
-    z-index:10;
-    filter:drop-shadow(3px 3px 0 rgba(233,75,114,.75));
-}
-.fightImpact::after {
-    content:"";
-    position:absolute;
-    left:50%; top:50%;
-    width:14px; height:14px;
-    border-radius:50%;
-    border:4px solid rgba(255,255,255,.9);
-    transform:translate(-50%,-50%) scale(.2);
-    opacity:0;
-    animation:impactBurst .48s ease-out infinite;
-    pointer-events:none;
-}
-@keyframes fightScreenShakeRev5 {
-    0%,100%{transform:translate(0,0)}
-    8%{transform:translate(-5px,2px)} 12%{transform:translate(6px,-2px)}
-    20%{transform:translate(-7px,2px)} 24%{transform:translate(7px,0)}
-    32%{transform:translate(-4px,-2px)} 36%{transform:translate(5px,2px)}
-    44%{transform:translate(-6px,0)} 48%{transform:translate(6px,-2px)}
-    56%{transform:translate(-5px,2px)} 60%{transform:translate(5px,0)}
-    68%{transform:translate(-6px,-2px)} 72%{transform:translate(6px,2px)}
-    80%{transform:translate(-3px,0)} 84%{transform:translate(3px,0)}
-}
-@keyframes fightTitlePulse {
-    0%,100%{transform:scale(1);opacity:1}
-    18%{transform:scale(1.12) rotate(-2deg)}
-    28%{transform:scale(.96) rotate(2deg)}
-    48%{transform:scale(1.1) rotate(-1deg)}
-    62%{transform:scale(.98)}
-}
-@keyframes fightSpeedPulse {
-    0%,100%{opacity:.15;transform:translateX(0)}
-    50%{opacity:.75;transform:translateX(-12px)}
-}
-@keyframes impactBurst {
-    0%{opacity:.85;transform:translate(-50%,-50%) scale(.2)}
-    100%{opacity:0;transform:translate(-50%,-50%) scale(8)}
-}
-
-/* REVISION 4: clearer, non-graphic cartoon punch exchange. */
-#fightOverlay.active {
-    animation: fightScreenShake 3.0s linear both;
-}
-.fightStage {
-    overflow:visible;
-}
-.fightCharacter.left {
-    left:4%;
-    animation: fighterLeftRev4 1.5s ease-in-out 0s 2 both;
-}
-.fightCharacter.right {
-    right:4%;
-    animation: fighterRightRev4 1.5s ease-in-out .74s 2 both;
-}
-.fightCharacter .fightArt {
-    object-fit:contain;
-}
-.fightFist {
-    top:46%;
-    width:90px;
-    height:90px;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    font-size:clamp(42px,8vw,76px);
-    line-height:1;
-    opacity:0;
-    filter:drop-shadow(4px 4px 0 rgba(233,75,114,.8));
-    z-index:8;
-}
-.fistLeft {
-    left:34%;
-    animation:punchLeftRev4 1.5s ease-in-out 0s 2 both;
-}
-.fistRight {
-    right:34%;
-    animation:punchRightRev4 1.5s ease-in-out .74s 2 both;
-}
-.fightImpact {
-    left:50%;
-    top:45%;
-    z-index:10;
-    pointer-events:none;
-    font-size:clamp(48px,10vw,100px);
-    text-shadow:5px 5px 0 #e94b72, -3px -3px 0 #fff;
-}
-.impactOne { animation:impactBurstRev4 .48s ease-out .47s 1 both; }
-.impactTwo { animation:impactBurstRev4 .48s ease-out 1.21s 1 both; }
-.impactThree { animation:impactBurstRev4 .48s ease-out 2.18s 1 both; }
-.fightSpeedLines {
-    position:absolute;
-    inset:10% 8%;
-    pointer-events:none;
-    z-index:2;
-    opacity:0;
-    background:
-        linear-gradient(90deg, transparent 0 38%, rgba(255,255,255,.65) 39% 40%, transparent 41% 59%, rgba(255,255,255,.65) 60% 61%, transparent 62%),
-        linear-gradient(90deg, transparent 0 46%, rgba(255,213,72,.5) 47% 48%, transparent 49%);
-    transform:skewX(-18deg);
-    animation:fightSpeedRev4 3s ease-out both;
-}
-.fightCaption {
-    position:absolute;
-    bottom:5%;
-    left:50%;
-    transform:translateX(-50%);
-    padding:8px 14px;
-    border-radius:999px;
-    background:rgba(255,255,255,.84);
-    color:#7a3b4e;
-    font-size:12px;
-    font-weight:900;
-    letter-spacing:1.5px;
-    z-index:20;
-}
-@keyframes fighterLeftRev4 {
-    0%,100% { transform:translateX(0) rotate(0); }
-    18% { transform:translateX(22px) rotate(-2deg); }
-    30% { transform:translateX(128px) rotate(-8deg); }
-    38% { transform:translateX(82px) rotate(5deg); }
-    50% { transform:translateX(-18px) rotate(1deg); }
-    66% { transform:translateX(20px) rotate(-2deg); }
-    78% { transform:translateX(128px) rotate(-8deg); }
-    86% { transform:translateX(70px) rotate(4deg); }
-}
-@keyframes fighterRightRev4 {
-    0%,100% { transform:translateX(0) rotate(0); }
-    18% { transform:translateX(-22px) rotate(2deg); }
-    30% { transform:translateX(-118px) rotate(8deg); }
-    38% { transform:translateX(-72px) rotate(-5deg); }
-    50% { transform:translateX(18px) rotate(-1deg); }
-    66% { transform:translateX(-20px) rotate(2deg); }
-    78% { transform:translateX(-118px) rotate(8deg); }
-    86% { transform:translateX(-65px) rotate(-4deg); }
-}
-@keyframes punchLeftRev4 {
-    0%,12%,100% { opacity:0; transform:translateX(-28px) scale(.58) rotate(-18deg); }
-    24% { opacity:1; transform:translateX(18px) scale(.82) rotate(-8deg); }
-    34% { opacity:1; transform:translateX(126px) scale(1.18) rotate(10deg); }
-    42% { opacity:0; transform:translateX(155px) scale(.72) rotate(16deg); }
-    62%,70% { opacity:0; transform:translateX(-28px) scale(.58) rotate(-18deg); }
-    78% { opacity:1; transform:translateX(18px) scale(.82) rotate(-8deg); }
-    88% { opacity:1; transform:translateX(126px) scale(1.18) rotate(10deg); }
-    96% { opacity:0; transform:translateX(155px) scale(.72) rotate(16deg); }
-}
-@keyframes punchRightRev4 {
-    0%,12%,100% { opacity:0; transform:translateX(28px) scale(.58) rotate(18deg); }
-    24% { opacity:1; transform:translateX(-18px) scale(.82) rotate(8deg); }
-    34% { opacity:1; transform:translateX(-122px) scale(1.18) rotate(-10deg); }
-    42% { opacity:0; transform:translateX(-150px) scale(.72) rotate(-16deg); }
-    62%,70% { opacity:0; transform:translateX(28px) scale(.58) rotate(18deg); }
-    78% { opacity:1; transform:translateX(-18px) scale(.82) rotate(8deg); }
-    88% { opacity:1; transform:translateX(-122px) scale(1.18) rotate(-10deg); }
-    96% { opacity:0; transform:translateX(-150px) scale(.72) rotate(-16deg); }
-}
-@keyframes impactBurstRev4 {
-    0% { opacity:0; transform:translate(-50%,-50%) scale(.25) rotate(-12deg); }
-    25% { opacity:1; transform:translate(-50%,-50%) scale(1.18) rotate(7deg); }
-    58% { opacity:1; transform:translate(-50%,-50%) scale(.98) rotate(-4deg); }
-    100% { opacity:0; transform:translate(-50%,-50%) scale(1.38) rotate(4deg); }
-}
-@keyframes fightSpeedRev4 {
-    0%,10%,100% { opacity:0; transform:skewX(-18deg) scaleX(.8); }
-    18%,46%,56%,84% { opacity:.42; transform:skewX(-18deg) scaleX(1); }
-    25%,53%,63%,91% { opacity:0; }
-}
-@keyframes fightScreenShake {
-    0%,100% { transform:translate(0,0); }
-    16% { transform:translate(-4px,1px); }
-    18% { transform:translate(5px,-1px); }
-    50% { transform:translate(0,0); }
-    52% { transform:translate(5px,1px); }
-    54% { transform:translate(-5px,-1px); }
-    82% { transform:translate(0,0); }
-    84% { transform:translate(-4px,1px); }
-    86% { transform:translate(4px,-1px); }
-}
-
-/* REVISION 5 FINAL OVERRIDES: make the punch exchange visibly land. */
-#fightOverlay.active { animation: fightScreenShakeRev5 3.35s linear both !important; }
-#fightOverlay.active .fightTitle { animation: fightTitlePulse 3.35s ease-in-out both !important; }
-#fightOverlay.active .fightSpeedLines { animation: fightSpeedPulse .34s linear infinite !important; }
-#fightOverlay.active .fightCharacter.left { animation: fighterLeftRev5 1.675s ease-in-out 0s 2 both !important; }
-#fightOverlay.active .fightCharacter.right { animation: fighterRightRev5 1.675s ease-in-out .16s 2 both !important; }
-#fightOverlay.active .fistLeft { animation: punchLeftRev5 1.675s ease-in-out 0s 2 both !important; }
-#fightOverlay.active .fistRight { animation: punchRightRev5 1.675s ease-in-out .16s 2 both !important; }
-#fightOverlay.active .impactOne { animation: impactBurstRev5 .42s ease-out .36s 1 both !important; }
-#fightOverlay.active .impactTwo { animation: impactBurstRev5 .42s ease-out 1.12s 1 both !important; }
-#fightOverlay.active .impactThree { animation: impactBurstRev5 .42s ease-out 1.88s 1 both !important; }
-#fightOverlay.active .fightCaption { animation: fightCaptionPulse 3.35s ease-in-out both !important; }
-@keyframes fightCaptionPulse {
-    0%,100%{opacity:.55;transform:translateY(0)}
-    18%,44%,70%{opacity:1;transform:translateY(-2px)}
-}
-/* Clear punch-hit beats: characters lunge, fists cross the stage, then recoil. */
-#fightOverlay.active .fistLeft { transform-origin:center; }
-#fightOverlay.active .fistRight { transform-origin:center; }
-#fightOverlay.active::after {
-    content:""; position:absolute; inset:0; pointer-events:none; z-index:30;
-    background:rgba(255,255,255,0); animation:fightFlashRev5 3.35s linear both;
-}
-@keyframes fighterLeftRev5 {
-    0%,100%{transform:translateX(0) rotate(0)}
-    18%{transform:translateX(28px) rotate(-3deg)}
-    34%{transform:translateX(132px) rotate(-10deg)}
-    46%{transform:translateX(74px) rotate(5deg)}
-    58%{transform:translateX(-8px) rotate(0)}
-    72%{transform:translateX(30px) rotate(-3deg)}
-    88%{transform:translateX(132px) rotate(-10deg)}
-}
-@keyframes fighterRightRev5 {
-    0%,100%{transform:translateX(0) rotate(0)}
-    18%{transform:translateX(-28px) rotate(3deg)}
-    34%{transform:translateX(-132px) rotate(10deg)}
-    46%{transform:translateX(-74px) rotate(-5deg)}
-    58%{transform:translateX(8px) rotate(0)}
-    72%{transform:translateX(-30px) rotate(3deg)}
-    88%{transform:translateX(-132px) rotate(10deg)}
-}
-@keyframes punchLeftRev5 {
-    0%,12%,100%{opacity:0;transform:translateX(-28px) scale(.58) rotate(-18deg)}
-    22%{opacity:1;transform:translateX(20px) scale(.82) rotate(-8deg)}
-    34%{opacity:1;transform:translateX(126px) scale(1.24) rotate(10deg)}
-    45%{opacity:0;transform:translateX(158px) scale(.70) rotate(18deg)}
-    62%,70%{opacity:0;transform:translateX(-28px) scale(.58) rotate(-18deg)}
-    82%{opacity:1;transform:translateX(20px) scale(.82) rotate(-8deg)}
-    94%{opacity:1;transform:translateX(126px) scale(1.24) rotate(10deg)}
-}
-@keyframes punchRightRev5 {
-    0%,12%,100%{opacity:0;transform:translateX(28px) scale(.58) rotate(18deg)}
-    38%,50%{opacity:0;transform:translateX(28px) scale(.58) rotate(18deg)}
-    62%{opacity:1;transform:translateX(-20px) scale(.82) rotate(8deg)}
-    78%{opacity:1;transform:translateX(-126px) scale(1.24) rotate(-10deg)}
-    89%{opacity:0;transform:translateX(-158px) scale(.70) rotate(-18deg)}
-}
-@keyframes impactBurstRev5 {
-    0%{opacity:0;transform:translate(-50%,-50%) scale(.18) rotate(-12deg)}
-    25%{opacity:1;transform:translate(-50%,-50%) scale(1.2) rotate(7deg)}
-    58%{opacity:1;transform:translate(-50%,-50%) scale(.98) rotate(-4deg)}
-    100%{opacity:0;transform:translate(-50%,-50%) scale(1.48) rotate(5deg)}
-}
-@keyframes fightFlashRev5 {
-    0%,20%,44%,67%,100%{background:rgba(255,255,255,0)}
-    23%,47%,70%{background:rgba(255,255,255,.22)}
-}
-
 </style>
+
+<style id="v4TitleCleanup">
+#titleScreen { background-image:url("./images/title_school.png") !important; background-size:cover !important; background-position:center !important; background-repeat:no-repeat !important; }
+#titleScreen::before,#titleScreen::after,#titleScreen .titleDecoration,#titleScreen .titleRibbon,#titleScreen .titleTagline { display:none !important; }
+</style>
+
 </head>
 
 <body>
@@ -2645,37 +2248,13 @@ body.smartphone #lookPad { pointer-events:none; opacity:.58; }
 
 <section id="titleScreen" class="screen active">
 
-    <div class="titleParty" aria-hidden="true">
-        <div class="balloon p1"></div>
-        <div class="balloon p2"></div>
-        <div class="balloon p3"></div>
-        <div class="balloon p4"></div>
-        <div class="schoolStar s1">✦</div>
-        <div class="schoolStar s2">✧</div>
-    </div>
 
-    <div class="titleDecoration" aria-hidden="true">
-        <div class="schoolRoof"></div>
-        <div class="schoolNameplate">TOHKATSU JUNIOR HIGH SCHOOL</div>
-        <div class="schoolWindows"></div>
-        <div class="schoolDoor"></div>
-        <div class="schoolTree treeLeft"></div>
-        <div class="schoolTree treeRight"></div>
-        <div class="schoolGate"></div>
-    </div>
-
-    <div class="titleRibbon">TOHKATSU JUNIOR HIGH SCHOOL</div>
 
     <div class="title">
         Tohkatsu Hanako's<br>
         <span>Love Romance</span>
     </div>
-
-    <div class="titleTagline">
-        A new school day is about to begin.
-    </div>
-
-    <div class="titleButtons">
+<div class="titleButtons">
         <button class="menuButton startButton" onclick="requestGameStart()">
             START
         </button>
@@ -2839,8 +2418,8 @@ body.smartphone #lookPad { pointer-events:none; opacity:.58; }
     <div id="choiceBox">
         <button class="choice" onclick="mainChoice('talk')">A. Talk</button>
         <button class="choice" onclick="mainChoice('run')">B. Escape to the arcade</button>
-        <button class="choice" onclick="mainChoice('fight')">C. Fight</button>
-        <button class="choice" onclick="mainChoice('confess')">D. ♡</button>
+        
+        <button class="choice" onclick="mainChoice('confess')">C. ♡</button>
     </div>
 
     <div id="dialogueBox">
@@ -2891,21 +2470,6 @@ body.smartphone #lookPad { pointer-events:none; opacity:.58; }
         </div>
 
         <div id="darkFade"></div>
-
-        <div id="fightOverlay">
-            <div class="fightTitle">FIGHT!</div>
-            <div class="fightStage">
-                <div class="fightSpeedLines" aria-hidden="true"></div>
-                <div id="fightHanako" class="fightCharacter left"></div>
-                <div class="fightFist fistLeft" aria-hidden="true">👊</div>
-                <div class="fightImpact impactOne" aria-hidden="true">POW!</div>
-                <div class="fightImpact impactTwo" aria-hidden="true">BAM!</div>
-                <div class="fightImpact impactThree" aria-hidden="true">WHAM!</div>
-                <div class="fightFist fistRight" aria-hidden="true">👊</div>
-                <div id="fightBoy" class="fightCharacter right"></div>
-            </div>
-            <div class="fightCaption">A VERY CARTOONISH FIGHT!</div>
-        </div>
     </div>
 </section>
 
@@ -2928,7 +2492,6 @@ body.smartphone #lookPad { pointer-events:none; opacity:.58; }
             <span>🕊</span><span>🕊</span><span>🕊</span><span>🕊</span>
         </div>
         <div class="weddingCaption">MARRIAGE END</div>
-        <button id="weddingBackButton" class="menuButton weddingBackButton" onclick="backToTitle()" aria-label="Back to title">← BACK</button>
     </div>
     <div id="heartBreak" class="hidden">💔</div>
     <h1 id="endingTitle">GAME OVER</h1>
@@ -2981,7 +2544,6 @@ function continueToChoices() {
     document.getElementById("classroomChatter").classList.remove("active");
     document.getElementById("missionCard").classList.remove("active");
     document.getElementById("runTransition").classList.remove("active");
-    document.getElementById("fightOverlay").classList.remove("active");
     document.getElementById("captureOverlay").style.display = "none";
     document.getElementById("arcadeScreen").style.display = "none";
     document.getElementById("loveGauge").classList.remove("hidden");
@@ -3042,7 +2604,6 @@ function backFromArcade(){
 }
 
 function backToTitle() {
-    if (window._weddingBackTimer) { clearTimeout(window._weddingBackTimer); window._weddingBackTimer = null; }
     clearDialogueState();
     if (dialogueTimer) clearInterval(dialogueTimer);
     dialogueTimer = null;
@@ -3055,10 +2616,7 @@ function backToTitle() {
     arcadeIntroPlaying = false;
     document.getElementById("arcadeScreen").style.display = "none";
     document.getElementById("captureOverlay").style.display = "none";
-    document.getElementById("fightOverlay").classList.remove("active");
     document.getElementById("marriageScene").classList.remove("active");
-    const weddingBackButton = document.getElementById("weddingBackButton");
-    if (weddingBackButton) { weddingBackButton.classList.remove("visible"); weddingBackButton.style.display="none"; }
     document.getElementById("endingScreen").classList.remove("marriageMode");
     document.getElementById("gameOverContinueButton").style.display="block";
     document.getElementById("playAgainButton").style.display="none";
@@ -3508,7 +3066,6 @@ async function startStory() {
     document.getElementById("choiceBox").style.display="none";
     document.getElementById("dialogueBox").style.display="block";
     document.getElementById("arcadeScreen").style.display="none";
-    document.getElementById("fightOverlay").classList.remove("active");
     document.getElementById("missionCard").classList.remove("active");
     document.getElementById("runTransition").classList.remove("active");
     document.getElementById("collisionFX").classList.remove("active");
@@ -3563,11 +3120,10 @@ function playClassroomChatter() {
     chatter.classList.remove("active");
     void chatter.offsetWidth;
     chatter.classList.add("active");
-    // The last chatter bubble disappears at 2.5s; advance immediately at that same moment.
     return new Promise(resolve => setTimeout(() => {
         chatter.classList.remove("active");
         resolve();
-    }, 2500));
+    }, 4500));
 }
 async function playStory() {
     if (inArcade || ending) return;
@@ -3587,7 +3143,7 @@ async function playStory() {
 
 document.addEventListener("click", event => {
     const storyScreen=document.getElementById("storyScreen"); if(!storyScreen.classList.contains("active")) return;
-    if(event.target.closest("button")||event.target.closest(".modal")||event.target.closest("#choiceBox")||event.target.closest("#captureOverlay")||event.target.closest("#mobileControls")||event.target.closest("#fightOverlay")) return;
+    if(event.target.closest("button")||event.target.closest(".modal")||event.target.closest("#choiceBox")||event.target.closest("#captureOverlay")||event.target.closest("#mobileControls")) return;
     if(dismissSynopsis()) return;
     const briefing=document.getElementById("choiceBriefing");
     if(briefing.classList.contains("active")){briefing.classList.remove("active");choiceBriefingActive=false;restoreMainChoices();setActionLock(false);return;}
@@ -3613,7 +3169,7 @@ document.addEventListener("keydown", event => {
 function updateLove(){love=Math.max(0,Math.min(100,love));document.getElementById("loveBar").style.width=love+"%";document.getElementById("loveValue").textContent=Math.floor(love)+"%";}
 function restoreMainChoices(){
     const box=document.getElementById("choiceBox");
-    box.innerHTML=`<button class="choice" onclick="mainChoice('talk')">A. Talk</button><button class="choice" onclick="mainChoice('run')">B. Escape to the arcade</button><button class="choice" onclick="mainChoice('fight')">C. Fight</button><button class="choice" onclick="mainChoice('confess')">D. ♡</button>`;
+    box.innerHTML=`<button class="choice" onclick="mainChoice('talk')">A. Talk</button><button class="choice" onclick="mainChoice('run')">B. Escape to the arcade</button><button class="choice" onclick="mainChoice('compliment')">C. Compliment him</button><button class="choice" onclick="mainChoice('confess')">D. ♡</button>`;
     box.style.display="grid"; box.classList.remove("ui-locked"); document.querySelectorAll("#choiceBox button").forEach(b=>b.classList.remove("ui-disabled"));
 }
 async function beginChoiceMode(){
@@ -3623,7 +3179,17 @@ async function beginChoiceMode(){
 }
 function mainChoice(choice){
     if(actionLocked||ending||inArcade)return; setActionLock(true); document.getElementById("choiceBox").style.display="none";
-    if(choice==='talk')talkChoice(); else if(choice==='run')startArcadeIntro(); else if(choice==='fight')fightEnding(); else if(choice==='confess')confess();
+    if(choice==='talk')talkChoice(); else if(choice==='run')startArcadeIntro(); else if(choice==='compliment')complimentChoice(); else if(choice==='confess')confess();
+}
+async function complimentChoice(){
+    document.getElementById("dialogueBox").style.display="block";
+    await say(mainName(),"You look really cool today.","shy","left");
+    await waitForDialogueAdvance();
+    await say(boyName(),"Oh... thank you.","shy","right");
+    await waitForDialogueAdvance();
+    love += 12; updateLove();
+    document.getElementById("dialogueBox").style.display="none";
+    restoreMainChoices(); setActionLock(false);
 }
 function talkChoice(){
     const questions=[{q:"What's your favorite food?",a:"I like rice."},{q:"What's your favorite color?",a:"I like blue."},{q:"What's your favorite animal?",a:"I like cats."},{q:"What's your favorite sport?",a:"I like soccer."}];
@@ -3639,26 +3205,6 @@ function talkChoice(){
     });
 }
 /* =====================================================
-   FIGHT
-===================================================== */
-async function fightEnding(){
-    if(ending||inArcade)return;
-    const overlay=document.getElementById("fightOverlay");
-    document.getElementById("heartBreak").classList.add("hidden");
-    document.getElementById("choiceBox").style.display="none";
-    document.getElementById("dialogueBox").style.display="none";
-    document.getElementById("fightHanako").innerHTML=characterArtSvg("Hanako");
-    document.getElementById("fightBoy").innerHTML=`<img class="fightArt" src="${boyData().image}" alt="${boyName()}">`;
-    overlay.classList.remove("active");
-    void overlay.offsetWidth;
-    overlay.classList.add("active");
-    // Let the full cartoon punch exchange play before the game-over screen.
-    await new Promise(r=>setTimeout(r,3450));
-    overlay.classList.remove("active");
-    await new Promise(r=>setTimeout(r,250));
-    showGameOver("The fight ended your love story.",true);
-}
-/* =====================================================
    CONFESSION
 ===================================================== */
 async function confess(){document.getElementById("dialogueBox").style.display="block";await say(mainName(),"I like you. Would you be my boyfriend?","shy","left");await waitForDialogueAdvance();if(love>=100)await marriageEnding();else if(love>=51)await datingEnding();else await rejectionEnding();}
@@ -3669,14 +3215,11 @@ async function marriageEnding(){await say(boyName(),"Yes.","shy","right");await 
    GAME OVER / ENDING
 ===================================================== */
 function showGameOver(text,showHeart=true){
-    if (window._weddingBackTimer) { clearTimeout(window._weddingBackTimer); window._weddingBackTimer = null; }
     document.getElementById("gameOverContinueButton").style.display = "block";
     document.getElementById("playAgainButton").style.display = "none";
     document.getElementById("endingScreen").classList.remove("marriageMode");
     ending=true; actionLocked=true; arcadeIntroPlaying=false; inArcade=false; arcadeRunning=false; document.getElementById("arcadeScreen").style.display="none"; document.getElementById("miniMap").style.display="none"; document.getElementById("darkFade").style.opacity="0"; showScreen("endingScreen"); document.getElementById("endingTitle").textContent="GAME OVER"; document.getElementById("endingText").textContent=text;
     document.getElementById("marriageScene").classList.remove("active");
-    const weddingBackButton = document.getElementById("weddingBackButton");
-    if (weddingBackButton) { weddingBackButton.classList.remove("visible"); weddingBackButton.style.display="none"; }
     const heart=document.getElementById("heartBreak"); heart.classList.add("hidden"); if(showHeart){void heart.offsetWidth;heart.classList.remove("hidden");}
 }
 function showEnding(title,text,type){
@@ -3693,8 +3236,6 @@ function showEnding(title,text,type){
     document.getElementById("heartBreak").classList.add("hidden");
     const marriage=document.getElementById("marriageScene");
     marriage.classList.remove("active");
-    const weddingBackButton = document.getElementById("weddingBackButton");
-    if (weddingBackButton) { weddingBackButton.classList.remove("visible"); weddingBackButton.style.display="none"; }
     if (type === "marriage") {
         document.getElementById("marriageHanako").innerHTML=characterArtSvg("Hanako");
         const boy=document.createElement("img");
@@ -3711,21 +3252,12 @@ function showEnding(title,text,type){
         void timeCard.offsetWidth;
         timeCard.classList.add("replay");
         marriage.classList.add("active");
-        // Marriage ending: reveal a dedicated BACK button after 3 seconds.
-        if (window._weddingBackTimer) clearTimeout(window._weddingBackTimer);
-        window._weddingBackTimer = setTimeout(() => {
-            if (ending && document.getElementById("endingScreen").classList.contains("marriageMode")) {
-                const back = document.getElementById("weddingBackButton");
-                if (back) { back.style.display="block"; back.classList.add("visible"); }
-            }
-        }, 3000);
     }
 }
 /* =====================================================
    RESTART
 ===================================================== */
 function playAgain(){
-    if (window._weddingBackTimer) { clearTimeout(window._weddingBackTimer); window._weddingBackTimer = null; }
     // A clear can always be replayed from boyfriend selection.
     ending=false;
     inArcade=false;
@@ -3733,8 +3265,6 @@ function playAgain(){
     arcadeIntroPlaying=false;
     actionLocked=false;
     document.getElementById("marriageScene").classList.remove("active");
-    const weddingBackButton = document.getElementById("weddingBackButton");
-    if (weddingBackButton) { weddingBackButton.classList.remove("visible"); weddingBackButton.style.display="none"; }
     document.getElementById("endingScreen").classList.remove("marriageMode");
     document.getElementById("playAgainButton").style.display="none";
     document.getElementById("arcadeScreen").style.display="none";
@@ -3749,7 +3279,6 @@ function playAgain(){
 }
 
 function restartGame(){
-    if (window._weddingBackTimer) { clearTimeout(window._weddingBackTimer); window._weddingBackTimer = null; }
     ending = false;
     inArcade = false;
     arcadeRunning = false;
@@ -3773,10 +3302,7 @@ function restartGame(){
     document.getElementById("arcadeScreen").style.display = "none";
     document.getElementById("miniMap").style.display = "none";
     document.getElementById("marriageScene").classList.remove("active");
-    const weddingBackButton = document.getElementById("weddingBackButton");
-    if (weddingBackButton) { weddingBackButton.classList.remove("visible"); weddingBackButton.style.display="none"; }
     document.getElementById("endingScreen").classList.remove("marriageMode");
-    document.getElementById("fightOverlay").classList.remove("active");
     document.getElementById("darkFade").style.opacity = "0";
     document.getElementById("captureOverlay").style.display = "none";
     document.getElementById("introCard").classList.remove("active");
@@ -3800,23 +3326,25 @@ function restartGame(){
 ===================================================== */
 
 const maze = [
-    '#############################',
-    '#.....#.....................#',
-    '#####.#.###.#.#.##.######...#',
-    '#...#.......#.#...........#.#',
-    '#...#########.#############.#',
-    '#.......#.....#.........#...#',
-    '#.#####.#.#...#.#..####.#.#.#',
-    '#...........#.......#.....#.#',
-    '#...###.#########.#.#.###.#.#',
-    '#.....#.#.......#...........#',
-    '#####.###.#.#.#.#.#####.###.#',
-    '#.....#...#.#...#...........#',
-    '#.###.#.#.#.#.###.#.#.###.#.#',
-    '#...#.#.............#.......#',
-    '#.#.###.#.#.#######.###.#...#',
-    '#.#.......#.......#.........#',
-    '###########################.#'
+    '###############################',
+    '#.....#...#...#.......#...#...#',
+    '#...#.#...#.#.#.##..#...#.#.#.#',
+    '#.#.#...#...#.#.....#.......#.#',
+    '#.#.#.#.#####.###.###.#####.#.#',
+    '#.#...#...#...............#...#',
+    '..###.#.#.#########...###.#.#.#',
+    '#.#...#.#...#.......#.....#.#.#',
+    '#.#.#.#.#.#.#.#####.###...#.#.#',
+    '#.#.#.....#...#.....#.........#',
+    '#.#.##.#..###.#.#.###..######.#',
+    '#...#.....#.....#.............#',
+    '#.###.###...#####.#.....#######',
+    '#.#...#.....#.......#.#.....#.#',
+    '#.#.######.##.###.#.#....#..#.#',
+    '#...#.......#.#.#.............#',
+    '#.#.#.#####.#...#.#.###.#.###.#',
+    '#.........#...#.......#.......#',
+    '###############.###############',
 ];
 
 /*
@@ -3836,10 +3364,6 @@ arcadeBgImage.src = "./images/arcade_bg.png";
 
 const NORMAL_SPEED = 2;
 const DASH_SPEED = 3;
-const TEACHER_BASE_DETECTION_DISTANCE = 26.0;
-const TEACHER_MAX_DETECTION_DISTANCE = 40.0;
-const TEACHER_BASE_CHASE_SPEED = 2.20;
-const TEACHER_MAX_CHASE_SPEED = 3.25;
 
 const FIELD_OF_VIEW = Math.PI / 3;
 const HALF_FOV = FIELD_OF_VIEW / 2;
@@ -3858,10 +3382,10 @@ let renderColumns = RENDER_COLUMNS_DESKTOP;
 ===================================================== */
 
 let player = {
-    // Spawn in one corner; the escape door is attached to the opposite diagonal corner.
-    x: 1.5,
-    y: 1.5,
-    angle: 0,
+    // Start in the middle of the maze.
+    x: 15.5,
+    y: 9.5,
+    angle: Math.PI / 2,
     stamina: 100
 };
 
@@ -3878,43 +3402,52 @@ let teachers = [
         pathTimer: 0,
         path: null,
         wanderTarget: null,
-        wanderTimer: 0
+        wanderTimer: 0,
+        wanderDir: 1,
+        lastWanderTile: null
     }
 ];
 
 let exitPoint = {
-    // Real doorway attached to the bottom outer wall at the diagonal opposite corner.
-    x: 27.5,
-    y: 16.5
+    // The exit is physically attached to the outer wall: a real doorway.
+    x: 0.12,
+    y: 6.5
 };
 
 /* Decorative arcade machines placed on the walkable floor. They are visual
    props only, so they never block the player or teachers. */
 const arcadeProps = [
     {x:3.5,y:1.5,type:"cabinet",scale:.70},
-    {x:7.5,y:1.5,type:"crane",scale:.70},
-    {x:10.5,y:1.5,type:"racing",scale:.70},
-    {x:13.5,y:1.5,type:"cabinet",scale:.70},
-    {x:16.5,y:1.5,type:"prize",scale:.70},
-    {x:19.5,y:1.5,type:"cabinet",scale:.70},
-    {x:22.5,y:1.5,type:"crane",scale:.70},
-    {x:25.5,y:1.5,type:"racing",scale:.70},
-    {x:1.5,y:3.5,type:"cabinet",scale:.70},
-    {x:5.5,y:3.5,type:"prize",scale:.70},
-    {x:27.5,y:3.5,type:"crane",scale:.70},
-    {x:13.5,y:4.5,type:"racing",scale:.70},
-    {x:3.5,y:5.5,type:"cabinet",scale:.70},
-    {x:7.5,y:5.5,type:"crane",scale:.70},
-    {x:10.5,y:5.5,type:"prize",scale:.70},
-    {x:16.5,y:5.5,type:"cabinet",scale:.70},
-    {x:19.5,y:5.5,type:"racing",scale:.70},
-    {x:22.5,y:5.5,type:"crane",scale:.70},
-    {x:25.5,y:5.5,type:"cabinet",scale:.70},
-    {x:1.5,y:7.5,type:"prize",scale:.70},
-    {x:5.5,y:7.5,type:"racing",scale:.70},
-    {x:13.5,y:7.5,type:"cabinet",scale:.70},
-    {x:27.5,y:7.5,type:"crane",scale:.70},
-    {x:19.5,y:8.5,type:"prize",scale:.70}
+    {x:8.5,y:1.5,type:"crane",scale:.72},
+    {x:13.5,y:1.5,type:"racing",scale:.70},
+    {x:21.5,y:1.5,type:"cabinet",scale:.70},
+    {x:27.5,y:1.5,type:"crane",scale:.72},
+    {x:3.5,y:3.5,type:"racing",scale:.68},
+    {x:11.5,y:3.5,type:"cabinet",scale:.70},
+    {x:19.5,y:3.5,type:"crane",scale:.70},
+    {x:25.5,y:3.5,type:"prize",scale:.70},
+    {x:5.5,y:5.5,type:"cabinet",scale:.70},
+    {x:15.5,y:5.5,type:"racing",scale:.68},
+    {x:23.5,y:5.5,type:"crane",scale:.70},
+    {x:27.5,y:7.5,type:"cabinet",scale:.70},
+    {x:3.5,y:9.5,type:"prize",scale:.70},
+    {x:9.5,y:9.5,type:"cabinet",scale:.70},
+    {x:17.5,y:9.5,type:"racing",scale:.68},
+    {x:25.5,y:9.5,type:"cabinet",scale:.70},
+    {x:5.5,y:11.5,type:"crane",scale:.70},
+    {x:13.5,y:11.5,type:"cabinet",scale:.70},
+    {x:21.5,y:11.5,type:"prize",scale:.70},
+    {x:27.5,y:11.5,type:"racing",scale:.68},
+    {x:3.5,y:13.5,type:"cabinet",scale:.70},
+    {x:11.5,y:13.5,type:"crane",scale:.70},
+    {x:19.5,y:13.5,type:"cabinet",scale:.70},
+    {x:25.5,y:13.5,type:"prize",scale:.70},
+    {x:5.5,y:15.5,type:"racing",scale:.68},
+    {x:15.5,y:15.5,type:"cabinet",scale:.70},
+    {x:23.5,y:15.5,type:"crane",scale:.70},
+    {x:9.5,y:17.5,type:"prize",scale:.70},
+    {x:19.5,y:17.5,type:"cabinet",scale:.70},
+    {x:27.5,y:17.5,type:"racing",scale:.68}
 ];
 
 /* =====================================================
@@ -3929,7 +3462,6 @@ let lookX = 0;
 let dashTouch = false;
 
 let arcadeRunning = false;
-let arcadeElapsed = 0;
 let previousTime = performance.now();
 
 /* =====================================================
@@ -4332,59 +3864,38 @@ function nextPathStep(sx, sy, tx, ty) {
     return previous;
 }
 
-function randomWalkTarget(teacher) {
-    const candidates = [];
-    for (let y = 1; y < maze.length - 1; y++) {
-        for (let x = 1; x < maze[y].length - 1; x++) {
-            if (maze[y][x] !== ".") continue;
-            const distanceFromPlayer = Math.hypot((x + .5) - player.x, (y + .5) - player.y);
-            const distanceFromTeacher = Math.hypot((x + .5) - teacher.x, (y + .5) - teacher.y);
-            if (distanceFromPlayer > 5.5 && distanceFromTeacher > 1.2) {
-                candidates.push({x, y});
-            }
-        }
-    }
-    if (!candidates.length) return null;
-    return candidates[Math.floor(Math.random() * candidates.length)];
-}
-
-function hasLineOfSight(a, b) {
-    const dx = b.x - a.x;
-    const dy = b.y - a.y;
-    const distance = Math.hypot(dx, dy);
-    const steps = Math.max(1, Math.ceil(distance / .16));
-    for (let i = 1; i < steps; i++) {
-        const t = i / steps;
-        if (isWall(a.x + dx * t, a.y + dy * t)) return false;
-    }
-    return true;
+function chooseWanderDirection(teacher) {
+    const cx=Math.floor(teacher.x), cy=Math.floor(teacher.y);
+    const centerX=cx+.5, centerY=cy+.5;
+    if(Math.hypot(teacher.x-centerX,teacher.y-centerY)>.18) return;
+    const dirs=[{dx:1,dy:0},{dx:0,dy:1},{dx:-1,dy:0},{dx:0,dy:-1}];
+    const current=((teacher.wanderDir ?? 0)+4)%4;
+    const forward=current, right=(current+1)%4, left=(current+3)%4, reverse=(current+2)%4;
+    const open=dir=>{const d=dirs[dir],nx=cx+d.dx,ny=cy+d.dy;return ny>=0&&ny<maze.length&&nx>=0&&nx<maze[ny].length&&maze[ny][nx]!=="#";};
+    let candidates=[forward,right,left].filter(open);
+    if(!candidates.length&&open(reverse)) candidates=[reverse];
+    if(!candidates.length)return;
+    let chosen=forward;
+    if(!open(forward)) chosen=candidates[Math.floor(Math.random()*candidates.length)];
+    else if(candidates.length>1&&Math.random()<.58){const turns=candidates.filter(d=>d!==forward);chosen=turns[Math.floor(Math.random()*turns.length)];}
+    teacher.wanderDir=chosen;
+    teacher.wanderTarget={x:cx+dirs[chosen].dx+.5,y:cy+dirs[chosen].dy+.5};
 }
 
 /* =====================================================
    UPDATE TEACHERS
 ===================================================== */
 
-function getTeacherDifficulty() {
-    const t = clamp(arcadeElapsed / 90, 0, 1);
-    return {
-        detection: TEACHER_BASE_DETECTION_DISTANCE + (TEACHER_MAX_DETECTION_DISTANCE - TEACHER_BASE_DETECTION_DISTANCE) * t,
-        chaseSpeed: TEACHER_BASE_CHASE_SPEED + (TEACHER_MAX_CHASE_SPEED - TEACHER_BASE_CHASE_SPEED) * t,
-        wanderSpeed: 1.05 + .35 * t
-    };
-}
-
 function updateTeachers(dt) {
-    const difficulty = getTeacherDifficulty();
-
     for (const teacher of teachers) {
         const distance = distanceBetween(teacher, player);
 
-        // Until she actually sees Hanako, the teacher wanders. Detection is intentionally
-        // generous and grows over time, but walls still block vision.
-        if (!teacher.chasing && distance < difficulty.detection && hasLineOfSight(teacher, player)) {
+        // Detection is radial: even through walls, entering the 4-tile radius is enough.
+        if (!teacher.chasing && distance <= 4.0) {
             teacher.chasing = true;
             teacher.path = null;
             teacher.pathTimer = 0;
+            teacher.wanderTarget = null;
         }
 
         const playerMoving =
@@ -4397,45 +3908,34 @@ function updateTeachers(dt) {
             (keys["shift"] || dashTouch) &&
             player.stamina > 0;
 
-        // The teacher starts a little faster than normal running and becomes more dangerous
-        // as the escape takes longer. Even at maximum she remains a chaseable opponent.
-        let speed = teacher.chasing
-            ? difficulty.chaseSpeed
-            : difficulty.wanderSpeed;
-        if (teacher.chasing && playerDashing) speed = Math.min(speed, DASH_SPEED * 1.06);
+        const speed = teacher.chasing
+            ? (playerDashing ? DASH_SPEED : NORMAL_SPEED)
+            : NORMAL_SPEED * .62;
 
         teacher.pathTimer -= dt;
         teacher.wanderTimer -= dt;
 
         if (!teacher.chasing) {
-            if (!teacher.wanderTarget || teacher.wanderTimer <= 0 || !teacher.path) {
-                teacher.wanderTarget = randomWalkTarget(teacher);
-                teacher.wanderTimer = .9 + Math.random() * 1.4;
-                teacher.path = teacher.wanderTarget
-                    ? nextPathStep(teacher.x, teacher.y, teacher.wanderTarget.x, teacher.wanderTarget.y)
-                    : null;
-                teacher.pathTimer = .22;
-            } else if (teacher.pathTimer <= 0) {
-                teacher.path = nextPathStep(
-                    teacher.x, teacher.y,
-                    teacher.wanderTarget.x, teacher.wanderTarget.y
-                );
-                teacher.pathTimer = .22;
+            if (!teacher.wanderTarget || distanceBetween(teacher, teacher.wanderTarget) < .16) {
+                chooseWanderDirection(teacher);
             }
         } else if (teacher.pathTimer <= 0) {
             teacher.path = nextPathStep(
                 teacher.x, teacher.y,
                 player.x, player.y
             );
-            teacher.pathTimer = .14;
+            teacher.pathTimer = .18;
         }
 
-        if (teacher.path) {
-            const targetX = teacher.path.x + .5;
-            const targetY = teacher.path.y + .5;
-            const dx = targetX - teacher.x;
-            const dy = targetY - teacher.y;
-            const length = Math.hypot(dx, dy);
+        if (!teacher.chasing && teacher.wanderTarget) {
+            const targetX=teacher.wanderTarget.x,targetY=teacher.wanderTarget.y;
+            const dx=targetX-teacher.x,dy=targetY-teacher.y;
+            const length=Math.hypot(dx,dy);
+            if(length>.01){const step=speed*dt,ratio=Math.min(1,step/length);moveEntity(teacher,dx*ratio,dy*ratio);teacher.angle=Math.atan2(dy,dx);}
+        } else if (teacher.chasing && teacher.path) {
+            const targetX=teacher.path.x+.5,targetY=teacher.path.y+.5;
+            const dx=targetX-teacher.x,dy=targetY-teacher.y;
+            const length=Math.hypot(dx,dy);
 
             if (length > .01) {
                 const step = speed * dt;
@@ -5378,50 +4878,27 @@ function drawTeacherSprite(teacher, depthBuffer) {
 ===================================================== */
 
 function drawExitBeacon() {
-    const dx = exitPoint.x - player.x;
-    const dy = exitPoint.y - player.y;
-    const angleToExit = Math.atan2(dy, dx);
-    const relative = normalizeAngle(angleToExit - player.angle);
-    const distance = Math.hypot(dx, dy);
-
-    // A directional marker is always present. The physical door itself remains a real
-    // object in the maze and is still depth-occluded by walls.
-    const margin = arcadeCanvas.width * .055;
-    let x = arcadeCanvas.width * (0.5 + relative / FIELD_OF_VIEW);
-    let arrowDirection = 0;
-    if (relative < -HALF_FOV) { x = margin; arrowDirection = -1; }
-    else if (relative > HALF_FOV) { x = arcadeCanvas.width - margin; arrowDirection = 1; }
-    else { x = clamp(x, margin, arcadeCanvas.width - margin); }
-
-    const pulse = 1 + Math.sin(performance.now() / 180) * .08;
-    const y = arcadeCanvas.height * .09;
-
-    ctx.save();
-    ctx.globalCompositeOperation = "lighter";
-    ctx.shadowBlur = 18;
-    ctx.shadowColor = "#72fbff";
-    ctx.fillStyle = "rgba(210,255,255,.95)";
-    ctx.font = "900 13px Arial";
-    ctx.textAlign = "center";
-    ctx.textBaseline = "middle";
-    ctx.fillText("EXIT", x, y);
-
-    ctx.beginPath();
-    if (arrowDirection < 0) {
-        ctx.moveTo(x - 12, y); ctx.lineTo(x - 2, y - 7); ctx.lineTo(x - 2, y + 7);
-    } else if (arrowDirection > 0) {
-        ctx.moveTo(x + 12, y); ctx.lineTo(x + 2, y - 7); ctx.lineTo(x + 2, y + 7);
-    } else {
-        ctx.moveTo(x, y - 12); ctx.lineTo(x - 7, y - 2); ctx.lineTo(x + 7, y - 2);
+    const dx=exitPoint.x-player.x, dy=exitPoint.y-player.y;
+    const relative=normalizeAngle(Math.atan2(dy,dx)-player.angle);
+    const w=arcadeCanvas.width, h=arcadeCanvas.height;
+    const insideView=Math.abs(relative)<=HALF_FOV*1.12;
+    const x=insideView ? w*(0.5+relative/FIELD_OF_VIEW) : (relative<0 ? 34 : w-34);
+    const pulse=1+Math.sin(performance.now()/150)*.12;
+    ctx.save(); ctx.globalCompositeOperation="lighter";
+    if(insideView){
+        const beamH=h*.24*pulse, beamW=Math.max(5,w*.009);
+        const g=ctx.createLinearGradient(0,h*.02,0,h*.02+beamH);
+        g.addColorStop(0,"rgba(114,251,255,.02)"); g.addColorStop(.55,"rgba(114,251,255,.22)"); g.addColorStop(1,"rgba(255,255,255,.9)");
+        ctx.fillStyle=g; ctx.fillRect(x-beamW/2,h*.02,beamW,beamH);
     }
-    ctx.closePath();
-    ctx.fill();
-
-    ctx.globalCompositeOperation = "source-over";
-    ctx.font = "700 10px Arial";
-    ctx.fillStyle = "rgba(255,255,255,.92)";
-    ctx.fillText(Math.max(1, Math.round(distance)) + "m", x, y + 17);
-    ctx.restore();
+    ctx.shadowBlur=30; ctx.shadowColor="#72fbff"; ctx.fillStyle="rgba(225,255,255,.98)";
+    ctx.beginPath();
+    if(insideView){ctx.moveTo(x,h*.025);ctx.lineTo(x-12,h*.08);ctx.lineTo(x+12,h*.08);}
+    else if(relative<0){ctx.moveTo(x-13,h*.065);ctx.lineTo(x+8,h*.045);ctx.lineTo(x+8,h*.085);}
+    else {ctx.moveTo(x+13,h*.065);ctx.lineTo(x-8,h*.045);ctx.lineTo(x-8,h*.085);}
+    ctx.closePath(); ctx.fill();
+    ctx.font="900 14px Arial"; ctx.textAlign="center"; ctx.textBaseline="middle"; ctx.shadowBlur=18;
+    ctx.fillText("EXIT",x,h*.12); ctx.restore();
 }
 
 function drawExit(depthBuffer) {
@@ -5436,7 +4913,7 @@ function drawExit(depthBuffer) {
     const h = projection.size * 1.85 * distanceScale;
     const w = h * .62;
     const left = projection.screenX - w / 2;
-    const top = arcadeCanvas.height / 2 - h * .50;
+    const top = arcadeCanvas.height / 2 - h * .58;
     const pulse = 1 + Math.sin(performance.now() / 170) * .06;
 
     ctx.save();
@@ -5662,21 +5139,18 @@ async function startArcadeIntro(){
         if(line.speaker==="Narration"){
             clearCharacters();
             await say(line.speaker,line.text,"normal","center");
-
-            // The school scene is replaced by the dedicated running animation.
             document.getElementById("runHanako").innerHTML=characterArtSvg("Hanako");
-            document.getElementById("runBoy").innerHTML=`<img class="fightArt" src="${boyData().image}" alt="${boyName()}">`;
+            document.getElementById("runBoy").innerHTML=`<img class="runArt" src="${boyData().image}" alt="${boyName()}">`;
             const run=document.getElementById("runTransition");
-            run.classList.remove("active");
-            void run.offsetWidth;
             run.classList.add("active");
             await new Promise(r=>setTimeout(r,1900));
             run.classList.remove("active");
-
-            // Only after the running animation has ended do we arrive at the game center.
+            // They have arrived. From this point on, the teacher is finding them at the arcade.
             document.getElementById("background").className="arcade";
             await waitForDialogueAdvance();
         } else {
+            // Teacher encounter and the remaining dialogue now happen at the game center.
+            if(line.speaker==="Teacher") document.getElementById("background").className="arcade";
             await say(line.speaker,line.text,"normal");
             await waitForDialogueAdvance();
         }
@@ -5690,17 +5164,16 @@ async function startArcadeIntro(){
 }
 
 function resetArcadeWorld() {
-    // Hanako starts in one corner; the teacher starts nearer the middle; the exit is diagonally opposite.
-    player.x = 1.5;
-    player.y = 1.5;
-    player.angle = 0;
+    // Start in the center so the teacher does not have an unfair positional advantage.
+    player.x = 15.5;
+    player.y = 9.5;
+    player.angle = Math.PI / 2;
     player.stamina = 100;
-    arcadeElapsed = 0;
     teachers = [
-        // One teacher only. Until she sees Hanako, she wanders randomly.
-        { x: 17.5, y: 8.5, angle: Math.PI, chasing: false, pathTimer: 0, path: null, wanderTarget: null, wanderTimer: 0 }
+        // One teacher only. Before detection, she follows the maze corridors naturally.
+        { x: 27.5, y: 17.5, angle: Math.PI, chasing: false, pathTimer: 0, path: null, wanderTarget: null, wanderTimer: 0, wanderDir: 2, lastWanderTile: null }
     ];
-    exitPoint = { x: 27.5, y: 16.5 };
+    exitPoint = { x: 0.12, y: 6.5 };
     joystickX = 0;
     joystickY = 0;
     lookX = 0;
@@ -5730,7 +5203,6 @@ function startArcade() {
     document.getElementById("darkFade").style.opacity = "0";
 
     previousTime = performance.now();
-    arcadeElapsed = 0;
 }
 
 /* =====================================================
@@ -5746,7 +5218,6 @@ function arcadeLoop(time) {
     previousTime = time;
 
     if (inArcade && arcadeRunning) {
-        arcadeElapsed += dt;
         updatePlayer(dt);
         updateTeachers(dt);
         updateCameraBob(dt);
@@ -5870,27 +5341,20 @@ function heartBreakArcade() {
 
 async function arcadeSuccess(){
     if(!inArcade||!arcadeRunning)return;
-
     arcadeRunning=false;
     inArcade=false;
     actionLocked=true;
-    love = clamp(love + 80, 0, 100);
+    love=80;
     updateLove();
-
     document.getElementById("arcadeScreen").style.display="none";
     document.getElementById("miniMap").style.display="none";
-    document.getElementById("choiceBox").style.display="none";
+    document.getElementById("dialogueBox").style.display="none";
+    document.getElementById("background").className="city";
+    clearCharacters();
     document.getElementById("choiceBriefing").classList.remove("active");
     choiceBriefingActive=false;
-    document.getElementById("dialogueBox").style.display="none";
-    document.getElementById("background").className="school";
-    document.getElementById("classroomChatter").classList.remove("active");
-    clearDialogueState();
-    clearCharacters();
-
-    // Escaping takes Hanako and the boy straight back to the classroom choice point.
-    await new Promise(resolve => setTimeout(resolve, 250));
-    await beginChoiceMode();
+    restoreMainChoices();
+    actionLocked=false;
 }
 
 /* =====================================================
