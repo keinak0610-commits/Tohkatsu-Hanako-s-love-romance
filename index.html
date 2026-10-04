@@ -1658,16 +1658,35 @@ body.smartphone #arcadeCrosshair {
 
 #titleScreen {
     background:
-        linear-gradient(rgba(25,55,85,.08), rgba(25,55,85,.22)),
-        url("./images/title_school.png") center center / cover no-repeat;
+        linear-gradient(180deg, #73cef7 0%, #bfeeff 48%, #e9f8ff 49%, #91b96f 50%, #6e9a59 100%);
     overflow: hidden;
 }
 
-/* Keep the title screen visually simple: only START / CREDIT / SETTING are interactive. */
-#titleScreen::before,
-#titleScreen::after {
-    display: none;
+#titleScreen::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 46%;
+    background:
+        linear-gradient(180deg, transparent 0 9%, rgba(255,255,255,.35) 9% 10%, transparent 10% 100%),
+        repeating-linear-gradient(90deg, #f7e6c5 0 80px, #e6cfaa 80px 84px);
+    clip-path: polygon(0 28%, 8% 22%, 16% 25%, 25% 18%, 35% 24%, 46% 15%, 58% 22%, 69% 16%, 81% 24%, 91% 19%, 100% 25%, 100% 100%, 0 100%);
+    opacity: .96;
 }
+
+#titleScreen::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 10%;
+    background: repeating-linear-gradient(90deg, #687b8b 0 90px, #8394a1 90px 180px);
+    border-top: 5px solid rgba(255,255,255,.5);
+}
+
 
 #characterScreen {
     background:
@@ -1728,8 +1747,9 @@ body.smartphone #arcadeCrosshair {
 
 #storyBackButton {
     position: absolute;
-    top: 14px;
-    left: 14px;
+    top: 12px;
+    right: 14px;
+    left: auto;
     z-index: 240;
     border: 2px solid rgba(255,255,255,.95);
     border-radius: 14px;
@@ -1741,6 +1761,23 @@ body.smartphone #arcadeCrosshair {
 }
 
 #storyBackButton:hover { transform: translateY(-1px); }
+
+#arcadeBackButton {
+    position:absolute;
+    top:14px;
+    left:14px;
+    z-index:1205;
+    border:2px solid rgba(255,255,255,.92);
+    border-radius:12px;
+    padding:8px 12px;
+    background:rgba(8,18,30,.72);
+    color:#fff;
+    font-weight:900;
+    letter-spacing:.4px;
+    box-shadow:0 5px 16px rgba(0,0,0,.28);
+    cursor:pointer;
+}
+#arcadeBackButton:hover { transform:translateY(-1px); }
 
 #background.city {
     background:
@@ -1913,7 +1950,7 @@ body.smartphone #arcadeCrosshair {
 #captureOverlay[style*="block"] { cursor: pointer; }
 
 @media (max-width: 700px) {
-    #storyBackButton { top: 8px; left: 8px; padding: 8px 11px; font-size: 12px; }
+    #storyBackButton { top: 8px; right: 8px; left: auto; padding: 7px 10px; font-size: 11px; }
     #choiceBox { bottom: 145px; }
     .characterSprite { width: min(46vw, 300px); height: 52vh; }
 }
@@ -2294,6 +2331,7 @@ body.smartphone #lookPad { pointer-events:none; opacity:.58; }
 /* Less vertical camera motion. */
 
 #captureTeacherFocus .teacherFaceArt { width:100%; height:100%; display:block; object-fit:contain; }
+#captureContinueHint { margin-top:10px; font-size:12px; letter-spacing:1.5px; opacity:.55; }
 
 /* Final 3D control tuning. */
 #arcadeScreen { touch-action:none; }
@@ -2515,6 +2553,7 @@ body.smartphone #lookPad { pointer-events:none; opacity:.58; }
     ================================================= -->
 
     <div id="arcadeScreen">
+        <button id="arcadeBackButton" class="arcadeBackButton" onclick="backFromArcade()" aria-label="Back from arcade">← BACK</button>
         <canvas id="arcadeCanvas"></canvas>
         <div id="arcadeCrosshair"></div>
         <canvas id="miniMap" width="210" height="150"></canvas>
@@ -2546,7 +2585,7 @@ body.smartphone #lookPad { pointer-events:none; opacity:.58; }
             <div id="captureDialogue">
                 <div id="captureSpeaker">Teacher</div>
                 <div id="captureText">What are you doing!?!?</div>
-                <div id="continueHint">CLICK / SPACE</div>
+                <div id="captureContinueHint">CLICK / SPACE</div>
             </div>
         </div>
 
@@ -2591,6 +2630,9 @@ body.smartphone #lookPad { pointer-events:none; opacity:.58; }
     <div class="endButtons">
         <button id="gameOverContinueButton" class="menuButton" onclick="restartGame()">
             CONTINUE
+        </button>
+        <button id="playAgainButton" class="menuButton" onclick="playAgain()" style="display:none">
+            PLAY AGAIN
         </button>
         <button class="menuButton" onclick="backToTitle()">
             Title screen
@@ -2669,8 +2711,36 @@ function showCharacterSelect(pushHistory = true) {
     showScreen("characterScreen", pushHistory);
 }
 
+function backFromArcade(){
+    if(!inArcade && !arcadeRunning && !arcadeIntroPlaying) return;
+    inArcade=false;
+    arcadeRunning=false;
+    arcadeIntroPlaying=false;
+    actionLocked=false;
+    dashTouch=false;
+    document.getElementById("dashButton").classList.remove("active");
+    resetJoystick();
+    document.getElementById("arcadeScreen").style.display="none";
+    document.getElementById("miniMap").style.display="none";
+    document.getElementById("captureOverlay").style.display="none";
+    document.getElementById("missionCard").classList.remove("active");
+    document.getElementById("runTransition").classList.remove("active");
+    clearCharacters();
+    document.getElementById("background").className="school";
+    document.getElementById("loveGauge").classList.remove("hidden");
+    document.getElementById("dialogueBox").style.display="none";
+    document.getElementById("choiceBriefing").classList.remove("active");
+    choiceBriefingActive=false;
+    restoreMainChoices();
+    updateLove();
+}
+
 function backToTitle() {
     clearDialogueState();
+    if (dialogueTimer) clearInterval(dialogueTimer);
+    dialogueTimer = null;
+    dialogueResolve = null;
+    synopsisResolve = null;
     clearCharacters();
     ending = false;
     inArcade = false;
@@ -2679,6 +2749,10 @@ function backToTitle() {
     document.getElementById("arcadeScreen").style.display = "none";
     document.getElementById("captureOverlay").style.display = "none";
     document.getElementById("fightOverlay").classList.remove("active");
+    document.getElementById("marriageScene").classList.remove("active");
+    document.getElementById("endingScreen").classList.remove("marriageMode");
+    document.getElementById("gameOverContinueButton").style.display="block";
+    document.getElementById("playAgainButton").style.display="none";
     document.getElementById("choiceBriefing").classList.remove("active");
     document.getElementById("introCard").classList.remove("active");
     screenHistory = ["titleScreen"];
@@ -3189,7 +3263,6 @@ async function playStory() {
     if (inArcade || ending) return;
     if (dialogueTyping) { finishTyping(); return; }
     if (storyIndex>=currentStory.length) { await beginChoiceMode(); return; }
-    if (storyIndex===12 && !classroomSynopsisShown) { document.getElementById("background").className="school"; await showClassroomSynopsis(); setActionLock(false); return; }
     setActionLock(true);
     const line=currentStory[storyIndex++];
     if (line.speaker===boyName() && line.text.startsWith("Ouch!!")) {
@@ -3276,7 +3349,7 @@ async function marriageEnding(){await say(boyName(),"Yes.","shy","right");await 
 ===================================================== */
 function showGameOver(text,showHeart=true){
     document.getElementById("gameOverContinueButton").style.display = "block";
-    document.getElementById("gameOverContinueButton").style.display = "block";
+    document.getElementById("playAgainButton").style.display = "none";
     document.getElementById("endingScreen").classList.remove("marriageMode");
     ending=true; actionLocked=true; arcadeIntroPlaying=false; inArcade=false; arcadeRunning=false; document.getElementById("arcadeScreen").style.display="none"; document.getElementById("miniMap").style.display="none"; document.getElementById("darkFade").style.opacity="0"; showScreen("endingScreen"); document.getElementById("endingTitle").textContent="GAME OVER"; document.getElementById("endingText").textContent=text;
     document.getElementById("marriageScene").classList.remove("active");
@@ -3284,6 +3357,7 @@ function showGameOver(text,showHeart=true){
 }
 function showEnding(title,text,type){
     document.getElementById("gameOverContinueButton").style.display = "none";
+    document.getElementById("playAgainButton").style.display = "block";
     ending=true; actionLocked=true; arcadeIntroPlaying=false; inArcade=false; arcadeRunning=false;
     document.getElementById("arcadeScreen").style.display="none";
     document.getElementById("miniMap").style.display="none";
@@ -3316,6 +3390,27 @@ function showEnding(title,text,type){
 /* =====================================================
    RESTART
 ===================================================== */
+function playAgain(){
+    // A clear can always be replayed from boyfriend selection.
+    ending=false;
+    inArcade=false;
+    arcadeRunning=false;
+    arcadeIntroPlaying=false;
+    actionLocked=false;
+    document.getElementById("marriageScene").classList.remove("active");
+    document.getElementById("endingScreen").classList.remove("marriageMode");
+    document.getElementById("playAgainButton").style.display="none";
+    document.getElementById("arcadeScreen").style.display="none";
+    document.getElementById("miniMap").style.display="none";
+    document.getElementById("captureOverlay").style.display="none";
+    clearDialogueState();
+    clearCharacters();
+    resetArcadeWorld();
+    screenHistory=["characterScreen"];
+    history.replaceState({game:true,screen:"characterScreen"},"",location.href);
+    showCharacterSelect(false);
+}
+
 function restartGame(){
     ending = false;
     inArcade = false;
@@ -3338,6 +3433,9 @@ function restartGame(){
     updateLove();
 
     document.getElementById("arcadeScreen").style.display = "none";
+    document.getElementById("miniMap").style.display = "none";
+    document.getElementById("marriageScene").classList.remove("active");
+    document.getElementById("endingScreen").classList.remove("marriageMode");
     document.getElementById("fightOverlay").classList.remove("active");
     document.getElementById("darkFade").style.opacity = "0";
     document.getElementById("captureOverlay").style.display = "none";
@@ -3362,23 +3460,25 @@ function restartGame(){
 ===================================================== */
 
 const maze = [
-    '###########################',
-    '#...............#.........#',
-    '#...#.#.....#...####...##.#',
-    '#.............#...........#',
-    '#....#####....#.##..#.##..#',
-    '#.#...#...............#...#',
-    '###...#.#.#.#.#...##....#.#',
-    '#...........#...#.....#...#',
-    '#.......#.#....##...###...#',
-    '#...............#.......#.#',
-    '#.....#......##.#.#.#..##.#',
-    '#.....#.............#.....#',
-    '#.#.#.####.#....#...###.#.#',
-    '#.#.......................#',
-    '#.#...#####.#.......#.....#',
-    '#.........................#',
-    '###########################',
+    '###############################',
+    '#.....#...#...#.......#...#...#',
+    '#...#.#...#.#.#.##..#...#.#.#.#',
+    '#.#.#...#...#.#.....#.......#.#',
+    '#.#.#.#.#####.###.###.#####.#.#',
+    '#.#...#...#...............#...#',
+    '#.###.#.#.#########...###.#.#.#',
+    '#.#...#.#...#.......#.....#.#.#',
+    '#.#.#.#.#.#.#.#####.###...#.#.#',
+    '#.#.#.....#...#.....#.........#',
+    '#.#.##.#..###.#.#.###..######.#',
+    '#...#.....#.....#.............#',
+    '#.###.###...#####.#.....#######',
+    '#.#...#.....#.......#.#.....#.#',
+    '#.#.######.##.###.#.#....#..#.#',
+    '#...#.......#.#.#.............#',
+    '#.#.#.#####.#...#.#.###.#.###.#',
+    '#.........#...#.......#.......#',
+    '###############.###############',
 ];
 
 /*
@@ -3402,7 +3502,7 @@ const DASH_SPEED = 3;
 const FIELD_OF_VIEW = Math.PI / 3;
 const HALF_FOV = FIELD_OF_VIEW / 2;
 
-const MAX_RAY_DISTANCE = 24;
+const MAX_RAY_DISTANCE = 32;
 
 const WALL_HEIGHT = 1.0;
 
@@ -3416,10 +3516,10 @@ let renderColumns = RENDER_COLUMNS_DESKTOP;
 ===================================================== */
 
 let player = {
-    // Start in the center of the smaller maze.
-    x: 17.5,
-    y: 10.5,
-    angle: 0,
+    // Start in the middle of the maze.
+    x: 15.5,
+    y: 9.5,
+    angle: Math.PI / 2,
     stamina: 100
 };
 
@@ -3441,37 +3541,45 @@ let teachers = [
 ];
 
 let exitPoint = {
-    x: 25.5,
-    y: 15.5
+    // The exit is physically attached to the outer wall: a real doorway.
+    x: 15.5,
+    y: 18.15
 };
 
 /* Decorative arcade machines placed on the walkable floor. They are visual
    props only, so they never block the player or teachers. */
 const arcadeProps = [
-    {x:5.5,y:1.5,type:"cabinet",scale:.76},
-    {x:10.5,y:3.5,type:"crane",scale:.78},
-    {x:15.5,y:1.5,type:"racing",scale:.76},
-    {x:23.5,y:1.5,type:"cabinet",scale:.76},
-    {x:29.5,y:3.5,type:"crane",scale:.78},
-    {x:3.5,y:5.5,type:"racing",scale:.74},
-    {x:11.5,y:5.5,type:"cabinet",scale:.78},
-    {x:18.5,y:7.5,type:"crane",scale:.76},
-    {x:25.5,y:7.5,type:"racing",scale:.78},
-    {x:5.5,y:9.5,type:"cabinet",scale:.76},
-    {x:13.5,y:9.5,type:"prize",scale:.76},
-    {x:21.5,y:11.5,type:"cabinet",scale:.78},
-    {x:28.5,y:11.5,type:"crane",scale:.76},
-    {x:4.5,y:13.5,type:"racing",scale:.76},
-    {x:15.5,y:13.5,type:"prize",scale:.76},
-    {x:25.5,y:13.5,type:"cabinet",scale:.78},
-    {x:31.5,y:15.5,type:"crane",scale:.76},
-    {x:6.5,y:15.5,type:"cabinet",scale:.76},
-    {x:13.5,y:17.5,type:"racing",scale:.76},
-    {x:21.5,y:17.5,type:"prize",scale:.76},
-    {x:28.5,y:17.5,type:"cabinet",scale:.76},
-    {x:8.5,y:19.5,type:"crane",scale:.76},
-    {x:18.5,y:19.5,type:"racing",scale:.78},
-    {x:27.5,y:19.5,type:"prize",scale:.76}
+    {x:3.5,y:1.5,type:"cabinet",scale:.70},
+    {x:8.5,y:1.5,type:"crane",scale:.72},
+    {x:13.5,y:1.5,type:"racing",scale:.70},
+    {x:21.5,y:1.5,type:"cabinet",scale:.70},
+    {x:27.5,y:1.5,type:"crane",scale:.72},
+    {x:3.5,y:3.5,type:"racing",scale:.68},
+    {x:11.5,y:3.5,type:"cabinet",scale:.70},
+    {x:19.5,y:3.5,type:"crane",scale:.70},
+    {x:25.5,y:3.5,type:"prize",scale:.70},
+    {x:5.5,y:5.5,type:"cabinet",scale:.70},
+    {x:15.5,y:5.5,type:"racing",scale:.68},
+    {x:23.5,y:5.5,type:"crane",scale:.70},
+    {x:27.5,y:7.5,type:"cabinet",scale:.70},
+    {x:3.5,y:9.5,type:"prize",scale:.70},
+    {x:9.5,y:9.5,type:"cabinet",scale:.70},
+    {x:17.5,y:9.5,type:"racing",scale:.68},
+    {x:25.5,y:9.5,type:"cabinet",scale:.70},
+    {x:5.5,y:11.5,type:"crane",scale:.70},
+    {x:13.5,y:11.5,type:"cabinet",scale:.70},
+    {x:21.5,y:11.5,type:"prize",scale:.70},
+    {x:27.5,y:11.5,type:"racing",scale:.68},
+    {x:3.5,y:13.5,type:"cabinet",scale:.70},
+    {x:11.5,y:13.5,type:"crane",scale:.70},
+    {x:19.5,y:13.5,type:"cabinet",scale:.70},
+    {x:25.5,y:13.5,type:"prize",scale:.70},
+    {x:5.5,y:15.5,type:"racing",scale:.68},
+    {x:15.5,y:15.5,type:"cabinet",scale:.70},
+    {x:23.5,y:15.5,type:"crane",scale:.70},
+    {x:9.5,y:17.5,type:"prize",scale:.70},
+    {x:19.5,y:17.5,type:"cabinet",scale:.70},
+    {x:27.5,y:17.5,type:"racing",scale:.68}
 ];
 
 /* =====================================================
@@ -3925,7 +4033,7 @@ function updateTeachers(dt) {
         const distance = distanceBetween(teacher, player);
 
         // Until a teacher actually sees Hanako, it simply wanders around.
-        if (!teacher.chasing && distance < 7 && hasLineOfSight(teacher, player)) {
+        if (!teacher.chasing && distance < 6.5 && hasLineOfSight(teacher, player)) {
             teacher.chasing = true;
             teacher.path = null;
             teacher.pathTimer = 0;
@@ -4918,6 +5026,42 @@ function drawTeacherSprite(teacher, depthBuffer) {
    DRAW EXIT BILLBOARD
 ===================================================== */
 
+function drawExitBeacon() {
+    const dx = exitPoint.x - player.x;
+    const dy = exitPoint.y - player.y;
+    const angleToExit = Math.atan2(dy, dx);
+    const relative = normalizeAngle(angleToExit - player.angle);
+    if (Math.abs(relative) > HALF_FOV * 1.12) return;
+
+    const x = arcadeCanvas.width * (0.5 + relative / FIELD_OF_VIEW);
+    const pulse = 1 + Math.sin(performance.now() / 180) * .08;
+    const beamH = arcadeCanvas.height * .20 * pulse;
+    const beamW = Math.max(4, arcadeCanvas.width * .008);
+
+    ctx.save();
+    ctx.globalCompositeOperation = "lighter";
+    const g = ctx.createLinearGradient(0, arcadeCanvas.height * .03, 0, arcadeCanvas.height * .03 + beamH);
+    g.addColorStop(0, "rgba(114,251,255,.02)");
+    g.addColorStop(.55, "rgba(114,251,255,.16)");
+    g.addColorStop(1, "rgba(255,255,255,.70)");
+    ctx.fillStyle = g;
+    ctx.fillRect(x - beamW/2, arcadeCanvas.height * .03, beamW, beamH);
+
+    ctx.shadowBlur = 18;
+    ctx.shadowColor = "#72fbff";
+    ctx.fillStyle = "rgba(210,255,255,.95)";
+    ctx.beginPath();
+    ctx.moveTo(x, arcadeCanvas.height * .025);
+    ctx.lineTo(x - 9, arcadeCanvas.height * .075);
+    ctx.lineTo(x + 9, arcadeCanvas.height * .075);
+    ctx.closePath();
+    ctx.fill();
+    ctx.font = "900 12px Arial";
+    ctx.textAlign = "center";
+    ctx.fillText("EXIT", x, arcadeCanvas.height * .11);
+    ctx.restore();
+}
+
 function drawExit(depthBuffer) {
     const projection = projectSprite(exitPoint, "exit");
     if (!projection) return;
@@ -4926,9 +5070,9 @@ function drawExit(depthBuffer) {
     if (centerColumn < 0 || centerColumn >= depthBuffer.length) return;
     if (projection.correctedDistance > depthBuffer[centerColumn]) return;
 
-    const distanceScale = clamp(1.25 / Math.max(.45, projection.correctedDistance), .22, 1);
-    const h = projection.size * 1.15 * distanceScale;
-    const w = h * .58;
+    const distanceScale = clamp(2.15 / Math.max(.45, projection.correctedDistance), .32, 1.45);
+    const h = projection.size * 1.85 * distanceScale;
+    const w = h * .62;
     const left = projection.screenX - w / 2;
     const top = arcadeCanvas.height / 2 - h * .58;
     const pulse = 1 + Math.sin(performance.now() / 170) * .06;
@@ -4960,6 +5104,17 @@ function drawExit(depthBuffer) {
     ctx.translate(projection.screenX, top+h*.44);
     ctx.scale(pulse, pulse);
     ctx.fillText("EXIT", 0, 0);
+
+    // A tall light beam makes the doorway readable from far away without putting an EXIT marker on the map.
+    ctx.globalCompositeOperation = "lighter";
+    const beamW = Math.max(5, h * .10);
+    const beamTop = Math.max(0, top - h * 1.25);
+    const beamGradient = ctx.createLinearGradient(0, beamTop, 0, top);
+    beamGradient.addColorStop(0, "rgba(114,251,255,0)");
+    beamGradient.addColorStop(.65, "rgba(114,251,255,.16)");
+    beamGradient.addColorStop(1, "rgba(255,255,255,.72)");
+    ctx.fillStyle = beamGradient;
+    ctx.fillRect(projection.screenX - beamW / 2, beamTop, beamW, top - beamTop);
     ctx.restore();
 }
 
@@ -5015,6 +5170,8 @@ function drawArcade() {
         );
     }
 
+    drawExitBeacon();
+
     const GHOST_VISIBLE_DISTANCE = 5.5;
     const sortedSprites = [
         ...arcadeProps.map(prop => ({ entity: prop, kind: "prop" })),
@@ -5066,7 +5223,6 @@ function drawMiniMap() {
         mctx.fill();
     }
 
-    point(exitPoint, "#35d16f", 4);
     point(player, "#2c72ff", 5);
 
     // Teachers are intentionally invisible on the map. Only proximity is revealed.
@@ -5096,8 +5252,7 @@ function drawMiniMap() {
     mctx.font = "bold 10px Arial";
     mctx.textAlign = "left";
     mctx.fillText("YOU", 6, 12);
-    mctx.fillStyle = "#35d16f";
-    mctx.fillText("EXIT", 42, 12);
+
 }
 
 /* =====================================================
@@ -5126,47 +5281,60 @@ async function startArcadeIntro(){
     arcadeIntroPlaying=true;
 
     const lines=[
-        {speaker:mainName(),text:"It's our first day, but how about we skip school and go to the arcade?",side:"left"},
-        {speaker:boyName(),text:"What? Seriously...",side:"right"},
-        {speaker:mainName(),text:"Just come on!!",side:"left"},
-        {speaker:"Narration",text:"Hanako grabs his hand, and the two of them run toward the game center.",side:"center"},
-        {speaker:mainName(),text:"Look! There are so many games!",side:"left"},
-        {speaker:boyName(),text:"...Fine. Which one should we play first?",side:"right"},
-        {speaker:mainName(),text:"Hmm... what about this one?",side:"left"},
-        {speaker:"Teacher",text:"Hey! "+boyName()+"! Hanako!",side:"right"},
-        {speaker:mainName(),text:"Shh!!",side:"left"},
-        {speaker:boyName(),text:"Who is that?",side:"right"},
-        {speaker:mainName(),text:"Our teacher! Let's get out of here together!",side:"left"}
+        {speaker:mainName(),text:"It's our first day, but how about we skip school and go to the arcade?"},
+        {speaker:boyName(),text:"What? Seriously..."},
+        {speaker:mainName(),text:"Just come on!!"},
+        {speaker:"Narration",text:"Hanako grabs his hand, and the two of them run toward the game center."},
+        {speaker:mainName(),text:"Look! There are so many games!"},
+        {speaker:boyName(),text:"...Fine. Which one should we play first?"},
+        {speaker:mainName(),text:"Hmm... what about this one?"},
+        {speaker:"Teacher",text:"Hey! "+boyName()+"! Hanako!"},
+        {speaker:mainName(),text:"Shh!!"},
+        {speaker:boyName(),text:"Who is that?"},
+        {speaker:mainName(),text:"Our teacher! Let's get out of here together!"}
     ];
 
     for(let i=0;i<lines.length;i++){
         const line=lines[i];
-        await say(line.speaker,line.text,"normal",line.side);
-        await waitForDialogueAdvance();
 
-        // The tap that advances the final line starts the escape animation.
-        if(i===lines.length-1){
-            // The tap that advances the final dialogue is the start command for the arcade.
+        if(line.speaker==="Narration"){
             clearCharacters();
-            document.getElementById("runTransition").classList.remove("active");
+            await say(line.speaker,line.text,"normal","center");
+            document.getElementById("runHanako").innerHTML=characterArtSvg("Hanako");
+            document.getElementById("runBoy").innerHTML=`<img class="fightArt" src="${boyData().image}" alt="${boyName()}">`;
+            const run=document.getElementById("runTransition");
+            run.classList.add("active");
+            await new Promise(r=>setTimeout(r,1900));
+            run.classList.remove("active");
+            // They have arrived. From this point on, the teacher is finding them at the arcade.
             document.getElementById("background").className="arcade";
-            arcadeIntroPlaying=false;
-            startArcade();
-            actionLocked=false;
-            return;
+            await waitForDialogueAdvance();
+        } else {
+            // Teacher encounter and the remaining dialogue now happen at the game center.
+            if(line.speaker==="Teacher") document.getElementById("background").className="arcade";
+            await say(line.speaker,line.text,"normal");
+            await waitForDialogueAdvance();
         }
     }
+
+    // The tap that advances the final line starts the actual maze immediately.
+    clearCharacters();
+    arcadeIntroPlaying=false;
+    startArcade();
+    actionLocked=false;
 }
+
 function resetArcadeWorld() {
-    // Start in the center so the ghost does not have an unfair positional advantage.
-    player.x = 13.5;
-    player.y = 8.5;
-    player.angle = 0;
+    // Start in the center so the teacher does not have an unfair positional advantage.
+    player.x = 15.5;
+    player.y = 9.5;
+    player.angle = Math.PI / 2;
     player.stamina = 100;
     teachers = [
-        { x: 1.5, y: 1.5, angle: 0, chasing: false, pathTimer: 0, path: null, wanderTarget: null, wanderTimer: 0 }
+        // One teacher only. Until she sees Hanako, she wanders randomly.
+        { x: 27.5, y: 17.5, angle: Math.PI, chasing: false, pathTimer: 0, path: null, wanderTarget: null, wanderTimer: 0 }
     ];
-    exitPoint = { x: 25.5, y: 15.5 };
+    exitPoint = { x: 15.5, y: 18.15 };
     joystickX = 0;
     joystickY = 0;
     lookX = 0;
@@ -5333,8 +5501,21 @@ function heartBreakArcade() {
 ===================================================== */
 
 async function arcadeSuccess(){
-    if(!inArcade||!arcadeRunning)return;arcadeRunning=false;inArcade=false;actionLocked=true;love+=80;updateLove();document.getElementById("arcadeScreen").style.display="none";document.getElementById("miniMap").style.display="none";document.getElementById("dialogueBox").style.display="block";document.getElementById("background").className="arcade";
-    await say(mainName(),"That was fun! I'm glad we made it.","happy","left");await waitForDialogueAdvance();await say(boyName(),"Yeah... We really made it.","happy","right");await waitForDialogueAdvance();await say(mainName(),"Yay!","happy","left");await waitForDialogueAdvance();await say(mainName(),"Um! Will you go out with me?","shy","left");await waitForDialogueAdvance();showEnding("HAPPY END","They escaped the game center together — and Hanako finally confessed.\n\nThey decided to start dating.","dating");
+    if(!inArcade||!arcadeRunning)return;
+    arcadeRunning=false;
+    inArcade=false;
+    actionLocked=true;
+    love=80;
+    updateLove();
+    document.getElementById("arcadeScreen").style.display="none";
+    document.getElementById("miniMap").style.display="none";
+    document.getElementById("dialogueBox").style.display="none";
+    document.getElementById("background").className="city";
+    clearCharacters();
+    document.getElementById("choiceBriefing").classList.remove("active");
+    choiceBriefingActive=false;
+    restoreMainChoices();
+    actionLocked=false;
 }
 
 /* =====================================================
