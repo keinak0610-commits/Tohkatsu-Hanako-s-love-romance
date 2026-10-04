@@ -5,17 +5,14 @@
 <meta charset="UTF-8">
 
 <meta name="viewport"
-      content="width=device-width,
-               initial-scale=1.0,
-               maximum-scale=1.0,
-               user-scalable=no">
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
 <title>Tohkatsu Hanako's Love Romance</title>
 
 <style>
 
 /* =====================================================
-   RESET
+   GENERAL
 ===================================================== */
 
 *{
@@ -23,69 +20,39 @@
     -webkit-tap-highlight-color:transparent;
 }
 
-html,
-body{
+html,body{
     margin:0;
     width:100%;
     height:100%;
     overflow:hidden;
-
     background:#111;
-
+    font-family:Arial,Helvetica,sans-serif;
     color:white;
-
-    font-family:
-        Arial,
-        Helvetica,
-        sans-serif;
-}
-
-body{
-    touch-action:manipulation;
 }
 
 button{
     font-family:inherit;
 }
 
-
-/* =====================================================
-   GAME ROOT
-===================================================== */
-
 #game{
-
     position:relative;
-
     width:100vw;
     height:100vh;
-
     overflow:hidden;
-
     background:#111;
 }
 
-
-/* =====================================================
-   SCREEN SYSTEM
-===================================================== */
-
 .screen{
-
     position:absolute;
-
     inset:0;
-
     display:none;
 }
 
 .screen.active{
-
     display:flex;
 }
 
 .hidden{
-
     display:none !important;
 }
 
@@ -95,14 +62,6 @@ button{
 ===================================================== */
 
 #titleScreen{
-
-    align-items:center;
-    justify-content:center;
-
-    flex-direction:column;
-
-    text-align:center;
-
     background:
         radial-gradient(
             circle at 50% 35%,
@@ -110,21 +69,17 @@ button{
             #160b20 55%,
             #050509
         );
+
+    align-items:center;
+    justify-content:center;
+    flex-direction:column;
+    text-align:center;
 }
 
 .title{
-
-    font-size:
-        clamp(
-            38px,
-            7vw,
-            86px
-        );
-
+    font-size:clamp(38px,7vw,86px);
     line-height:1;
-
     margin-bottom:55px;
-
     color:#fff;
 
     text-shadow:
@@ -133,47 +88,31 @@ button{
 }
 
 .title span{
-
     color:#ff70bd;
 }
 
 .menuButton{
-
     display:block;
-
     width:260px;
-
     margin:12px;
-
     padding:15px 25px;
 
-    border:
-        2px solid
-        #ff70bd;
-
+    border:2px solid #ff70bd;
     border-radius:10px;
 
-    background:
-        rgba(255,255,255,.05);
-
+    background:rgba(255,255,255,.05);
     color:white;
 
     font-size:22px;
-
     cursor:pointer;
 
-    transition:
-        .15s;
+    transition:.15s;
 }
 
 .menuButton:hover{
-
     background:#ff70bd;
-
     color:#180718;
-
-    transform:
-        scale(1.04);
+    transform:scale(1.04);
 }
 
 
@@ -182,18 +121,14 @@ button{
 ===================================================== */
 
 .modal{
-
     position:absolute;
-
     inset:0;
 
-    background:
-        rgba(0,0,0,.78);
+    background:rgba(0,0,0,.78);
 
     z-index:500;
 
     display:none;
-
     align-items:center;
     justify-content:center;
 
@@ -201,63 +136,44 @@ button{
 }
 
 .modal.active{
-
     display:flex;
 }
 
 .modalBox{
-
-    width:
-        min(
-            700px,
-            95vw
-        );
-
+    width:min(700px,95vw);
     max-height:90vh;
-
     overflow:auto;
 
     background:#17131b;
 
-    border:
-        2px solid
-        #ff70bd;
-
+    border:2px solid #ff70bd;
     border-radius:18px;
 
     padding:30px;
 
     box-shadow:
-        0 0 40px
-        rgba(255,20,147,.35);
+        0 0 40px rgba(255,20,147,.35);
 }
 
 .modalBox h2{
-
     margin-top:0;
-
     color:#ff70bd;
 }
 
 .closeButton{
-
     float:right;
 
     background:none;
-
     border:none;
 
     color:white;
 
     font-size:28px;
-
     cursor:pointer;
 }
 
 .creditText{
-
     line-height:1.8;
-
     color:#ddd;
 }
 
@@ -267,51 +183,37 @@ button{
 ===================================================== */
 
 .settingRow{
-
     margin:25px 0;
 }
 
 .settingTitle{
-
     font-size:20px;
-
     margin-bottom:12px;
 }
 
 .settingChoice{
-
     display:flex;
-
     gap:10px;
-
     flex-wrap:wrap;
 }
 
 .settingChoice button{
-
     flex:1;
-
     min-width:150px;
 
     padding:13px;
 
-    border:
-        2px solid
-        #555;
-
     border-radius:10px;
+    border:2px solid #555;
 
     background:#222;
-
     color:white;
 
     cursor:pointer;
 }
 
 .settingChoice button.selected{
-
     border-color:#ff70bd;
-
     background:#4b183b;
 }
 
@@ -321,11 +223,8 @@ button{
 ===================================================== */
 
 #characterScreen{
-
     align-items:center;
-
     justify-content:center;
-
     flex-direction:column;
 
     background:
@@ -336,19 +235,11 @@ button{
         );
 
     padding:20px;
-
     overflow:auto;
 }
 
 .selectTitle{
-
-    font-size:
-        clamp(
-            28px,
-            5vw,
-            50px
-        );
-
+    font-size:clamp(28px,5vw,50px);
     color:#ff70bd;
 
     margin-bottom:25px;
@@ -357,136 +248,129 @@ button{
 }
 
 .selectionArea{
-
-    width:
-        min(
-            900px,
-            95vw
-        );
+    width:min(900px,95vw);
 
     display:grid;
 
-    grid-template-columns:
-        1fr;
+    grid-template-columns:1fr;
 
     gap:20px;
 }
 
 .selectionBox{
+    background:rgba(255,255,255,.05);
 
-    background:
-        rgba(255,255,255,.05);
-
-    border:
-        1px solid
-        #444;
-
+    border:1px solid #444;
     border-radius:15px;
 
     padding:20px;
-
-    width:100%;
 }
 
 .selectionBox h2{
-
     text-align:center;
-
-    margin-top:0;
 }
 
 .characterList{
-
     display:grid;
 
     grid-template-columns:
-        repeat(
-            5,
-            1fr
-        );
+        repeat(5,1fr);
 
     gap:10px;
 }
 
 .characterButton{
-
     padding:15px 5px;
 
     background:#191919;
-
     color:white;
 
-    border:
-        2px solid
-        #444;
-
+    border:2px solid #444;
     border-radius:10px;
 
     cursor:pointer;
-
-    transition:.15s;
-}
-
-.characterButton:hover{
-
-    border-color:#ff70bd;
 }
 
 .characterButton.selected{
-
     border-color:#ff70bd;
-
     background:#47152f;
-
-    box-shadow:
-        0 0 15px
-        rgba(255,20,147,.25);
 }
 
 .characterPreview{
-
-    height:230px;
+    height:220px;
 
     display:flex;
 
     justify-content:center;
-
     align-items:center;
+
+    font-size:90px;
 
     overflow:hidden;
 
-    margin-bottom:15px;
-
-    border-radius:12px;
-
-    background:
-        rgba(0,0,0,.2);
+    position:relative;
 }
 
-.selectionImage{
-
-    max-height:215px;
-
-    max-width:90%;
-
-    width:auto;
-
-    height:auto;
+.characterPreview img{
+    max-height:210px;
+    max-width:180px;
 
     object-fit:contain;
 
     display:block;
-
-    user-select:none;
-
-    -webkit-user-drag:none;
 }
 
-.selectionFallback{
+.hanakoPreview{
+    width:90px;
+    height:180px;
 
-    font-size:70px;
+    position:relative;
 
-    color:#777;
+    filter:brightness(0);
+
+    opacity:.8;
+}
+
+.hanakoPreview::before{
+    content:"";
+
+    position:absolute;
+
+    width:72px;
+    height:78px;
+
+    left:9px;
+    top:0;
+
+    border-radius:50%;
+
+    background:#000;
+}
+
+.hanakoPreview::after{
+    content:"";
+
+    position:absolute;
+
+    width:90px;
+    height:115px;
+
+    left:0;
+    top:70px;
+
+    border-radius:35px 35px 8px 8px;
+
+    background:#000;
+}
+
+.fixedLabel{
+    text-align:center;
+
+    color:#ff70bd;
+
+    margin-top:8px;
+
+    font-size:18px;
 }
 
 
@@ -495,39 +379,30 @@ button{
 ===================================================== */
 
 #storyScreen{
-
     background:#111;
-
-    display:none;
-}
-
-#storyScreen.active{
-
-    display:block;
 }
 
 #background{
-
     position:absolute;
 
     inset:0;
 
     background:
+        linear-gradient(
+            rgba(30,30,60,.1),
+            rgba(0,0,0,.3)
+        ),
         #6e8496;
 
-    transition:
-        background .5s;
+    transition:background .5s;
 }
 
 #background.city{
-
     background:
-
         linear-gradient(
             rgba(30,60,100,.2),
             rgba(0,0,0,.35)
         ),
-
         repeating-linear-gradient(
             90deg,
             #788998 0 90px,
@@ -536,9 +411,7 @@ button{
 }
 
 #background.school{
-
     background:
-
         linear-gradient(
             #b8c4d0,
             #e1e5e8 65%,
@@ -547,9 +420,7 @@ button{
 }
 
 #background.arcade{
-
     background:
-
         radial-gradient(
             circle,
             #453c61,
@@ -558,209 +429,161 @@ button{
         );
 }
 
-
-/* =====================================================
-   CHARACTER AREA
-===================================================== */
-
 #sceneCharacters{
-
     position:absolute;
 
     inset:0;
 
     pointer-events:none;
-
-    z-index:10;
 }
 
 .characterSprite{
-
     position:absolute;
 
     bottom:140px;
 
-    width:
-        min(
-            42vw,
-            460px
-        );
+    width:min(38vw,420px);
+    height:60vh;
 
-    height:
-        62vh;
-
-    max-height:680px;
+    max-height:650px;
 
     display:flex;
 
     align-items:flex-end;
-
     justify-content:center;
 
-    transition:
-        .25s;
+    transition:.25s;
 }
 
 .characterSprite.left{
-
-    left:4%;
+    left:5%;
 }
 
 .characterSprite.right{
-
-    right:4%;
+    right:5%;
 }
 
 .characterSprite.center{
-
     left:50%;
-
-    transform:
-        translateX(-50%);
+    transform:translateX(-50%);
 }
 
 
 /* =====================================================
-   REAL PHOTOGRAPH
+   NEW CHARACTER IMAGE SYSTEM
 ===================================================== */
 
-.realCharacterImage{
-
-    display:block;
+.characterImage{
+    max-width:100%;
+    max-height:100%;
 
     width:auto;
-
-    height:
-        min(
-            60vh,
-            650px
-        );
-
-    max-width:
-        42vw;
+    height:auto;
 
     object-fit:contain;
 
-    object-position:
-        center bottom;
+    display:block;
 
     filter:none;
 
     user-select:none;
-
     -webkit-user-drag:none;
-
-    transition:
-        transform .2s,
-        filter .2s;
 }
 
 
-/* =====================================================
-   SIMPLE IMAGE EXPRESSIONS
-===================================================== */
+/*
+    Hanako / Teacher / Yumi / Rika
+    remain silhouettes.
+*/
 
-.expression-surprised
-.realCharacterImage{
-
-    transform:
-        scale(1.025);
-}
-
-.expression-shy
-.realCharacterImage{
-
-    filter:
-        brightness(1.03)
-        saturate(.95);
-}
-
-.expression-angry
-.realCharacterImage{
-
-    filter:
-        contrast(1.08)
-        brightness(.95);
-}
-
-.expression-confused
-.realCharacterImage{
-
-    transform:
-        rotate(-1deg);
-}
-
-
-/* =====================================================
-   HANAKO / TEACHER / YUMI / RIKA SILHOUETTE
-===================================================== */
-
-.realSilhouette{
-
+.characterSilhouette{
     position:relative;
 
-    width:190px;
-
-    height:430px;
+    width:150px;
+    height:360px;
 
     filter:brightness(0);
 }
 
-.silhouetteHead{
-
+.characterSilhouetteHead{
     position:absolute;
 
-    width:105px;
+    width:100px;
+    height:110px;
 
-    height:115px;
-
-    left:42px;
-
-    top:10px;
+    left:25px;
+    top:0;
 
     border-radius:50%;
 
     background:#000;
 }
 
-.silhouetteHair{
-
+.characterSilhouetteHair{
     position:absolute;
 
-    width:125px;
+    width:105px;
+    height:70px;
 
-    height:90px;
+    left:23px;
+    top:-4px;
 
-    left:33px;
-
-    top:0;
+    background:#000;
 
     border-radius:
-        55% 55% 30% 30%;
+        55%
+        55%
+        25%
+        25%;
+}
+
+.characterSilhouetteBody{
+    position:absolute;
+
+    width:145px;
+    height:230px;
+
+    left:3px;
+    top:100px;
+
+    border-radius:
+        50px
+        50px
+        10px
+        10px;
 
     background:#000;
 }
 
-.silhouetteBody{
-
+.characterSilhouetteEyes{
     position:absolute;
 
-    width:170px;
+    top:45px;
+    left:43px;
 
-    height:280px;
+    font-size:20px;
 
-    left:10px;
+    letter-spacing:25px;
 
-    top:115px;
+    color:#111;
 
-    border-radius:
-        55px 55px 15px 15px;
+    z-index:2;
+}
 
-    background:#000;
+.characterSilhouetteMouth{
+    position:absolute;
+
+    top:75px;
+    left:45px;
+
+    z-index:2;
+
+    font-size:25px;
+
+    color:#111;
 }
 
 .spriteLabel{
-
     position:absolute;
 
     bottom:-25px;
@@ -769,6 +592,29 @@ button{
 
     text-shadow:
         0 2px 5px #000;
+
+    white-space:nowrap;
+}
+
+
+/*
+    The selected boyfriend image is NOT changed
+    according to expression.
+
+    These classes are intentionally kept for
+    compatibility with the existing story.
+*/
+
+.expression-surprised .characterImage{
+    transform:none;
+}
+
+.expression-angry .characterImage{
+    transform:none;
+}
+
+.expression-shy .characterImage{
+    transform:none;
 }
 
 
@@ -777,31 +623,29 @@ button{
 ===================================================== */
 
 #dialogueBox{
-
     position:absolute;
 
     left:0;
     right:0;
-
     bottom:0;
 
     min-height:145px;
 
-    background:
-        rgba(0,0,0,.88);
+    background:rgba(0,0,0,.88);
 
     border-top:
         2px solid
         rgba(255,255,255,.25);
 
     padding:
-        22px 28px 20px;
+        22px
+        28px
+        20px;
 
     z-index:20;
 }
 
 #speaker{
-
     color:#ff70bd;
 
     font-weight:bold;
@@ -812,7 +656,6 @@ button{
 }
 
 #dialogue{
-
     font-size:
         clamp(
             18px,
@@ -826,11 +669,9 @@ button{
 }
 
 #continueHint{
-
     position:absolute;
 
     right:20px;
-
     bottom:10px;
 
     opacity:.55;
@@ -838,27 +679,15 @@ button{
     font-size:13px;
 }
 
-
-/* =====================================================
-   CHOICES
-===================================================== */
-
 #choiceBox{
-
     position:absolute;
 
     left:50%;
-
     bottom:170px;
 
-    transform:
-        translateX(-50%);
+    transform:translateX(-50%);
 
-    width:
-        min(
-            650px,
-            90vw
-        );
+    width:min(650px,90vw);
 
     display:none;
 
@@ -871,14 +700,13 @@ button{
 }
 
 .choice{
-
     padding:18px;
+
+    border-radius:12px;
 
     border:
         2px solid
         #ff70bd;
-
-    border-radius:12px;
 
     background:
         rgba(20,10,20,.92);
@@ -888,14 +716,10 @@ button{
     font-size:18px;
 
     cursor:pointer;
-
-    transition:.15s;
 }
 
 .choice:hover{
-
     background:#ff70bd;
-
     color:#170914;
 }
 
@@ -905,27 +729,19 @@ button{
 ===================================================== */
 
 #loveGauge{
-
     position:absolute;
 
     top:15px;
-
     left:50%;
 
-    transform:
-        translateX(-50%);
+    transform:translateX(-50%);
 
-    width:
-        min(
-            550px,
-            70vw
-        );
+    width:min(550px,70vw);
 
     z-index:100;
 }
 
 .loveLabel{
-
     text-align:center;
 
     font-weight:bold;
@@ -937,7 +753,6 @@ button{
 }
 
 .loveBarOuter{
-
     height:22px;
 
     border:
@@ -952,7 +767,6 @@ button{
 }
 
 #loveBar{
-
     width:0%;
 
     height:100%;
@@ -969,7 +783,6 @@ button{
 }
 
 #loveValue{
-
     text-align:center;
 
     margin-top:4px;
@@ -983,7 +796,6 @@ button{
 ===================================================== */
 
 #arcadeScreen{
-
     position:absolute;
 
     inset:0;
@@ -996,22 +808,18 @@ button{
 }
 
 #arcadeCanvas{
-
     position:absolute;
 
     inset:0;
 
     width:100%;
-
     height:100%;
 }
 
 #arcadeHUD{
-
     position:absolute;
 
     top:15px;
-
     left:15px;
 
     z-index:10;
@@ -1021,7 +829,6 @@ button{
 }
 
 #staminaOuter{
-
     width:220px;
 
     height:16px;
@@ -1036,19 +843,14 @@ button{
 }
 
 #staminaBar{
-
     width:100%;
 
     height:100%;
 
     background:#5de6ff;
-
-    transition:
-        width .08s linear;
 }
 
 #arcadeHint{
-
     margin-top:8px;
 
     font-size:13px;
@@ -1062,7 +864,6 @@ button{
 ===================================================== */
 
 #mobileControls{
-
     position:absolute;
 
     inset:0;
@@ -1075,15 +876,12 @@ button{
 }
 
 #joystick{
-
     position:absolute;
 
     left:30px;
-
     bottom:30px;
 
     width:145px;
-
     height:145px;
 
     border-radius:50%;
@@ -1101,39 +899,30 @@ button{
 }
 
 #joystickKnob{
-
     position:absolute;
 
     left:50%;
-
     top:50%;
 
     width:65px;
-
     height:65px;
 
     margin-left:-32.5px;
-
     margin-top:-32.5px;
 
     border-radius:50%;
 
     background:
         rgba(255,255,255,.35);
-
-    pointer-events:none;
 }
 
 #dashButton{
-
     position:absolute;
 
     right:30px;
-
     bottom:45px;
 
     width:105px;
-
     height:105px;
 
     border-radius:50%;
@@ -1160,7 +949,6 @@ button{
 ===================================================== */
 
 #captureOverlay{
-
     position:absolute;
 
     inset:0;
@@ -1174,12 +962,10 @@ button{
 }
 
 #captureDialogue{
-
     position:absolute;
 
     left:0;
     right:0;
-
     bottom:0;
 
     min-height:170px;
@@ -1195,7 +981,6 @@ button{
 }
 
 #captureSpeaker{
-
     color:#ff70bd;
 
     font-weight:bold;
@@ -1204,7 +989,6 @@ button{
 }
 
 #captureText{
-
     margin-top:10px;
 
     font-size:24px;
@@ -1218,7 +1002,6 @@ button{
 ===================================================== */
 
 #darkFade{
-
     position:absolute;
 
     inset:0;
@@ -1230,22 +1013,17 @@ button{
     pointer-events:none;
 
     z-index:1000;
-
-    transition:
-        opacity .1s linear;
 }
 
 
 /* =====================================================
-   ENDING
+   ENDINGS
 ===================================================== */
 
 #endingScreen{
-
     background:#050505;
 
     align-items:center;
-
     justify-content:center;
 
     flex-direction:column;
@@ -1256,7 +1034,6 @@ button{
 }
 
 #endingScreen h1{
-
     font-size:
         clamp(
             40px,
@@ -1268,25 +1045,15 @@ button{
 }
 
 .endingText{
-
     max-width:700px;
 
     font-size:22px;
 
     line-height:1.6;
-
-    white-space:pre-line;
 }
 
 .endButtons{
-
     margin-top:35px;
-
-    display:flex;
-
-    flex-wrap:wrap;
-
-    justify-content:center;
 }
 
 
@@ -1295,12 +1062,13 @@ button{
 ===================================================== */
 
 #heartBreak{
-
     font-size:100px;
 
     animation:
-        heartBreak .8s
-        ease forwards;
+        heartBreak
+        .8s
+        ease
+        forwards;
 }
 
 @keyframes heartBreak{
@@ -1320,149 +1088,83 @@ button{
 
         opacity:.2;
     }
+
 }
 
 
 /* =====================================================
-   MOBILE STORY
+   MOBILE
 ===================================================== */
 
-body.smartphone
-#choiceBox{
-
+body.smartphone #choiceBox{
     grid-template-columns:1fr;
 
     bottom:155px;
 }
 
-body.smartphone
-.characterSprite{
-
+body.smartphone .characterSprite{
     bottom:145px;
 
+    transform:scale(.8);
+}
+
+body.smartphone .characterSprite.left{
+    left:-40px;
+}
+
+body.smartphone .characterSprite.right{
+    right:-40px;
+}
+
+body.smartphone .characterSprite.center{
+    left:50%;
+
     transform:
-        scale(.78);
+        translateX(-50%)
+        scale(.8);
 }
 
-body.smartphone
-.characterSprite.left{
-
-    left:-55px;
-}
-
-body.smartphone
-.characterSprite.right{
-
-    right:-55px;
-}
-
-body.smartphone
-#dialogueBox{
-
+body.smartphone #dialogueBox{
     min-height:155px;
 
     padding:17px;
 }
 
-body.smartphone
-#dialogue{
-
+body.smartphone #dialogue{
     font-size:17px;
 }
 
-body.smartphone
-#mobileControls{
-
+body.smartphone #mobileControls{
     display:block;
 }
 
-body.smartphone
-#arcadeHint{
-
+body.smartphone #arcadeHint{
     display:none;
-}
-
-body.smartphone
-.realCharacterImage{
-
-    height:48vh;
-
-    max-width:65vw;
 }
 
 
 /* =====================================================
-   RESPONSIVE
+   TABLET / SMALL SCREEN
 ===================================================== */
 
 @media(max-width:700px){
 
     .characterList{
-
         grid-template-columns:
-            repeat(
-                2,
-                1fr
-            );
+            repeat(2,1fr);
     }
 
     .characterPreview{
-
-        height:180px;
+        height:190px;
     }
 
     .modalBox{
-
         padding:20px;
     }
 
-    .endButtons
-    .menuButton{
-
-        width:90vw;
-
-        max-width:320px;
-    }
-
-}
-
-
-/* =====================================================
-   VERY SMALL PHONES
-===================================================== */
-
-@media(max-height:650px){
-
-    .characterPreview{
-
-        height:140px;
-    }
-
-    .realCharacterImage{
-
-        height:45vh;
-    }
-
-    .characterSprite{
-
-        bottom:125px;
-    }
-
-}
-
-
-/* =====================================================
-   DESKTOP
-===================================================== */
-
-body.pc
-#mobileControls{
-
-    display:none;
 }
 
 </style>
-
 </head>
 
 
@@ -1475,9 +1177,7 @@ body.pc
      TITLE SCREEN
 ===================================================== -->
 
-<section
-    id="titleScreen"
-    class="screen active">
+<section id="titleScreen" class="screen active">
 
     <div class="title">
 
@@ -1523,9 +1223,7 @@ body.pc
      CREDIT
 ===================================================== -->
 
-<div
-    id="creditModal"
-    class="modal">
+<div id="creditModal" class="modal">
 
     <div class="modalBox">
 
@@ -1546,13 +1244,10 @@ body.pc
         <div class="creditText">
 
             3-2-26-b<br>
-
             Nakajima Kei<br><br>
 
             story: Nakajima Kei<br>
-
             code: ChatGPT<br>
-
             site: GitHub<br><br>
 
             <b>
@@ -1562,13 +1257,9 @@ body.pc
             <br><br>
 
             Ishida Masugu.<br>
-
             Kowada Izuru.<br>
-
             Sato Junya.<br>
-
             Miura Takuto.<br>
-
             Mizuta Taihei.
 
         </div>
@@ -1582,9 +1273,7 @@ body.pc
      SETTINGS
 ===================================================== -->
 
-<div
-    id="settingsModal"
-    class="modal">
+<div id="settingsModal" class="modal">
 
     <div class="modalBox">
 
@@ -1605,9 +1294,7 @@ body.pc
         <div class="settingRow">
 
             <div class="settingTitle">
-
                 Device Mode
-
             </div>
 
 
@@ -1641,8 +1328,8 @@ body.pc
 
 
         <p>
-            Smartphone mode uses a virtual
-            joystick and DASH button.
+            Smartphone mode uses a virtual joystick
+            and DASH button.
         </p>
 
     </div>
@@ -1652,11 +1339,6 @@ body.pc
 
 <!-- =====================================================
      CHARACTER SELECT
-     
-     IMPORTANT:
-     Hanako is NOT selectable.
-     
-     Only Boyfriend / Taro is selectable.
 ===================================================== -->
 
 <section
@@ -1665,12 +1347,42 @@ body.pc
 
     <div class="selectTitle">
 
-        Choose Taro
+        Choose Your Boyfriend
 
     </div>
 
 
     <div class="selectionArea">
+
+
+        <!-- HANAKO FIXED -->
+
+        <div class="selectionBox">
+
+            <h2>
+                Main Character
+            </h2>
+
+
+            <div
+                id="mainPreview"
+                class="characterPreview">
+
+                <div
+                    class="hanakoPreview">
+                </div>
+
+            </div>
+
+
+            <div class="fixedLabel">
+                Hanako
+            </div>
+
+        </div>
+
+
+        <!-- BOYFRIEND -->
 
         <div class="selectionBox">
 
@@ -1682,17 +1394,16 @@ body.pc
             <div
                 id="boyPreview"
                 class="characterPreview">
-
             </div>
 
 
             <div
                 id="boyList"
                 class="characterList">
-
             </div>
 
         </div>
+
 
     </div>
 
@@ -1720,13 +1431,11 @@ body.pc
     <div
         id="background"
         class="city">
-
     </div>
 
 
     <div
         id="sceneCharacters">
-
     </div>
 
 
@@ -1737,23 +1446,20 @@ body.pc
         class="hidden">
 
         <div class="loveLabel">
-
             LOVE GAUGE
-
         </div>
 
 
         <div class="loveBarOuter">
 
-            <div id="loveBar"></div>
+            <div id="loveBar">
+            </div>
 
         </div>
 
 
         <div id="loveValue">
-
             0%
-
         </div>
 
     </div>
@@ -1806,21 +1512,16 @@ body.pc
     <div id="dialogueBox">
 
         <div id="speaker">
-
             Hanako
-
         </div>
 
 
         <div id="dialogue">
-
         </div>
 
 
         <div id="continueHint">
-
             CLICK / SPACE
-
         </div>
 
     </div>
@@ -1831,7 +1532,6 @@ body.pc
     ================================================= -->
 
     <div id="arcadeScreen">
-
 
         <canvas
             id="arcadeCanvas">
@@ -1852,7 +1552,8 @@ body.pc
 
             <div id="staminaOuter">
 
-                <div id="staminaBar"></div>
+                <div id="staminaBar">
+                </div>
 
             </div>
 
@@ -1860,7 +1561,6 @@ body.pc
             <div id="arcadeHint">
 
                 WASD / ARROW KEYS: MOVE<br>
-
                 SHIFT: DASH
 
             </div>
@@ -1872,11 +1572,9 @@ body.pc
 
         <div id="mobileControls">
 
-
             <div id="joystick">
 
                 <div id="joystickKnob">
-
                 </div>
 
             </div>
@@ -1898,23 +1596,17 @@ body.pc
             <div id="captureDialogue">
 
                 <div id="captureSpeaker">
-
                     Teacher
-
                 </div>
 
 
                 <div id="captureText">
-
                     What are you doing!?!?
-
                 </div>
 
 
                 <div id="continueHint">
-
                     CLICK / SPACE
-
                 </div>
 
             </div>
@@ -1923,7 +1615,6 @@ body.pc
 
 
         <div id="darkFade">
-
         </div>
 
     </div>
@@ -1939,6 +1630,7 @@ body.pc
     id="endingScreen"
     class="screen">
 
+
     <div
         id="heartBreak"
         class="hidden">
@@ -1949,21 +1641,17 @@ body.pc
 
 
     <h1 id="endingTitle">
-
         GAME OVER
-
     </h1>
 
 
     <div
         id="endingText"
         class="endingText">
-
     </div>
 
 
     <div class="endButtons">
-
 
         <button
             class="menuButton"
@@ -1976,21 +1664,11 @@ body.pc
 
         <button
             class="menuButton"
-            onclick="startFromBeginning()">
+            onclick="location.reload()">
 
             Start from beginning
 
         </button>
-
-
-        <button
-            class="menuButton"
-            onclick="showCharacterSelect()">
-
-            Change Taro
-
-        </button>
-
 
     </div>
 
@@ -2006,54 +1684,49 @@ body.pc
    CHARACTER DATA
 ===================================================== */
 
-/*
-    Put these five files into:
-
-    images/
-        masugu.jpeg
-        mizuta.jpeg
-        takuto.jpeg
-        kowada.jpeg
-        junya.jpeg
-
-    The images are displayed directly.
-*/
-
 const characters = [
 
     {
         name:"Masugu",
-        image:"images/masugu.jpeg"
+        symbol:"M",
+        image:"images/masugu.png"
     },
 
     {
         name:"Mizuta",
-        image:"images/mizuta.jpeg"
+        symbol:"Mi",
+        image:"images/mizuta.png"
     },
 
     {
         name:"Takuto",
-        image:"images/takuto.jpeg"
+        symbol:"T",
+        image:"images/takuto.png"
     },
 
     {
         name:"Kowada",
-        image:"images/kowada.jpeg"
+        symbol:"K",
+        image:"images/kowada.png"
     },
 
     {
         name:"Junya",
-        image:"images/junya.jpeg"
+        symbol:"J",
+        image:"images/junya.png"
     }
 
 ];
 
 
 /*
-    Hanako is NEVER selected.
+    Hanako is NOT selectable.
 
-    This is intentional.
+    She is always the main character.
 */
+
+const HANAKO_NAME = "Hanako";
+
 
 let selectedBoy = 0;
 
@@ -2072,29 +1745,7 @@ let gameMode = "pc";
 
 let inArcade = false;
 
-let arcadeRunning = false;
-
 let ending = false;
-
-let captureStep = 0;
-
-
-/* =====================================================
-   CHARACTER HELPERS
-===================================================== */
-
-function mainName(){
-
-    return "Hanako";
-
-}
-
-
-function boyName(){
-
-    return characters[selectedBoy].name;
-
-}
 
 
 /* =====================================================
@@ -2131,8 +1782,7 @@ function createCharacterButtons(){
 
             button.onclick = ()=>{
 
-                selectedBoy =
-                    index;
+                selectedBoy = index;
 
                 updateCharacterSelect();
 
@@ -2154,13 +1804,13 @@ function createCharacterButtons(){
 
 function updateCharacterSelect(){
 
-    const buttons =
+    const boyButtons =
         document.querySelectorAll(
             "#boyList .characterButton"
         );
 
 
-    buttons.forEach(
+    boyButtons.forEach(
         (button,index)=>{
 
             button.classList.toggle(
@@ -2185,37 +1835,56 @@ function updateCharacterSelect(){
     preview.innerHTML = "";
 
 
-    const image =
+    const img =
         document.createElement(
             "img"
         );
 
 
-    image.className =
-        "selectionImage";
+    img.className =
+        "characterImage";
 
 
-    image.src =
+    img.src =
         character.image;
 
 
-    image.alt =
+    img.alt =
         character.name;
 
 
-    image.onerror = ()=>{
+    /*
+        If the image is missing,
+        show the old-style symbol instead.
+    */
 
-        preview.innerHTML = `
-            <div class="selectionFallback">
-                ${character.name}
-            </div>
-        `;
+    img.onerror = ()=>{
+
+        preview.innerHTML = "";
+
+        const fallback =
+            document.createElement(
+                "div"
+            );
+
+        fallback.textContent =
+            character.symbol;
+
+        fallback.style.fontSize =
+            "90px";
+
+        fallback.style.color =
+            "#ff70bd";
+
+        preview.appendChild(
+            fallback
+        );
 
     };
 
 
     preview.appendChild(
-        image
+        img
     );
 
 }
@@ -2258,12 +1927,6 @@ function setDeviceMode(mode){
     document.body.classList.toggle(
         "smartphone",
         mode === "smartphone"
-    );
-
-
-    document.body.classList.toggle(
-        "pc",
-        mode === "pc"
     );
 
 
@@ -2328,21 +1991,6 @@ function showScreen(id){
 
 function showCharacterSelect(){
 
-    ending = false;
-
-    inArcade = false;
-
-    arcadeRunning = false;
-
-
-    document
-        .getElementById(
-            "arcadeScreen"
-        )
-        .style.display =
-        "none";
-
-
     showScreen(
         "characterScreen"
     );
@@ -2351,53 +1999,38 @@ function showCharacterSelect(){
 
 
 /* =====================================================
-   CHARACTER SPRITES
+   NAME HELPERS
 ===================================================== */
 
-function createSilhouette(name){
+function mainName(){
 
-    const body =
-        document.createElement(
-            "div"
-        );
+    /*
+        IMPORTANT:
+        Main Character is ALWAYS Hanako.
+    */
 
-
-    body.className =
-        "realSilhouette";
-
-
-    body.innerHTML = `
-
-        <div class="silhouetteHair"></div>
-
-        <div class="silhouetteHead"></div>
-
-        <div class="silhouetteBody"></div>
-
-    `;
-
-
-    const label =
-        document.createElement(
-            "div"
-        );
-
-
-    label.className =
-        "spriteLabel";
-
-
-    label.textContent =
-        name;
-
-
-    return {
-        body,
-        label
-    };
+    return HANAKO_NAME;
 
 }
 
+
+function boyName(){
+
+    return characters[selectedBoy].name;
+
+}
+
+
+function boyData(){
+
+    return characters[selectedBoy];
+
+}
+
+
+/* =====================================================
+   CHARACTER SPRITE
+===================================================== */
 
 function showCharacter(
     name,
@@ -2429,172 +2062,152 @@ function showCharacter(
 
 
     /*
-        Hanako:
-        ALWAYS silhouette.
+        Hanako is fixed and shown
+        as a silhouette.
+
+        Teacher / Yumi / Rika are
+        also silhouettes.
+
+        ONLY the selected boyfriend
+        uses the actual image.
     */
 
-    if(name === "Hanako"){
-
-        const result =
-            createSilhouette(
-                "Hanako"
-            );
+    const useBoyfriendImage =
+        name === boyName();
 
 
-        sprite.appendChild(
-            result.body
-        );
+    let useSilhouette =
+        silhouette ||
+        name === HANAKO_NAME ||
+        !useBoyfriendImage;
 
-        sprite.appendChild(
-            result.label
-        );
-
-
-        container.appendChild(
-            sprite
-        );
-
-
-        return;
-
-    }
-
-
-    /*
-        Teacher / Yumi / Rika:
-        ALWAYS silhouettes.
-    */
 
     if(
-        name === "Teacher" ||
-        name === "Yumi" ||
-        name === "Rika"
+        useBoyfriendImage &&
+        !silhouette
     ){
 
-        const result =
-            createSilhouette(
-                name
-            );
-
-
-        sprite.appendChild(
-            result.body
-        );
-
-        sprite.appendChild(
-            result.label
-        );
-
-
-        container.appendChild(
-            sprite
-        );
-
-
-        return;
-
-    }
-
-
-    /*
-        Boyfriend:
-        use the selected real image.
-    */
-
-    const character =
-        characters.find(
-            character =>
-                character.name === name
-        );
-
-
-    if(character){
-
-        const image =
+        const img =
             document.createElement(
                 "img"
             );
 
 
-        image.className =
-            "realCharacterImage";
+        img.className =
+            "characterImage";
 
 
-        image.src =
-            character.image;
+        img.src =
+            boyData().image;
 
 
-        image.alt =
-            character.name;
+        img.alt =
+            boyName();
 
 
         /*
-            If the image has not been uploaded yet,
-            use a simple fallback instead of breaking
-            the entire scene.
+            If image loading fails,
+            use silhouette instead.
         */
 
-        image.onerror = ()=>{
+        img.onerror = ()=>{
 
-            image.style.display =
-                "none";
+            img.remove();
 
             const fallback =
-                document.createElement(
-                    "div"
-                );
-
-
-            fallback.className =
-                "realSilhouette";
-
-
-            fallback.innerHTML = `
-
-                <div class="silhouetteHair"></div>
-
-                <div class="silhouetteHead"></div>
-
-                <div class="silhouetteBody"></div>
-
-            `;
-
+                createSilhouette();
 
             sprite.insertBefore(
                 fallback,
-                sprite.firstChild
+                label
             );
 
         };
 
 
         sprite.appendChild(
-            image
+            img
+        );
+
+    }
+
+    else{
+
+        const silhouetteElement =
+            createSilhouette();
+
+
+        sprite.appendChild(
+            silhouetteElement
+        );
+
+    }
+
+
+    const label =
+        document.createElement(
+            "div"
         );
 
 
-        const label =
+    label.className =
+        "spriteLabel";
+
+
+    label.textContent =
+        name;
+
+
+    sprite.appendChild(
+        label
+    );
+
+
+    container.appendChild(
+        sprite
+    );
+
+
+    function createSilhouette(){
+
+        const body =
             document.createElement(
                 "div"
             );
 
 
-        label.className =
-            "spriteLabel";
+        body.className =
+            "characterSilhouette";
 
 
-        label.textContent =
-            character.name;
+        body.innerHTML = `
+
+            <div
+                class="characterSilhouetteHair">
+            </div>
+
+            <div
+                class="characterSilhouetteHead">
+            </div>
+
+            <div
+                class="characterSilhouetteEyes">
+                • •
+            </div>
+
+            <div
+                class="characterSilhouetteMouth">
+                ⌣
+            </div>
+
+            <div
+                class="characterSilhouetteBody">
+            </div>
+
+        `;
 
 
-        sprite.appendChild(
-            label
-        );
-
-
-        container.appendChild(
-            sprite
-        );
+        return body;
 
     }
 
@@ -2617,29 +2230,23 @@ function say(
     if(background){
 
         document
-            .getElementById(
-                "background"
-            )
+            .getElementById("background")
             .className =
-            background;
+                background;
 
     }
 
 
     document
-        .getElementById(
-            "speaker"
-        )
+        .getElementById("speaker")
         .textContent =
-        speaker;
+            speaker;
 
 
     document
-        .getElementById(
-            "dialogue"
-        )
+        .getElementById("dialogue")
         .textContent =
-        text;
+            text;
 
 
     showCharacter(
@@ -2664,19 +2271,16 @@ function clearCharacters(){
 
 
 /* =====================================================
-   START STORY
+   STORY
 ===================================================== */
 
 function startStory(){
-
-    love = 0;
 
     ending = false;
 
     inArcade = false;
 
-    arcadeRunning = false;
-
+    love = 0;
 
     updateLove();
 
@@ -2687,42 +2291,26 @@ function startStory(){
 
 
     document
-        .getElementById(
-            "arcadeScreen"
-        )
-        .style.display =
-        "none";
+        .getElementById("loveGauge")
+        .classList.add("hidden");
 
 
     document
-        .getElementById(
-            "loveGauge"
-        )
-        .classList.add(
-            "hidden"
-        );
+        .getElementById("choiceBox")
+        .style.display =
+            "none";
 
 
     document
-        .getElementById(
-            "choiceBox"
-        )
+        .getElementById("dialogueBox")
         .style.display =
-        "none";
-
-
-    document
-        .getElementById(
-            "dialogueBox"
-        )
-        .style.display =
-        "block";
+            "block";
 
 
     currentStory = [
 
         {
-            speaker:"Hanako",
+            speaker:mainName(),
 
             text:
                 "My name is Tohkatsu Hanako! A very very normal girl who goes to Tohkatsu JHS.",
@@ -2734,7 +2322,7 @@ function startStory(){
 
 
         {
-            speaker:"Hanako",
+            speaker:mainName(),
 
             text:
                 "OMG!! I'll be late for school!",
@@ -2744,7 +2332,7 @@ function startStory(){
 
 
         {
-            speaker:"Hanako",
+            speaker:mainName(),
 
             text:
                 "I must run!!!",
@@ -2763,22 +2351,22 @@ function startStory(){
 
             side:"right",
 
-            silhouette:true
+            silhouette:false
         },
 
 
         {
-            speaker:"Hanako",
+            speaker:mainName(),
 
             text:
                 "I'm OK. And you too?",
 
-            expression:"normal"
+            expression:"nervous"
         },
 
 
         {
-            speaker:"Hanako",
+            speaker:mainName(),
 
             text:
                 "(Oh, It's amazing...)",
@@ -2795,12 +2383,14 @@ function startStory(){
 
             expression:"confused",
 
-            side:"right"
+            side:"right",
+
+            silhouette:false
         },
 
 
         {
-            speaker:"Hanako",
+            speaker:mainName(),
 
             text:
                 "Oh, sorry. HAHAHA. ...OMG! It's already 8:13!? Sorry, good luck!",
@@ -2824,7 +2414,7 @@ function startStory(){
 
 
         {
-            speaker:"Hanako",
+            speaker:mainName(),
 
             text:
                 "Sorry...",
@@ -2839,14 +2429,12 @@ function startStory(){
             text:
                 "Not at all... Be careful.",
 
-            expression:"normal",
-
             silhouette:true
         },
 
 
         {
-            speaker:"Hanako",
+            speaker:mainName(),
 
             text:
                 "Yes...",
@@ -2866,7 +2454,7 @@ function startStory(){
 
 
         {
-            speaker:"Hanako",
+            speaker:mainName(),
 
             text:
                 "Transfer student...?",
@@ -2879,9 +2467,7 @@ function startStory(){
             speaker:"Teacher",
 
             text:
-                "Come! " +
-                boyName() +
-                "!",
+                "Come! " + boyName() + "!",
 
             silhouette:true
         },
@@ -2895,12 +2481,14 @@ function startStory(){
                 boyName() +
                 ".",
 
-            side:"right"
+            side:"right",
+
+            silhouette:false
         },
 
 
         {
-            speaker:"Hanako",
+            speaker:mainName(),
 
             text:
                 "OMG! He was at that time...",
@@ -2920,7 +2508,7 @@ function startStory(){
 
 
         {
-            speaker:"Hanako",
+            speaker:mainName(),
 
             text:
                 "No!",
@@ -2940,7 +2528,7 @@ function startStory(){
 
 
         {
-            speaker:"Hanako",
+            speaker:mainName(),
 
             text:
                 "...",
@@ -2959,15 +2547,10 @@ function startStory(){
 }
 
 
-/* =====================================================
-   PLAY STORY
-===================================================== */
-
 function playStory(){
 
     if(
-        storyIndex >=
-        currentStory.length
+        storyIndex >= currentStory.length
     ){
 
         beginChoiceMode();
@@ -2999,31 +2582,22 @@ function playStory(){
 
 
 /* =====================================================
-   GLOBAL STORY INPUT
+   CLICK / SPACE
 ===================================================== */
 
 document.addEventListener(
     "click",
-    event=>{
+    e=>{
 
-        if(
-            !document
-                .getElementById(
-                    "storyScreen"
-                )
-                .classList.contains(
-                    "active"
-                )
-        ){
-
-            return;
-
-        }
+        const storyScreen =
+            document.getElementById(
+                "storyScreen"
+            );
 
 
         if(
-            event.target.closest(
-                "button"
+            !storyScreen.classList.contains(
+                "active"
             )
         ){
 
@@ -3033,20 +2607,11 @@ document.addEventListener(
 
 
         if(
-            event.target.closest(
-                ".modal"
-            )
-        ){
-
-            return;
-
-        }
-
-
-        if(
-            event.target.closest(
-                "#choiceBox"
-            )
+            e.target.closest("button") ||
+            e.target.closest(".modal") ||
+            e.target.closest("#choiceBox") ||
+            e.target.closest("#captureOverlay") ||
+            e.target.closest("#mobileControls")
         ){
 
             return;
@@ -3068,57 +2633,25 @@ document.addEventListener(
 );
 
 
-/* =====================================================
-   SPACE KEY
-===================================================== */
-
 document.addEventListener(
     "keydown",
-    event=>{
+    e=>{
 
         if(
-            event.code !== "Space"
+            e.code === "Space"
         ){
 
-            return;
+            if(
+                !inArcade &&
+                !ending &&
+                storyIndex > 0
+            ){
 
-        }
+                e.preventDefault();
 
+                playStory();
 
-        /*
-            Do not scroll.
-        */
-
-        event.preventDefault();
-
-
-        /*
-            Capture dialogue.
-        */
-
-        if(
-            inArcade &&
-            !arcadeRunning
-        ){
-
-            advanceCapture();
-
-            return;
-
-        }
-
-
-        /*
-            Normal story.
-        */
-
-        if(
-            !inArcade &&
-            !ending &&
-            storyIndex > 0
-        ){
-
-            playStory();
+            }
 
         }
 
@@ -3143,20 +2676,15 @@ function updateLove(){
 
 
     document
-        .getElementById(
-            "loveBar"
-        )
+        .getElementById("loveBar")
         .style.width =
-        love + "%";
+            love + "%";
 
 
     document
-        .getElementById(
-            "loveValue"
-        )
+        .getElementById("loveValue")
         .textContent =
-        Math.floor(love) +
-        "%";
+            Math.floor(love) + "%";
 
 }
 
@@ -3168,28 +2696,22 @@ function updateLove(){
 function beginChoiceMode(){
 
     document
-        .getElementById(
-            "loveGauge"
-        )
+        .getElementById("loveGauge")
         .classList.remove(
             "hidden"
         );
 
 
     document
-        .getElementById(
-            "dialogueBox"
-        )
+        .getElementById("dialogueBox")
         .style.display =
-        "none";
+            "none";
 
 
     document
-        .getElementById(
-            "choiceBox"
-        )
+        .getElementById("choiceBox")
         .style.display =
-        "grid";
+            "grid";
 
 }
 
@@ -3201,11 +2723,9 @@ function beginChoiceMode(){
 function mainChoice(choice){
 
     document
-        .getElementById(
-            "choiceBox"
-        )
+        .getElementById("choiceBox")
         .style.display =
-        "none";
+            "none";
 
 
     if(choice === "talk"){
@@ -3215,21 +2735,21 @@ function mainChoice(choice){
     }
 
 
-    else if(choice === "run"){
+    if(choice === "run"){
 
         startArcade();
 
     }
 
 
-    else if(choice === "fight"){
+    if(choice === "fight"){
 
         fightEnding();
 
     }
 
 
-    else if(choice === "confess"){
+    if(choice === "confess"){
 
         confess();
 
@@ -3253,8 +2773,7 @@ function talkChoice(){
             a:
                 "I like rice.",
 
-            amount:
-                20
+            amount:20
         },
 
 
@@ -3265,8 +2784,7 @@ function talkChoice(){
             a:
                 "I like blue.",
 
-            amount:
-                20
+            amount:20
         },
 
 
@@ -3277,8 +2795,7 @@ function talkChoice(){
             a:
                 "I like cat.",
 
-            amount:
-                20
+            amount:20
         },
 
 
@@ -3289,8 +2806,7 @@ function talkChoice(){
             a:
                 "I like soccer.",
 
-            amount:
-                20
+            amount:20
         }
 
     ];
@@ -3302,8 +2818,7 @@ function talkChoice(){
     function ask(){
 
         if(
-            i >=
-            questions.length
+            i >= questions.length
         ){
 
             setTimeout(
@@ -3321,32 +2836,17 @@ function talkChoice(){
 
 
         document
-            .getElementById(
-                "dialogueBox"
-            )
+            .getElementById("dialogueBox")
             .style.display =
-            "block";
+                "block";
 
 
         say(
-            "Hanako",
+            mainName(),
             q.q,
             "normal",
             "left"
         );
-
-
-        const box =
-            document.getElementById(
-                "choiceBox"
-            );
-
-
-        box.innerHTML = "";
-
-
-        box.style.display =
-            "grid";
 
 
         const next =
@@ -3361,6 +2861,19 @@ function talkChoice(){
 
         next.textContent =
             "Continue";
+
+
+        const box =
+            document.getElementById(
+                "choiceBox"
+            );
+
+
+        box.innerHTML = "";
+
+
+        box.style.display =
+            "grid";
 
 
         box.appendChild(
@@ -3413,15 +2926,13 @@ function talkChoice(){
 function fightEnding(){
 
     document
-        .getElementById(
-            "dialogueBox"
-        )
+        .getElementById("dialogueBox")
         .style.display =
-        "block";
+            "block";
 
 
     say(
-        "Hanako",
+        mainName(),
         "I challenge you!",
         "angry"
     );
@@ -3446,11 +2957,9 @@ function fightEnding(){
         ()=>{
 
             document
-                .getElementById(
-                    "darkFade"
-                )
+                .getElementById("darkFade")
                 .style.opacity =
-                "1";
+                    "1";
 
 
             setTimeout(
@@ -3478,15 +2987,13 @@ function fightEnding(){
 function confess(){
 
     document
-        .getElementById(
-            "dialogueBox"
-        )
+        .getElementById("dialogueBox")
         .style.display =
-        "block";
+            "block";
 
 
     say(
-        "Hanako",
+        mainName(),
         "I like you. Would you be my boyfriend?",
         "shy"
     );
@@ -3568,7 +3075,8 @@ function datingEnding(){
             showEnding(
                 "GAME CLEAR",
 
-                "Hanako and " +
+                mainName() +
+                " and " +
                 boyName() +
                 " are finally together!",
 
@@ -3623,26 +3131,6 @@ function showGameOver(text){
 
     ending = true;
 
-    inArcade = false;
-
-    arcadeRunning = false;
-
-
-    document
-        .getElementById(
-            "arcadeScreen"
-        )
-        .style.display =
-        "none";
-
-
-    document
-        .getElementById(
-            "darkFade"
-        )
-        .style.opacity =
-        "0";
-
 
     showScreen(
         "endingScreen"
@@ -3650,25 +3138,19 @@ function showGameOver(text){
 
 
     document
-        .getElementById(
-            "endingTitle"
-        )
+        .getElementById("endingTitle")
         .textContent =
-        "GAME OVER";
+            "GAME OVER";
 
 
     document
-        .getElementById(
-            "endingText"
-        )
+        .getElementById("endingText")
         .textContent =
-        text;
+            text;
 
 
     document
-        .getElementById(
-            "heartBreak"
-        )
+        .getElementById("heartBreak")
         .classList.remove(
             "hidden"
         );
@@ -3684,18 +3166,6 @@ function showEnding(
 
     ending = true;
 
-    inArcade = false;
-
-    arcadeRunning = false;
-
-
-    document
-        .getElementById(
-            "arcadeScreen"
-        )
-        .style.display =
-        "none";
-
 
     showScreen(
         "endingScreen"
@@ -3703,25 +3173,19 @@ function showEnding(
 
 
     document
-        .getElementById(
-            "endingTitle"
-        )
+        .getElementById("endingTitle")
         .textContent =
-        title;
+            title;
 
 
     document
-        .getElementById(
-            "endingText"
-        )
+        .getElementById("endingText")
         .textContent =
-        text;
+            text;
 
 
     document
-        .getElementById(
-            "heartBreak"
-        )
+        .getElementById("heartBreak")
         .classList.add(
             "hidden"
         );
@@ -3739,27 +3203,9 @@ function restartFromSchool(){
 
     inArcade = false;
 
-    arcadeRunning = false;
-
     love = 0;
 
     updateLove();
-
-
-    document
-        .getElementById(
-            "darkFade"
-        )
-        .style.opacity =
-        "0";
-
-
-    document
-        .getElementById(
-            "arcadeScreen"
-        )
-        .style.display =
-        "none";
 
 
     showScreen(
@@ -3768,28 +3214,28 @@ function restartFromSchool(){
 
 
     document
-        .getElementById(
-            "background"
-        )
+        .getElementById("background")
         .className =
-        "school";
+            "school";
 
 
     document
-        .getElementById(
-            "loveGauge"
-        )
+        .getElementById("loveGauge")
         .classList.remove(
             "hidden"
         );
 
 
     document
-        .getElementById(
-            "dialogueBox"
-        )
+        .getElementById("dialogueBox")
         .style.display =
-        "block";
+            "block";
+
+
+    document
+        .getElementById("arcadeScreen")
+        .style.display =
+            "none";
 
 
     currentStory = [
@@ -3805,7 +3251,7 @@ function restartFromSchool(){
 
 
         {
-            speaker:"Hanako",
+            speaker:mainName(),
 
             text:
                 "Transfer student...?",
@@ -3818,9 +3264,7 @@ function restartFromSchool(){
             speaker:"Teacher",
 
             text:
-                "Come! " +
-                boyName() +
-                "!",
+                "Come! " + boyName() + "!",
 
             silhouette:true
         },
@@ -3839,7 +3283,7 @@ function restartFromSchool(){
 
 
         {
-            speaker:"Hanako",
+            speaker:mainName(),
 
             text:
                 "OMG! He was at that time...",
@@ -3859,7 +3303,7 @@ function restartFromSchool(){
 
 
         {
-            speaker:"Hanako",
+            speaker:mainName(),
 
             text:
                 "No!",
@@ -3879,7 +3323,7 @@ function restartFromSchool(){
 
 
         {
-            speaker:"Hanako",
+            speaker:mainName(),
 
             text:
                 "...",
@@ -3894,11 +3338,9 @@ function restartFromSchool(){
 
 
     document
-        .getElementById(
-            "choiceBox"
-        )
+        .getElementById("choiceBox")
         .style.display =
-        "none";
+            "none";
 
 
     playStory();
@@ -3907,35 +3349,10 @@ function restartFromSchool(){
 
 
 /* =====================================================
-   START FROM BEGINNING
-===================================================== */
-
-function startFromBeginning(){
-
-    showCharacterSelect();
-
-}
-
-
-/* =====================================================
-   =====================================================
    ARCADE MAZE
-   =====================================================
 ===================================================== */
 
-
-/*
-    Fixed maze.
-
-    IMPORTANT:
-    Every row is normalized to exactly
-    MAZE_WIDTH characters.
-
-    The old version had several 27-character
-    rows mixed with 28-character rows.
-*/
-
-const RAW_MAZE = [
+const maze = [
 
 "############################",
 "#S....#.............#......#",
@@ -3964,29 +3381,6 @@ const RAW_MAZE = [
 ];
 
 
-const MAZE_WIDTH = 28;
-
-const maze =
-    RAW_MAZE.map(
-        row =>
-            row.padEnd(
-                MAZE_WIDTH,
-                "#"
-            ).slice(
-                0,
-                MAZE_WIDTH
-            )
-    );
-
-
-const MAZE_HEIGHT =
-    maze.length;
-
-
-/* =====================================================
-   CANVAS
-===================================================== */
-
 const arcadeCanvas =
     document.getElementById(
         "arcadeCanvas"
@@ -3999,21 +3393,8 @@ const ctx =
     );
 
 
-let canvasWidth = 0;
-
-let canvasHeight = 0;
-
-
-/*
-    48 pixels per maze tile.
-*/
-
 const TILE = 48;
 
-
-/* =====================================================
-   PLAYER
-===================================================== */
 
 let player = {
 
@@ -4026,63 +3407,25 @@ let player = {
 };
 
 
-/*
-    Speeds requested in the original specification.
-
-    These are now PIXELS PER SECOND.
-
-    Player:
-        normal 15
-        dash   27
-
-    Teacher:
-        normal 10
-        chase  25
-*/
-
-const PLAYER_SPEED =
-    15;
-
-const PLAYER_DASH_SPEED =
-    27;
-
-const TEACHER_SPEED =
-    10;
-
-const TEACHER_CHASE_SPEED =
-    25;
-
-
-/* =====================================================
-   TEACHERS
-===================================================== */
-
 let teachers = [
 
     {
         x:25.5,
         y:21.5,
-        chasing:false,
-        path:null,
-        pathIndex:0
+        chasing:false
     },
 
+
     {
-        x:13.5,
-        y:21.5,
-        chasing:false,
-        path:null,
-        pathIndex:0
+        x:14.5,
+        y:20.5,
+        chasing:false
     }
 
 ];
 
 
-/* =====================================================
-   INPUT
-===================================================== */
-
-const keys = {};
+let keys = {};
 
 let joystickX = 0;
 
@@ -4090,59 +3433,52 @@ let joystickY = 0;
 
 let dashTouch = false;
 
+let arcadeRunning = false;
+
+let previousTime =
+    performance.now();
+
 
 /* =====================================================
-   PATHFINDING CACHE
+   KEYBOARD
 ===================================================== */
 
-let pathTimer = 0;
+window.addEventListener(
+    "keydown",
+    e=>{
 
-const PATH_UPDATE_INTERVAL =
-    0.25;
+        keys[
+            e.key.toLowerCase()
+        ] = true;
+
+    }
+);
+
+
+window.addEventListener(
+    "keyup",
+    e=>{
+
+        keys[
+            e.key.toLowerCase()
+        ] = false;
+
+    }
+);
 
 
 /* =====================================================
-   CANVAS RESIZE
+   RESIZE
 ===================================================== */
 
 function resizeArcade(){
 
-    const dpr =
-        Math.min(
-            window.devicePixelRatio || 1,
-            2
-        );
-
-
-    canvasWidth =
+    arcadeCanvas.width =
         window.innerWidth;
 
-    canvasHeight =
-        window.innerHeight;
-
-
-    arcadeCanvas.width =
-        canvasWidth * dpr;
 
     arcadeCanvas.height =
-        canvasHeight * dpr;
-
-
-    arcadeCanvas.style.width =
-        canvasWidth + "px";
-
-    arcadeCanvas.style.height =
-        canvasHeight + "px";
-
-
-    ctx.setTransform(
-        dpr,
-        0,
-        0,
-        dpr,
-        0,
-        0
-    );
+        window.innerHeight;
 
 }
 
@@ -4157,52 +3493,7 @@ resizeArcade();
 
 
 /* =====================================================
-   KEYBOARD
-===================================================== */
-
-window.addEventListener(
-    "keydown",
-    event=>{
-
-        keys[
-            event.key.toLowerCase()
-        ] = true;
-
-
-        if(
-            [
-                "arrowup",
-                "arrowdown",
-                "arrowleft",
-                "arrowright",
-                " "
-            ].includes(
-                event.key.toLowerCase()
-            )
-        ){
-
-            event.preventDefault();
-
-        }
-
-    }
-);
-
-
-window.addEventListener(
-    "keyup",
-    event=>{
-
-        keys[
-            event.key.toLowerCase()
-        ] = false;
-
-    }
-);
-
-
-/* =====================================================
-   WALL COLLISION
+   COLLISION
 ===================================================== */
 
 function isWall(x,y){
@@ -4210,15 +3501,16 @@ function isWall(x,y){
     const tx =
         Math.floor(x);
 
+
     const ty =
         Math.floor(y);
 
 
     if(
         ty < 0 ||
-        ty >= MAZE_HEIGHT ||
+        ty >= maze.length ||
         tx < 0 ||
-        tx >= MAZE_WIDTH
+        tx >= maze[ty].length
     ){
 
         return true;
@@ -4232,79 +3524,31 @@ function isWall(x,y){
 
 
 /* =====================================================
-   CIRCLE COLLISION
+   MOVE
 ===================================================== */
 
-function canMoveTo(x,y){
-
-    const radius =
-        0.18;
-
-
-    const checks = [
-
-        [x-radius,y-radius],
-        [x+radius,y-radius],
-        [x-radius,y+radius],
-        [x+radius,y+radius]
-
-    ];
-
-
-    return checks.every(
-        ([cx,cy]) =>
-            !isWall(
-                cx,
-                cy
-            )
-    );
-
-}
-
-
-/* =====================================================
-   PLAYER MOVEMENT
-===================================================== */
-
-function movePlayer(
-    dx,
-    dy
-){
-
-    const nextX =
-        player.x + dx;
-
-    const nextY =
-        player.y + dy;
-
-
-    /*
-        Separate X/Y movement makes
-        wall sliding smoother.
-    */
+function movePlayer(dx,dy){
 
     if(
-        canMoveTo(
-            nextX,
+        !isWall(
+            player.x+dx,
             player.y
         )
     ){
 
-        player.x =
-            nextX;
+        player.x += dx;
 
     }
 
 
     if(
-        canMoveTo(
+        !isWall(
             player.x,
-            nextY
+            player.y+dy
         )
     ){
 
-        player.y =
-            nextY;
+        player.y += dy;
 
     }
 
@@ -4315,15 +3559,191 @@ function movePlayer(
    DISTANCE
 ===================================================== */
 
-function distance(
-    a,
-    b
-){
+function dist(a,b){
 
     return Math.hypot(
         a.x-b.x,
         a.y-b.y
     );
+
+}
+
+
+/* =====================================================
+   PATHFINDING
+===================================================== */
+
+function nextPathStep(
+    sx,
+    sy,
+    tx,
+    ty
+){
+
+    const start = {
+
+        x:Math.floor(sx),
+
+        y:Math.floor(sy)
+
+    };
+
+
+    const target = {
+
+        x:Math.floor(tx),
+
+        y:Math.floor(ty)
+
+    };
+
+
+    const queue = [
+        start
+    ];
+
+
+    const visited =
+        new Set([
+            `${start.x},${start.y}`
+        ]);
+
+
+    const parent =
+        new Map();
+
+
+    const dirs = [
+
+        [1,0],
+        [-1,0],
+        [0,1],
+        [0,-1]
+
+    ];
+
+
+    while(queue.length){
+
+        const c =
+            queue.shift();
+
+
+        if(
+            c.x === target.x &&
+            c.y === target.y
+        ){
+
+            break;
+
+        }
+
+
+        for(
+            const [dx,dy]
+            of dirs
+        ){
+
+            const nx =
+                c.x+dx;
+
+
+            const ny =
+                c.y+dy;
+
+
+            if(
+                ny < 0 ||
+                ny >= maze.length ||
+                nx < 0 ||
+                nx >= maze[ny].length
+            ){
+
+                continue;
+
+            }
+
+
+            if(
+                maze[ny][nx] === "#"
+            ){
+
+                continue;
+
+            }
+
+
+            const key =
+                `${nx},${ny}`;
+
+
+            if(
+                visited.has(key)
+            ){
+
+                continue;
+
+            }
+
+
+            visited.add(key);
+
+
+            parent.set(
+                key,
+                c
+            );
+
+
+            queue.push({
+                x:nx,
+                y:ny
+            });
+
+        }
+
+    }
+
+
+    let current =
+        target;
+
+
+    const path = [];
+
+
+    while(
+        current.x !== start.x ||
+        current.y !== start.y
+    ){
+
+        path.push(
+            current
+        );
+
+
+        const p =
+            parent.get(
+                `${current.x},${current.y}`
+            );
+
+
+        if(!p){
+
+            return null;
+
+        }
+
+
+        current = p;
+
+    }
+
+
+    path.reverse();
+
+
+    return path[0] || null;
 
 }
 
@@ -4379,34 +3799,30 @@ function updatePlayer(dt){
     }
 
 
-    /*
-        Smartphone joystick
-    */
-
     dx += joystickX;
 
     dy += joystickY;
 
 
     const moving =
-        Math.abs(dx) > 0.05 ||
-        Math.abs(dy) > 0.05;
+        Math.abs(dx) > .05 ||
+        Math.abs(dy) > .05;
 
 
     if(moving){
 
-        const length =
+        const len =
             Math.hypot(
                 dx,
                 dy
             );
 
 
-        if(length > 1){
+        if(len > 1){
 
-            dx /= length;
+            dx /= len;
 
-            dy /= length;
+            dy /= len;
 
         }
 
@@ -4418,8 +3834,7 @@ function updatePlayer(dt){
         dashTouch;
 
 
-    let speed =
-        PLAYER_SPEED;
+    let speed = 15;
 
 
     if(
@@ -4428,19 +3843,17 @@ function updatePlayer(dt){
         player.stamina > 0
     ){
 
-        speed =
-            PLAYER_DASH_SPEED;
-
+        speed = 27;
 
         player.stamina -=
-            35 * dt;
+            35*dt;
 
     }
 
     else{
 
         player.stamina +=
-            18 * dt;
+            18*dt;
 
     }
 
@@ -4460,250 +3873,15 @@ function updatePlayer(dt){
             "staminaBar"
         )
         .style.width =
-        player.stamina +
-        "%";
+            player.stamina+"%";
 
-
-    /*
-        Convert pixel speed into
-        maze-coordinate speed.
-    */
 
     if(moving){
 
-        const worldSpeed =
-            speed /
-            TILE;
-
-
         movePlayer(
-            dx *
-            worldSpeed *
-            dt,
-
-            dy *
-            worldSpeed *
-            dt
+            dx*speed*dt,
+            dy*speed*dt
         );
-
-    }
-
-}
-
-
-/* =====================================================
-   BFS PATHFINDING
-===================================================== */
-
-function nextPathStep(
-    sx,
-    sy,
-    tx,
-    ty
-){
-
-    const start = {
-
-        x:
-            Math.floor(sx),
-
-        y:
-            Math.floor(sy)
-
-    };
-
-
-    const target = {
-
-        x:
-            Math.floor(tx),
-
-        y:
-            Math.floor(ty)
-
-    };
-
-
-    if(
-        start.x === target.x &&
-        start.y === target.y
-    ){
-
-        return null;
-
-    }
-
-
-    const queue = [
-        start
-    ];
-
-
-    const visited =
-        new Set([
-            `${start.x},${start.y}`
-        ]);
-
-
-    const parent =
-        new Map();
-
-
-    const directions = [
-
-        [1,0],
-
-        [-1,0],
-
-        [0,1],
-
-        [0,-1]
-
-    ];
-
-
-    let queueIndex = 0;
-
-
-    while(
-        queueIndex <
-        queue.length
-    ){
-
-        const current =
-            queue[
-                queueIndex++
-            ];
-
-
-        for(
-            const [
-                dx,
-                dy
-            ]
-            of directions
-        ){
-
-            const nx =
-                current.x + dx;
-
-            const ny =
-                current.y + dy;
-
-
-            if(
-                nx < 0 ||
-                nx >= MAZE_WIDTH ||
-                ny < 0 ||
-                ny >= MAZE_HEIGHT
-            ){
-
-                continue;
-
-            }
-
-
-            if(
-                maze[ny][nx] === "#"
-            ){
-
-                continue;
-
-            }
-
-
-            const key =
-                `${nx},${ny}`;
-
-
-            if(
-                visited.has(key)
-            ){
-
-                continue;
-
-            }
-
-
-            visited.add(key);
-
-
-            parent.set(
-                key,
-                current
-            );
-
-
-            if(
-                nx === target.x &&
-                ny === target.y
-            ){
-
-                queueIndex =
-                    queue.length;
-
-                break;
-
-            }
-
-
-            queue.push({
-
-                x:nx,
-
-                y:ny
-
-            });
-
-        }
-
-    }
-
-
-    const targetKey =
-        `${target.x},${target.y}`;
-
-
-    if(
-        !parent.has(targetKey)
-    ){
-
-        return null;
-
-    }
-
-
-    let current =
-        target;
-
-
-    while(true){
-
-        const previous =
-            parent.get(
-                `${current.x},${current.y}`
-            );
-
-
-        if(!previous){
-
-            return current;
-
-        }
-
-
-        if(
-            previous.x === start.x &&
-            previous.y === start.y
-        ){
-
-            return current;
-
-        }
-
-
-        current =
-            previous;
 
     }
 
@@ -4716,43 +3894,17 @@ function nextPathStep(
 
 function updateTeachers(dt){
 
-    pathTimer -= dt;
-
-
-    /*
-        Update path only four times per second.
-        This is much lighter than running BFS
-        every animation frame.
-    */
-
-    const updatePath =
-        pathTimer <= 0;
-
-
-    if(updatePath){
-
-        pathTimer =
-            PATH_UPDATE_INTERVAL;
-
-    }
-
-
     for(
         const teacher
         of teachers
     ){
 
         const d =
-            distance(
+            dist(
                 teacher,
                 player
             );
 
-
-        /*
-            Teachers start chasing when
-            Hanako gets reasonably close.
-        */
 
         if(d < 9){
 
@@ -4764,90 +3916,69 @@ function updateTeachers(dt){
 
         const speed =
             teacher.chasing
-                ? TEACHER_CHASE_SPEED
-                : TEACHER_SPEED;
+            ? 25
+            : 10;
 
 
-        if(
-            updatePath ||
-            !teacher.path
-        ){
-
-            teacher.path =
-                nextPathStep(
-                    teacher.x,
-                    teacher.y,
-                    player.x,
-                    player.y
-                );
-
-        }
+        const step =
+            nextPathStep(
+                teacher.x,
+                teacher.y,
+                player.x,
+                player.y
+            );
 
 
-        if(teacher.path){
+        if(step){
 
             const targetX =
-                teacher.path.x +
-                0.5;
+                step.x+.5;
+
 
             const targetY =
-                teacher.path.y +
-                0.5;
+                step.y+.5;
 
 
-            let dx =
+            const dx =
                 targetX -
                 teacher.x;
 
-            let dy =
+
+            const dy =
                 targetY -
                 teacher.y;
 
 
-            const length =
+            const len =
                 Math.hypot(
                     dx,
                     dy
                 );
 
 
-            if(
-                length > 0.02
-            ){
+            if(len > .01){
 
-                const amount =
-                    (
-                        speed /
-                        TILE
-                    ) *
+                teacher.x +=
+                    dx/len *
+                    speed *
                     dt;
 
 
-                teacher.x +=
-                    dx /
-                    length *
-                    amount;
-
-
                 teacher.y +=
-                    dy /
-                    length *
-                    amount;
+                    dy/len *
+                    speed *
+                    dt;
 
             }
 
         }
 
 
-        /*
-            Catch distance.
-        */
-
         if(
-            distance(
+            dist(
                 teacher,
                 player
-            ) < 0.48
+            ) < .55
         ){
 
             capturePlayer();
@@ -4862,56 +3993,7 @@ function updateTeachers(dt){
 
 
 /* =====================================================
-   FIND EXIT
-===================================================== */
-
-function findExit(){
-
-    for(
-        let y=0;
-        y<MAZE_HEIGHT;
-        y++
-    ){
-
-        for(
-            let x=0;
-            x<MAZE_WIDTH;
-            x++
-        ){
-
-            if(
-                maze[y][x] === "E"
-            ){
-
-                return {
-
-                    x:x+.5,
-
-                    y:y+.5
-
-                };
-
-            }
-
-        }
-
-    }
-
-
-    return {
-        x:26.5,
-        y:22.5
-    };
-
-}
-
-
-const exitPosition =
-    findExit();
-
-
-/* =====================================================
-   DRAW MAZE
+   DRAW ARCADE
 ===================================================== */
 
 function drawArcade(){
@@ -4919,25 +4001,19 @@ function drawArcade(){
     ctx.clearRect(
         0,
         0,
-        canvasWidth,
-        canvasHeight
+        arcadeCanvas.width,
+        arcadeCanvas.height
     );
 
 
-    /*
-        Camera follows player.
-    */
-
     const cameraX =
-        player.x *
-        TILE -
-        canvasWidth / 2;
+        player.x*TILE -
+        arcadeCanvas.width/2;
 
 
     const cameraY =
-        player.y *
-        TILE -
-        canvasHeight / 2;
+        player.y*TILE -
+        arcadeCanvas.height/2;
 
 
     ctx.save();
@@ -4949,36 +4025,25 @@ function drawArcade(){
     );
 
 
-    /*
-        Floor
-    */
-
     for(
         let y=0;
-        y<MAZE_HEIGHT;
+        y<maze.length;
         y++
     ){
 
         for(
             let x=0;
-            x<MAZE_WIDTH;
+            x<maze[y].length;
             x++
         ){
-
-            const px =
-                x * TILE;
-
-            const py =
-                y * TILE;
-
 
             ctx.fillStyle =
                 "#30323a";
 
 
             ctx.fillRect(
-                px,
-                py,
+                x*TILE,
+                y*TILE,
                 TILE,
                 TILE
             );
@@ -4989,20 +4054,24 @@ function drawArcade(){
 
 
             ctx.strokeRect(
-                px,
-                py,
+                x*TILE,
+                y*TILE,
                 TILE,
                 TILE
             );
 
 
-            /*
-                Walls / arcade machines.
-            */
-
             if(
                 maze[y][x] === "#"
             ){
+
+                const px =
+                    x*TILE;
+
+
+                const py =
+                    y*TILE;
+
 
                 ctx.fillStyle =
                     "#15171c";
@@ -5028,10 +4097,6 @@ function drawArcade(){
                 );
 
 
-                /*
-                    Screen.
-                */
-
                 ctx.fillStyle =
                     "#57dfff";
 
@@ -5044,10 +4109,6 @@ function drawArcade(){
                 );
 
 
-                /*
-                    Control panel.
-                */
-
                 ctx.fillStyle =
                     "#3d4149";
 
@@ -5059,10 +4120,6 @@ function drawArcade(){
                     9
                 );
 
-
-                /*
-                    Buttons.
-                */
 
                 ctx.fillStyle =
                     "#ff3b65";
@@ -5108,34 +4165,57 @@ function drawArcade(){
     }
 
 
-    /*
-        EXIT glow.
-    */
+    /* EXIT */
+
+    let ex = 0;
+
+    let ey = 0;
+
+
+    for(
+        let y=0;
+        y<maze.length;
+        y++
+    ){
+
+        for(
+            let x=0;
+            x<maze[y].length;
+            x++
+        ){
+
+            if(
+                maze[y][x] === "E"
+            ){
+
+                ex =
+                    x+.5;
+
+                ey =
+                    y+.5;
+
+            }
+
+        }
+
+    }
+
 
     const pulse =
-        1 +
+        1+
         Math.sin(
             performance.now()/120
-        ) * .15;
-
-
-    const ex =
-        exitPosition.x *
-        TILE;
-
-    const ey =
-        exitPosition.y *
-        TILE;
+        )*.15;
 
 
     const gradient =
         ctx.createRadialGradient(
-            ex,
-            ey,
+            ex*TILE,
+            ey*TILE,
             5,
-            ex,
-            ey,
-            80
+            ex*TILE,
+            ey*TILE,
+            70
         );
 
 
@@ -5165,9 +4245,9 @@ function drawArcade(){
 
 
     ctx.arc(
-        ex,
-        ey,
-        70 * pulse,
+        ex*TILE,
+        ey*TILE,
+        65*pulse,
         0,
         Math.PI*2
     );
@@ -5181,8 +4261,8 @@ function drawArcade(){
 
 
     ctx.fillRect(
-        ex-25,
-        ey-20,
+        ex*TILE-25,
+        ey*TILE-20,
         50,
         40
     );
@@ -5202,30 +4282,23 @@ function drawArcade(){
 
     ctx.fillText(
         "EXIT",
-        ex,
-        ey+5
+        ex*TILE,
+        ey*TILE+5
     );
 
 
-    /*
-        Teachers.
-    */
+    /* TEACHERS */
 
     teachers.forEach(
         teacher=>{
 
             const px =
-                teacher.x *
-                TILE;
+                teacher.x*TILE;
+
 
             const py =
-                teacher.y *
-                TILE;
+                teacher.y*TILE;
 
-
-            /*
-                Head.
-            */
 
             ctx.fillStyle =
                 "#000";
@@ -5245,10 +4318,6 @@ function drawArcade(){
 
             ctx.fill();
 
-
-            /*
-                Body.
-            */
 
             ctx.beginPath();
 
@@ -5283,10 +4352,6 @@ function drawArcade(){
             ctx.fill();
 
 
-            /*
-                Eyes.
-            */
-
             ctx.fillStyle =
                 "#fff";
 
@@ -5318,12 +4383,7 @@ function drawArcade(){
     );
 
 
-    /*
-        Hanako player marker.
-
-        Hanako remains a silhouette
-        outside the maze as well.
-    */
+    /* HANAKO */
 
     ctx.fillStyle =
         "#ff70bd";
@@ -5374,14 +4434,45 @@ function drawArcade(){
 
 function checkArcadeExit(){
 
+    let ex = 0;
+
+    let ey = 0;
+
+
+    for(
+        let y=0;
+        y<maze.length;
+        y++
+    ){
+
+        for(
+            let x=0;
+            x<maze[y].length;
+            x++
+        ){
+
+            if(
+                maze[y][x] === "E"
+            ){
+
+                ex =
+                    x+.5;
+
+                ey =
+                    y+.5;
+
+            }
+
+        }
+
+    }
+
+
     if(
         Math.hypot(
-            player.x -
-            exitPosition.x,
-
-            player.y -
-            exitPosition.y
-        ) < .8
+            player.x-ex,
+            player.y-ey
+        ) < .9
     ){
 
         arcadeSuccess();
@@ -5403,76 +4494,49 @@ function startArcade(){
 
 
     document
-        .getElementById(
-            "arcadeScreen"
-        )
+        .getElementById("arcadeScreen")
         .style.display =
-        "block";
+            "block";
 
 
     document
-        .getElementById(
-            "background"
-        )
+        .getElementById("background")
         .className =
-        "arcade";
+            "arcade";
 
-
-    document
-        .getElementById(
-            "dialogueBox"
-        )
-        .style.display =
-        "none";
-
-
-    /*
-        Player start.
-    */
 
     player.x =
         1.5;
 
+
     player.y =
         1.5;
+
 
     player.stamina =
         100;
 
 
-    /*
-        Teacher start.
-    */
+    teachers[0] = {
 
-    teachers = [
+        x:25.5,
 
-        {
-            x:25.5,
-            y:21.5,
-            chasing:false,
-            path:null,
-            pathIndex:0
-        },
+        y:21.5,
 
-        {
-            x:13.5,
-            y:21.5,
-            chasing:false,
-            path:null,
-            pathIndex:0
-        }
+        chasing:false
 
-    ];
+    };
 
 
-    pathTimer = 0;
+    teachers[1] = {
 
+        x:14.5,
 
-    /*
-        Reset capture.
-    */
+        y:20.5,
 
-    captureStep = 0;
+        chasing:false
+
+    };
 
 
     document
@@ -5480,7 +4544,7 @@ function startArcade(){
             "captureOverlay"
         )
         .style.display =
-        "none";
+            "none";
 
 
     document
@@ -5488,14 +4552,7 @@ function startArcade(){
             "darkFade"
         )
         .style.opacity =
-        "0";
-
-
-    /*
-        Reset joystick.
-    */
-
-    resetJoystick();
+            "0";
 
 }
 
@@ -5504,18 +4561,12 @@ function startArcade(){
    ARCADE LOOP
 ===================================================== */
 
-let previousTime =
-    performance.now();
-
-
 function arcadeLoop(time){
 
     const dt =
         Math.min(
             .05,
-            (time -
-             previousTime) /
-            1000
+            (time-previousTime)/1000
         );
 
 
@@ -5555,23 +4606,21 @@ requestAnimationFrame(
    CAPTURE
 ===================================================== */
 
+let captureStep = 0;
+
+
 function capturePlayer(){
 
-    if(
-        !arcadeRunning
-    ){
+    if(!arcadeRunning){
 
         return;
 
     }
 
 
-    arcadeRunning =
-        false;
+    arcadeRunning = false;
 
-
-    captureStep =
-        0;
+    captureStep = 0;
 
 
     document
@@ -5579,7 +4628,7 @@ function capturePlayer(){
             "captureOverlay"
         )
         .style.display =
-        "block";
+            "block";
 
 
     document
@@ -5587,7 +4636,7 @@ function capturePlayer(){
             "captureSpeaker"
         )
         .textContent =
-        "Teacher";
+            "Teacher";
 
 
     document
@@ -5595,7 +4644,7 @@ function capturePlayer(){
             "captureText"
         )
         .textContent =
-        "What are you doing!?!?";
+            "What are you doing!?!?";
 
 }
 
@@ -5624,7 +4673,7 @@ function advanceCapture(){
                 "captureSpeaker"
             )
             .textContent =
-            boyName();
+                boyName();
 
 
         document
@@ -5632,7 +4681,9 @@ function advanceCapture(){
                 "captureText"
             )
             .textContent =
-            "Hanako take me powerfully to here. I don't want to come here.";
+
+            mainName() +
+            " take me powerfully to here. I don't want to come here.";
 
     }
 
@@ -5643,7 +4694,7 @@ function advanceCapture(){
                 "captureOverlay"
             )
             .style.display =
-            "none";
+                "none";
 
 
         heartBreakArcade();
@@ -5653,10 +4704,6 @@ function advanceCapture(){
 }
 
 
-/*
-    Clicking capture dialogue advances it.
-*/
-
 document
     .getElementById(
         "captureOverlay"
@@ -5665,6 +4712,26 @@ document
         "click",
         advanceCapture
     );
+
+
+document.addEventListener(
+    "keydown",
+    e=>{
+
+        if(
+            e.code === "Space" &&
+            inArcade &&
+            !arcadeRunning
+        ){
+
+            e.preventDefault();
+
+            advanceCapture();
+
+        }
+
+    }
+);
 
 
 /* =====================================================
@@ -5679,20 +4746,17 @@ function heartBreakArcade(){
         );
 
 
-    fade.style.opacity =
-        "0";
+    fade.style.opacity = 0;
 
 
-    let opacity =
-        0;
+    let opacity = 0;
 
 
     const timer =
         setInterval(
             ()=>{
 
-                opacity +=
-                    .035;
+                opacity += .035;
 
 
                 fade.style.opacity =
@@ -5735,18 +4799,9 @@ function heartBreakArcade(){
 
 function arcadeSuccess(){
 
-    if(
-        !inArcade ||
-        !arcadeRunning
-    ){
-
-        return;
-
-    }
-
-
     arcadeRunning =
         false;
+
 
     inArcade =
         false;
@@ -5763,7 +4818,7 @@ function arcadeSuccess(){
             "arcadeScreen"
         )
         .style.display =
-        "none";
+            "none";
 
 
     document
@@ -5771,7 +4826,7 @@ function arcadeSuccess(){
             "dialogueBox"
         )
         .style.display =
-        "block";
+            "block";
 
 
     say(
@@ -5783,7 +4838,11 @@ function arcadeSuccess(){
 
 
     setTimeout(
-        beginChoiceMode,
+        ()=>{
+
+            beginChoiceMode();
+
+        },
         900
     );
 
@@ -5806,8 +4865,7 @@ const knob =
     );
 
 
-let joystickActive =
-    false;
+let joystickActive = false;
 
 
 function updateJoystick(
@@ -5856,14 +4914,12 @@ function updateJoystick(
     ){
 
         dx =
-            dx /
-            distance *
+            dx/distance *
             max;
 
 
         dy =
-            dy /
-            distance *
+            dy/distance *
             max;
 
     }
@@ -5874,11 +4930,11 @@ function updateJoystick(
 
 
     joystickX =
-        dx / max;
+        dx/max;
 
 
     joystickY =
-        dy / max;
+        dy/max;
 
 }
 
@@ -5889,12 +4945,9 @@ function resetJoystick(){
         false;
 
 
-    joystickX =
-        0;
+    joystickX = 0;
 
-
-    joystickY =
-        0;
+    joystickY = 0;
 
 
     knob.style.transform =
@@ -5905,23 +4958,20 @@ function resetJoystick(){
 
 joystick.addEventListener(
     "pointerdown",
-    event=>{
-
-        event.preventDefault();
-
+    e=>{
 
         joystickActive =
             true;
 
 
         joystick.setPointerCapture(
-            event.pointerId
+            e.pointerId
         );
 
 
         updateJoystick(
-            event.clientX,
-            event.clientY
+            e.clientX,
+            e.clientY
         );
 
     }
@@ -5930,15 +4980,15 @@ joystick.addEventListener(
 
 joystick.addEventListener(
     "pointermove",
-    event=>{
+    e=>{
 
         if(
             joystickActive
         ){
 
             updateJoystick(
-                event.clientX,
-                event.clientY
+                e.clientX,
+                e.clientY
             );
 
         }
@@ -5971,12 +5021,11 @@ const dashButton =
 
 dashButton.addEventListener(
     "pointerdown",
-    event=>{
+    e=>{
 
-        event.preventDefault();
+        e.preventDefault();
 
-        dashTouch =
-            true;
+        dashTouch = true;
 
     }
 );
@@ -5986,8 +5035,7 @@ dashButton.addEventListener(
     "pointerup",
     ()=>{
 
-        dashTouch =
-            false;
+        dashTouch = false;
 
     }
 );
@@ -5997,8 +5045,7 @@ dashButton.addEventListener(
     "pointercancel",
     ()=>{
 
-        dashTouch =
-            false;
+        dashTouch = false;
 
     }
 );
@@ -6008,24 +5055,19 @@ dashButton.addEventListener(
     "pointerleave",
     ()=>{
 
-        dashTouch =
-            false;
+        dashTouch = false;
 
     }
 );
 
 
 /* =====================================================
-   INITIALIZATION
+   INITIAL SETTINGS
 ===================================================== */
 
 setDeviceMode(
     savedMode || "pc"
 );
-
-
-updateLove();
-
 
 </script>
 
