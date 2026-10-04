@@ -1747,8 +1747,8 @@ body.smartphone #arcadeCrosshair {
 
 #storyBackButton {
     position: absolute;
-    top: 12px;
-    right: 14px;
+    top: max(10px, env(safe-area-inset-top));
+    right: max(10px, env(safe-area-inset-right));
     left: auto;
     z-index: 240;
     border: 2px solid rgba(255,255,255,.95);
@@ -1950,7 +1950,7 @@ body.smartphone #arcadeCrosshair {
 #captureOverlay[style*="block"] { cursor: pointer; }
 
 @media (max-width: 700px) {
-    #storyBackButton { top: 8px; right: 8px; left: auto; padding: 7px 10px; font-size: 11px; }
+    #storyBackButton { top: max(8px, env(safe-area-inset-top)); right: max(8px, env(safe-area-inset-right)); left: auto; padding: 6px 9px; font-size: 10px; }
     #choiceBox { bottom: 145px; }
     .characterSprite { width: min(46vw, 300px); height: 52vh; }
 }
@@ -2275,8 +2275,8 @@ button.ui-disabled { pointer-events:none !important; opacity:.58 !important; }
 #weddingBackButton {
     position:absolute;
     right:22px;
-    bottom:22px;
-    z-index:20;
+    bottom:18px;
+    z-index:40;
     display:none;
     min-width:120px;
     opacity:.95;
@@ -2358,8 +2358,13 @@ body.smartphone #lookPad { pointer-events:none; opacity:.58; }
     content:"";
     position:absolute; inset:0;
     background:radial-gradient(circle at 50% 48%, rgba(255,255,255,.08), transparent 42%);
-    animation:classroomBuzz 2.25s ease-in-out 1 both;
+    animation:classroomBuzz 2.5s ease-in-out 1 both;
 }
+/* Four bubbles now finish together at exactly 2.5 seconds. */
+#classroomChatter .chatter1 { animation-duration:2.4s; animation-delay:.10s; }
+#classroomChatter .chatter2 { animation-duration:2.15s; animation-delay:.35s; }
+#classroomChatter .chatter3 { animation-duration:1.90s; animation-delay:.60s; }
+#classroomChatter .chatter4 { animation-duration:1.65s; animation-delay:.85s; }
 @keyframes classroomBuzz {
     0%,100%{transform:translateX(0);opacity:.35}
     50%{transform:translateX(3px);opacity:.7}
@@ -2570,6 +2575,14 @@ body.smartphone #lookPad { pointer-events:none; opacity:.58; }
 #fightOverlay.active .impactOne { animation: impactBurstRev5 .42s ease-out .36s 1 both !important; }
 #fightOverlay.active .impactTwo { animation: impactBurstRev5 .42s ease-out 1.12s 1 both !important; }
 #fightOverlay.active .impactThree { animation: impactBurstRev5 .42s ease-out 1.88s 1 both !important; }
+#fightOverlay.active .fightCaption { animation: fightCaptionPulse 3.35s ease-in-out both !important; }
+@keyframes fightCaptionPulse {
+    0%,100%{opacity:.55;transform:translateY(0)}
+    18%,44%,70%{opacity:1;transform:translateY(-2px)}
+}
+/* Clear punch-hit beats: characters lunge, fists cross the stage, then recoil. */
+#fightOverlay.active .fistLeft { transform-origin:center; }
+#fightOverlay.active .fistRight { transform-origin:center; }
 #fightOverlay.active::after {
     content:""; position:absolute; inset:0; pointer-events:none; z-index:30;
     background:rgba(255,255,255,0); animation:fightFlashRev5 3.35s linear both;
@@ -2632,6 +2645,24 @@ body.smartphone #lookPad { pointer-events:none; opacity:.58; }
 
 <section id="titleScreen" class="screen active">
 
+    <div class="titleParty" aria-hidden="true">
+        <div class="balloon p1"></div>
+        <div class="balloon p2"></div>
+        <div class="balloon p3"></div>
+        <div class="balloon p4"></div>
+        <div class="schoolStar s1">✦</div>
+        <div class="schoolStar s2">✧</div>
+    </div>
+
+    <div class="titleDecoration" aria-hidden="true">
+        <div class="schoolRoof"></div>
+        <div class="schoolNameplate">TOHKATSU JUNIOR HIGH SCHOOL</div>
+        <div class="schoolWindows"></div>
+        <div class="schoolDoor"></div>
+        <div class="schoolTree treeLeft"></div>
+        <div class="schoolTree treeRight"></div>
+        <div class="schoolGate"></div>
+    </div>
 
     <div class="titleRibbon">TOHKATSU JUNIOR HIGH SCHOOL</div>
 
@@ -3532,12 +3563,11 @@ function playClassroomChatter() {
     chatter.classList.remove("active");
     void chatter.offsetWidth;
     chatter.classList.add("active");
-    // The final chatter bubble finishes at 0.80s + 1.45s = 2.25s.
-    // End the whole classroom-buzz overlay at exactly the same moment.
+    // The last chatter bubble disappears at 2.5s; advance immediately at that same moment.
     return new Promise(resolve => setTimeout(() => {
         chatter.classList.remove("active");
         resolve();
-    }, 2250));
+    }, 2500));
 }
 async function playStory() {
     if (inArcade || ending) return;
@@ -3770,25 +3800,23 @@ function restartGame(){
 ===================================================== */
 
 const maze = [
-    '###############################',
-    '#.....#...#...#.......#...#...#',
-    '#...#.#...#.#.#.##..#...#.#.#.#',
-    '#.#.#...#...#.#.....#.......#.#',
-    '#.#.#.#.#####.###.###.#####.#.#',
-    '#.#...#...#...............#...#',
-    '#.###.#.#.#########...###.#.#.#',
-    '#.#...#.#...#.......#.....#.#.#',
-    '#.#.#.#.#.#.#.#####.###...#.#.#',
-    '#.#.#.....#...#.....#.........#',
-    '#.#.##.#..###.#.#.###..######.#',
-    '#...#.....#.....#.............#',
-    '#.###.###...#####.#.....#######',
-    '#.#...#.....#.......#.#.....#.#',
-    '#.#.######.##.###.#.#....#..#.#',
-    '#...#.......#.#.#.............#',
-    '#.#.#.#####.#...#.#.###.#.###.#',
-    '#.........#...#.......#.......#',
-    '###############.###############',
+    '#############################',
+    '#.....#.....................#',
+    '#####.#.###.#.#.##.######...#',
+    '#...#.......#.#...........#.#',
+    '#...#########.#############.#',
+    '#.......#.....#.........#...#',
+    '#.#####.#.#...#.#..####.#.#.#',
+    '#...........#.......#.....#.#',
+    '#...###.#########.#.#.###.#.#',
+    '#.....#.#.......#...........#',
+    '#####.###.#.#.#.#.#####.###.#',
+    '#.....#...#.#...#...........#',
+    '#.###.#.#.#.#.###.#.#.###.#.#',
+    '#...#.#.............#.......#',
+    '#.#.###.#.#.#######.###.#...#',
+    '#.#.......#.......#.........#',
+    '###########################.#'
 ];
 
 /*
@@ -3808,7 +3836,10 @@ arcadeBgImage.src = "./images/arcade_bg.png";
 
 const NORMAL_SPEED = 2;
 const DASH_SPEED = 3;
-const TEACHER_DETECTION_DISTANCE = 23.0;
+const TEACHER_BASE_DETECTION_DISTANCE = 26.0;
+const TEACHER_MAX_DETECTION_DISTANCE = 40.0;
+const TEACHER_BASE_CHASE_SPEED = 2.20;
+const TEACHER_MAX_CHASE_SPEED = 3.25;
 
 const FIELD_OF_VIEW = Math.PI / 3;
 const HALF_FOV = FIELD_OF_VIEW / 2;
@@ -3827,10 +3858,10 @@ let renderColumns = RENDER_COLUMNS_DESKTOP;
 ===================================================== */
 
 let player = {
-    // Start in the middle of the maze.
-    x: 15.5,
-    y: 9.5,
-    angle: Math.PI / 2,
+    // Spawn in one corner; the escape door is attached to the opposite diagonal corner.
+    x: 1.5,
+    y: 1.5,
+    angle: 0,
     stamina: 100
 };
 
@@ -3852,45 +3883,38 @@ let teachers = [
 ];
 
 let exitPoint = {
-    // The exit is physically attached to the outer wall: a real doorway.
-    x: 15.5,
-    y: 18.15
+    // Real doorway attached to the bottom outer wall at the diagonal opposite corner.
+    x: 27.5,
+    y: 16.5
 };
 
 /* Decorative arcade machines placed on the walkable floor. They are visual
    props only, so they never block the player or teachers. */
 const arcadeProps = [
     {x:3.5,y:1.5,type:"cabinet",scale:.70},
-    {x:8.5,y:1.5,type:"crane",scale:.72},
-    {x:13.5,y:1.5,type:"racing",scale:.70},
-    {x:21.5,y:1.5,type:"cabinet",scale:.70},
-    {x:27.5,y:1.5,type:"crane",scale:.72},
-    {x:3.5,y:3.5,type:"racing",scale:.68},
-    {x:11.5,y:3.5,type:"cabinet",scale:.70},
-    {x:19.5,y:3.5,type:"crane",scale:.70},
-    {x:25.5,y:3.5,type:"prize",scale:.70},
-    {x:5.5,y:5.5,type:"cabinet",scale:.70},
-    {x:15.5,y:5.5,type:"racing",scale:.68},
-    {x:23.5,y:5.5,type:"crane",scale:.70},
-    {x:27.5,y:7.5,type:"cabinet",scale:.70},
-    {x:3.5,y:9.5,type:"prize",scale:.70},
-    {x:9.5,y:9.5,type:"cabinet",scale:.70},
-    {x:17.5,y:9.5,type:"racing",scale:.68},
-    {x:25.5,y:9.5,type:"cabinet",scale:.70},
-    {x:5.5,y:11.5,type:"crane",scale:.70},
-    {x:13.5,y:11.5,type:"cabinet",scale:.70},
-    {x:21.5,y:11.5,type:"prize",scale:.70},
-    {x:27.5,y:11.5,type:"racing",scale:.68},
-    {x:3.5,y:13.5,type:"cabinet",scale:.70},
-    {x:11.5,y:13.5,type:"crane",scale:.70},
-    {x:19.5,y:13.5,type:"cabinet",scale:.70},
-    {x:25.5,y:13.5,type:"prize",scale:.70},
-    {x:5.5,y:15.5,type:"racing",scale:.68},
-    {x:15.5,y:15.5,type:"cabinet",scale:.70},
-    {x:23.5,y:15.5,type:"crane",scale:.70},
-    {x:9.5,y:17.5,type:"prize",scale:.70},
-    {x:19.5,y:17.5,type:"cabinet",scale:.70},
-    {x:27.5,y:17.5,type:"racing",scale:.68}
+    {x:7.5,y:1.5,type:"crane",scale:.70},
+    {x:10.5,y:1.5,type:"racing",scale:.70},
+    {x:13.5,y:1.5,type:"cabinet",scale:.70},
+    {x:16.5,y:1.5,type:"prize",scale:.70},
+    {x:19.5,y:1.5,type:"cabinet",scale:.70},
+    {x:22.5,y:1.5,type:"crane",scale:.70},
+    {x:25.5,y:1.5,type:"racing",scale:.70},
+    {x:1.5,y:3.5,type:"cabinet",scale:.70},
+    {x:5.5,y:3.5,type:"prize",scale:.70},
+    {x:27.5,y:3.5,type:"crane",scale:.70},
+    {x:13.5,y:4.5,type:"racing",scale:.70},
+    {x:3.5,y:5.5,type:"cabinet",scale:.70},
+    {x:7.5,y:5.5,type:"crane",scale:.70},
+    {x:10.5,y:5.5,type:"prize",scale:.70},
+    {x:16.5,y:5.5,type:"cabinet",scale:.70},
+    {x:19.5,y:5.5,type:"racing",scale:.70},
+    {x:22.5,y:5.5,type:"crane",scale:.70},
+    {x:25.5,y:5.5,type:"cabinet",scale:.70},
+    {x:1.5,y:7.5,type:"prize",scale:.70},
+    {x:5.5,y:7.5,type:"racing",scale:.70},
+    {x:13.5,y:7.5,type:"cabinet",scale:.70},
+    {x:27.5,y:7.5,type:"crane",scale:.70},
+    {x:19.5,y:8.5,type:"prize",scale:.70}
 ];
 
 /* =====================================================
@@ -3905,6 +3929,7 @@ let lookX = 0;
 let dashTouch = false;
 
 let arcadeRunning = false;
+let arcadeElapsed = 0;
 let previousTime = performance.now();
 
 /* =====================================================
@@ -4339,14 +4364,24 @@ function hasLineOfSight(a, b) {
    UPDATE TEACHERS
 ===================================================== */
 
+function getTeacherDifficulty() {
+    const t = clamp(arcadeElapsed / 90, 0, 1);
+    return {
+        detection: TEACHER_BASE_DETECTION_DISTANCE + (TEACHER_MAX_DETECTION_DISTANCE - TEACHER_BASE_DETECTION_DISTANCE) * t,
+        chaseSpeed: TEACHER_BASE_CHASE_SPEED + (TEACHER_MAX_CHASE_SPEED - TEACHER_BASE_CHASE_SPEED) * t,
+        wanderSpeed: 1.05 + .35 * t
+    };
+}
+
 function updateTeachers(dt) {
+    const difficulty = getTeacherDifficulty();
+
     for (const teacher of teachers) {
         const distance = distanceBetween(teacher, player);
 
-        // Until a teacher actually sees Hanako, it simply wanders around.
-        // The teacher has a wider field of detection now.
-        // She still needs a clear line of sight, so walls remain useful for hiding.
-        if (!teacher.chasing && distance < TEACHER_DETECTION_DISTANCE && hasLineOfSight(teacher, player)) {
+        // Until she actually sees Hanako, the teacher wanders. Detection is intentionally
+        // generous and grows over time, but walls still block vision.
+        if (!teacher.chasing && distance < difficulty.detection && hasLineOfSight(teacher, player)) {
             teacher.chasing = true;
             teacher.path = null;
             teacher.pathTimer = 0;
@@ -4362,11 +4397,12 @@ function updateTeachers(dt) {
             (keys["shift"] || dashTouch) &&
             player.stamina > 0;
 
-        // Once she notices Hanako, the teacher is a little faster than Hanako
-        // so the chase is tense, but still escapable with good routing.
-        const speed = teacher.chasing
-            ? (playerDashing ? DASH_SPEED * 1.07 : NORMAL_SPEED * 1.10)
-            : NORMAL_SPEED * .70;
+        // The teacher starts a little faster than normal running and becomes more dangerous
+        // as the escape takes longer. Even at maximum she remains a chaseable opponent.
+        let speed = teacher.chasing
+            ? difficulty.chaseSpeed
+            : difficulty.wanderSpeed;
+        if (teacher.chasing && playerDashing) speed = Math.min(speed, DASH_SPEED * 1.06);
 
         teacher.pathTimer -= dt;
         teacher.wanderTimer -= dt;
@@ -4374,24 +4410,24 @@ function updateTeachers(dt) {
         if (!teacher.chasing) {
             if (!teacher.wanderTarget || teacher.wanderTimer <= 0 || !teacher.path) {
                 teacher.wanderTarget = randomWalkTarget(teacher);
-                teacher.wanderTimer = 1.2 + Math.random() * 1.8;
+                teacher.wanderTimer = .9 + Math.random() * 1.4;
                 teacher.path = teacher.wanderTarget
                     ? nextPathStep(teacher.x, teacher.y, teacher.wanderTarget.x, teacher.wanderTarget.y)
                     : null;
-                teacher.pathTimer = .28;
+                teacher.pathTimer = .22;
             } else if (teacher.pathTimer <= 0) {
                 teacher.path = nextPathStep(
                     teacher.x, teacher.y,
                     teacher.wanderTarget.x, teacher.wanderTarget.y
                 );
-                teacher.pathTimer = .28;
+                teacher.pathTimer = .22;
             }
         } else if (teacher.pathTimer <= 0) {
             teacher.path = nextPathStep(
                 teacher.x, teacher.y,
                 player.x, player.y
             );
-            teacher.pathTimer = .18;
+            teacher.pathTimer = .14;
         }
 
         if (teacher.path) {
@@ -5346,34 +5382,45 @@ function drawExitBeacon() {
     const dy = exitPoint.y - player.y;
     const angleToExit = Math.atan2(dy, dx);
     const relative = normalizeAngle(angleToExit - player.angle);
-    if (Math.abs(relative) > HALF_FOV * 1.12) return;
+    const distance = Math.hypot(dx, dy);
 
-    const x = arcadeCanvas.width * (0.5 + relative / FIELD_OF_VIEW);
+    // A directional marker is always present. The physical door itself remains a real
+    // object in the maze and is still depth-occluded by walls.
+    const margin = arcadeCanvas.width * .055;
+    let x = arcadeCanvas.width * (0.5 + relative / FIELD_OF_VIEW);
+    let arrowDirection = 0;
+    if (relative < -HALF_FOV) { x = margin; arrowDirection = -1; }
+    else if (relative > HALF_FOV) { x = arcadeCanvas.width - margin; arrowDirection = 1; }
+    else { x = clamp(x, margin, arcadeCanvas.width - margin); }
+
     const pulse = 1 + Math.sin(performance.now() / 180) * .08;
-    const beamH = arcadeCanvas.height * .20 * pulse;
-    const beamW = Math.max(4, arcadeCanvas.width * .008);
+    const y = arcadeCanvas.height * .09;
 
     ctx.save();
     ctx.globalCompositeOperation = "lighter";
-    const g = ctx.createLinearGradient(0, arcadeCanvas.height * .03, 0, arcadeCanvas.height * .03 + beamH);
-    g.addColorStop(0, "rgba(114,251,255,.02)");
-    g.addColorStop(.55, "rgba(114,251,255,.16)");
-    g.addColorStop(1, "rgba(255,255,255,.70)");
-    ctx.fillStyle = g;
-    ctx.fillRect(x - beamW/2, arcadeCanvas.height * .03, beamW, beamH);
-
     ctx.shadowBlur = 18;
     ctx.shadowColor = "#72fbff";
     ctx.fillStyle = "rgba(210,255,255,.95)";
+    ctx.font = "900 13px Arial";
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
+    ctx.fillText("EXIT", x, y);
+
     ctx.beginPath();
-    ctx.moveTo(x, arcadeCanvas.height * .025);
-    ctx.lineTo(x - 9, arcadeCanvas.height * .075);
-    ctx.lineTo(x + 9, arcadeCanvas.height * .075);
+    if (arrowDirection < 0) {
+        ctx.moveTo(x - 12, y); ctx.lineTo(x - 2, y - 7); ctx.lineTo(x - 2, y + 7);
+    } else if (arrowDirection > 0) {
+        ctx.moveTo(x + 12, y); ctx.lineTo(x + 2, y - 7); ctx.lineTo(x + 2, y + 7);
+    } else {
+        ctx.moveTo(x, y - 12); ctx.lineTo(x - 7, y - 2); ctx.lineTo(x + 7, y - 2);
+    }
     ctx.closePath();
     ctx.fill();
-    ctx.font = "900 12px Arial";
-    ctx.textAlign = "center";
-    ctx.fillText("EXIT", x, arcadeCanvas.height * .11);
+
+    ctx.globalCompositeOperation = "source-over";
+    ctx.font = "700 10px Arial";
+    ctx.fillStyle = "rgba(255,255,255,.92)";
+    ctx.fillText(Math.max(1, Math.round(distance)) + "m", x, y + 17);
     ctx.restore();
 }
 
@@ -5389,7 +5436,7 @@ function drawExit(depthBuffer) {
     const h = projection.size * 1.85 * distanceScale;
     const w = h * .62;
     const left = projection.screenX - w / 2;
-    const top = arcadeCanvas.height / 2 - h * .58;
+    const top = arcadeCanvas.height / 2 - h * .50;
     const pulse = 1 + Math.sin(performance.now() / 170) * .06;
 
     ctx.save();
@@ -5615,18 +5662,21 @@ async function startArcadeIntro(){
         if(line.speaker==="Narration"){
             clearCharacters();
             await say(line.speaker,line.text,"normal","center");
+
+            // The school scene is replaced by the dedicated running animation.
             document.getElementById("runHanako").innerHTML=characterArtSvg("Hanako");
             document.getElementById("runBoy").innerHTML=`<img class="fightArt" src="${boyData().image}" alt="${boyName()}">`;
             const run=document.getElementById("runTransition");
+            run.classList.remove("active");
+            void run.offsetWidth;
             run.classList.add("active");
             await new Promise(r=>setTimeout(r,1900));
             run.classList.remove("active");
-            // They have arrived. From this point on, the teacher is finding them at the arcade.
+
+            // Only after the running animation has ended do we arrive at the game center.
             document.getElementById("background").className="arcade";
             await waitForDialogueAdvance();
         } else {
-            // Teacher encounter and the remaining dialogue now happen at the game center.
-            if(line.speaker==="Teacher") document.getElementById("background").className="arcade";
             await say(line.speaker,line.text,"normal");
             await waitForDialogueAdvance();
         }
@@ -5640,16 +5690,17 @@ async function startArcadeIntro(){
 }
 
 function resetArcadeWorld() {
-    // Start in the center so the teacher does not have an unfair positional advantage.
-    player.x = 15.5;
-    player.y = 9.5;
-    player.angle = Math.PI / 2;
+    // Hanako starts in one corner; the teacher starts nearer the middle; the exit is diagonally opposite.
+    player.x = 1.5;
+    player.y = 1.5;
+    player.angle = 0;
     player.stamina = 100;
+    arcadeElapsed = 0;
     teachers = [
         // One teacher only. Until she sees Hanako, she wanders randomly.
-        { x: 27.5, y: 17.5, angle: Math.PI, chasing: false, pathTimer: 0, path: null, wanderTarget: null, wanderTimer: 0 }
+        { x: 17.5, y: 8.5, angle: Math.PI, chasing: false, pathTimer: 0, path: null, wanderTarget: null, wanderTimer: 0 }
     ];
-    exitPoint = { x: 15.5, y: 18.15 };
+    exitPoint = { x: 27.5, y: 16.5 };
     joystickX = 0;
     joystickY = 0;
     lookX = 0;
@@ -5679,6 +5730,7 @@ function startArcade() {
     document.getElementById("darkFade").style.opacity = "0";
 
     previousTime = performance.now();
+    arcadeElapsed = 0;
 }
 
 /* =====================================================
@@ -5694,6 +5746,7 @@ function arcadeLoop(time) {
     previousTime = time;
 
     if (inArcade && arcadeRunning) {
+        arcadeElapsed += dt;
         updatePlayer(dt);
         updateTeachers(dt);
         updateCameraBob(dt);
@@ -5818,12 +5871,10 @@ function heartBreakArcade() {
 async function arcadeSuccess(){
     if(!inArcade||!arcadeRunning)return;
 
-    // The maze is over, but do not jump straight back to the four choices.
-    // Let Hanako and the boy have a short escape conversation first.
     arcadeRunning=false;
     inArcade=false;
     actionLocked=true;
-    love=80;
+    love = clamp(love + 80, 0, 100);
     updateLove();
 
     document.getElementById("arcadeScreen").style.display="none";
@@ -5831,28 +5882,15 @@ async function arcadeSuccess(){
     document.getElementById("choiceBox").style.display="none";
     document.getElementById("choiceBriefing").classList.remove("active");
     choiceBriefingActive=false;
-    document.getElementById("dialogueBox").style.display="block";
-    document.getElementById("background").className="city";
-    clearCharacters();
-
-    await say(mainName(),"We made it! That was really close.","happy","left");
-    await waitForDialogueAdvance();
-    await say(boyName(),"Yeah... I thought our teacher was going to catch us.","relieved","right");
-    await waitForDialogueAdvance();
-    await say(mainName(),"That was exciting! But we should calm down now.","normal","left");
-    await waitForDialogueAdvance();
-    await say(boyName(),"Good idea. We should probably act like normal students now.","normal","right");
-    await waitForDialogueAdvance();
-    await say(mainName(),"Let's go back to class.","normal","left");
-    await waitForDialogueAdvance();
-
-    // Return to the classroom for the four-choice section.
-    clearDialogueState();
-    clearCharacters();
     document.getElementById("dialogueBox").style.display="none";
     document.getElementById("background").className="school";
-    restoreMainChoices();
-    actionLocked=false;
+    document.getElementById("classroomChatter").classList.remove("active");
+    clearDialogueState();
+    clearCharacters();
+
+    // Escaping takes Hanako and the boy straight back to the classroom choice point.
+    await new Promise(resolve => setTimeout(resolve, 250));
+    await beginChoiceMode();
 }
 
 /* =====================================================
