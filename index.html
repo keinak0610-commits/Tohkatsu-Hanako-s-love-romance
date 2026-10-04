@@ -8,7 +8,167 @@
       content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
 <title>Tohkatsu Hanako's Love Romance</title>
+/* =====================================================
+   PASSWORD SCREEN
+===================================================== */
 
+#passwordScreen{
+
+    position:fixed;
+
+    inset:0;
+
+    z-index:99999;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    flex-direction:column;
+
+    background:
+        radial-gradient(
+            circle at 50% 40%,
+            #4a174c,
+            #160b20 55%,
+            #050509
+        );
+
+}
+
+#passwordBox{
+
+    width:min(380px,85vw);
+
+    text-align:center;
+
+    padding:35px 30px;
+
+    border:
+        2px solid
+        #ff70bd;
+
+    border-radius:18px;
+
+    background:
+        rgba(20,10,25,.95);
+
+    box-shadow:
+        0 0 40px
+        rgba(255,20,147,.35);
+
+}
+
+#passwordTitle{
+
+    margin-bottom:25px;
+
+    color:#ff70bd;
+
+    font-size:28px;
+
+    font-weight:bold;
+
+    letter-spacing:3px;
+
+}
+
+#passwordInput{
+
+    display:block;
+
+    width:100%;
+
+    height:48px;
+
+    padding:10px 14px;
+
+    border:
+        2px solid
+        #555;
+
+    border-radius:8px;
+
+    outline:none;
+
+    background:#111;
+
+    color:white;
+
+    text-align:center;
+
+    font-size:20px;
+
+    letter-spacing:2px;
+
+}
+
+#passwordInput:focus{
+
+    border-color:#ff70bd;
+
+}
+
+#passwordButton{
+
+    display:block;
+
+    width:100%;
+
+    margin-top:18px;
+
+    padding:12px;
+
+    border:
+        2px solid
+        #ff70bd;
+
+    border-radius:9px;
+
+    background:
+        rgba(255,255,255,.05);
+
+    color:white;
+
+    font-size:19px;
+
+    cursor:pointer;
+
+    transition:.15s;
+
+}
+
+#passwordButton:hover{
+
+    background:#ff70bd;
+
+    color:#180718;
+
+}
+
+#passwordError{
+
+    min-height:20px;
+
+    margin-top:14px;
+
+    color:#ff6b8a;
+
+    font-size:14px;
+
+    opacity:0;
+
+    transition:.15s;
+
+}
+
+#passwordError.show{
+
+    opacity:1;
+
+}
 <style>
 
 /* =====================================================
@@ -1170,6 +1330,43 @@ body.smartphone #arcadeHint{
 
 <body>
 
+<!-- =====================================================
+     PASSWORD SCREEN
+===================================================== -->
+
+<div id="passwordScreen">
+
+    <div id="passwordBox">
+
+        <div id="passwordTitle">
+            PASSWORD
+        </div>
+
+        <input
+            id="passwordInput"
+            type="password"
+            autocomplete="off"
+            inputmode="text"
+            onkeydown="if(event.key==='Enter') checkPassword()"
+        >
+
+        <button
+            id="passwordButton"
+            onclick="checkPassword()">
+
+            ENTER
+
+        </button>
+
+        <div id="passwordError">
+            Incorrect password.
+        </div>
+
+    </div>
+
+</div>
+
+
 <div id="game">
 
 
@@ -1679,6 +1876,84 @@ body.smartphone #arcadeHint{
 
 
 <script>
+
+/* =====================================================
+   PASSWORD
+===================================================== */
+
+const GAME_PASSWORD = "Tohkatsu9";
+
+function checkPassword(){
+
+    const input =
+        document.getElementById(
+            "passwordInput"
+        );
+
+    const error =
+        document.getElementById(
+            "passwordError"
+        );
+
+    if(
+        input.value === GAME_PASSWORD
+    ){
+
+        document
+            .getElementById(
+                "passwordScreen"
+            )
+            .style.display =
+                "none";
+
+        error.classList.remove(
+            "show"
+        );
+
+        input.value = "";
+
+        /*
+            Focus is returned to the game
+            after unlocking.
+        */
+
+        document.body.focus();
+
+    }
+
+    else{
+
+        error.classList.add(
+            "show"
+        );
+
+        input.value = "";
+
+        input.focus();
+
+    }
+
+}
+
+
+/*
+    Keep the game locked when the page
+    is first opened.
+*/
+
+window.addEventListener(
+    "load",
+    ()=>{
+
+        document
+            .getElementById(
+                "passwordInput"
+            )
+            .focus();
+
+    }
+);
+
 
 /* =====================================================
    CHARACTER DATA
