@@ -1552,15 +1552,9 @@ body.smartphone #arcadeCrosshair {
 const GAME_PASSWORD = "Tohkatsu9";
 
 function requestGameStart() {
-    const passwordScreen = document.getElementById("passwordScreen");
-    const input = document.getElementById("passwordInput");
-    const error = document.getElementById("passwordError");
-
-    error.classList.remove("show");
-    input.value = "";
-    passwordScreen.style.display = "flex";
-
-    setTimeout(() => input.focus(), 50);
+    // The password is checked only once, before the school title screen.
+    // From the title screen, GAME START goes directly to character selection.
+    showCharacterSelect();
 }
 
 function cancelPassword() {
