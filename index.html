@@ -919,8 +919,8 @@ button {
 #runTransition.active { display: flex; }
 .runStreet { position:absolute; inset:0; background:repeating-linear-gradient(90deg, transparent 0 90px, rgba(255,255,255,.24) 90px 94px); animation: streetMove .5s linear infinite; }
 .runCharacter { position:absolute; bottom:8%; width:190px; height:330px; }
-.runCharacter.hanako { left:18%; animation: runHanako 1.4s ease-in-out infinite; }
-.runCharacter.boy { right:18%; animation: runBoy 1.4s ease-in-out infinite; }
+.runCharacter.hanako { left:18%; animation: runHanako 1.9s ease-in-out infinite; }
+.runCharacter.boy { right:18%; animation: runBoy 1.9s ease-in-out infinite; }
 .runCaption { position:absolute; top:12%; color:white; font-weight:900; font-size:clamp(28px,6vw,60px); text-shadow:3px 3px 0 #e45b84; }
 @keyframes streetMove { from{transform:translateX(0)} to{transform:translateX(-94px)} }
 @keyframes runHanako { 0%,100%{transform:translateY(0) rotate(-3deg)} 50%{transform:translateY(-15px) rotate(4deg)} }
@@ -1658,33 +1658,15 @@ body.smartphone #arcadeCrosshair {
 
 #titleScreen {
     background:
-        linear-gradient(180deg, #73cef7 0%, #bfeeff 48%, #e9f8ff 49%, #91b96f 50%, #6e9a59 100%);
+        linear-gradient(rgba(25,55,85,.08), rgba(25,55,85,.22)),
+        url("./images/title_school.png") center center / cover no-repeat;
     overflow: hidden;
 }
 
-#titleScreen::before {
-    content: "";
-    position: absolute;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    height: 46%;
-    background:
-        linear-gradient(180deg, transparent 0 9%, rgba(255,255,255,.35) 9% 10%, transparent 10% 100%),
-        repeating-linear-gradient(90deg, #f7e6c5 0 80px, #e6cfaa 80px 84px);
-    clip-path: polygon(0 28%, 8% 22%, 16% 25%, 25% 18%, 35% 24%, 46% 15%, 58% 22%, 69% 16%, 81% 24%, 91% 19%, 100% 25%, 100% 100%, 0 100%);
-    opacity: .96;
-}
-
+/* Keep the title screen visually simple: only START / CREDIT / SETTING are interactive. */
+#titleScreen::before,
 #titleScreen::after {
-    content: "";
-    position: absolute;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    height: 10%;
-    background: repeating-linear-gradient(90deg, #687b8b 0 90px, #8394a1 90px 180px);
-    border-top: 5px solid rgba(255,255,255,.5);
+    display: none;
 }
 
 #characterScreen {
@@ -1915,6 +1897,11 @@ body.smartphone #arcadeCrosshair {
 #miniMap {
     background: rgba(255,255,255,.94);
     border-color: #fff;
+    transition: border-color .12s, box-shadow .12s;
+}
+#miniMap.warning {
+    border-color: #ff315d;
+    box-shadow: 0 0 0 3px rgba(255,49,93,.28), 0 8px 22px rgba(0,0,0,.24);
 }
 
 #fightOverlay,
@@ -2087,10 +2074,10 @@ button.ui-disabled { pointer-events:none !important; opacity:.58 !important; }
     opacity:0;
     transform:scale(.75) translateY(14px);
 }
-.chatter1 { left:7%; top:22%; animation:chatterPop .95s .05s ease-out forwards; }
-.chatter2 { right:8%; top:30%; animation:chatterPop .95s .18s ease-out forwards; }
-.chatter3 { left:16%; top:43%; animation:chatterPop .95s .32s ease-out forwards; }
-.chatter4 { right:17%; top:48%; animation:chatterPop .95s .45s ease-out forwards; }
+.chatter1 { left:7%; top:22%; animation:chatterPop 1.45s .05s ease-out forwards; }
+.chatter2 { right:8%; top:30%; animation:chatterPop 1.45s .30s ease-out forwards; }
+.chatter3 { left:16%; top:43%; animation:chatterPop 1.45s .55s ease-out forwards; }
+.chatter4 { right:17%; top:48%; animation:chatterPop 1.45s .80s ease-out forwards; }
 @keyframes chatterPop {
     0% { opacity:0; transform:scale(.75) translateY(14px); }
     35% { opacity:1; transform:scale(1.05) translateY(0); }
@@ -2318,7 +2305,7 @@ body.smartphone #lookPad { pointer-events:none; opacity:.58; }
     content:"";
     position:absolute; inset:0;
     background:radial-gradient(circle at 50% 48%, rgba(255,255,255,.08), transparent 42%);
-    animation:classroomBuzz .24s ease-in-out 5;
+    animation:classroomBuzz .55s ease-in-out 8;
 }
 @keyframes classroomBuzz {
     0%,100%{transform:translateX(0);opacity:.35}
@@ -2337,24 +2324,6 @@ body.smartphone #lookPad { pointer-events:none; opacity:.58; }
 
 <section id="titleScreen" class="screen active">
 
-    <div class="titleParty" aria-hidden="true">
-        <div class="balloon p1"></div>
-        <div class="balloon p2"></div>
-        <div class="balloon p3"></div>
-        <div class="balloon p4"></div>
-        <div class="schoolStar s1">✦</div>
-        <div class="schoolStar s2">✧</div>
-    </div>
-
-    <div class="titleDecoration" aria-hidden="true">
-        <div class="schoolRoof"></div>
-        <div class="schoolNameplate">TOHKATSU JUNIOR HIGH SCHOOL</div>
-        <div class="schoolWindows"></div>
-        <div class="schoolDoor"></div>
-        <div class="schoolTree treeLeft"></div>
-        <div class="schoolTree treeRight"></div>
-        <div class="schoolGate"></div>
-    </div>
 
     <div class="titleRibbon">TOHKATSU JUNIOR HIGH SCHOOL</div>
 
@@ -2364,16 +2333,12 @@ body.smartphone #lookPad { pointer-events:none; opacity:.58; }
     </div>
 
     <div class="titleTagline">
-        Continue from the four choices.
+        A new school day is about to begin.
     </div>
 
     <div class="titleButtons">
         <button class="menuButton startButton" onclick="requestGameStart()">
-            CONTINUE
-        </button>
-
-        <button class="menuButton" onclick="showCharacterSelect(true)">
-            CHANGE BOYFRIEND
+            START
         </button>
 
         <button class="menuButton" onclick="openModal('creditModal')">
@@ -2381,11 +2346,9 @@ body.smartphone #lookPad { pointer-events:none; opacity:.58; }
         </button>
 
         <button class="menuButton" onclick="openModal('settingsModal')">
-            SETTINGS
+            SETTING
         </button>
     </div>
-
-    <div class="titleNote">Choose your boyfriend once, then CONTINUE returns you to the four choices.</div>
 </section>
 
 <!-- =====================================================
@@ -2626,8 +2589,8 @@ body.smartphone #lookPad { pointer-events:none; opacity:.58; }
     <h1 id="endingTitle">GAME OVER</h1>
     <div id="endingText" class="endingText"></div>
     <div class="endButtons">
-        <button class="menuButton" onclick="restartGame()">
-            Restart game
+        <button id="gameOverContinueButton" class="menuButton" onclick="restartGame()">
+            CONTINUE
         </button>
         <button class="menuButton" onclick="backToTitle()">
             Title screen
@@ -2647,11 +2610,10 @@ let suppressHistory = false;
 let hasStartedOnce = false;
 
 function requestGameStart() {
-    if (hasStartedOnce) {
-        continueToChoices();
-    } else {
-        showCharacterSelect(true);
-    }
+    // CONTINUE belongs to the game-over screen only.
+    // START on the title always begins a new run at boyfriend selection.
+    hasStartedOnce = true;
+    showCharacterSelect(true);
 }
 
 function continueToChoices() {
@@ -3181,7 +3143,8 @@ async function startStory() {
         {speaker:mainName(),text:"(Oh, he's amazing...)",expression:"shy"},
         {speaker:mainName(),text:"(He is very beautiful.)",expression:"shy"},
         {speaker:mainName(),text:"(If I am his girlfriend, I will be very happy.)",expression:"shy"},
-        {speaker:mainName(),text:"(And I will go to meet him to date with him everyday. Every weekend, we will have a party just two of us to celebrate the day which our anniversary.)",expression:"shy"},
+        {speaker:mainName(),text:"(And I will go to meet him to date with him everyday.)",expression:"shy"},
+        {speaker:mainName(),text:"(Every weekend, we will have a party just two of us to celebrate the day which our anniversary.)",expression:"shy"},
         {speaker:mainName(),text:"(And.....)",expression:"shy"},
         {speaker:boyName(),text:"Hey, hey, are you OK?",expression:"confused",side:"right"},
         {speaker:mainName(),text:"Oh, sorry. HAHAHA. ...OMG! It's already 8:13!? Sorry, good luck!",expression:"surprised"},
@@ -3220,7 +3183,7 @@ function playClassroomChatter() {
     return new Promise(resolve => setTimeout(() => {
         chatter.classList.remove("active");
         resolve();
-    }, 1250));
+    }, 4500));
 }
 async function playStory() {
     if (inArcade || ending) return;
@@ -3312,12 +3275,15 @@ async function marriageEnding(){await say(boyName(),"Yes.","shy","right");await 
    GAME OVER / ENDING
 ===================================================== */
 function showGameOver(text,showHeart=true){
+    document.getElementById("gameOverContinueButton").style.display = "block";
+    document.getElementById("gameOverContinueButton").style.display = "block";
     document.getElementById("endingScreen").classList.remove("marriageMode");
     ending=true; actionLocked=true; arcadeIntroPlaying=false; inArcade=false; arcadeRunning=false; document.getElementById("arcadeScreen").style.display="none"; document.getElementById("miniMap").style.display="none"; document.getElementById("darkFade").style.opacity="0"; showScreen("endingScreen"); document.getElementById("endingTitle").textContent="GAME OVER"; document.getElementById("endingText").textContent=text;
     document.getElementById("marriageScene").classList.remove("active");
     const heart=document.getElementById("heartBreak"); heart.classList.add("hidden"); if(showHeart){void heart.offsetWidth;heart.classList.remove("hidden");}
 }
 function showEnding(title,text,type){
+    document.getElementById("gameOverContinueButton").style.display = "none";
     ending=true; actionLocked=true; arcadeIntroPlaying=false; inArcade=false; arcadeRunning=false;
     document.getElementById("arcadeScreen").style.display="none";
     document.getElementById("miniMap").style.display="none";
@@ -3396,41 +3362,23 @@ function restartGame(){
 ===================================================== */
 
 const maze = [
-    '#######################################################',
-    '#...............#.....................#...............#',
-    '#.#.#####.#.###.#.#######..#######..#...###.###.#####.#',
-    '#.#.#.......#...#...#.......#...#...#.#...#.#.........#',
-    '#.#....######....#..#.#.....#...#.....###.#.....#####.#',
-    '#.#...................#.....#.#...........#.....#.....#',
-    '#.##....###.#.....###.##...##.####....###.#.....#.#.###',
-    '#.....#.#...#.......#.......#...#...#.#...#...#...#...#',
-    '#.#####.#.#.#######.###.#...###...###.#.#.###...#####.#',
-    '#.#.....#.........#...#.#.....#.#.....#.......#.......#',
-    '#.#.#.#.###.#####.###.#.#.#.#.#.#.#####.#.###.##.####.#',
-    '#.#...#...........#...#.#.#.....#.........#.........#.#',
-    '#.##..##...##.#.###.....#...####...########....##...#.#',
-    '#.#...#.....#.#.........#.#...........#.........#.#.#.#',
-    '#.#.#.#.......######....#.###.##....#.#.#.##....#.#.#.#',
-    '#...#...#...#.........#.#...#.........#.#.#...#.#.#...#',
-    '#.#####.#.#######.###.#.#.#.#######.###.#.#.###.#.#####',
-    '#.......#.....#.....#.#.#.#.#.....#.#.....#.#...#.....#',
-    '###.#.###.###.#.#.#.#.#.#.#.#.#.#.#.#.###.#.#..######.#',
-    '#...#...#.#...#...#...#.#.....#...#.#.......#.....#...#',
-    '#.#####.#.#.#.###.#####.#.#######.#.#.#.#.#.####....#.#',
-    '#.#...#.................#.....#...#.#.....#.#.....#.#.#',
-    '#.#.....#.#####....#######.#....###.#.##....#.#.###...#',
-    '#.............#...................#.........#.#.....#.#',
-    '####...#.####.##...##.######...##.#.###....##.#.#####.#',
-    '#...#...........#...........#...#.....#...........#...#',
-    '#.#.#.#.#######.#.#######...###.#####.#######.#.#.....#',
-    '#.#...............#.......#...#.#...#.......#.........#',
-    '#.###.#.#.###.#.###.#.###.#.#.#.#.###.#..##.#.####....#',
-    '#.....#.#...#...#...#.....#.#...#.....#.........#...#.#',
-    '#.#####.##.....##.#.#####.#....##..#######.#....#.#.#.#',
-    '#.......#.......#.#...#...#.....#.....#...........#.#.#',
-    '#.#.#####.##....#.#.#...#.##....####..#.###....####.#.#',
-    '#.............#.....#...#.............................#',
-    '#######################################################',
+    '###########################',
+    '#...............#.........#',
+    '#...#.#.....#...####...##.#',
+    '#.............#...........#',
+    '#....#####....#.##..#.##..#',
+    '#.#...#...............#...#',
+    '###...#.#.#.#.#...##....#.#',
+    '#...........#...#.....#...#',
+    '#.......#.#....##...###...#',
+    '#...............#.......#.#',
+    '#.....#......##.#.#.#..##.#',
+    '#.....#.............#.....#',
+    '#.#.#.####.#....#...###.#.#',
+    '#.#.......................#',
+    '#.#...#####.#.......#.....#',
+    '#.........................#',
+    '###########################',
 ];
 
 /*
@@ -3441,6 +3389,8 @@ const maze = [
 
 const arcadeCanvas = document.getElementById("arcadeCanvas");
 const ctx = arcadeCanvas.getContext("2d");
+const arcadeBgImage = new Image();
+arcadeBgImage.src = "./images/arcade_bg.png";
 
 /* =====================================================
    3D SETTINGS
@@ -3466,8 +3416,9 @@ let renderColumns = RENDER_COLUMNS_DESKTOP;
 ===================================================== */
 
 let player = {
+    // Start in the center of the smaller maze.
     x: 17.5,
-    y: 13.5,
+    y: 10.5,
     angle: 0,
     stamina: 100
 };
@@ -3478,51 +3429,49 @@ let player = {
 
 let teachers = [
     {
-        x: 3.5,
-        y: 23.5,
+        x: 1.5,
+        y: 1.5,
         angle: 0,
         chasing: false,
         pathTimer: 0,
-        path: null
-    },
-    {
-        x: 29.5,
-        y: 20.5,
-        angle: 0,
-        chasing: false,
-        pathTimer: 0,
-        path: null
+        path: null,
+        wanderTarget: null,
+        wanderTimer: 0
     }
 ];
 
 let exitPoint = {
-    x: 53.5,
-    y: 33.5
+    x: 25.5,
+    y: 15.5
 };
 
 /* Decorative arcade machines placed on the walkable floor. They are visual
    props only, so they never block the player or teachers. */
 const arcadeProps = [
-    {x:17.5,y:22.5,type:"crane",scale:.82},
-    {x:15.5,y:4.5,type:"cabinet",scale:.78},
-    {x:47.5,y:25.5,type:"racing",scale:.78},
-    {x:34.5,y:13.5,type:"prize",scale:.82},
-    {x:13.5,y:31.5,type:"cabinet",scale:.72},
-    {x:45.5,y:6.5,type:"crane",scale:.82},
-    {x:28.5,y:23.5,type:"racing",scale:.76},
-    {x:25.5,y:3.5,type:"prize",scale:.78},
-    {x:52.5,y:27.5,type:"cabinet",scale:.72},
-    {x:45.5,y:31.5,type:"crane",scale:.78},
-    {x:45.5,y:12.5,type:"cabinet",scale:.78},
-    {x:11.5,y:14.5,type:"prize",scale:.78},
-    {x:5.5,y:27.5,type:"crane",scale:.75},
-    {x:27.5,y:9.5,type:"cabinet",scale:.78},
-    {x:29.5,y:32.5,type:"racing",scale:.76},
-    {x:21.5,y:12.5,type:"crane",scale:.78},
-    {x:49.5,y:20.5,type:"cabinet",scale:.75},
-    {x:35.5,y:6.5,type:"racing",scale:.76},
-    {x:5.5,y:4.5,type:"prize",scale:.78},
-    {x:41.5,y:24.5,type:"crane",scale:.78}
+    {x:5.5,y:1.5,type:"cabinet",scale:.76},
+    {x:10.5,y:3.5,type:"crane",scale:.78},
+    {x:15.5,y:1.5,type:"racing",scale:.76},
+    {x:23.5,y:1.5,type:"cabinet",scale:.76},
+    {x:29.5,y:3.5,type:"crane",scale:.78},
+    {x:3.5,y:5.5,type:"racing",scale:.74},
+    {x:11.5,y:5.5,type:"cabinet",scale:.78},
+    {x:18.5,y:7.5,type:"crane",scale:.76},
+    {x:25.5,y:7.5,type:"racing",scale:.78},
+    {x:5.5,y:9.5,type:"cabinet",scale:.76},
+    {x:13.5,y:9.5,type:"prize",scale:.76},
+    {x:21.5,y:11.5,type:"cabinet",scale:.78},
+    {x:28.5,y:11.5,type:"crane",scale:.76},
+    {x:4.5,y:13.5,type:"racing",scale:.76},
+    {x:15.5,y:13.5,type:"prize",scale:.76},
+    {x:25.5,y:13.5,type:"cabinet",scale:.78},
+    {x:31.5,y:15.5,type:"crane",scale:.76},
+    {x:6.5,y:15.5,type:"cabinet",scale:.76},
+    {x:13.5,y:17.5,type:"racing",scale:.76},
+    {x:21.5,y:17.5,type:"prize",scale:.76},
+    {x:28.5,y:17.5,type:"cabinet",scale:.76},
+    {x:8.5,y:19.5,type:"crane",scale:.76},
+    {x:18.5,y:19.5,type:"racing",scale:.78},
+    {x:27.5,y:19.5,type:"prize",scale:.76}
 ];
 
 /* =====================================================
@@ -3939,6 +3888,34 @@ function nextPathStep(sx, sy, tx, ty) {
     return previous;
 }
 
+function randomWalkTarget(teacher) {
+    const candidates = [];
+    for (let y = 1; y < maze.length - 1; y++) {
+        for (let x = 1; x < maze[y].length - 1; x++) {
+            if (maze[y][x] !== ".") continue;
+            const distanceFromPlayer = Math.hypot((x + .5) - player.x, (y + .5) - player.y);
+            const distanceFromTeacher = Math.hypot((x + .5) - teacher.x, (y + .5) - teacher.y);
+            if (distanceFromPlayer > 5.5 && distanceFromTeacher > 1.2) {
+                candidates.push({x, y});
+            }
+        }
+    }
+    if (!candidates.length) return null;
+    return candidates[Math.floor(Math.random() * candidates.length)];
+}
+
+function hasLineOfSight(a, b) {
+    const dx = b.x - a.x;
+    const dy = b.y - a.y;
+    const distance = Math.hypot(dx, dy);
+    const steps = Math.max(1, Math.ceil(distance / .16));
+    for (let i = 1; i < steps; i++) {
+        const t = i / steps;
+        if (isWall(a.x + dx * t, a.y + dy * t)) return false;
+    }
+    return true;
+}
+
 /* =====================================================
    UPDATE TEACHERS
 ===================================================== */
@@ -3947,8 +3924,11 @@ function updateTeachers(dt) {
     for (const teacher of teachers) {
         const distance = distanceBetween(teacher, player);
 
-        if (distance < 9) {
+        // Until a teacher actually sees Hanako, it simply wanders around.
+        if (!teacher.chasing && distance < 7 && hasLineOfSight(teacher, player)) {
             teacher.chasing = true;
+            teacher.path = null;
+            teacher.pathTimer = 0;
         }
 
         const playerMoving =
@@ -3960,25 +3940,40 @@ function updateTeachers(dt) {
             playerMoving &&
             (keys["shift"] || dashTouch) &&
             player.stamina > 0;
-        const speed = playerDashing ? DASH_SPEED : NORMAL_SPEED;
+
+        const speed = teacher.chasing
+            ? (playerDashing ? DASH_SPEED : NORMAL_SPEED)
+            : NORMAL_SPEED * .62;
 
         teacher.pathTimer -= dt;
+        teacher.wanderTimer -= dt;
 
-        if (teacher.pathTimer <= 0) {
+        if (!teacher.chasing) {
+            if (!teacher.wanderTarget || teacher.wanderTimer <= 0 || !teacher.path) {
+                teacher.wanderTarget = randomWalkTarget(teacher);
+                teacher.wanderTimer = 1.2 + Math.random() * 1.8;
+                teacher.path = teacher.wanderTarget
+                    ? nextPathStep(teacher.x, teacher.y, teacher.wanderTarget.x, teacher.wanderTarget.y)
+                    : null;
+                teacher.pathTimer = .28;
+            } else if (teacher.pathTimer <= 0) {
+                teacher.path = nextPathStep(
+                    teacher.x, teacher.y,
+                    teacher.wanderTarget.x, teacher.wanderTarget.y
+                );
+                teacher.pathTimer = .28;
+            }
+        } else if (teacher.pathTimer <= 0) {
             teacher.path = nextPathStep(
-                teacher.x,
-                teacher.y,
-                player.x,
-                player.y
+                teacher.x, teacher.y,
+                player.x, player.y
             );
-
             teacher.pathTimer = .18;
         }
 
         if (teacher.path) {
             const targetX = teacher.path.x + .5;
             const targetY = teacher.path.y + .5;
-
             const dx = targetX - teacher.x;
             const dy = targetY - teacher.y;
             const length = Math.hypot(dx, dy);
@@ -3988,7 +3983,6 @@ function updateTeachers(dt) {
                 const ratio = Math.min(1, step / length);
                 const moveX = dx * ratio;
                 const moveY = dy * ratio;
-
                 moveEntity(teacher, moveX, moveY);
                 teacher.angle = Math.atan2(dy, dx);
             }
@@ -4559,13 +4553,19 @@ function drawSkyAndFloor() {
     const height = arcadeCanvas.height;
     const horizon = height * .5;
 
-    /* A game-center ceiling rather than an outdoor sky. */
-    const ceiling = ctx.createLinearGradient(0, 0, 0, horizon);
-    ceiling.addColorStop(0, "#0b0a20");
-    ceiling.addColorStop(.62, "#19143b");
-    ceiling.addColorStop(1, "#342052");
-    ctx.fillStyle = ceiling;
-    ctx.fillRect(0, 0, width, horizon);
+    /* Use the supplied game-center artwork as the actual distant arcade backdrop. */
+    if (arcadeBgImage.complete && arcadeBgImage.naturalWidth) {
+        ctx.drawImage(arcadeBgImage, 0, 0, width, height);
+        ctx.fillStyle = "rgba(8,8,24,.28)";
+        ctx.fillRect(0, 0, width, horizon);
+    } else {
+        const ceiling = ctx.createLinearGradient(0, 0, 0, horizon);
+        ceiling.addColorStop(0, "#0b0a20");
+        ceiling.addColorStop(.62, "#19143b");
+        ceiling.addColorStop(1, "#342052");
+        ctx.fillStyle = ceiling;
+        ctx.fillRect(0, 0, width, horizon);
+    }
 
     ctx.fillStyle = "rgba(255,255,255,.82)";
     for (let i = 0; i < 9; i++) {
@@ -4783,18 +4783,29 @@ function drawArcadeProp(prop, depthBuffer) {
         ctx.fillStyle="#ff5b6e";
         ctx.beginPath(); ctx.arc(left+w*.5,top+h*.89,h*.035,0,Math.PI*2);ctx.fill();
     } else {
-        ctx.fillStyle = "#141a2e";
-        ctx.fillRect(left + w*.08, top + h*.12, w*.84, h*.83);
+        /* Upright arcade cabinet: marquee -> screen -> control deck -> coin slot. */
+        ctx.fillStyle = "#101728";
+        ctx.fillRect(left + w*.08, top + h*.10, w*.84, h*.84);
         ctx.fillStyle = glow;
-        ctx.fillRect(left + w*.08, top + h*.12, w*.84, h*.06);
-        ctx.fillStyle = "#26364f";
-        ctx.fillRect(left+w*.18, top+h*.25, w*.64, h*.30);
-        ctx.fillStyle = "rgba(82,225,255,.85)";
-        ctx.fillRect(left+w*.24, top+h*.31, w*.52, h*.10);
-        ctx.fillStyle = "#ff5c75";
-        ctx.beginPath(); ctx.arc(left+w*.30,top+h*.79,h*.035,0,Math.PI*2);ctx.fill();
+        ctx.fillRect(left + w*.08, top + h*.10, w*.84, h*.09);
+        ctx.fillStyle = "rgba(255,255,255,.9)";
+        ctx.font = `900 ${Math.max(8,h*.085)}px Arial`;
+        ctx.textAlign = "center";
+        ctx.fillText("GAME", left+w*.50, top+h*.165);
+        ctx.fillStyle = "#253554";
+        ctx.fillRect(left+w*.16, top+h*.25, w*.68, h*.31);
+        ctx.fillStyle = "#65f4ff";
+        ctx.fillRect(left+w*.22, top+h*.30, w*.56, h*.19);
+        ctx.fillStyle = "#0c1020";
+        ctx.fillRect(left+w*.16, top+h*.60, w*.68, h*.10);
+        ctx.fillStyle = "#ff4d7a";
+        ctx.beginPath(); ctx.arc(left+w*.30,top+h*.64,h*.04,0,Math.PI*2);ctx.fill();
         ctx.fillStyle = "#55ddff";
-        ctx.beginPath(); ctx.arc(left+w*.70,top+h*.79,h*.035,0,Math.PI*2);ctx.fill();
+        ctx.beginPath(); ctx.arc(left+w*.62,top+h*.64,h*.032,0,Math.PI*2);ctx.fill();
+        ctx.fillStyle = "#d8d8df";
+        ctx.fillRect(left+w*.38, top+h*.73, w*.24, h*.05);
+        ctx.fillStyle = "#ffd85a";
+        ctx.fillRect(left+w*.46, top+h*.84, w*.08, h*.035);
     }
     ctx.restore();
 }
@@ -4908,63 +4919,47 @@ function drawTeacherSprite(teacher, depthBuffer) {
 ===================================================== */
 
 function drawExit(depthBuffer) {
-    const projection = projectSprite(
-        exitPoint,
-        "exit"
-    );
-
-    if (!projection) {
-        return;
-    }
+    const projection = projectSprite(exitPoint, "exit");
+    if (!projection) return;
 
     const centerColumn = Math.floor(projection.screenX);
+    if (centerColumn < 0 || centerColumn >= depthBuffer.length) return;
+    if (projection.correctedDistance > depthBuffer[centerColumn]) return;
 
-    if (
-        centerColumn < 0 ||
-        centerColumn >= depthBuffer.length
-    ) {
-        return;
-    }
-
-    if (projection.correctedDistance > depthBuffer[centerColumn]) {
-        return;
-    }
-
-    const size = projection.size * .55;
-    const left = projection.screenX - size * .65;
-    const top = arcadeCanvas.height / 2 - size * .45;
-
-    const pulse = 1 + Math.sin(performance.now() / 120) * .08;
+    const distanceScale = clamp(1.25 / Math.max(.45, projection.correctedDistance), .22, 1);
+    const h = projection.size * 1.15 * distanceScale;
+    const w = h * .58;
+    const left = projection.screenX - w / 2;
+    const top = arcadeCanvas.height / 2 - h * .58;
+    const pulse = 1 + Math.sin(performance.now() / 170) * .06;
 
     ctx.save();
+    ctx.globalCompositeOperation = "lighter";
+    ctx.shadowBlur = Math.max(18, h * .22);
+    ctx.shadowColor = "#63f7ff";
+    ctx.fillStyle = "rgba(72,242,255,.38)";
+    ctx.fillRect(left - h*.16, top - h*.12, w + h*.32, h + h*.20);
+    ctx.globalCompositeOperation = "source-over";
 
-    ctx.shadowBlur = 25;
-    ctx.shadowColor = "#ff1493";
+    ctx.fillStyle = "#102a38";
+    ctx.fillRect(left, top, w, h);
+    ctx.lineWidth = Math.max(3, h*.035);
+    ctx.strokeStyle = "#72fbff";
+    ctx.shadowBlur = Math.max(10, h*.12);
+    ctx.shadowColor = "#72fbff";
+    ctx.strokeRect(left, top, w, h);
 
-    ctx.fillStyle = "#ff1744";
-    ctx.fillRect(
-        left,
-        top,
-        size * 1.3,
-        size * .75
-    );
-
-    ctx.shadowBlur = 0;
-
-    ctx.fillStyle = "white";
-    ctx.font = `bold ${Math.max(10, size * .24)}px Arial`;
+    ctx.fillStyle = "rgba(210,255,255,.88)";
+    ctx.fillRect(left+w*.12, top+h*.10, w*.76, h*.68);
+    ctx.fillStyle = "#ffffff";
+    ctx.font = `900 ${Math.max(12, h*.18)}px Arial`;
     ctx.textAlign = "center";
     ctx.textBaseline = "middle";
-
-    ctx.translate(
-        projection.screenX,
-        top + size * .38
-    );
-
+    ctx.shadowBlur = 16;
+    ctx.shadowColor = "#ffffff";
+    ctx.translate(projection.screenX, top+h*.44);
     ctx.scale(pulse, pulse);
-
     ctx.fillText("EXIT", 0, 0);
-
     ctx.restore();
 }
 
@@ -5020,9 +5015,12 @@ function drawArcade() {
         );
     }
 
+    const GHOST_VISIBLE_DISTANCE = 5.5;
     const sortedSprites = [
         ...arcadeProps.map(prop => ({ entity: prop, kind: "prop" })),
-        ...teachers.map(teacher => ({ entity: teacher, kind: "teacher" }))
+        ...teachers
+            .filter(teacher => distanceBetween(teacher, player) <= GHOST_VISIBLE_DISTANCE)
+            .map(teacher => ({ entity: teacher, kind: "teacher" }))
     ].sort((a, b) => {
         return distanceBetween(b.entity, player) - distanceBetween(a.entity, player);
     });
@@ -5069,8 +5067,20 @@ function drawMiniMap() {
     }
 
     point(exitPoint, "#35d16f", 4);
-    teachers.forEach(t => point(t, "#ef4f68", 4));
     point(player, "#2c72ff", 5);
+
+    // Teachers are intentionally invisible on the map. Only proximity is revealed.
+    const nearestTeacher = teachers.length ? Math.min(...teachers.map(t => distanceBetween(t, player))) : Infinity;
+    const warning = nearestTeacher < 5.5;
+    map.classList.toggle("warning", warning);
+    if (warning) {
+        mctx.fillStyle = "rgba(210,20,55,.92)";
+        mctx.fillRect(6, h - 24, w - 12, 18);
+        mctx.fillStyle = "#fff";
+        mctx.font = "900 11px Arial";
+        mctx.textAlign = "center";
+        mctx.fillText("!! WARNING: SOMETHING IS NEARBY !!", w / 2, h - 11);
+    }
 
     mctx.strokeStyle = "#2c72ff";
     mctx.lineWidth = 2;
@@ -5084,9 +5094,10 @@ function drawMiniMap() {
 
     mctx.fillStyle = "rgba(255,255,255,.9)";
     mctx.font = "bold 10px Arial";
+    mctx.textAlign = "left";
     mctx.fillText("YOU", 6, 12);
-    mctx.fillStyle = "#ef4f68";
-    mctx.fillText("TEACHER", 45, 12);
+    mctx.fillStyle = "#35d16f";
+    mctx.fillText("EXIT", 42, 12);
 }
 
 /* =====================================================
@@ -5107,7 +5118,13 @@ function checkArcadeExit() {
 
 async function startArcadeIntro(){
     if(ending||inArcade||arcadeIntroPlaying)return;
-    document.getElementById("choiceBox").style.display="none";document.getElementById("loveGauge").classList.add("hidden");document.getElementById("dialogueBox").style.display="block";document.getElementById("background").className="school";document.getElementById("missionCard").classList.remove("active");arcadeIntroPlaying=true;
+    document.getElementById("choiceBox").style.display="none";
+    document.getElementById("loveGauge").classList.add("hidden");
+    document.getElementById("dialogueBox").style.display="block";
+    document.getElementById("background").className="school";
+    document.getElementById("missionCard").classList.remove("active");
+    arcadeIntroPlaying=true;
+
     const lines=[
         {speaker:mainName(),text:"It's our first day, but how about we skip school and go to the arcade?",side:"left"},
         {speaker:boyName(),text:"What? Seriously...",side:"right"},
@@ -5121,24 +5138,35 @@ async function startArcadeIntro(){
         {speaker:boyName(),text:"Who is that?",side:"right"},
         {speaker:mainName(),text:"Our teacher! Let's get out of here together!",side:"left"}
     ];
-    for(const line of lines){
-        if(line.speaker==="Narration"){
-            clearCharacters();await say(line.speaker,line.text,"normal","center");document.getElementById("runHanako").innerHTML=characterArtSvg("Hanako");document.getElementById("runBoy").innerHTML=`<img class="fightArt" src="${boyData().image}" alt="${boyName()}">`;const run=document.getElementById("runTransition");run.classList.add("active");await new Promise(r=>setTimeout(r,1150));run.classList.remove("active");document.getElementById("background").className="arcade";await waitForDialogueAdvance();
-        }else{await say(line.speaker,line.text,"normal",line.side);await waitForDialogueAdvance();}
-    }
-    const card=document.getElementById("missionCard");card.classList.add("active");await new Promise(r=>setTimeout(r,1500));card.classList.remove("active");arcadeIntroPlaying=false;startArcade();actionLocked=false;
-}
 
+    for(let i=0;i<lines.length;i++){
+        const line=lines[i];
+        await say(line.speaker,line.text,"normal",line.side);
+        await waitForDialogueAdvance();
+
+        // The tap that advances the final line starts the escape animation.
+        if(i===lines.length-1){
+            // The tap that advances the final dialogue is the start command for the arcade.
+            clearCharacters();
+            document.getElementById("runTransition").classList.remove("active");
+            document.getElementById("background").className="arcade";
+            arcadeIntroPlaying=false;
+            startArcade();
+            actionLocked=false;
+            return;
+        }
+    }
+}
 function resetArcadeWorld() {
-    player.x = 1.5;
-    player.y = 1.5;
+    // Start in the center so the ghost does not have an unfair positional advantage.
+    player.x = 13.5;
+    player.y = 8.5;
     player.angle = 0;
     player.stamina = 100;
     teachers = [
-        { x: 27.5, y: 17.5, angle: 0, chasing: false, pathTimer: 0, path: null },
-        { x: 45.5, y: 29.5, angle: 0, chasing: false, pathTimer: 0, path: null }
+        { x: 1.5, y: 1.5, angle: 0, chasing: false, pathTimer: 0, path: null, wanderTarget: null, wanderTimer: 0 }
     ];
-    exitPoint = { x: 53.5, y: 33.5 };
+    exitPoint = { x: 25.5, y: 15.5 };
     joystickX = 0;
     joystickY = 0;
     lookX = 0;
