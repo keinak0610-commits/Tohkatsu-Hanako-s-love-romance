@@ -2144,190 +2144,157 @@ body.smartphone #arcadeCrosshair {
     .characterSprite { width: min(46vw, 300px); height: 52vh; }
 }
 
+</style>
+<style>
 /* =====================================================
-   2026-10-05 VISUAL REVISION
+   2026-10-05 INTERACTION + VISUAL POLISH
 ===================================================== */
-
-body { background:#dcecf3; }
-
-#titleScreen {
-    background-image: url("images/title_school.png");
+#background {
+    z-index: 0;
+    background-color: #8fb2c3;
+}
+#background.city {
+    background-color: #b7dff0;
+    background-image: linear-gradient(rgba(255,255,255,.04),rgba(20,35,45,.12)), url("images/city_bg.png");
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-    position: relative;
-    isolation: isolate;
-}
-#titleScreen::before {
-    content:"";
-    position:absolute;
-    inset:0;
-    background:linear-gradient(180deg, rgba(20,45,65,.10), rgba(20,35,45,.36));
-    z-index:-1;
-}
-#titleScreen .titleParty,
-#titleScreen .titleDecoration,
-#titleScreen .titleRibbon,
-#titleScreen .titleNote { display:none !important; }
-.titleContent {
-    position:relative;
-    z-index:5;
-    width:min(600px,88vw);
-    margin-left:auto;
-    margin-right:8vw;
-    padding:34px 34px 30px;
-    border-radius:28px;
-    background:rgba(255,255,255,.88);
-    box-shadow:0 22px 55px rgba(24,48,62,.22);
-    text-align:center;
-    backdrop-filter:blur(5px);
-}
-.titleKicker {
-    font-size:12px;
-    font-weight:900;
-    letter-spacing:3px;
-    color:#527083;
-    margin-bottom:8px;
-}
-#titleScreen .title {
-    margin:0;
-    color:#263f50;
-    text-shadow:none;
-    font-size:clamp(34px,5vw,62px);
-    line-height:1.04;
-}
-#titleScreen .title span { color:#d85e86; }
-#titleScreen .titleTagline {
-    margin:14px 0 22px;
-    color:#587181;
-    font-size:clamp(14px,2vw,18px);
-}
-#titleScreen .titleButtons { gap:10px; }
-
-#characterScreen {
-    background-image:linear-gradient(rgba(236,246,250,.18),rgba(236,246,250,.18)),url("images/classroom_bg.png");
-    background-size:cover;
-    background-position:center;
-    background-repeat:no-repeat;
-    position:relative;
-}
-#characterScreen::before {
-    content:"";
-    position:absolute;
-    inset:0;
-    background:linear-gradient(180deg,rgba(255,255,255,.12),rgba(22,48,62,.16));
-    pointer-events:none;
-}
-#characterScreen::after { display:none !important; }
-
-.boySelectionPanel {
-    position:relative;
-    z-index:5;
-    width:min(1120px,94vw);
-    display:grid;
-    grid-template-columns:180px minmax(0,1fr);
-    gap:16px;
-    align-items:stretch;
-}
-.hanakoBadge {
-    min-height:410px;
-    display:flex;
-    flex-direction:column;
-    justify-content:flex-end;
-    align-items:center;
-    padding:10px 8px 14px;
-    border-radius:22px;
-    background:rgba(255,255,255,.78);
-    border:2px solid rgba(255,255,255,.95);
-    box-shadow:0 12px 30px rgba(35,63,77,.18);
-}
-.hanakoBadgeArt { width:145px; height:330px; display:flex; align-items:flex-end; justify-content:center; }
-.hanakoBadgeArt .fullCharacterArt { width:145px; height:330px; }
-.hanakoBadgeText { color:#4c6575; font-size:12px; line-height:1.35; text-align:center; font-weight:700; }
-.boyPicker {
-    min-width:0;
-    padding:14px 14px 10px;
-    border-radius:22px;
-    background:rgba(255,255,255,.88);
-    border:2px solid rgba(255,255,255,.95);
-    box-shadow:0 12px 30px rgba(35,63,77,.18);
-}
-.boyPickerHeader {
-    text-align:center;
-    color:#405a6a;
-    font-size:13px;
-    font-weight:900;
-    letter-spacing:2px;
-    margin-bottom:5px;
-}
-.boyPicker .carouselViewport { touch-action:pan-y; }
-.boyPicker .characterCard { padding:6px 18px 2px; }
-.boyPicker .characterCard .cardImageWrap {
-    height:350px;
-    background:rgba(240,247,250,.68);
-    border:1px solid rgba(100,130,145,.18);
-}
-.boyPicker .characterCard img { max-height:338px; max-width:92%; transition:opacity .2s; }
-.boyPicker .characterCardName { font-size:24px; color:#29485c; margin-top:8px; }
-.boyPicker .carouselArrow { width:48px; height:64px; }
-.imageLoadFailed::after {
-    content:"Character image could not be loaded";
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    height:100%;
-    padding:12px;
-    color:#71818c;
-    font-size:13px;
-    font-weight:700;
-    text-align:center;
-}
-
-/* More natural, non-cartoon silhouette treatment for Hanako / Teacher / Rika / Yumi. */
-.realisticSilhouette { filter:drop-shadow(0 12px 16px rgba(10,25,35,.28)); }
-
-/* Real scene images instead of flat CSS scenery. */
-#background.city,
-#background.school,
-#background.arcade {
-    background-size:cover !important;
-    background-position:center !important;
-    background-repeat:no-repeat !important;
-}
-#background.city {
-    background-image:linear-gradient(rgba(255,255,255,.03),rgba(22,35,45,.12)),url("images/city_bg.png") !important;
 }
 #background.school {
-    background-image:linear-gradient(rgba(255,255,255,.02),rgba(22,35,45,.10)),url("images/classroom_bg.png") !important;
+    background-color: #ddd5bf;
+    background-image: linear-gradient(rgba(255,255,255,.02),rgba(30,35,30,.08)), url("images/classroom_bg.png");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
 }
 #background.arcade {
-    background-image:linear-gradient(rgba(30,15,55,.02),rgba(10,10,30,.10)),url("images/arcade_bg.png") !important;
-}
-#background.city::before,#background.city::after,
-#background.school::before,#background.school::after,
-#background.arcade::before,#background.arcade::after { display:none !important; }
-
-/* Keep the controls alive on both platforms. */
-body.smartphone #mobileControls { display:block; }
-body:not(.smartphone) #mobileControls { display:none; }
-
-@media (max-width:760px) {
-    #titleScreen { background-position:58% center; }
-    .titleContent { width:min(520px,88vw); margin:0 auto; padding:26px 20px; }
-    .boySelectionPanel { grid-template-columns:1fr; }
-    .hanakoBadge { min-height:92px; height:92px; flex-direction:row; gap:10px; justify-content:center; }
-    .hanakoBadgeArt { width:60px; height:82px; }
-    .hanakoBadgeArt .fullCharacterArt { width:60px; height:100px; }
-    .hanakoBadgeText { max-width:180px; }
-    .boyPicker .characterCard .cardImageWrap { height:290px; }
-    .boyPicker .characterCard img { max-height:278px; }
+    background-color: #5bc8e5;
+    background-image: linear-gradient(rgba(25,20,55,.02),rgba(10,10,30,.10)), url("images/arcade_bg.png");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
 }
 
+#introCard, #choiceBriefing { cursor: pointer; }
+#introCard .introCardInner, .choiceBriefingInner { user-select:none; }
+.synopsisHint {
+    margin-top: 22px;
+    color:#e15b87;
+    font-weight:900;
+    letter-spacing:2px;
+    font-size:12px;
+    animation: hintPulse 1.4s ease-in-out infinite;
+}
+@keyframes hintPulse { 0%,100%{opacity:.55} 50%{opacity:1} }
+#choiceBriefing {
+    position:absolute;
+    inset:0;
+    z-index:95;
+    display:none;
+    align-items:center;
+    justify-content:center;
+    padding:24px;
+    background:linear-gradient(180deg,rgba(32,75,102,.30),rgba(20,35,50,.58));
+}
+#choiceBriefing.active { display:flex; }
+.choiceBriefingInner {
+    width:min(700px,92vw);
+    padding:34px 32px 28px;
+    border:3px solid rgba(255,255,255,.94);
+    border-radius:24px;
+    background:rgba(255,255,255,.96);
+    color:#38566e;
+    text-align:center;
+    box-shadow:0 20px 55px rgba(0,0,0,.24);
+    animation:introCardIn .55s cubic-bezier(.2,.8,.2,1);
+}
+.choiceBriefingInner h2 { margin:8px 0 14px; font-size:clamp(27px,5vw,44px); }
+.choiceBriefingInner p { margin:0; font-size:clamp(16px,2.5vw,21px); line-height:1.7; }
 
+/* Organic silhouettes: solid fill, no outline, no facial marks. */
+.fullCharacterArt { filter: drop-shadow(0 12px 18px rgba(8,20,30,.26)); }
+.realisticSilhouette { filter: drop-shadow(0 12px 18px rgba(8,20,30,.30)); }
+
+/* Collision: flash + screen shake + impact lettering. */
+#collisionFX::before {
+    content:"";
+    position:absolute;
+    inset:0;
+    background:rgba(255,245,195,0);
+    animation:collisionFlash .9s ease-out;
+    pointer-events:none;
+}
+#collisionFX.active { animation: collisionShake .52s ease-in-out; }
+.collisionBang { letter-spacing:3px; }
+@keyframes collisionShake {
+    0%,100%{transform:translateX(0)} 20%{transform:translateX(-12px) rotate(-1deg)} 40%{transform:translateX(12px) rotate(1deg)} 60%{transform:translateX(-8px)} 80%{transform:translateX(7px)}
+}
+@keyframes collisionFlash { 0%,100%{background:rgba(255,245,195,0)} 30%{background:rgba(255,245,195,.58)} 55%{background:rgba(255,255,255,.10)} }
+
+/* Fight: alternating punches and impact bursts. */
+.fightCharacter.left { animation:fighterLeft .95s ease-in-out 0s 2; }
+.fightCharacter.right { animation:fighterRight .95s ease-in-out .08s 2; }
+.fightImpact { animation:fightImpact .48s ease-out .18s 4; }
+.fightFist {
+    position:absolute;
+    z-index:4;
+    top:46%;
+    font-size:clamp(40px,8vw,80px);
+    font-weight:900;
+    color:#fff;
+    text-shadow:3px 3px 0 #e94b72;
+    opacity:0;
+}
+.fistLeft { left:34%; animation:punchLeft .95s ease-in-out .08s 2; }
+.fistRight { right:34%; animation:punchRight .95s ease-in-out .50s 2; }
+@keyframes punchLeft { 0%,20%,100%{opacity:0;transform:translateX(-30px) scale(.6) rotate(-20deg)} 45%,58%{opacity:1;transform:translateX(80px) scale(1.2) rotate(15deg)} 70%{opacity:0;transform:translateX(105px) scale(.8)} }
+@keyframes punchRight { 0%,20%,100%{opacity:0;transform:translateX(30px) scale(.6) rotate(20deg)} 45%,58%{opacity:1;transform:translateX(-80px) scale(1.2) rotate(-15deg)} 70%{opacity:0;transform:translateX(-105px) scale(.8)} }
+
+/* Typewriter dialogue. */
+#dialogue { min-height:70px; }
+#continueHint { transition:opacity .15s; }
+
+/* Prevent double-clicks / delayed-action input during transitions. */
+#choiceBox.ui-locked { pointer-events:none; opacity:.72; }
+button.ui-disabled { pointer-events:none !important; opacity:.58 !important; }
 </style>
 </head>
 
 <body>
+
+<!-- =====================================================
+     PASSWORD SCREEN
+===================================================== -->
+
+<div id="passwordScreen">
+    <div class="passwordSky" aria-hidden="true">
+        <div class="passwordCloud c1"></div>
+        <div class="passwordCloud c2"></div>
+        <div class="passwordBalloon b1"></div>
+        <div class="passwordBalloon b2"></div>
+        <div class="passwordBalloon b3"></div>
+        <div class="passwordBalloon b4"></div>
+        <div class="passwordSchool"></div>
+    </div>
+    <div id="passwordBox">
+        <div id="passwordTitle">TOHKATSU HANAKO'S<br>LOVE ROMANCE</div>
+        <div id="passwordSubtitle">WELCOME TO SCHOOL! ♡</div>
+        <div style="color:#526579; font-size:14px; margin:-8px 0 20px;">Enter the secret password to begin.</div>
+        <input
+            id="passwordInput"
+            type="password"
+            autocomplete="off"
+            inputmode="text"
+            onkeydown="if(event.key === 'Enter') checkPassword()"
+        >
+        <button id="passwordButton" onclick="checkPassword()">
+            ENTER
+        </button>
+        <div id="passwordError">
+            Incorrect password.
+        </div>
+    </div>
+</div>
 
 <div id="game">
 
@@ -2336,17 +2303,52 @@ body:not(.smartphone) #mobileControls { display:none; }
 ===================================================== -->
 
 <section id="titleScreen" class="screen active">
-    <div class="titleOverlay" aria-hidden="true"></div>
-    <div class="titleContent">
-        <div class="titleKicker">TOHKATSU JUNIOR HIGH</div>
-        <h1 class="title">Tohkatsu Hanako's<br><span>Love Romance</span></h1>
-        <p class="titleTagline">A new school day is about to begin.</p>
-        <div class="titleButtons">
-            <button class="menuButton startButton" onclick="requestGameStart()">GAME START</button>
-            <button class="menuButton" onclick="openModal('creditModal')">CREDIT</button>
-            <button class="menuButton" onclick="openModal('settingsModal')">SETTINGS</button>
-        </div>
+
+    <div class="titleParty" aria-hidden="true">
+        <div class="balloon p1"></div>
+        <div class="balloon p2"></div>
+        <div class="balloon p3"></div>
+        <div class="balloon p4"></div>
+        <div class="schoolStar s1">✦</div>
+        <div class="schoolStar s2">✧</div>
     </div>
+
+    <div class="titleDecoration" aria-hidden="true">
+        <div class="schoolRoof"></div>
+        <div class="schoolNameplate">TOHKATSU JUNIOR HIGH SCHOOL</div>
+        <div class="schoolWindows"></div>
+        <div class="schoolDoor"></div>
+        <div class="schoolTree treeLeft"></div>
+        <div class="schoolTree treeRight"></div>
+        <div class="schoolGate"></div>
+    </div>
+
+    <div class="titleRibbon">TOHKATSU JUNIOR HIGH SCHOOL</div>
+
+    <div class="title">
+        Tohkatsu Hanako's<br>
+        <span>Love Romance</span>
+    </div>
+
+    <div class="titleTagline">
+        A new school day is about to begin.
+    </div>
+
+    <div class="titleButtons">
+        <button class="menuButton startButton" onclick="requestGameStart()">
+            GAME START
+        </button>
+
+        <button class="menuButton" onclick="openModal('creditModal')">
+            CREDIT
+        </button>
+
+        <button class="menuButton" onclick="openModal('settingsModal')">
+            SETTINGS
+        </button>
+    </div>
+
+    <div class="titleNote">The school gate is open. Let the story begin.</div>
 </section>
 
 <!-- =====================================================
@@ -2400,19 +2402,22 @@ body:not(.smartphone) #mobileControls { display:none; }
 ===================================================== -->
 
 <section id="characterScreen" class="screen">
+    <div class="characterSelectClouds" aria-hidden="true"></div>
+
     <button class="menuButton characterSelectBack" onclick="backToTitle()">BACK</button>
 
     <div class="selectTitle">Choose Your Boyfriend</div>
-    <div class="selectSubtitle">Swipe left or right, or use the arrows.</div>
+    <div class="selectSubtitle">Swipe left or right to choose a classmate.</div>
 
-    <div class="boySelectionPanel">
-        <div class="hanakoBadge">
-            <div class="hanakoBadgeArt" id="mainPreview"></div>
-            <div class="hanakoBadgeText">Hanako is the main character.</div>
+    <div class="selectionArea">
+        <div class="selectionBox">
+            <h2>Main Character</h2>
+            <div id="mainPreview" class="characterPreview"></div>
+            <div class="fixedLabel">Hanako</div>
         </div>
 
-        <div class="boyPicker">
-            <div class="boyPickerHeader">BOYFRIEND</div>
+        <div class="selectionBox">
+            <h2>Boyfriend</h2>
             <div class="carouselFrame">
                 <button class="carouselArrow" onclick="changeBoy(-1)" aria-label="Previous">‹</button>
                 <div id="boyCarouselViewport" class="carouselViewport">
@@ -2424,7 +2429,9 @@ body:not(.smartphone) #mobileControls { display:none; }
         </div>
     </div>
 
-    <button class="menuButton startButton characterStartButton" onclick="startStory()">START STORY</button>
+    <button class="menuButton startButton characterStartButton" onclick="startStory()">
+        START STORY
+    </button>
 </section>
 
 <!-- =====================================================
@@ -2438,9 +2445,19 @@ body:not(.smartphone) #mobileControls { display:none; }
 
     <div id="introCard">
         <div class="introCardInner">
-            <div class="introKicker">TOHKATSU JUNIOR HIGH SCHOOL</div>
-            <h2>A Very Normal School Day</h2>
-            <p>Hanako, a student at Tohkatsu JHS, was rushing to school because she was almost late — while, somewhere in her heart, she could feel a strange little flutter of excitement.</p>
+            <div class="introKicker" id="introKicker">TOHKATSU JUNIOR HIGH SCHOOL</div>
+            <h2 id="introTitle">A Very Normal School Day</h2>
+            <p id="introText">Hanako, a student at Tohkatsu JHS, was rushing to school because she was almost late — while, somewhere in her heart, she could feel a strange little flutter of excitement.</p>
+            <div class="synopsisHint">TAP TO CONTINUE</div>
+        </div>
+    </div>
+
+    <div id="choiceBriefing">
+        <div class="choiceBriefingInner">
+            <div class="introKicker">A NEW SCHOOL DAY</div>
+            <h2>Time to get closer.</h2>
+            <p>Hanako has finally met the transfer student. Choose what she does next and fill the LOVE GAUGE. Every choice can change the ending.</p>
+            <div class="synopsisHint">TAP TO CONTINUE</div>
         </div>
     </div>
 
@@ -2531,7 +2548,9 @@ body:not(.smartphone) #mobileControls { display:none; }
             <div class="fightTitle">FIGHT!</div>
             <div class="fightStage">
                 <div id="fightHanako" class="fightCharacter left"></div>
-                <div class="fightImpact">POW!</div>
+                <div class="fightFist fistLeft">✦</div>
+                <div class="fightImpact" id="fightImpactText">POW!</div>
+                <div class="fightFist fistRight">✦</div>
                 <div id="fightBoy" class="fightCharacter right"></div>
             </div>
         </div>
@@ -2560,19 +2579,61 @@ body:not(.smartphone) #mobileControls { display:none; }
 
 <script>
 /* =====================================================
-   NAVIGATION
-   The password gate is intentionally disabled for this build.
+   PASSWORD + NAVIGATION
 ===================================================== */
 
-let gameUnlocked = true;
-let screenHistory = ["titleScreen"];
+const GAME_PASSWORD = "Tohkatsu9";
+let gameUnlocked = false;
+let screenHistory = [];
 let suppressHistory = false;
 
+function openPasswordGate() {
+    const passwordScreen = document.getElementById("passwordScreen");
+    passwordScreen.style.display = "flex";
+    const input = document.getElementById("passwordInput");
+    const error = document.getElementById("passwordError");
+    error.classList.remove("show");
+    setTimeout(() => input.focus(), 40);
+}
+
 function requestGameStart() {
+    if (!gameUnlocked) {
+        openPasswordGate();
+        return;
+    }
     showCharacterSelect(true);
 }
 
+function cancelPassword() {
+    /* There is intentionally no BACK action on the password gate. */
+    openPasswordGate();
+}
+
+function checkPassword() {
+    const input = document.getElementById("passwordInput");
+    const error = document.getElementById("passwordError");
+
+    if (input.value === GAME_PASSWORD) {
+        gameUnlocked = true;
+        document.getElementById("passwordScreen").style.display = "none";
+        error.classList.remove("show");
+        input.value = "";
+        screenHistory = ["titleScreen"];
+        showScreen("titleScreen", false);
+        history.replaceState({ game: true, screen: "titleScreen" }, "", location.href);
+    } else {
+        error.classList.add("show");
+        input.value = "";
+        input.focus();
+    }
+}
+
 function showScreen(id, pushHistory = true) {
+    if (!gameUnlocked && id !== "titleScreen") {
+        openPasswordGate();
+        return;
+    }
+
     document.querySelectorAll(".screen").forEach(screen => {
         screen.classList.remove("active");
     });
@@ -2581,7 +2642,7 @@ function showScreen(id, pushHistory = true) {
     if (!target) return;
     target.classList.add("active");
 
-    if (pushHistory && !suppressHistory) {
+    if (pushHistory && gameUnlocked && !suppressHistory) {
         const last = screenHistory[screenHistory.length - 1];
         if (last !== id) {
             screenHistory.push(id);
@@ -2591,11 +2652,19 @@ function showScreen(id, pushHistory = true) {
 }
 
 function showCharacterSelect(pushHistory = true) {
+    if (!gameUnlocked) {
+        openPasswordGate();
+        return;
+    }
     updateCharacterSelect();
     showScreen("characterScreen", pushHistory);
 }
 
 function backToTitle() {
+    if (!gameUnlocked) {
+        openPasswordGate();
+        return;
+    }
     if (screenHistory.length > 1) {
         history.back();
     } else {
@@ -2604,7 +2673,7 @@ function backToTitle() {
 }
 
 function backFromStory() {
-    if (inArcade || arcadeIntroPlaying || ending) return;
+    if (!gameUnlocked || inArcade || arcadeIntroPlaying || ending) return;
     if (screenHistory.length > 1) {
         history.back();
     } else {
@@ -2613,13 +2682,22 @@ function backFromStory() {
 }
 
 window.addEventListener("load", () => {
+    document.getElementById("passwordScreen").style.display = "flex";
     document.querySelectorAll(".screen").forEach(screen => screen.classList.remove("active"));
-    document.getElementById("titleScreen").classList.add("active");
-    screenHistory = ["titleScreen"];
-    history.replaceState({ game: true, screen: "titleScreen" }, "", location.href);
+    screenHistory = [];
+    history.replaceState({ locked: true, screen: "password" }, "", location.href);
+    history.pushState({ locked: true, screen: "password" }, "", location.href);
+    openPasswordGate();
 });
 
 window.addEventListener("popstate", () => {
+    if (!gameUnlocked) {
+        /* The browser Back button can never bypass the gate. */
+        history.pushState({ locked: true, screen: "password" }, "", location.href);
+        openPasswordGate();
+        return;
+    }
+
     if (screenHistory.length > 1) {
         screenHistory.pop();
         const previous = screenHistory[screenHistory.length - 1];
@@ -2639,11 +2717,11 @@ window.addEventListener("popstate", () => {
 
 
 const characters = [
-    { name: "Masugu", image: "images/masugu.png" },
-    { name: "Mizuta", image: "images/mizuta.png" },
-    { name: "Takuto", image: "images/takuto.png" },
-    { name: "Kowada", image: "images/kowada.png" },
-    { name: "Junya", image: "images/junya.png" }
+    { name: "Masugu", image: "./images/masugu.png" },
+    { name: "Mizuta", image: "./images/mizuta.png" },
+    { name: "Takuto", image: "./images/takuto.png" },
+    { name: "Kowada", image: "./images/kowada.png" },
+    { name: "Junya", image: "./images/junya.png" }
 ];
 
 function assetUrl(path) {
@@ -2651,19 +2729,13 @@ function assetUrl(path) {
 }
 
 function imageWithFallback(img, name) {
-    const path = img.dataset.asset || img.getAttribute("src");
-    img.src = assetUrl(path);
-    img.alt = name + " image";
-    img.onload = () => {
-        img.style.opacity = "1";
-        img.parentElement?.classList.remove("imageLoadFailed");
-    };
+    img.src = assetUrl(img.dataset.asset || img.getAttribute("src"));
     img.onerror = () => {
         img.onerror = null;
         img.removeAttribute("src");
-        img.alt = name + " image unavailable";
+        img.alt = name + " image";
         img.style.opacity = "0";
-        img.parentElement?.classList.add("imageLoadFailed");
+        img.parentElement.classList.add("imageLoadFailed");
     };
 }
 
@@ -2684,78 +2756,44 @@ let ending = false;
 let captureStep = 0;
 let introPlaying = false;
 let arcadeIntroPlaying = false;
+let classroomSynopsisShown = false;
+let choiceBriefingActive = false;
+let actionLocked = false;
+let dialogueTyping = false;
+let dialogueTimer = null;
+let dialogueResolve = null;
+let currentTypedText = "";
+let currentTypedIndex = 0;
+let synopsisResolve = null;
 
 /* =====================================================
    CHARACTER ART
 ===================================================== */
 
 function characterArtSvg(name) {
-    const presets = {
-        Hanako: {
-            head: 'M100 35 C74 35 58 54 58 84 C58 115 76 136 100 136 C124 136 142 115 142 84 C142 54 126 35 100 35 Z',
-            hair: 'M56 91 C48 53 68 20 101 18 C136 17 153 46 145 91 C136 67 124 55 101 53 C78 55 66 69 56 91 Z M59 70 C42 89 47 119 66 137 L78 112 L73 73 Z M141 70 C158 89 153 119 134 137 L122 112 L127 73 Z',
-            torso: 'M73 145 C82 138 118 138 127 145 L143 245 C131 259 69 259 57 245 Z',
-            skirt: 'M57 238 C72 248 128 248 143 238 L156 286 L44 286 Z',
-            leftArm: 'M74 151 C63 156 58 178 55 203 L42 235 C39 243 45 250 52 247 L67 215 L82 171 Z',
-            rightArm: 'M126 151 C137 156 142 178 145 203 L158 235 C161 243 155 250 148 247 L133 215 L118 171 Z',
-            legs: 'M69 281 L91 281 L88 326 L75 326 Z M109 281 L131 281 L126 326 L113 326 Z'
-        },
-        Yumi: {
-            head: 'M100 36 C76 36 60 55 60 84 C60 112 77 132 100 132 C123 132 140 112 140 84 C140 55 124 36 100 36 Z',
-            hair: 'M57 88 C51 49 72 21 100 20 C132 20 150 46 145 90 C136 65 124 55 100 53 C76 55 65 69 57 88 Z M60 70 C47 93 49 118 67 132 L78 108 L73 70 Z M140 70 C153 93 151 118 133 132 L122 108 L127 70 Z',
-            torso: 'M75 142 C84 136 116 136 125 142 L139 241 C128 254 72 254 61 241 Z',
-            skirt: 'M61 234 C74 245 126 245 139 234 L153 282 L47 282 Z',
-            leftArm: 'M75 148 C64 154 60 177 57 199 L46 232 C43 241 49 247 56 244 L70 213 L83 170 Z',
-            rightArm: 'M125 148 C136 154 140 177 143 199 L154 232 C157 241 151 247 144 244 L130 213 L117 170 Z',
-            legs: 'M70 278 L91 278 L88 326 L75 326 Z M109 278 L130 278 L126 326 L113 326 Z'
-        },
-        Rika: {
-            head: 'M100 35 C74 35 57 55 57 85 C57 114 76 135 100 135 C124 135 143 114 143 85 C143 55 126 35 100 35 Z',
-            hair: 'M55 92 C46 49 69 17 101 18 C136 18 155 48 145 94 C135 66 123 54 100 52 C77 54 65 69 55 92 Z M57 72 C43 91 47 123 66 141 L79 111 L73 72 Z M143 72 C157 91 153 123 134 141 L121 111 L127 72 Z',
-            torso: 'M72 146 C82 138 118 138 128 146 L145 247 C132 260 68 260 55 247 Z',
-            skirt: 'M55 240 C72 251 128 251 145 240 L158 287 L42 287 Z',
-            leftArm: 'M72 151 C61 158 56 180 53 203 L40 235 C37 244 43 251 51 247 L66 215 L81 171 Z',
-            rightArm: 'M128 151 C139 158 144 180 147 203 L160 235 C163 244 157 251 149 247 L134 215 L119 171 Z',
-            legs: 'M68 282 L91 282 L87 326 L74 326 Z M109 282 L132 282 L126 326 L113 326 Z'
-        },
-        Teacher: {
-            head: 'M100 32 C75 32 59 51 59 80 C59 109 77 130 100 130 C123 130 141 109 141 80 C141 51 125 32 100 32 Z',
-            hair: 'M58 84 C50 45 71 18 100 18 C131 18 151 43 143 85 C134 62 122 51 100 50 C78 51 66 63 58 84 Z M61 70 C49 89 53 115 70 128 L79 104 L74 70 Z M139 70 C151 89 147 115 130 128 L121 104 L126 70 Z',
-            torso: 'M72 140 C84 133 116 133 128 140 L145 294 C133 306 67 306 55 294 Z',
-            skirt: 'M55 285 L145 285 L153 329 L47 329 Z',
-            leftArm: 'M72 145 C61 153 58 178 55 201 L45 235 C42 244 48 250 55 246 L68 214 L82 170 Z',
-            rightArm: 'M128 145 C139 153 142 178 145 201 L155 235 C158 244 152 250 145 246 L132 214 L118 170 Z',
-            legs: 'M72 325 L92 325 L88 337 L74 337 Z M108 325 L128 325 L126 337 L112 337 Z'
-        }
+    const hair = {
+        Hanako: `M58 108 C48 82 50 49 71 28 C87 12 112 12 130 27 C151 44 154 77 143 106 C137 87 126 69 102 64 C78 69 67 88 58 108 Z M60 86 C43 105 46 137 64 153 C74 142 80 128 82 111 C75 105 68 97 60 86 Z M140 84 C157 104 154 137 136 153 C126 141 120 126 118 109 C126 102 133 94 140 84 Z`,
+        Yumi: `M56 101 C47 66 60 36 85 23 C111 9 142 25 149 54 C154 76 147 96 140 108 C129 78 115 65 97 64 C79 66 67 80 56 101 Z M61 68 C42 74 36 93 43 112 C50 130 63 136 75 126 L78 102 C68 94 63 82 61 68 Z M139 61 C158 64 168 81 162 100 C157 118 143 129 129 123 L123 101 C132 91 137 77 139 61 Z`,
+        Rika: `M58 105 C48 72 53 42 75 25 C98 7 129 16 143 40 C156 62 153 88 143 108 C132 79 118 66 98 64 C78 67 68 84 58 105 Z M66 53 C43 50 32 65 36 83 C40 101 53 112 69 111 L77 90 C68 80 64 68 66 53 Z M134 42 C153 36 168 48 168 66 C168 87 153 104 137 108 L123 89 C133 76 137 61 134 42 Z`,
+        Teacher: `M60 96 C52 66 58 39 79 25 C101 10 128 16 142 38 C155 59 151 86 141 103 C129 79 116 68 99 66 C81 68 69 81 60 96 Z M59 68 C47 70 39 81 41 94 C43 108 53 118 65 118 L76 96 C68 87 63 77 59 68 Z`
     };
-    const d = presets[name] || presets.Hanako;
-    const uid = ('sil_' + name).replace(/[^a-z0-9_]/gi, '');
+    const torso = name === "Teacher"
+        ? `M72 145 C82 137 118 137 128 145 C139 181 143 226 146 292 C132 307 68 307 54 292 C57 226 61 181 72 145 Z M76 287 C92 295 108 295 124 287 L134 333 L66 333 Z`
+        : `M73 145 C83 138 117 138 127 145 C137 182 141 219 143 241 C132 253 68 253 57 241 C59 219 63 182 73 145 Z M58 236 C75 246 125 246 142 236 L155 284 L45 284 Z`;
+    const arms = `M74 150 C64 160 60 181 56 201 L45 232 C42 241 47 248 54 245 L70 214 C78 193 82 171 82 158 Z M126 150 C136 160 140 181 144 201 L155 232 C158 241 153 248 146 245 L130 214 C122 193 118 171 118 158 Z`;
+    const legs = name === "Teacher"
+        ? `M69 328 L92 328 L88 339 L72 339 Z M108 328 L131 328 L128 339 L112 339 Z`
+        : `M69 279 L91 279 L88 326 L74 326 Z M109 279 L131 279 L126 326 L113 326 Z`;
     return `<svg class="fullCharacterArt realisticSilhouette" viewBox="0 0 200 345" xmlns="http://www.w3.org/2000/svg" aria-label="${name} silhouette" role="img">
-        <defs>
-            <linearGradient id="${uid}" x1="0" y1="0" x2="1" y2="1">
-                <stop offset="0" stop-color="#263443"/>
-                <stop offset="0.55" stop-color="#111b27"/>
-                <stop offset="1" stop-color="#05090e"/>
-            </linearGradient>
-            <linearGradient id="rim_${uid}" x1="0" y1="0" x2="1" y2="0">
-                <stop offset="0" stop-color="rgba(255,255,255,.26)"/>
-                <stop offset="0.35" stop-color="rgba(255,255,255,0)"/>
-                <stop offset="1" stop-color="rgba(255,255,255,.12)"/>
-            </linearGradient>
-        </defs>
-        <ellipse cx="100" cy="338" rx="54" ry="7" fill="rgba(20,30,40,.22)"/>
-        <g fill="url(#${uid})" stroke="rgba(255,255,255,.10)" stroke-width="1.2" stroke-linejoin="round">
-            <path d="${d.legs}"/>
-            <path d="${d.skirt}"/>
-            <path d="${d.torso}"/>
-            <path d="${d.leftArm}"/>
-            <path d="${d.rightArm}"/>
-            <rect x="88" y="126" width="24" height="28" rx="10"/>
-            <path d="${d.head}"/>
-            <path d="${d.hair}"/>
+        <ellipse cx="100" cy="339" rx="52" ry="6" fill="#14202a" opacity=".20"/>
+        <g fill="#17222d">
+            <path d="${legs}"/>
+            <path d="${torso}"/>
+            <path d="${arms}"/>
+            <rect x="90" y="123" width="20" height="31" rx="8"/>
+            <path d="M61 76 C60 51 76 30 99 29 C123 29 140 49 139 77 C139 108 123 133 100 133 C77 133 61 108 61 76 Z"/>
+            <path d="${hair[name] || hair.Hanako}"/>
         </g>
-        <path d="${d.torso}" fill="url(#rim_${uid})" opacity=".55"/>
-        <path d="M88 143 L100 153 L112 143" fill="none" stroke="rgba(255,255,255,.13)" stroke-width="2"/>
     </svg>`;
 }
 
@@ -2809,7 +2847,6 @@ function changeBoy(delta) {
 
 function updateCharacterSelect() {
     const track = document.getElementById("boyTrack");
-    if (!track) return;
     track.style.transform = `translateX(-${selectedBoy * 100}%)`;
 
     document.querySelectorAll("#carouselDots .carouselDot").forEach((dot, index) => {
@@ -2817,7 +2854,7 @@ function updateCharacterSelect() {
     });
 
     const preview = document.getElementById("mainPreview");
-    if (preview) preview.innerHTML = characterArtSvg("Hanako");
+    preview.innerHTML = characterArtSvg("Hanako");
 }
 
 createCharacterButtons();
@@ -2878,14 +2915,55 @@ function showCharacter(name, side = "left", expression = "normal") {
 
 function say(speaker, text, expression = "normal", side = "left", silhouette = false, background = null) {
     if (background) document.getElementById("background").className = background;
-
     const dialogueBox = document.getElementById("dialogueBox");
     dialogueBox.classList.remove("pointer-left", "pointer-right", "pointer-center");
     dialogueBox.classList.add(side === "right" ? "pointer-right" : side === "center" ? "pointer-center" : "pointer-left");
-
     document.getElementById("speaker").textContent = speaker;
-    document.getElementById("dialogue").textContent = text;
+    const dialogue = document.getElementById("dialogue");
+    const hint = document.getElementById("continueHint");
+    hint.textContent = "TYPING...";
+    hint.style.opacity = ".35";
     showCharacter(speaker, side, expression);
+    if (dialogueTimer) clearInterval(dialogueTimer);
+    dialogueTyping = true;
+    currentTypedText = text;
+    currentTypedIndex = 0;
+    dialogue.textContent = "";
+    return new Promise(resolve => {
+        dialogueResolve = resolve;
+        const speed = Math.max(18, Math.min(34, 620 / Math.max(text.length, 1)));
+        dialogueTimer = setInterval(() => {
+            currentTypedIndex++;
+            dialogue.textContent = text.slice(0, currentTypedIndex);
+            if (currentTypedIndex >= text.length) finishTyping();
+        }, speed);
+    });
+}
+function finishTyping() {
+    if (!dialogueTyping) return;
+    if (dialogueTimer) clearInterval(dialogueTimer);
+    dialogueTimer = null;
+    document.getElementById("dialogue").textContent = currentTypedText;
+    dialogueTyping = false;
+    const hint = document.getElementById("continueHint");
+    hint.textContent = "TAP / CLICK / SPACE";
+    hint.style.opacity = ".55";
+    const resolve = dialogueResolve;
+    dialogueResolve = null;
+    if (resolve) resolve();
+}
+function waitForDialogueAdvance() {
+    return new Promise(resolve => { dialogueResolve = resolve; });
+}
+function advanceDialogue() {
+    if (dialogueTyping) { finishTyping(); return true; }
+    if (dialogueResolve) {
+        const resolve = dialogueResolve;
+        dialogueResolve = null;
+        resolve();
+        return true;
+    }
+    return false;
 }
 
 function clearCharacters() {
@@ -2930,464 +3008,189 @@ function setDeviceMode(mode) {
 }
 
 const savedMode = localStorage.getItem("deviceMode");
-const automaticMode = (window.matchMedia && window.matchMedia("(pointer: coarse)").matches) ? "smartphone" : "pc";
-setDeviceMode(savedMode || automaticMode);
+setDeviceMode(savedMode || "pc");
 
 /* =====================================================
    STORY
 ===================================================== */
-
-function playCollisionAnimation(done) {
-    const fx = document.getElementById("collisionFX");
-    document.getElementById("collisionHanako").innerHTML = characterArtSvg("Hanako");
-    document.getElementById("collisionBoy").innerHTML = `<img class="fightArt" src="${boyData().image}" alt="${boyName()}">`;
-    fx.classList.add("active");
-    setTimeout(() => {
-        fx.classList.remove("active");
-        if (done) done();
-    }, 900);
+function setActionLock(locked) {
+    actionLocked = locked;
+    const box = document.getElementById("choiceBox");
+    if (box) box.classList.toggle("ui-locked", locked);
+    document.querySelectorAll("#choiceBox button").forEach(btn => btn.classList.toggle("ui-disabled", locked));
 }
-
-function startStory() {
-    ending = false;
-    inArcade = false;
-    arcadeRunning = false;
-    love = 0;
-    storyIndex = 0;
-    updateLove();
-
+function playCollisionAnimation() {
+    return new Promise(resolve => {
+        const fx = document.getElementById("collisionFX");
+        document.getElementById("collisionHanako").innerHTML = characterArtSvg("Hanako");
+        document.getElementById("collisionBoy").innerHTML = `<img class="fightArt" src="${boyData().image}" alt="${boyName()}">`;
+        fx.classList.remove("active"); void fx.offsetWidth; fx.classList.add("active");
+        setTimeout(() => { fx.classList.remove("active"); resolve(); }, 1050);
+    });
+}
+function showSynopsis(kicker, title, text) {
+    const card = document.getElementById("introCard");
+    document.getElementById("introKicker").textContent = kicker;
+    document.getElementById("introTitle").textContent = title;
+    document.getElementById("introText").textContent = text;
+    card.classList.add("active");
+    return new Promise(resolve => { synopsisResolve = resolve; });
+}
+function dismissSynopsis() {
+    const card = document.getElementById("introCard");
+    if (!card.classList.contains("active")) return false;
+    card.classList.remove("active");
+    const resolve = synopsisResolve; synopsisResolve = null;
+    if (resolve) resolve();
+    return true;
+}
+async function startStory() {
+    if (actionLocked) return;
+    setActionLock(true);
+    ending=false; inArcade=false; arcadeRunning=false; love=10; storyIndex=0;
+    classroomSynopsisShown=false; choiceBriefingActive=false; updateLove();
     showScreen("storyScreen");
     document.getElementById("loveGauge").classList.add("hidden");
-    document.getElementById("choiceBox").style.display = "none";
-    document.getElementById("dialogueBox").style.display = "block";
-    document.getElementById("arcadeScreen").style.display = "none";
+    document.getElementById("choiceBox").style.display="none";
+    document.getElementById("dialogueBox").style.display="block";
+    document.getElementById("arcadeScreen").style.display="none";
     document.getElementById("fightOverlay").classList.remove("active");
     document.getElementById("missionCard").classList.remove("active");
     document.getElementById("runTransition").classList.remove("active");
     document.getElementById("collisionFX").classList.remove("active");
-    arcadeIntroPlaying = false;
-    resetArcadeWorld();
-    document.getElementById("background").className = "city";
-
-    currentStory = [
-        {
-            speaker: mainName(),
-            text: "My name is Tohkatsu Hanako! A very, very normal girl who goes to Tohkatsu JHS.",
-            expression: "normal",
-            background: "city"
-        },
-        {
-            speaker: mainName(),
-            text: "OMG!! I'll be late for school!",
-            expression: "surprised"
-        },
-        {
-            speaker: mainName(),
-            text: "I must run!!!",
-            expression: "surprised"
-        },
-        {
-            speaker: boyName(),
-            text: "Ouch!! ...Sorry, are you OK??",
-            expression: "normal",
-            side: "right"
-        },
-        {
-            speaker: mainName(),
-            text: "I'm OK. And you too?",
-            expression: "nervous"
-        },
-        {
-            speaker: mainName(),
-            text: "(Oh, he's amazing...)",
-            expression: "shy"
-        },
-        {
-            speaker: boyName(),
-            text: "Hey, hey, are you OK?",
-            expression: "confused",
-            side: "right"
-        },
-        {
-            speaker: mainName(),
-            text: "Oh, sorry. HAHAHA. ...OMG! It's already 8:13!? Sorry, good luck!",
-            expression: "surprised"
-        },
-        {
-            speaker: "Teacher",
-            text: "Hanako! You were late again!?",
-            background: "school"
-        },
-        {
-            speaker: mainName(),
-            text: "Sorry...",
-            expression: "normal"
-        },
-        {
-            speaker: "Teacher",
-            text: "Not at all... Be careful."
-        },
-        {
-            speaker: mainName(),
-            text: "Yes...",
-            expression: "normal"
-        },
-        {
-            speaker: "Teacher",
-            text: "Now, today I'd like to introduce you to a transfer student."
-        },
-        {
-            speaker: mainName(),
-            text: "Transfer student...?",
-            expression: "surprised"
-        },
-        {
-            speaker: "Teacher",
-            text: "Come! " + boyName() + "!"
-        },
-        {
-            speaker: boyName(),
-            text: "Hello, everyone. My name is " + boyName() + ".",
-            side: "right"
-        },
-        {
-            speaker: mainName(),
-            text: "OMG! He was the one from this morning...",
-            expression: "shy"
-        },
-        {
-            speaker: "Yumi",
-            text: "How are you, Hanako? Your face is red.",
-            side: "right"
-        },
-        {
-            speaker: mainName(),
-            text: "No!",
-            expression: "shy"
-        },
-        {
-            speaker: "Rika",
-            text: "Maybe you've fallen for him?",
-            side: "right"
-        },
-        {
-            speaker: mainName(),
-            text: "...",
-            expression: "shy"
-        }
+    document.getElementById("choiceBriefing").classList.remove("active");
+    document.getElementById("heartBreak").classList.add("hidden");
+    arcadeIntroPlaying=false; resetArcadeWorld(); document.getElementById("background").className="city";
+    currentStory=[
+        {speaker:mainName(),text:"My name is Tohkatsu Hanako! A very, very normal girl who goes to Tohkatsu JHS.",expression:"normal",background:"city"},
+        {speaker:mainName(),text:"OMG!! I'll be late for school!",expression:"surprised"},
+        {speaker:mainName(),text:"I must run!!!",expression:"surprised"},
+        {speaker:boyName(),text:"Ouch!! ...Sorry, are you OK??",expression:"normal",side:"right"},
+        {speaker:mainName(),text:"I'm OK. And you too?",expression:"nervous"},
+        {speaker:mainName(),text:"(Oh, he's amazing...)",expression:"shy"},
+        {speaker:boyName(),text:"Hey, hey, are you OK?",expression:"confused",side:"right"},
+        {speaker:mainName(),text:"Oh, sorry. HAHAHA. ...OMG! It's already 8:13!? Sorry, good luck!",expression:"surprised"},
+        {speaker:"Teacher",text:"Hanako! You were late again!?",background:"school"},
+        {speaker:mainName(),text:"Sorry...",expression:"normal"},
+        {speaker:"Teacher",text:"Not at all... Be careful."},
+        {speaker:mainName(),text:"Yes...",expression:"normal"},
+        {speaker:"Teacher",text:"Now, today I'd like to introduce you to a transfer student."},
+        {speaker:mainName(),text:"Transfer student...?",expression:"surprised"},
+        {speaker:"Teacher",text:"Come! "+boyName()+"!"},
+        {speaker:boyName(),text:"Hello, everyone. My name is "+boyName()+".",side:"right"},
+        {speaker:mainName(),text:"OMG! He was the one from this morning...",expression:"shy"},
+        {speaker:"Yumi",text:"How are you, Hanako? Your face is red.",side:"right"},
+        {speaker:mainName(),text:"No!",expression:"shy"},
+        {speaker:"Rika",text:"Maybe you've fallen for him?",side:"right"},
+        {speaker:mainName(),text:"...",expression:"shy"}
     ];
-
-    introPlaying = true;
-    const intro = document.getElementById("introCard");
-    intro.classList.add("active");
     clearCharacters();
-
-    setTimeout(() => {
-        intro.classList.remove("active");
-        introPlaying = false;
-        playStory();
-    }, 3000);
+    await showSynopsis("TOHKATSU JUNIOR HIGH SCHOOL","A Very Normal School Day","Hanako, a student at Tohkatsu JHS, was rushing to school because she was almost late — while, somewhere in her heart, she could feel a strange little flutter of excitement.");
+    setActionLock(false);
 }
-
-function playStory() {
-    if (storyIndex >= currentStory.length) {
-        beginChoiceMode();
-        return;
-    }
-
-    const line = currentStory[storyIndex];
-    storyIndex++;
-
-    const isCollision = line.speaker === boyName() && line.text.startsWith("Ouch!!");
-    if (isCollision) {
-        document.getElementById("dialogueBox").style.display = "none";
-        playCollisionAnimation(() => {
-            document.getElementById("dialogueBox").style.display = "block";
-            say(line.speaker, line.text, line.expression, line.side, line.silhouette, line.background);
-        });
-        return;
-    }
-
-    say(line.speaker, line.text, line.expression, line.side, line.silhouette, line.background);
+async function showClassroomSynopsis() {
+    setActionLock(true); document.getElementById("dialogueBox").style.display="none";
+    await showSynopsis("CLASS 3-2","At Last, The Classroom","Hanako has finally made it to class. But the strange excitement from this morning is still in her heart — and today, a transfer student is about to change her ordinary school day.");
+    document.getElementById("dialogueBox").style.display="block"; classroomSynopsisShown=true;
 }
-
-/* =====================================================
-   CLICK / SPACE
-===================================================== */
+async function playStory() {
+    if (inArcade || ending) return;
+    if (dialogueTyping) { finishTyping(); return; }
+    if (storyIndex>=currentStory.length) { await beginChoiceMode(); return; }
+    if (storyIndex===8 && !classroomSynopsisShown) { await showClassroomSynopsis(); setActionLock(false); return; }
+    setActionLock(true);
+    const line=currentStory[storyIndex++];
+    if (line.speaker===boyName() && line.text.startsWith("Ouch!!")) {
+        document.getElementById("dialogueBox").style.display="none"; await playCollisionAnimation(); document.getElementById("dialogueBox").style.display="block";
+    }
+    await say(line.speaker,line.text,line.expression,line.side,line.silhouette,line.background);
+    setActionLock(false);
+}
 
 document.addEventListener("click", event => {
-    const storyScreen = document.getElementById("storyScreen");
-
-    if (!storyScreen.classList.contains("active")) {
-        return;
-    }
-
-    if (
-        event.target.closest("button") ||
-        event.target.closest(".modal") ||
-        event.target.closest("#choiceBox") ||
-        event.target.closest("#captureOverlay") ||
-        event.target.closest("#mobileControls") ||
-        event.target.closest("#fightOverlay")
-    ) {
-        return;
-    }
-
-    if (!inArcade && !ending && !introPlaying && !document.getElementById("fightOverlay").classList.contains("active") && storyIndex > 0) {
-        playStory();
-    }
+    const storyScreen=document.getElementById("storyScreen"); if(!storyScreen.classList.contains("active")) return;
+    if(event.target.closest("button")||event.target.closest(".modal")||event.target.closest("#choiceBox")||event.target.closest("#captureOverlay")||event.target.closest("#mobileControls")||event.target.closest("#fightOverlay")) return;
+    if(dismissSynopsis()) return;
+    const briefing=document.getElementById("choiceBriefing");
+    if(briefing.classList.contains("active")){briefing.classList.remove("active");choiceBriefingActive=false;restoreMainChoices();setActionLock(false);return;}
+    if(advanceDialogue()) return;
+    if(arcadeIntroPlaying) return;
+    if(!inArcade&&!ending&&!actionLocked) playStory();
 });
-
 document.addEventListener("keydown", event => {
-    if (event.code === "Space") {
-        if (!inArcade && !ending && !introPlaying && !document.getElementById("fightOverlay").classList.contains("active") && storyIndex > 0) {
-            event.preventDefault();
-            playStory();
-        }
-    }
+    if(event.code!=="Space") return;
+    const storyScreen=document.getElementById("storyScreen"); if(!storyScreen.classList.contains("active")) return;
+    event.preventDefault();
+    if(dismissSynopsis()) return;
+    const briefing=document.getElementById("choiceBriefing");
+    if(briefing.classList.contains("active")){briefing.classList.remove("active");choiceBriefingActive=false;restoreMainChoices();setActionLock(false);return;}
+    if(advanceDialogue()) return;
+    if(arcadeIntroPlaying) return;
+    if(!inArcade&&!ending&&!actionLocked) playStory();
 });
 
 /* =====================================================
    LOVE GAUGE
 ===================================================== */
-
-function updateLove() {
-    love = Math.max(0, Math.min(100, love));
-
-    document.getElementById("loveBar").style.width = love + "%";
-    document.getElementById("loveValue").textContent = Math.floor(love) + "%";
+function updateLove(){love=Math.max(0,Math.min(100,love));document.getElementById("loveBar").style.width=love+"%";document.getElementById("loveValue").textContent=Math.floor(love)+"%";}
+function restoreMainChoices(){
+    const box=document.getElementById("choiceBox");
+    box.innerHTML=`<button class="choice" onclick="mainChoice('talk')">A. Talk</button><button class="choice" onclick="mainChoice('run')">B. Escape to the arcade</button><button class="choice" onclick="mainChoice('fight')">C. Fight</button><button class="choice" onclick="mainChoice('confess')">D. ♡</button>`;
+    box.style.display="grid"; box.classList.remove("ui-locked"); document.querySelectorAll("#choiceBox button").forEach(b=>b.classList.remove("ui-disabled"));
 }
-
-/* =====================================================
-   CHOICE MODE
-===================================================== */
-
-function beginChoiceMode() {
-    if (inArcade) {
-        return;
-    }
-
-    document.getElementById("loveGauge").classList.remove("hidden");
-    document.getElementById("dialogueBox").style.display = "none";
-    document.getElementById("choiceBox").style.display = "grid";
+async function beginChoiceMode(){
+    if(inArcade||ending||choiceBriefingActive)return;
+    document.getElementById("loveGauge").classList.remove("hidden"); document.getElementById("dialogueBox").style.display="none"; document.getElementById("choiceBox").style.display="none";
+    choiceBriefingActive=true; setActionLock(true); document.getElementById("choiceBriefing").classList.add("active");
 }
-
-/* =====================================================
-   MAIN CHOICES
-===================================================== */
-
-function mainChoice(choice) {
-    document.getElementById("choiceBox").style.display = "none";
-
-    if (choice === "talk") talkChoice();
-    if (choice === "run") startArcadeIntro();
-    if (choice === "fight") fightEnding();
-    if (choice === "confess") confess();
+function mainChoice(choice){
+    if(actionLocked||ending||inArcade)return; setActionLock(true); document.getElementById("choiceBox").style.display="none";
+    if(choice==='talk')talkChoice(); else if(choice==='run')startArcadeIntro(); else if(choice==='fight')fightEnding(); else if(choice==='confess')confess();
 }
-
-/* =====================================================
-   TALK: FOUR TOPICS -> TALK AGAIN OR ESCAPE
-===================================================== */
-
-function talkChoice() {
-    const questions = [
-        { q: "What's your favorite food?", a: "I like rice.", amount: 20 },
-        { q: "What's your favorite color?", a: "I like blue.", amount: 20 },
-        { q: "What's your favorite animal?", a: "I like cats.", amount: 20 },
-        { q: "What's your favorite sport?", a: "I like soccer.", amount: 20 }
-    ];
-
-    const box = document.getElementById("choiceBox");
-    box.innerHTML = "";
-    box.style.display = "grid";
-
-    questions.forEach((q, index) => {
-        const button = document.createElement("button");
-        button.className = "choice";
-        button.textContent = `${String.fromCharCode(65 + index)}. ${q.q}`;
-        button.onclick = () => {
-            box.style.display = "none";
-            document.getElementById("dialogueBox").style.display = "block";
-            say(mainName(), q.q, "normal", "left");
-
-            setTimeout(() => {
-                say(boyName(), q.a, "normal", "right");
-                love += q.amount;
-                updateLove();
-                setTimeout(showAfterTalkChoice, 750);
-            }, 700);
-        };
-        box.appendChild(button);
+function talkChoice(){
+    const questions=[{q:"What's your favorite food?",a:"I like rice."},{q:"What's your favorite color?",a:"I like blue."},{q:"What's your favorite animal?",a:"I like cats."},{q:"What's your favorite sport?",a:"I like soccer."}];
+    const box=document.getElementById("choiceBox"); box.innerHTML=""; box.style.display="grid"; setActionLock(false);
+    questions.forEach((q,index)=>{
+        const button=document.createElement("button"); button.className="choice"; button.textContent=`${String.fromCharCode(65+index)}. ${q.q}`;
+        button.onclick=async()=>{
+            if(actionLocked)return; setActionLock(true); box.style.display="none"; document.getElementById("dialogueBox").style.display="block";
+            await say(mainName(),q.q,"normal","left"); await waitForDialogueAdvance(); await say(boyName(),q.a,"normal","right");
+            const gain=Math.floor(Math.random()*4)+17; love+=gain; updateLove(); await waitForDialogueAdvance();
+            document.getElementById("dialogueBox").style.display="none"; restoreMainChoices(); setActionLock(false);
+        }; box.appendChild(button);
     });
 }
-
-function showAfterTalkChoice() {
-    const box = document.getElementById("choiceBox");
-    box.innerHTML = "";
-    box.style.display = "grid";
-
-    const talkAgain = document.createElement("button");
-    talkAgain.className = "choice";
-    talkAgain.textContent = "A. Talk again";
-    talkAgain.onclick = talkChoice;
-
-    const escape = document.createElement("button");
-    escape.className = "choice";
-    escape.textContent = "B. Escape to the arcade";
-    escape.onclick = startArcadeIntro;
-
-    box.appendChild(talkAgain);
-    box.appendChild(escape);
-}
-
 /* =====================================================
    FIGHT
 ===================================================== */
-
-function fightEnding() {
-    if (ending || inArcade || document.getElementById("fightOverlay").classList.contains("active")) return;
-
-    document.getElementById("choiceBox").style.display = "none";
-    document.getElementById("dialogueBox").style.display = "none";
-
-    const overlay = document.getElementById("fightOverlay");
-    document.getElementById("fightHanako").innerHTML = characterArtSvg("Hanako");
-    document.getElementById("fightBoy").innerHTML = `<img class="fightArt" src="${boyData().image}" alt="${boyName()}">`;
-    overlay.classList.add("active");
-
-    setTimeout(() => {
-        overlay.classList.remove("active");
-        showGameOver("The fight ended your love story.");
-    }, 2600);
+async function fightEnding(){
+    if(ending||inArcade)return; const overlay=document.getElementById("fightOverlay"); document.getElementById("heartBreak").classList.add("hidden");
+    document.getElementById("choiceBox").style.display="none"; document.getElementById("dialogueBox").style.display="none";
+    document.getElementById("fightHanako").innerHTML=characterArtSvg("Hanako"); document.getElementById("fightBoy").innerHTML=`<img class="fightArt" src="${boyData().image}" alt="${boyName()}">`;
+    overlay.classList.remove("active"); void overlay.offsetWidth; overlay.classList.add("active"); await new Promise(r=>setTimeout(r,2050)); overlay.classList.remove("active"); await new Promise(r=>setTimeout(r,350)); showGameOver("The fight ended your love story.",true);
 }
-
 /* =====================================================
    CONFESSION
 ===================================================== */
-
-function confess() {
-    document.getElementById("dialogueBox").style.display = "block";
-
-    say(
-        mainName(),
-        "I like you. Would you be my boyfriend?",
-        "shy"
-    );
-
-    setTimeout(() => {
-        if (love >= 100) {
-            marriageEnding();
-        } else if (love >= 51) {
-            datingEnding();
-        } else {
-            rejectionEnding();
-        }
-    }, 1300);
-}
-
+async function confess(){document.getElementById("dialogueBox").style.display="block";await say(mainName(),"I like you. Would you be my boyfriend?","shy","left");await waitForDialogueAdvance();if(love>=100)await marriageEnding();else if(love>=51)await datingEnding();else await rejectionEnding();}
+async function rejectionEnding(){await say(boyName(),"Who are you?","confused","right");await waitForDialogueAdvance();showGameOver("He was already dating Yumi or Rika.",true);}
+async function datingEnding(){await say(boyName(),"Yes.","shy","right");await waitForDialogueAdvance();showEnding("GAME CLEAR",mainName()+" and "+boyName()+" are finally together!","dating");}
+async function marriageEnding(){await say(boyName(),"Yes.","shy","right");await waitForDialogueAdvance();showEnding("MARRIAGE END","...after 10 years\n\nA white dove flies away from a church.","marriage");}
 /* =====================================================
-   REJECTION
+   GAME OVER / ENDING
 ===================================================== */
-
-function rejectionEnding() {
-    say(boyName(), "Who are you?", "confused", "right");
-
-    setTimeout(() => {
-        showGameOver("He was already dating Yumi or Rika.");
-    }, 1600);
+function showGameOver(text,showHeart=true){
+    ending=true; actionLocked=true; arcadeIntroPlaying=false; inArcade=false; arcadeRunning=false; document.getElementById("arcadeScreen").style.display="none"; document.getElementById("miniMap").style.display="none"; document.getElementById("darkFade").style.opacity="0"; showScreen("endingScreen"); document.getElementById("endingTitle").textContent="GAME OVER"; document.getElementById("endingText").textContent=text;
+    const heart=document.getElementById("heartBreak"); heart.classList.add("hidden"); if(showHeart){void heart.offsetWidth;heart.classList.remove("hidden");}
 }
-
+function showEnding(title,text,type){ending=true;actionLocked=true;arcadeIntroPlaying=false;inArcade=false;arcadeRunning=false;document.getElementById("arcadeScreen").style.display="none";document.getElementById("miniMap").style.display="none";document.getElementById("darkFade").style.opacity="0";showScreen("endingScreen");document.getElementById("endingTitle").textContent=title;document.getElementById("endingText").textContent=text;document.getElementById("heartBreak").classList.add("hidden");}
 /* =====================================================
-   DATING
+   RESTART
 ===================================================== */
-
-function datingEnding() {
-    say(boyName(), "Yes.", "shy", "right");
-
-    setTimeout(() => {
-        showEnding(
-            "GAME CLEAR",
-            mainName() + " and " + boyName() + " are finally together!",
-            "dating"
-        );
-    }, 1300);
-}
-
-/* =====================================================
-   MARRIAGE
-===================================================== */
-
-function marriageEnding() {
-    say(boyName(), "Yes.", "shy", "right");
-
-    setTimeout(() => {
-        showEnding(
-            "MARRIAGE END",
-            "...after 10 years\n\nA white dove flies away from a church.",
-            "marriage"
-        );
-    }, 1300);
-}
-
-/* =====================================================
-   GAME OVER
-===================================================== */
-
-function showGameOver(text) {
-    ending = true;
-    arcadeIntroPlaying = false;
-    inArcade = false;
-    arcadeRunning = false;
-
-    document.getElementById("arcadeScreen").style.display = "none";
-    document.getElementById("miniMap").style.display = "none";
-    document.getElementById("darkFade").style.opacity = "0";
-
-    showScreen("endingScreen");
-
-    document.getElementById("endingTitle").textContent = "GAME OVER";
-    document.getElementById("endingText").textContent = text;
-    document.getElementById("heartBreak").classList.remove("hidden");
-}
-
-function showEnding(title, text, type) {
-    ending = true;
-    arcadeIntroPlaying = false;
-    inArcade = false;
-    arcadeRunning = false;
-
-    document.getElementById("arcadeScreen").style.display = "none";
-    document.getElementById("miniMap").style.display = "none";
-    document.getElementById("darkFade").style.opacity = "0";
-
-    showScreen("endingScreen");
-
-    document.getElementById("endingTitle").textContent = title;
-    document.getElementById("endingText").textContent = text;
-    document.getElementById("heartBreak").classList.add("hidden");
-}
-
-/* =====================================================
-   RESTART FROM SCHOOL
-===================================================== */
-
-function restartGame() {
-    ending = false;
-    inArcade = false;
-    arcadeRunning = false;
-    love = 0;
-    storyIndex = 0;
-    captureStep = 0;
-    introPlaying = false;
-    arcadeIntroPlaying = false;
-    updateLove();
-    document.getElementById("arcadeScreen").style.display = "none";
-    document.getElementById("fightOverlay").classList.remove("active");
-    document.getElementById("darkFade").style.opacity = "0";
-    document.getElementById("captureOverlay").style.display = "none";
-    screenHistory = ["characterScreen"];
-    history.replaceState({ game: true, screen: "characterScreen" }, "", location.href);
-    showCharacterSelect(false);
+function restartGame(){
+    ending=false;inArcade=false;arcadeRunning=false;love=10;storyIndex=0;captureStep=0;introPlaying=false;arcadeIntroPlaying=false;classroomSynopsisShown=false;choiceBriefingActive=false;actionLocked=false;dialogueTyping=false;
+    if(dialogueTimer)clearInterval(dialogueTimer);dialogueTimer=null;dialogueResolve=null;synopsisResolve=null;updateLove();
+    document.getElementById("arcadeScreen").style.display="none";document.getElementById("fightOverlay").classList.remove("active");document.getElementById("darkFade").style.opacity="0";document.getElementById("captureOverlay").style.display="none";document.getElementById("introCard").classList.remove("active");document.getElementById("choiceBriefing").classList.remove("active");document.getElementById("missionCard").classList.remove("active");document.getElementById("runTransition").classList.remove("active");document.getElementById("heartBreak").classList.add("hidden");resetArcadeWorld();screenHistory=["characterScreen"];history.replaceState({game:true,screen:"characterScreen"},"",location.href);showCharacterSelect(false);
 }
 
 /* =====================================================
@@ -4966,88 +4769,28 @@ function checkArcadeExit() {
    START ARCADE
 ===================================================== */
 
-function startArcadeIntro() {
-    if (ending || inArcade || arcadeIntroPlaying) return;
-
-    document.getElementById("choiceBox").style.display = "none";
-    document.getElementById("loveGauge").classList.add("hidden");
-    document.getElementById("dialogueBox").style.display = "block";
-    document.getElementById("background").className = "arcade";
-    arcadeIntroPlaying = true;
-
-    const lines = [
-        { speaker: mainName(), text: "It's our first day, but how about we skip school and go to the arcade?", side: "left" },
-        { speaker: boyName(), text: "What? Seriously...", side: "right" },
-        { speaker: mainName(), text: "Just come on!!", side: "left" },
-        { speaker: "Narration", text: "Hanako grabs his hand and the two of them run toward the game center.", side: "center" },
-        { speaker: mainName(), text: "Look! There are so many games!", side: "left" },
-        { speaker: boyName(), text: "...Fine. Which one should we play first?", side: "right" },
-        { speaker: mainName(), text: "Hmm... what about this one?", side: "left" },
-        { speaker: "Teacher", text: "Hey! " + boyName() + "! Hanako!", side: "right" },
-        { speaker: mainName(), text: "Shh!!", side: "left" },
-        { speaker: boyName(), text: "Who is that?", side: "right" },
-        { speaker: mainName(), text: "Our teacher! Let's get out of here together!", side: "left" }
+async function startArcadeIntro(){
+    if(ending||inArcade||arcadeIntroPlaying)return;
+    document.getElementById("choiceBox").style.display="none";document.getElementById("loveGauge").classList.add("hidden");document.getElementById("dialogueBox").style.display="block";document.getElementById("background").className="arcade";document.getElementById("missionCard").classList.remove("active");arcadeIntroPlaying=true;
+    const lines=[
+        {speaker:mainName(),text:"It's our first day, but how about we skip school and go to the arcade?",side:"left"},
+        {speaker:boyName(),text:"What? Seriously...",side:"right"},
+        {speaker:mainName(),text:"Just come on!!",side:"left"},
+        {speaker:"Narration",text:"Hanako grabs his hand, and the two of them run toward the game center.",side:"center"},
+        {speaker:mainName(),text:"Look! There are so many games!",side:"left"},
+        {speaker:boyName(),text:"...Fine. Which one should we play first?",side:"right"},
+        {speaker:mainName(),text:"Hmm... what about this one?",side:"left"},
+        {speaker:"Teacher",text:"Hey! "+boyName()+"! Hanako!",side:"right"},
+        {speaker:mainName(),text:"Shh!!",side:"left"},
+        {speaker:boyName(),text:"Who is that?",side:"right"},
+        {speaker:mainName(),text:"Our teacher! Let's get out of here together!",side:"left"}
     ];
-
-    let i = 0;
-    let timer = null;
-
-    function next() {
-        if (i >= lines.length) {
-            const card = document.getElementById("missionCard");
-            card.classList.add("active");
-            timer = setTimeout(() => {
-                card.classList.remove("active");
-                arcadeIntroPlaying = false;
-                startArcade();
-            }, 2300);
-            return;
-        }
-
-        const line = lines[i++];
-        if (line.speaker === "Narration") {
-            clearCharacters();
-            const box = document.getElementById("dialogueBox");
-            box.classList.remove("pointer-left", "pointer-right");
-            box.classList.add("pointer-center");
-            document.getElementById("speaker").textContent = "Narration";
-            document.getElementById("dialogue").textContent = line.text;
-            const run = document.getElementById("runTransition");
-            document.getElementById("runHanako").innerHTML = characterArtSvg("Hanako");
-            document.getElementById("runBoy").innerHTML = `<img class="fightArt" src="${boyData().image}" alt="${boyName()}">`;
-            run.classList.add("active");
-            setTimeout(() => run.classList.remove("active"), 1400);
-        } else {
-            say(line.speaker, line.text, "normal", line.side);
-        }
+    for(const line of lines){
+        if(line.speaker==="Narration"){
+            clearCharacters();await say(line.speaker,line.text,"normal","center");document.getElementById("runHanako").innerHTML=characterArtSvg("Hanako");document.getElementById("runBoy").innerHTML=`<img class="fightArt" src="${boyData().image}" alt="${boyName()}">`;const run=document.getElementById("runTransition");run.classList.add("active");await new Promise(r=>setTimeout(r,1150));run.classList.remove("active");await waitForDialogueAdvance();
+        }else{await say(line.speaker,line.text,"normal",line.side);await waitForDialogueAdvance();}
     }
-
-    function advance(event) {
-        if (event && event.target.closest("button")) return;
-        if (arcadeIntroPlaying && !document.getElementById("missionCard").classList.contains("active") && i > 0) {
-            next();
-        }
-    }
-
-    document.addEventListener("click", advance);
-    const keyAdvance = event => {
-        if (event.code === "Space") {
-            event.preventDefault();
-            advance(event);
-        }
-    };
-    document.addEventListener("keydown", keyAdvance);
-
-    const cleanup = setInterval(() => {
-        if (!arcadeIntroPlaying) {
-            clearInterval(cleanup);
-            document.removeEventListener("click", advance);
-            document.removeEventListener("keydown", keyAdvance);
-            if (timer) clearTimeout(timer);
-        }
-    }, 100);
-
-    next();
+    const card=document.getElementById("missionCard");card.classList.add("active");await new Promise(r=>setTimeout(r,1500));card.classList.remove("active");arcadeIntroPlaying=false;startArcade();actionLocked=false;
 }
 
 function resetArcadeWorld() {
@@ -5192,40 +4935,9 @@ function heartBreakArcade() {
    ARCADE SUCCESS
 ===================================================== */
 
-function arcadeSuccess() {
-    if (!inArcade || !arcadeRunning) {
-        return;
-    }
-
-    arcadeRunning = false;
-    inArcade = false;
-
-    love += 80;
-    updateLove();
-
-    document.getElementById("arcadeScreen").style.display = "none";
-    document.getElementById("miniMap").style.display = "none";
-    document.getElementById("dialogueBox").style.display = "block";
-
-    say(
-        mainName(),
-        "That was fun! I'm glad we made it.",
-        "happy",
-        "left"
-    );
-
-    setTimeout(() => {
-        say(boyName(), "Yeah... We really made it.", "happy", "right");
-        setTimeout(() => {
-            say(mainName(), "Yay!", "happy", "left");
-            setTimeout(() => {
-                say(mainName(), "Um! Will you go out with me?", "shy", "left");
-                setTimeout(() => {
-                    showEnding("HAPPY END", "They escaped the game center together — and Hanako finally confessed.\n\nThey decided to start dating.", "dating");
-                }, 1200);
-            }, 850);
-        }, 850);
-    }, 850);
+async function arcadeSuccess(){
+    if(!inArcade||!arcadeRunning)return;arcadeRunning=false;inArcade=false;actionLocked=true;love+=80;updateLove();document.getElementById("arcadeScreen").style.display="none";document.getElementById("miniMap").style.display="none";document.getElementById("dialogueBox").style.display="block";document.getElementById("background").className="arcade";
+    await say(mainName(),"That was fun! I'm glad we made it.","happy","left");await waitForDialogueAdvance();await say(boyName(),"Yeah... We really made it.","happy","right");await waitForDialogueAdvance();await say(mainName(),"Yay!","happy","left");await waitForDialogueAdvance();await say(mainName(),"Um! Will you go out with me?","shy","left");await waitForDialogueAdvance();showEnding("HAPPY END","They escaped the game center together — and Hanako finally confessed.\n\nThey decided to start dating.","dating");
 }
 
 /* =====================================================
