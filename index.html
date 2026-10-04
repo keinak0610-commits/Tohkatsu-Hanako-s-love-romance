@@ -2144,44 +2144,190 @@ body.smartphone #arcadeCrosshair {
     .characterSprite { width: min(46vw, 300px); height: 52vh; }
 }
 
+/* =====================================================
+   2026-10-05 VISUAL REVISION
+===================================================== */
+
+body { background:#dcecf3; }
+
+#titleScreen {
+    background-image: url("images/title_school.png");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    position: relative;
+    isolation: isolate;
+}
+#titleScreen::before {
+    content:"";
+    position:absolute;
+    inset:0;
+    background:linear-gradient(180deg, rgba(20,45,65,.10), rgba(20,35,45,.36));
+    z-index:-1;
+}
+#titleScreen .titleParty,
+#titleScreen .titleDecoration,
+#titleScreen .titleRibbon,
+#titleScreen .titleNote { display:none !important; }
+.titleContent {
+    position:relative;
+    z-index:5;
+    width:min(600px,88vw);
+    margin-left:auto;
+    margin-right:8vw;
+    padding:34px 34px 30px;
+    border-radius:28px;
+    background:rgba(255,255,255,.88);
+    box-shadow:0 22px 55px rgba(24,48,62,.22);
+    text-align:center;
+    backdrop-filter:blur(5px);
+}
+.titleKicker {
+    font-size:12px;
+    font-weight:900;
+    letter-spacing:3px;
+    color:#527083;
+    margin-bottom:8px;
+}
+#titleScreen .title {
+    margin:0;
+    color:#263f50;
+    text-shadow:none;
+    font-size:clamp(34px,5vw,62px);
+    line-height:1.04;
+}
+#titleScreen .title span { color:#d85e86; }
+#titleScreen .titleTagline {
+    margin:14px 0 22px;
+    color:#587181;
+    font-size:clamp(14px,2vw,18px);
+}
+#titleScreen .titleButtons { gap:10px; }
+
+#characterScreen {
+    background-image:linear-gradient(rgba(236,246,250,.18),rgba(236,246,250,.18)),url("images/classroom_bg.png");
+    background-size:cover;
+    background-position:center;
+    background-repeat:no-repeat;
+    position:relative;
+}
+#characterScreen::before {
+    content:"";
+    position:absolute;
+    inset:0;
+    background:linear-gradient(180deg,rgba(255,255,255,.12),rgba(22,48,62,.16));
+    pointer-events:none;
+}
+#characterScreen::after { display:none !important; }
+
+.boySelectionPanel {
+    position:relative;
+    z-index:5;
+    width:min(1120px,94vw);
+    display:grid;
+    grid-template-columns:180px minmax(0,1fr);
+    gap:16px;
+    align-items:stretch;
+}
+.hanakoBadge {
+    min-height:410px;
+    display:flex;
+    flex-direction:column;
+    justify-content:flex-end;
+    align-items:center;
+    padding:10px 8px 14px;
+    border-radius:22px;
+    background:rgba(255,255,255,.78);
+    border:2px solid rgba(255,255,255,.95);
+    box-shadow:0 12px 30px rgba(35,63,77,.18);
+}
+.hanakoBadgeArt { width:145px; height:330px; display:flex; align-items:flex-end; justify-content:center; }
+.hanakoBadgeArt .fullCharacterArt { width:145px; height:330px; }
+.hanakoBadgeText { color:#4c6575; font-size:12px; line-height:1.35; text-align:center; font-weight:700; }
+.boyPicker {
+    min-width:0;
+    padding:14px 14px 10px;
+    border-radius:22px;
+    background:rgba(255,255,255,.88);
+    border:2px solid rgba(255,255,255,.95);
+    box-shadow:0 12px 30px rgba(35,63,77,.18);
+}
+.boyPickerHeader {
+    text-align:center;
+    color:#405a6a;
+    font-size:13px;
+    font-weight:900;
+    letter-spacing:2px;
+    margin-bottom:5px;
+}
+.boyPicker .carouselViewport { touch-action:pan-y; }
+.boyPicker .characterCard { padding:6px 18px 2px; }
+.boyPicker .characterCard .cardImageWrap {
+    height:350px;
+    background:rgba(240,247,250,.68);
+    border:1px solid rgba(100,130,145,.18);
+}
+.boyPicker .characterCard img { max-height:338px; max-width:92%; transition:opacity .2s; }
+.boyPicker .characterCardName { font-size:24px; color:#29485c; margin-top:8px; }
+.boyPicker .carouselArrow { width:48px; height:64px; }
+.imageLoadFailed::after {
+    content:"Character image could not be loaded";
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    height:100%;
+    padding:12px;
+    color:#71818c;
+    font-size:13px;
+    font-weight:700;
+    text-align:center;
+}
+
+/* More natural, non-cartoon silhouette treatment for Hanako / Teacher / Rika / Yumi. */
+.realisticSilhouette { filter:drop-shadow(0 12px 16px rgba(10,25,35,.28)); }
+
+/* Real scene images instead of flat CSS scenery. */
+#background.city,
+#background.school,
+#background.arcade {
+    background-size:cover !important;
+    background-position:center !important;
+    background-repeat:no-repeat !important;
+}
+#background.city {
+    background-image:linear-gradient(rgba(255,255,255,.03),rgba(22,35,45,.12)),url("images/city_bg.png") !important;
+}
+#background.school {
+    background-image:linear-gradient(rgba(255,255,255,.02),rgba(22,35,45,.10)),url("images/classroom_bg.png") !important;
+}
+#background.arcade {
+    background-image:linear-gradient(rgba(30,15,55,.02),rgba(10,10,30,.10)),url("images/arcade_bg.png") !important;
+}
+#background.city::before,#background.city::after,
+#background.school::before,#background.school::after,
+#background.arcade::before,#background.arcade::after { display:none !important; }
+
+/* Keep the controls alive on both platforms. */
+body.smartphone #mobileControls { display:block; }
+body:not(.smartphone) #mobileControls { display:none; }
+
+@media (max-width:760px) {
+    #titleScreen { background-position:58% center; }
+    .titleContent { width:min(520px,88vw); margin:0 auto; padding:26px 20px; }
+    .boySelectionPanel { grid-template-columns:1fr; }
+    .hanakoBadge { min-height:92px; height:92px; flex-direction:row; gap:10px; justify-content:center; }
+    .hanakoBadgeArt { width:60px; height:82px; }
+    .hanakoBadgeArt .fullCharacterArt { width:60px; height:100px; }
+    .hanakoBadgeText { max-width:180px; }
+    .boyPicker .characterCard .cardImageWrap { height:290px; }
+    .boyPicker .characterCard img { max-height:278px; }
+}
+
+
 </style>
 </head>
 
 <body>
-
-<!-- =====================================================
-     PASSWORD SCREEN
-===================================================== -->
-
-<div id="passwordScreen">
-    <div class="passwordSky" aria-hidden="true">
-        <div class="passwordCloud c1"></div>
-        <div class="passwordCloud c2"></div>
-        <div class="passwordBalloon b1"></div>
-        <div class="passwordBalloon b2"></div>
-        <div class="passwordBalloon b3"></div>
-        <div class="passwordBalloon b4"></div>
-        <div class="passwordSchool"></div>
-    </div>
-    <div id="passwordBox">
-        <div id="passwordTitle">TOHKATSU HANAKO'S<br>LOVE ROMANCE</div>
-        <div id="passwordSubtitle">WELCOME TO SCHOOL! ♡</div>
-        <div style="color:#526579; font-size:14px; margin:-8px 0 20px;">Enter the secret password to begin.</div>
-        <input
-            id="passwordInput"
-            type="password"
-            autocomplete="off"
-            inputmode="text"
-            onkeydown="if(event.key === 'Enter') checkPassword()"
-        >
-        <button id="passwordButton" onclick="checkPassword()">
-            ENTER
-        </button>
-        <div id="passwordError">
-            Incorrect password.
-        </div>
-    </div>
-</div>
 
 <div id="game">
 
@@ -2190,52 +2336,17 @@ body.smartphone #arcadeCrosshair {
 ===================================================== -->
 
 <section id="titleScreen" class="screen active">
-
-    <div class="titleParty" aria-hidden="true">
-        <div class="balloon p1"></div>
-        <div class="balloon p2"></div>
-        <div class="balloon p3"></div>
-        <div class="balloon p4"></div>
-        <div class="schoolStar s1">✦</div>
-        <div class="schoolStar s2">✧</div>
+    <div class="titleOverlay" aria-hidden="true"></div>
+    <div class="titleContent">
+        <div class="titleKicker">TOHKATSU JUNIOR HIGH</div>
+        <h1 class="title">Tohkatsu Hanako's<br><span>Love Romance</span></h1>
+        <p class="titleTagline">A new school day is about to begin.</p>
+        <div class="titleButtons">
+            <button class="menuButton startButton" onclick="requestGameStart()">GAME START</button>
+            <button class="menuButton" onclick="openModal('creditModal')">CREDIT</button>
+            <button class="menuButton" onclick="openModal('settingsModal')">SETTINGS</button>
+        </div>
     </div>
-
-    <div class="titleDecoration" aria-hidden="true">
-        <div class="schoolRoof"></div>
-        <div class="schoolNameplate">TOHKATSU JUNIOR HIGH SCHOOL</div>
-        <div class="schoolWindows"></div>
-        <div class="schoolDoor"></div>
-        <div class="schoolTree treeLeft"></div>
-        <div class="schoolTree treeRight"></div>
-        <div class="schoolGate"></div>
-    </div>
-
-    <div class="titleRibbon">TOHKATSU JUNIOR HIGH SCHOOL</div>
-
-    <div class="title">
-        Tohkatsu Hanako's<br>
-        <span>Love Romance</span>
-    </div>
-
-    <div class="titleTagline">
-        A new school day is about to begin.
-    </div>
-
-    <div class="titleButtons">
-        <button class="menuButton startButton" onclick="requestGameStart()">
-            GAME START
-        </button>
-
-        <button class="menuButton" onclick="openModal('creditModal')">
-            CREDIT
-        </button>
-
-        <button class="menuButton" onclick="openModal('settingsModal')">
-            SETTINGS
-        </button>
-    </div>
-
-    <div class="titleNote">The school gate is open. Let the story begin.</div>
 </section>
 
 <!-- =====================================================
@@ -2289,22 +2400,19 @@ body.smartphone #arcadeCrosshair {
 ===================================================== -->
 
 <section id="characterScreen" class="screen">
-    <div class="characterSelectClouds" aria-hidden="true"></div>
-
     <button class="menuButton characterSelectBack" onclick="backToTitle()">BACK</button>
 
     <div class="selectTitle">Choose Your Boyfriend</div>
-    <div class="selectSubtitle">Swipe left or right to choose a classmate.</div>
+    <div class="selectSubtitle">Swipe left or right, or use the arrows.</div>
 
-    <div class="selectionArea">
-        <div class="selectionBox">
-            <h2>Main Character</h2>
-            <div id="mainPreview" class="characterPreview"></div>
-            <div class="fixedLabel">Hanako</div>
+    <div class="boySelectionPanel">
+        <div class="hanakoBadge">
+            <div class="hanakoBadgeArt" id="mainPreview"></div>
+            <div class="hanakoBadgeText">Hanako is the main character.</div>
         </div>
 
-        <div class="selectionBox">
-            <h2>Boyfriend</h2>
+        <div class="boyPicker">
+            <div class="boyPickerHeader">BOYFRIEND</div>
             <div class="carouselFrame">
                 <button class="carouselArrow" onclick="changeBoy(-1)" aria-label="Previous">‹</button>
                 <div id="boyCarouselViewport" class="carouselViewport">
@@ -2316,9 +2424,7 @@ body.smartphone #arcadeCrosshair {
         </div>
     </div>
 
-    <button class="menuButton startButton characterStartButton" onclick="startStory()">
-        START STORY
-    </button>
+    <button class="menuButton startButton characterStartButton" onclick="startStory()">START STORY</button>
 </section>
 
 <!-- =====================================================
@@ -2454,61 +2560,19 @@ body.smartphone #arcadeCrosshair {
 
 <script>
 /* =====================================================
-   PASSWORD + NAVIGATION
+   NAVIGATION
+   The password gate is intentionally disabled for this build.
 ===================================================== */
 
-const GAME_PASSWORD = "Tohkatsu9";
-let gameUnlocked = false;
-let screenHistory = [];
+let gameUnlocked = true;
+let screenHistory = ["titleScreen"];
 let suppressHistory = false;
 
-function openPasswordGate() {
-    const passwordScreen = document.getElementById("passwordScreen");
-    passwordScreen.style.display = "flex";
-    const input = document.getElementById("passwordInput");
-    const error = document.getElementById("passwordError");
-    error.classList.remove("show");
-    setTimeout(() => input.focus(), 40);
-}
-
 function requestGameStart() {
-    if (!gameUnlocked) {
-        openPasswordGate();
-        return;
-    }
     showCharacterSelect(true);
 }
 
-function cancelPassword() {
-    /* There is intentionally no BACK action on the password gate. */
-    openPasswordGate();
-}
-
-function checkPassword() {
-    const input = document.getElementById("passwordInput");
-    const error = document.getElementById("passwordError");
-
-    if (input.value === GAME_PASSWORD) {
-        gameUnlocked = true;
-        document.getElementById("passwordScreen").style.display = "none";
-        error.classList.remove("show");
-        input.value = "";
-        screenHistory = ["titleScreen"];
-        showScreen("titleScreen", false);
-        history.replaceState({ game: true, screen: "titleScreen" }, "", location.href);
-    } else {
-        error.classList.add("show");
-        input.value = "";
-        input.focus();
-    }
-}
-
 function showScreen(id, pushHistory = true) {
-    if (!gameUnlocked && id !== "titleScreen") {
-        openPasswordGate();
-        return;
-    }
-
     document.querySelectorAll(".screen").forEach(screen => {
         screen.classList.remove("active");
     });
@@ -2517,7 +2581,7 @@ function showScreen(id, pushHistory = true) {
     if (!target) return;
     target.classList.add("active");
 
-    if (pushHistory && gameUnlocked && !suppressHistory) {
+    if (pushHistory && !suppressHistory) {
         const last = screenHistory[screenHistory.length - 1];
         if (last !== id) {
             screenHistory.push(id);
@@ -2527,19 +2591,11 @@ function showScreen(id, pushHistory = true) {
 }
 
 function showCharacterSelect(pushHistory = true) {
-    if (!gameUnlocked) {
-        openPasswordGate();
-        return;
-    }
     updateCharacterSelect();
     showScreen("characterScreen", pushHistory);
 }
 
 function backToTitle() {
-    if (!gameUnlocked) {
-        openPasswordGate();
-        return;
-    }
     if (screenHistory.length > 1) {
         history.back();
     } else {
@@ -2548,7 +2604,7 @@ function backToTitle() {
 }
 
 function backFromStory() {
-    if (!gameUnlocked || inArcade || arcadeIntroPlaying || ending) return;
+    if (inArcade || arcadeIntroPlaying || ending) return;
     if (screenHistory.length > 1) {
         history.back();
     } else {
@@ -2557,22 +2613,13 @@ function backFromStory() {
 }
 
 window.addEventListener("load", () => {
-    document.getElementById("passwordScreen").style.display = "flex";
     document.querySelectorAll(".screen").forEach(screen => screen.classList.remove("active"));
-    screenHistory = [];
-    history.replaceState({ locked: true, screen: "password" }, "", location.href);
-    history.pushState({ locked: true, screen: "password" }, "", location.href);
-    openPasswordGate();
+    document.getElementById("titleScreen").classList.add("active");
+    screenHistory = ["titleScreen"];
+    history.replaceState({ game: true, screen: "titleScreen" }, "", location.href);
 });
 
 window.addEventListener("popstate", () => {
-    if (!gameUnlocked) {
-        /* The browser Back button can never bypass the gate. */
-        history.pushState({ locked: true, screen: "password" }, "", location.href);
-        openPasswordGate();
-        return;
-    }
-
     if (screenHistory.length > 1) {
         screenHistory.pop();
         const previous = screenHistory[screenHistory.length - 1];
@@ -2592,11 +2639,11 @@ window.addEventListener("popstate", () => {
 
 
 const characters = [
-    { name: "Masugu", image: "./images/masugu.png" },
-    { name: "Mizuta", image: "./images/mizuta.png" },
-    { name: "Takuto", image: "./images/takuto.png" },
-    { name: "Kowada", image: "./images/kowada.png" },
-    { name: "Junya", image: "./images/junya.png" }
+    { name: "Masugu", image: "images/masugu.png" },
+    { name: "Mizuta", image: "images/mizuta.png" },
+    { name: "Takuto", image: "images/takuto.png" },
+    { name: "Kowada", image: "images/kowada.png" },
+    { name: "Junya", image: "images/junya.png" }
 ];
 
 function assetUrl(path) {
@@ -2604,13 +2651,19 @@ function assetUrl(path) {
 }
 
 function imageWithFallback(img, name) {
-    img.src = assetUrl(img.dataset.asset || img.getAttribute("src"));
+    const path = img.dataset.asset || img.getAttribute("src");
+    img.src = assetUrl(path);
+    img.alt = name + " image";
+    img.onload = () => {
+        img.style.opacity = "1";
+        img.parentElement?.classList.remove("imageLoadFailed");
+    };
     img.onerror = () => {
         img.onerror = null;
         img.removeAttribute("src");
-        img.alt = name + " image";
+        img.alt = name + " image unavailable";
         img.style.opacity = "0";
-        img.parentElement.classList.add("imageLoadFailed");
+        img.parentElement?.classList.add("imageLoadFailed");
     };
 }
 
@@ -2637,37 +2690,72 @@ let arcadeIntroPlaying = false;
 ===================================================== */
 
 function characterArtSvg(name) {
-    const data = {
-        Hanako: { hair:"#f18bb4", skin:"#ffe0c8", uniform:"#f8a6c2", ribbon:"#ff5e91", eye:"#4f6480", skirt:"#fff6fb" },
-        Teacher: { hair:"#4c5968", skin:"#e8b58d", uniform:"#49677f", ribbon:"#e8d6a3", eye:"#354657", skirt:"#334b5d" },
-        Yumi: { hair:"#82b8ed", skin:"#ffd8c2", uniform:"#91bde9", ribbon:"#f39bbd", eye:"#49637c", skirt:"#f5dbe7" },
-        Rika: { hair:"#a27ee2", skin:"#ffd8bf", uniform:"#a58be3", ribbon:"#ffe078", eye:"#5d4f82", skirt:"#eee3ff" }
+    const presets = {
+        Hanako: {
+            head: 'M100 35 C74 35 58 54 58 84 C58 115 76 136 100 136 C124 136 142 115 142 84 C142 54 126 35 100 35 Z',
+            hair: 'M56 91 C48 53 68 20 101 18 C136 17 153 46 145 91 C136 67 124 55 101 53 C78 55 66 69 56 91 Z M59 70 C42 89 47 119 66 137 L78 112 L73 73 Z M141 70 C158 89 153 119 134 137 L122 112 L127 73 Z',
+            torso: 'M73 145 C82 138 118 138 127 145 L143 245 C131 259 69 259 57 245 Z',
+            skirt: 'M57 238 C72 248 128 248 143 238 L156 286 L44 286 Z',
+            leftArm: 'M74 151 C63 156 58 178 55 203 L42 235 C39 243 45 250 52 247 L67 215 L82 171 Z',
+            rightArm: 'M126 151 C137 156 142 178 145 203 L158 235 C161 243 155 250 148 247 L133 215 L118 171 Z',
+            legs: 'M69 281 L91 281 L88 326 L75 326 Z M109 281 L131 281 L126 326 L113 326 Z'
+        },
+        Yumi: {
+            head: 'M100 36 C76 36 60 55 60 84 C60 112 77 132 100 132 C123 132 140 112 140 84 C140 55 124 36 100 36 Z',
+            hair: 'M57 88 C51 49 72 21 100 20 C132 20 150 46 145 90 C136 65 124 55 100 53 C76 55 65 69 57 88 Z M60 70 C47 93 49 118 67 132 L78 108 L73 70 Z M140 70 C153 93 151 118 133 132 L122 108 L127 70 Z',
+            torso: 'M75 142 C84 136 116 136 125 142 L139 241 C128 254 72 254 61 241 Z',
+            skirt: 'M61 234 C74 245 126 245 139 234 L153 282 L47 282 Z',
+            leftArm: 'M75 148 C64 154 60 177 57 199 L46 232 C43 241 49 247 56 244 L70 213 L83 170 Z',
+            rightArm: 'M125 148 C136 154 140 177 143 199 L154 232 C157 241 151 247 144 244 L130 213 L117 170 Z',
+            legs: 'M70 278 L91 278 L88 326 L75 326 Z M109 278 L130 278 L126 326 L113 326 Z'
+        },
+        Rika: {
+            head: 'M100 35 C74 35 57 55 57 85 C57 114 76 135 100 135 C124 135 143 114 143 85 C143 55 126 35 100 35 Z',
+            hair: 'M55 92 C46 49 69 17 101 18 C136 18 155 48 145 94 C135 66 123 54 100 52 C77 54 65 69 55 92 Z M57 72 C43 91 47 123 66 141 L79 111 L73 72 Z M143 72 C157 91 153 123 134 141 L121 111 L127 72 Z',
+            torso: 'M72 146 C82 138 118 138 128 146 L145 247 C132 260 68 260 55 247 Z',
+            skirt: 'M55 240 C72 251 128 251 145 240 L158 287 L42 287 Z',
+            leftArm: 'M72 151 C61 158 56 180 53 203 L40 235 C37 244 43 251 51 247 L66 215 L81 171 Z',
+            rightArm: 'M128 151 C139 158 144 180 147 203 L160 235 C163 244 157 251 149 247 L134 215 L119 171 Z',
+            legs: 'M68 282 L91 282 L87 326 L74 326 Z M109 282 L132 282 L126 326 L113 326 Z'
+        },
+        Teacher: {
+            head: 'M100 32 C75 32 59 51 59 80 C59 109 77 130 100 130 C123 130 141 109 141 80 C141 51 125 32 100 32 Z',
+            hair: 'M58 84 C50 45 71 18 100 18 C131 18 151 43 143 85 C134 62 122 51 100 50 C78 51 66 63 58 84 Z M61 70 C49 89 53 115 70 128 L79 104 L74 70 Z M139 70 C151 89 147 115 130 128 L121 104 L126 70 Z',
+            torso: 'M72 140 C84 133 116 133 128 140 L145 294 C133 306 67 306 55 294 Z',
+            skirt: 'M55 285 L145 285 L153 329 L47 329 Z',
+            leftArm: 'M72 145 C61 153 58 178 55 201 L45 235 C42 244 48 250 55 246 L68 214 L82 170 Z',
+            rightArm: 'M128 145 C139 153 142 178 145 201 L155 235 C158 244 152 250 145 246 L132 214 L118 170 Z',
+            legs: 'M72 325 L92 325 L88 337 L74 337 Z M108 325 L128 325 L126 337 L112 337 Z'
+        }
     };
-    const d = data[name] || data.Hanako;
-    const isTeacher = name === "Teacher";
-    const hair = isTeacher
-        ? `<path d="M53 89 Q50 28 100 20 Q151 28 147 91 L135 65 Q121 50 101 50 Q78 50 65 70 Z" fill="${d.hair}"/><path d="M61 66 Q72 44 100 44 Q128 44 139 67" fill="none" stroke="#2f3e4d" stroke-width="7"/>`
-        : `<path d="M50 91 Q43 25 100 17 Q159 22 151 95 L137 75 Q130 50 101 46 Q71 50 64 79 Z" fill="${d.hair}"/><path d="M53 78 Q42 119 62 149 L78 112 L73 74 Z" fill="${d.hair}"/><path d="M147 78 Q158 119 138 149 L122 112 L127 74 Z" fill="${d.hair}"/>`;
-    const body = isTeacher
-        ? `<path d="M62 174 L138 174 L151 304 L49 304 Z" fill="${d.uniform}"/><path d="M72 177 L100 205 L128 177" fill="none" stroke="${d.ribbon}" stroke-width="7"/><path d="M76 301 L91 301 L87 332 L74 332 Z M109 301 L124 301 L127 332 L114 332 Z" fill="${d.skirt}"/>`
-        : `<path d="M66 174 L134 174 L151 287 L49 287 Z" fill="${d.uniform}"/><path d="M75 174 L100 199 L125 174" fill="none" stroke="${d.ribbon}" stroke-width="8"/><path d="M54 280 L146 280 L136 314 L64 314 Z" fill="${d.skirt}"/><path d="M78 310 L92 310 L89 333 L76 333 Z M108 310 L122 310 L125 333 L112 333 Z" fill="#53697c"/>`;
-    const accessory = name === "Hanako"
-        ? `<path d="M55 48 Q37 30 55 17 Q67 33 61 54 Z" fill="#ff5e91"/><path d="M145 48 Q163 30 145 17 Q133 33 139 54 Z" fill="#ff5e91"/><circle cx="100" cy="24" r="5" fill="#ffd86a"/>`
-        : name === "Yumi"
-        ? `<circle cx="52" cy="106" r="7" fill="#ffd45c"/><circle cx="148" cy="106" r="7" fill="#ffd45c"/>`
-        : name === "Rika"
-        ? `<path d="M51 54 L39 43 L52 40 Z" fill="#ffe078"/><path d="M149 54 L161 43 L148 40 Z" fill="#ffe078"/>`
-        : `<path d="M73 82 L91 82 M109 82 L127 82" stroke="#344454" stroke-width="4"/><path d="M95 82 L105 82" stroke="#344454" stroke-width="3"/>`;
-    return `<svg class="fullCharacterArt" viewBox="0 0 200 340" xmlns="http://www.w3.org/2000/svg" aria-label="${name}">
-        <ellipse cx="100" cy="333" rx="55" ry="8" fill="rgba(40,70,90,.16)"/>
-        ${body}
-        <rect x="72" y="145" width="56" height="36" rx="18" fill="${d.skin}"/>
-        <ellipse cx="100" cy="91" rx="47" ry="58" fill="${d.skin}"/>
-        ${hair}
-        <ellipse cx="82" cy="94" rx="5" ry="7" fill="${d.eye}"/><ellipse cx="118" cy="94" rx="5" ry="7" fill="${d.eye}"/>
-        <circle cx="83" cy="92" r="1.7" fill="white"/><circle cx="119" cy="92" r="1.7" fill="white"/>
-        <path d="M87 113 Q100 123 113 113" fill="none" stroke="#b75f75" stroke-width="3" stroke-linecap="round"/>
-        ${accessory}
+    const d = presets[name] || presets.Hanako;
+    const uid = ('sil_' + name).replace(/[^a-z0-9_]/gi, '');
+    return `<svg class="fullCharacterArt realisticSilhouette" viewBox="0 0 200 345" xmlns="http://www.w3.org/2000/svg" aria-label="${name} silhouette" role="img">
+        <defs>
+            <linearGradient id="${uid}" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0" stop-color="#263443"/>
+                <stop offset="0.55" stop-color="#111b27"/>
+                <stop offset="1" stop-color="#05090e"/>
+            </linearGradient>
+            <linearGradient id="rim_${uid}" x1="0" y1="0" x2="1" y2="0">
+                <stop offset="0" stop-color="rgba(255,255,255,.26)"/>
+                <stop offset="0.35" stop-color="rgba(255,255,255,0)"/>
+                <stop offset="1" stop-color="rgba(255,255,255,.12)"/>
+            </linearGradient>
+        </defs>
+        <ellipse cx="100" cy="338" rx="54" ry="7" fill="rgba(20,30,40,.22)"/>
+        <g fill="url(#${uid})" stroke="rgba(255,255,255,.10)" stroke-width="1.2" stroke-linejoin="round">
+            <path d="${d.legs}"/>
+            <path d="${d.skirt}"/>
+            <path d="${d.torso}"/>
+            <path d="${d.leftArm}"/>
+            <path d="${d.rightArm}"/>
+            <rect x="88" y="126" width="24" height="28" rx="10"/>
+            <path d="${d.head}"/>
+            <path d="${d.hair}"/>
+        </g>
+        <path d="${d.torso}" fill="url(#rim_${uid})" opacity=".55"/>
+        <path d="M88 143 L100 153 L112 143" fill="none" stroke="rgba(255,255,255,.13)" stroke-width="2"/>
     </svg>`;
 }
 
@@ -2721,6 +2809,7 @@ function changeBoy(delta) {
 
 function updateCharacterSelect() {
     const track = document.getElementById("boyTrack");
+    if (!track) return;
     track.style.transform = `translateX(-${selectedBoy * 100}%)`;
 
     document.querySelectorAll("#carouselDots .carouselDot").forEach((dot, index) => {
@@ -2728,7 +2817,7 @@ function updateCharacterSelect() {
     });
 
     const preview = document.getElementById("mainPreview");
-    preview.innerHTML = characterArtSvg("Hanako");
+    if (preview) preview.innerHTML = characterArtSvg("Hanako");
 }
 
 createCharacterButtons();
@@ -2841,7 +2930,8 @@ function setDeviceMode(mode) {
 }
 
 const savedMode = localStorage.getItem("deviceMode");
-setDeviceMode(savedMode || "pc");
+const automaticMode = (window.matchMedia && window.matchMedia("(pointer: coarse)").matches) ? "smartphone" : "pc";
+setDeviceMode(savedMode || automaticMode);
 
 /* =====================================================
    STORY
@@ -2859,11 +2949,6 @@ function playCollisionAnimation(done) {
 }
 
 function startStory() {
-    if (!gameUnlocked) {
-        document.getElementById("passwordScreen").style.display = "flex";
-        return;
-    }
-
     ending = false;
     inArcade = false;
     arcadeRunning = false;
