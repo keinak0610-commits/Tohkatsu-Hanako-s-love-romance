@@ -1,0 +1,2288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Tohkatsu Hanako's Love Romance</title>
+
+<style>
+* {
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+}
+
+body {
+    margin: 0;
+    background: #111;
+    color: white;
+    font-family: Arial, Helvetica, sans-serif;
+    overflow: hidden;
+}
+
+button {
+    font-family: inherit;
+    cursor: pointer;
+}
+
+#game {
+    width: 100vw;
+    height: 100vh;
+    position: relative;
+    overflow: hidden;
+}
+
+/* =========================
+   COMMON
+========================= */
+
+.screen {
+    position: absolute;
+    inset: 0;
+    display: none;
+}
+
+.screen.active {
+    display: flex;
+}
+
+button.menuButton {
+    background: rgba(255,255,255,0.95);
+    color: #111;
+    border: none;
+    padding: 14px 42px;
+    margin: 8px;
+    border-radius: 8px;
+    font-size: 20px;
+    transition: 0.15s;
+}
+
+button.menuButton:hover {
+    transform: scale(1.04);
+}
+
+button.menuButton:active {
+    transform: scale(0.97);
+}
+
+/* =========================
+   TITLE
+========================= */
+
+#titleScreen {
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background:
+        radial-gradient(circle at center, #49244d 0%, #17101b 55%, #090909 100%);
+}
+
+.title {
+    text-align: center;
+    font-size: clamp(34px, 7vw, 78px);
+    line-height: 0.95;
+    font-weight: 900;
+    letter-spacing: 2px;
+    margin-bottom: 45px;
+    text-shadow: 0 5px 20px black;
+}
+
+.title span {
+    display: block;
+}
+
+.titleSmall {
+    font-size: clamp(14px, 2vw, 22px);
+    opacity: 0.65;
+    margin-top: 20px;
+}
+
+/* =========================
+   CREDIT
+========================= */
+
+#creditScreen {
+    justify-content: center;
+    align-items: center;
+    background: rgba(0,0,0,0.96);
+    z-index: 100;
+}
+
+.creditBox {
+    width: min(700px, 90vw);
+    max-height: 90vh;
+    overflow-y: auto;
+    text-align: center;
+    border: 1px solid #555;
+    padding: 35px;
+    background: #181818;
+    border-radius: 12px;
+}
+
+.creditBox h2 {
+    margin-top: 0;
+}
+
+.creditBox p {
+    line-height: 1.8;
+}
+
+/* =========================
+   CHARACTER SELECT
+========================= */
+
+#selectScreen {
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background: #171717;
+    overflow-y: auto;
+    padding: 25px;
+}
+
+.selectTitle {
+    font-size: clamp(28px, 6vw, 52px);
+    margin-bottom: 25px;
+}
+
+.selectionArea {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 35px;
+    width: 100%;
+}
+
+.selectionBox {
+    width: min(500px, 90vw);
+    text-align: center;
+}
+
+.selectionBox h2 {
+    margin-bottom: 15px;
+}
+
+.characterChoices {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 8px;
+}
+
+.characterButton {
+    min-height: 80px;
+    background: #252525;
+    color: white;
+    border: 2px solid #555;
+    border-radius: 8px;
+    font-size: 13px;
+}
+
+.characterButton.selected {
+    border-color: #ff5d9e;
+    background: #51213b;
+    box-shadow: 0 0 15px rgba(255,93,158,0.35);
+}
+
+.startGameButton {
+    margin-top: 30px;
+}
+
+/* =========================
+   STORY
+========================= */
+
+#storyScreen {
+    background: #222;
+    flex-direction: column;
+}
+
+.background {
+    position: absolute;
+    inset: 0;
+    background-size: cover;
+    background-position: center;
+    transition: background 0.5s;
+}
+
+.cityBackground {
+    background:
+        linear-gradient(to bottom, rgba(40,80,130,.7), rgba(35,35,50,.95)),
+        repeating-linear-gradient(
+            90deg,
+            #4b5360 0px,
+            #4b5360 100px,
+            #606975 100px,
+            #606975 120px
+        );
+}
+
+.schoolBackground {
+    background:
+        linear-gradient(to bottom, rgba(190,205,220,.7), rgba(75,90,105,.95)),
+        repeating-linear-gradient(
+            90deg,
+            #aaa 0px,
+            #aaa 150px,
+            #888 150px,
+            #888 160px
+        );
+}
+
+.arcadeBackground {
+    background:
+        radial-gradient(circle, #5d1d75, #16091d 70%);
+}
+
+.characterStage {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+}
+
+.character {
+    position: absolute;
+    bottom: 120px;
+    width: min(40vw, 450px);
+    height: min(70vh, 650px);
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    transition: all 0.35s ease;
+}
+
+.character.left {
+    left: 5%;
+}
+
+.character.right {
+    right: 5%;
+}
+
+.character.center {
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.character img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    filter: drop-shadow(0 10px 12px rgba(0,0,0,.6));
+}
+
+.placeholderCharacter {
+    width: 180px;
+    height: 420px;
+    background: linear-gradient(#222,#050505);
+    border-radius: 80px 80px 20px 20px;
+    position: relative;
+    box-shadow: 0 0 35px rgba(0,0,0,.7);
+}
+
+.placeholderCharacter::before {
+    content: "";
+    position: absolute;
+    width: 125px;
+    height: 125px;
+    border-radius: 50%;
+    background: #111;
+    left: 27px;
+    top: -65px;
+}
+
+.placeholderCharacter span {
+    position: absolute;
+    bottom: 20px;
+    left: 0;
+    right: 0;
+    text-align: center;
+    font-size: 14px;
+    color: #aaa;
+}
+
+.character.hidden {
+    opacity: 0;
+    transform: translateY(30px) scale(.95);
+}
+
+.dialogueBox {
+    position: absolute;
+    left: 3%;
+    right: 3%;
+    bottom: 15px;
+    min-height: 125px;
+    background: rgba(0,0,0,.86);
+    border: 2px solid rgba(255,255,255,.5);
+    border-radius: 12px;
+    padding: 18px 25px;
+    z-index: 10;
+}
+
+.speaker {
+    font-weight: bold;
+    color: #ff7fb3;
+    font-size: 20px;
+    margin-bottom: 8px;
+}
+
+.dialogue {
+    font-size: clamp(16px, 2.4vw, 25px);
+    line-height: 1.4;
+}
+
+.nextHint {
+    position: absolute;
+    right: 15px;
+    bottom: 8px;
+    font-size: 12px;
+    opacity: .5;
+}
+
+/* =========================
+   CHOICES
+========================= */
+
+#choicePanel {
+    position: absolute;
+    inset: 0;
+    background: rgba(0,0,0,.65);
+    z-index: 50;
+    display: none;
+    justify-content: center;
+    align-items: center;
+}
+
+#choicePanel.active {
+    display: flex;
+}
+
+.choiceBox {
+    width: min(650px, 90vw);
+    background: #171717;
+    border: 2px solid #777;
+    border-radius: 14px;
+    padding: 25px;
+}
+
+.choiceBox h2 {
+    text-align: center;
+}
+
+.choice {
+    display: block;
+    width: 100%;
+    padding: 17px;
+    margin: 10px 0;
+    border: 1px solid #666;
+    border-radius: 8px;
+    background: #282828;
+    color: white;
+    font-size: 18px;
+    text-align: left;
+}
+
+.choice:hover {
+    background: #443044;
+}
+
+/* =========================
+   LOVE GAUGE
+========================= */
+
+#loveGauge {
+    position: absolute;
+    top: 15px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: min(600px, 80vw);
+    z-index: 40;
+}
+
+.gaugeLabel {
+    text-align: center;
+    font-weight: bold;
+    margin-bottom: 5px;
+    text-shadow: 0 2px 5px black;
+}
+
+.gaugeOuter {
+    width: 100%;
+    height: 22px;
+    border: 2px solid white;
+    background: #222;
+    border-radius: 20px;
+    overflow: hidden;
+}
+
+.gaugeInner {
+    width: 0%;
+    height: 100%;
+    background: linear-gradient(90deg, #e52d59, #ff76b5);
+    transition: width .4s;
+}
+
+/* =========================
+   GAME OVER
+========================= */
+
+#endingScreen {
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background: radial-gradient(circle, #3d1624, #090909 70%);
+    text-align: center;
+    padding: 25px;
+}
+
+.endingTitle {
+    font-size: clamp(45px, 10vw, 100px);
+    font-weight: 900;
+    margin-bottom: 20px;
+}
+
+.endingText {
+    font-size: 20px;
+    max-width: 700px;
+    line-height: 1.6;
+}
+
+/* =========================
+   ARCADE MINI GAME
+========================= */
+
+#arcadeScreen {
+    background: #080808;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+#arcadeCanvas {
+    width: min(900px, 94vw);
+    height: min(600px, 65vh);
+    border: 3px solid white;
+    background: #111;
+}
+
+.arcadeInfo {
+    width: min(900px, 94vw);
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+}
+
+#staminaOuter {
+    width: 180px;
+    height: 15px;
+    border: 1px solid white;
+}
+
+#staminaInner {
+    height: 100%;
+    width: 100%;
+    background: #54e06a;
+}
+
+.mobileControls {
+    display: grid;
+    grid-template-columns: repeat(3, 55px);
+    grid-template-rows: repeat(2, 55px);
+    gap: 5px;
+    margin-top: 8px;
+}
+
+.mobileControls button {
+    background: #333;
+    color: white;
+    border: 1px solid #777;
+    border-radius: 7px;
+    font-size: 20px;
+}
+
+.mobileControls button:nth-child(1) {
+    grid-column: 2;
+}
+
+.mobileControls button:nth-child(2) {
+    grid-column: 1;
+    grid-row: 2;
+}
+
+.mobileControls button:nth-child(3) {
+    grid-column: 2;
+    grid-row: 2;
+}
+
+.mobileControls button:nth-child(4) {
+    grid-column: 3;
+    grid-row: 2;
+}
+
+#dashButton {
+    position: absolute;
+    right: 20px;
+    bottom: 25px;
+    width: 90px;
+    height: 55px;
+    background: #8c2c72;
+    color: white;
+    border: none;
+    border-radius: 10px;
+}
+
+/* =========================
+   ANIMATIONS
+========================= */
+
+.runAnimation {
+    animation: run 0.35s infinite alternate;
+}
+
+@keyframes run {
+    from {
+        transform: translateX(-15px);
+    }
+    to {
+        transform: translateX(15px);
+    }
+}
+
+.bumpAnimation {
+    animation: bump .45s;
+}
+
+@keyframes bump {
+    0% { transform: scale(1); }
+    35% { transform: translateX(25px) rotate(5deg); }
+    65% { transform: translateX(-25px) rotate(-5deg); }
+    100% { transform: scale(1); }
+}
+
+.shake {
+    animation: shake .4s infinite;
+}
+
+@keyframes shake {
+    0%,100% { transform: translateX(0); }
+    25% { transform: translateX(-8px); }
+    75% { transform: translateX(8px); }
+}
+
+.heartBreak {
+    animation: heartBreak .7s forwards;
+}
+
+@keyframes heartBreak {
+    0% { transform: scale(1); opacity: 1; }
+    60% { transform: scale(1.4); }
+    100% { transform: scale(.1); opacity: 0; }
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media(max-width:700px) {
+    .character {
+        width: 45vw;
+        height: 48vh;
+        bottom: 145px;
+    }
+
+    .dialogueBox {
+        min-height: 145px;
+    }
+
+    .characterChoices {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div id="game">
+
+<!-- =========================
+     TITLE
+========================= -->
+
+<div id="titleScreen" class="screen active">
+
+    <div class="title">
+        <span>TOHKATSU HANAKO'S</span>
+        <span>LOVE ROMANCE</span>
+        <div class="titleSmall">A Completely Normal Love Game</div>
+    </div>
+
+    <button class="menuButton" onclick="openCharacterSelect()">START</button>
+    <button class="menuButton" onclick="openCredits()">CREDIT</button>
+
+</div>
+
+
+<!-- =========================
+     CREDIT
+========================= -->
+
+<div id="creditScreen" class="screen">
+
+    <div class="creditBox">
+
+        <h2>CREDIT</h2>
+
+        <p>
+            3-2-26-b
+        </p>
+
+        <p>
+            Nakajima kei
+        </p>
+
+        <p>
+            story: Nakajima Kei<br>
+            code: ChatGPT<br>
+            site: GitHub
+        </p>
+
+        <p>
+            <strong>Special Thanks:</strong><br>
+            Ishida Masugu.<br>
+            Kowada Izuru.<br>
+            Sato Junya.<br>
+            Miura Takuto.<br>
+            Mizuta Taihei.
+        </p>
+
+        <button class="menuButton" onclick="closeCredits()">CLOSE</button>
+
+    </div>
+
+</div>
+
+
+<!-- =========================
+     CHARACTER SELECT
+========================= -->
+
+<div id="selectScreen" class="screen">
+
+    <div class="selectTitle">
+        CHARACTER SELECT
+    </div>
+
+    <div class="selectionArea">
+
+        <div class="selectionBox">
+
+            <h2>MAIN CHARACTER</h2>
+
+            <div id="mainChoices" class="characterChoices"></div>
+
+        </div>
+
+        <div class="selectionBox">
+
+            <h2>BOYFRIEND</h2>
+
+            <div id="boyfriendChoices" class="characterChoices"></div>
+
+        </div>
+
+    </div>
+
+    <button class="menuButton startGameButton" onclick="startGame()">
+        START GAME
+    </button>
+
+    <button class="menuButton" onclick="showScreen('titleScreen')">
+        BACK
+    </button>
+
+</div>
+
+
+<!-- =========================
+     STORY SCREEN
+========================= -->
+
+<div id="storyScreen" class="screen">
+
+    <div id="storyBackground" class="background cityBackground"></div>
+
+    <div id="loveGauge" style="display:none;">
+
+        <div class="gaugeLabel">
+            LOVE GAUGE: <span id="gaugeNumber">0</span>%
+        </div>
+
+        <div class="gaugeOuter">
+            <div id="gaugeInner" class="gaugeInner"></div>
+        </div>
+
+    </div>
+
+    <div class="characterStage">
+
+        <div id="characterLeft" class="character left hidden"></div>
+
+        <div id="characterRight" class="character right hidden"></div>
+
+        <div id="characterCenter" class="character center hidden"></div>
+
+    </div>
+
+    <div class="dialogueBox" onclick="nextDialogue()">
+
+        <div id="speaker" class="speaker"></div>
+
+        <div id="dialogue" class="dialogue"></div>
+
+        <div class="nextHint">
+            CLICK TO CONTINUE
+        </div>
+
+    </div>
+
+    <div id="choicePanel">
+
+        <div class="choiceBox">
+
+            <h2 id="choiceTitle">Choose</h2>
+
+            <div id="choiceButtons"></div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =========================
+     ARCADE GAME
+========================= -->
+
+<div id="arcadeScreen" class="screen">
+
+    <div class="arcadeInfo">
+
+        <div>
+            ESCAPE THE ARCADE!
+        </div>
+
+        <div>
+            STAMINA
+            <div id="staminaOuter">
+                <div id="staminaInner"></div>
+            </div>
+        </div>
+
+    </div>
+
+    <canvas id="arcadeCanvas" width="900" height="600"></canvas>
+
+    <div class="mobileControls">
+
+        <button
+            onmousedown="controlStart('up')"
+            ontouchstart="controlStart('up')"
+            onmouseup="controlStop('up')"
+            ontouchend="controlStop('up')">
+            ▲
+        </button>
+
+        <button
+            onmousedown="controlStart('left')"
+            ontouchstart="controlStart('left')"
+            onmouseup="controlStop('left')"
+            ontouchend="controlStop('left')">
+            ◀
+        </button>
+
+        <button
+            onmousedown="controlStart('down')"
+            ontouchstart="controlStart('down')"
+            onmouseup="controlStop('down')"
+            ontouchend="controlStop('down')">
+            ▼
+        </button>
+
+        <button
+            onmousedown="controlStart('right')"
+            ontouchstart="controlStart('right')"
+            onmouseup="controlStop('right')"
+            ontouchend="controlStop('right')">
+            ▶
+        </button>
+
+    </div>
+
+    <button
+        id="dashButton"
+        onmousedown="dash=true"
+        ontouchstart="dash=true"
+        onmouseup="dash=false"
+        ontouchend="dash=false">
+        DASH
+    </button>
+
+</div>
+
+
+<!-- =========================
+     ENDING
+========================= -->
+
+<div id="endingScreen" class="screen">
+
+    <div id="endingTitle" class="endingTitle">
+        GAME OVER
+    </div>
+
+    <div id="endingText" class="endingText"></div>
+
+    <div id="endingButtons"></div>
+
+</div>
+
+</div>
+
+
+<script>
+
+/* =========================================================
+   CHARACTER SYSTEM
+========================================================= */
+
+const characters = [
+    {
+        id: "masugu",
+        name: "Masugu",
+        image: "assets/masugu.png"
+    },
+    {
+        id: "mizuta",
+        name: "Mizuta",
+        image: "assets/mizuta.png"
+    },
+    {
+        id: "takuto",
+        name: "Takuto",
+        image: "assets/takuto.png"
+    },
+    {
+        id: "kowada",
+        name: "Kowada",
+        image: "assets/kowada.png"
+    },
+    {
+        id: "junya",
+        name: "Junya",
+        image: "assets/junya.png"
+    }
+];
+
+let mainCharacter = characters[0];
+let boyfriend = characters[1];
+
+
+/* =========================================================
+   GAME VARIABLES
+========================================================= */
+
+let loveGauge = 0;
+
+let currentDialogue = [];
+let dialogueIndex = 0;
+let dialogueCallback = null;
+
+let gameStarted = false;
+
+
+/* =========================================================
+   SCREEN CONTROL
+========================================================= */
+
+function showScreen(id) {
+
+    document.querySelectorAll(".screen").forEach(screen => {
+        screen.classList.remove("active");
+    });
+
+    document.getElementById(id).classList.add("active");
+}
+
+
+/* =========================================================
+   CREDITS
+========================================================= */
+
+function openCredits() {
+    showScreen("creditScreen");
+}
+
+function closeCredits() {
+    showScreen("titleScreen");
+}
+
+
+/* =========================================================
+   CHARACTER SELECT
+========================================================= */
+
+function createCharacterButtons(containerId, selectedCharacter, callback) {
+
+    const container = document.getElementById(containerId);
+
+    container.innerHTML = "";
+
+    characters.forEach(character => {
+
+        const button = document.createElement("button");
+
+        button.className = "characterButton";
+
+        if (character.id === selectedCharacter.id) {
+            button.classList.add("selected");
+        }
+
+        button.textContent = character.name;
+
+        button.onclick = () => {
+            callback(character);
+            refreshCharacterSelect();
+        };
+
+        container.appendChild(button);
+
+    });
+}
+
+function refreshCharacterSelect() {
+
+    createCharacterButtons(
+        "mainChoices",
+        mainCharacter,
+        character => {
+            mainCharacter = character;
+        }
+    );
+
+    createCharacterButtons(
+        "boyfriendChoices",
+        boyfriend,
+        character => {
+            boyfriend = character;
+        }
+    );
+}
+
+function openCharacterSelect() {
+
+    refreshCharacterSelect();
+
+    showScreen("selectScreen");
+}
+
+
+/* =========================================================
+   GAME START
+========================================================= */
+
+function startGame() {
+
+    loveGauge = 0;
+    gameStarted = true;
+
+    updateGauge();
+
+    showScreen("storyScreen");
+
+    document.getElementById("loveGauge").style.display = "none";
+
+    city();
+
+    playOpening();
+
+}
+
+
+/* =========================================================
+   CHARACTER DISPLAY
+========================================================= */
+
+function createCharacterElement(character, expression = "") {
+
+    const wrapper = document.createElement("div");
+
+    wrapper.className = "placeholderCharacter";
+
+    const label = document.createElement("span");
+
+    label.textContent = character.name + (expression ? " - " + expression : "");
+
+    wrapper.appendChild(label);
+
+    /*
+       When actual transparent PNGs are prepared,
+       this placeholder can be replaced by:
+
+       <img src="assets/masugu_normal.png">
+    */
+
+    return wrapper;
+}
+
+
+function showCharacter(position, character, expression = "") {
+
+    const element = document.getElementById("character" + position);
+
+    element.innerHTML = "";
+
+    element.appendChild(
+        createCharacterElement(character, expression)
+    );
+
+    element.classList.remove("hidden");
+
+}
+
+
+function hideCharacter(position) {
+
+    document
+        .getElementById("character" + position)
+        .classList.add("hidden");
+
+}
+
+
+/* =========================================================
+   BACKGROUNDS
+========================================================= */
+
+function city() {
+
+    const bg = document.getElementById("storyBackground");
+
+    bg.className = "background cityBackground";
+
+}
+
+function school() {
+
+    const bg = document.getElementById("storyBackground");
+
+    bg.className = "background schoolBackground";
+
+}
+
+
+/* =========================================================
+   DIALOGUE ENGINE
+========================================================= */
+
+function say(speaker, text, callback = null) {
+
+    currentDialogue = [
+        {
+            speaker,
+            text
+        }
+    ];
+
+    dialogueIndex = 0;
+    dialogueCallback = callback;
+
+    displayDialogue();
+}
+
+
+function dialogueSequence(sequence, callback = null) {
+
+    currentDialogue = sequence;
+    dialogueIndex = 0;
+    dialogueCallback = callback;
+
+    displayDialogue();
+
+}
+
+
+function displayDialogue() {
+
+    if (dialogueIndex >= currentDialogue.length) {
+
+        if (dialogueCallback) {
+
+            const callback = dialogueCallback;
+
+            dialogueCallback = null;
+
+            callback();
+
+        }
+
+        return;
+    }
+
+    const line = currentDialogue[dialogueIndex];
+
+    document.getElementById("speaker").textContent =
+        line.speaker;
+
+    document.getElementById("dialogue").textContent =
+        line.text;
+
+}
+
+
+function nextDialogue() {
+
+    if (!document.getElementById("storyScreen").classList.contains("active")) {
+        return;
+    }
+
+    dialogueIndex++;
+
+    if (dialogueIndex >= currentDialogue.length) {
+
+        if (dialogueCallback) {
+
+            const callback = dialogueCallback;
+
+            dialogueCallback = null;
+
+            callback();
+
+        }
+
+        return;
+    }
+
+    displayDialogue();
+
+}
+
+
+/* =========================================================
+   OPENING
+========================================================= */
+
+function playOpening() {
+
+    city();
+
+    showCharacter("Left", mainCharacter, "normal");
+
+    dialogueSequence([
+
+        {
+            speaker: mainCharacter.name,
+            text: "My name is Tohkatsu Hanako! A very very normal girl who goes to Tohkatsu JHS."
+        },
+
+        {
+            speaker: mainCharacter.name,
+            text: "OMG!! I'll be late for school!"
+        },
+
+        {
+            speaker: mainCharacter.name,
+            text: "I must run!!!"
+        }
+
+    ], () => {
+
+        showCharacter("Left", mainCharacter, "running");
+
+        setTimeout(() => {
+
+            showCharacter("Right", boyfriend, "silhouette");
+
+            document
+                .getElementById("characterLeft")
+                .classList.add("bumpAnimation");
+
+            document
+                .getElementById("characterRight")
+                .classList.add("bumpAnimation");
+
+            setTimeout(() => {
+
+                encounterScene();
+
+            }, 800);
+
+        }, 700);
+
+    });
+
+}
+
+
+/* =========================================================
+   ENCOUNTER
+========================================================= */
+
+function encounterScene() {
+
+    showCharacter("Right", boyfriend, "silhouette");
+
+    dialogueSequence([
+
+        {
+            speaker: "???",
+            text: "Ouch!! ...Sorry, are you OK??"
+        },
+
+        {
+            speaker: mainCharacter.name,
+            text: "I'm OK. And you too?"
+        },
+
+        {
+            speaker: mainCharacter.name,
+            text: "(Oh, It's amazing...)"
+        }
+
+    ], () => {
+
+        showCharacter("Right", boyfriend, "normal");
+
+        dialogueSequence([
+
+            {
+                speaker: mainCharacter.name,
+                text: "(He is very beautiful.)"
+            },
+
+            {
+                speaker: mainCharacter.name,
+                text: "(If I am his girlfriend, I will be very happy.)"
+            },
+
+            {
+                speaker: mainCharacter.name,
+                text: "(And I will go to meet him to date with him everyday. Every weekend, we will have a party just two of us to celebrate the day which our anniversary.)"
+            },
+
+            {
+                speaker: mainCharacter.name,
+                text: "(And.....)"
+            },
+
+            {
+                speaker: boyfriend.name,
+                text: "Hey, hey, are you OK?"
+            },
+
+            {
+                speaker: mainCharacter.name,
+                text: "Oh, sorry. HAHAHA. ...OMG! It's already 8:13!? Sorry, good luck!"
+            }
+
+        ], schoolScene);
+
+    });
+
+}
+
+
+/* =========================================================
+   SCHOOL SCENE
+========================================================= */
+
+function schoolScene() {
+
+    school();
+
+    hideCharacter("Right");
+
+    showCharacter("Left", mainCharacter, "normal");
+
+    dialogueSequence([
+
+        {
+            speaker: "Teacher",
+            text: "Hanako! You were late again!?"
+        },
+
+        {
+            speaker: mainCharacter.name,
+            text: "Sorry..."
+        },
+
+        {
+            speaker: "Teacher",
+            text: "Not at all... Be careful."
+        },
+
+        {
+            speaker: mainCharacter.name,
+            text: "Yes..."
+        },
+
+        {
+            speaker: "Teacher",
+            text: "Now, today I'll like to introduce you to a transfer student."
+        },
+
+        {
+            speaker: mainCharacter.name,
+            text: "Transfer student...?"
+        },
+
+        {
+            speaker: "Teacher",
+            text: "Come! Taro!"
+        },
+
+        {
+            speaker: boyfriend.name,
+            text: "Hello, everyone. My name is Taro."
+        },
+
+        {
+            speaker: mainCharacter.name,
+            text: "OMG! He was at that time..."
+        },
+
+        {
+            speaker: "Yumi",
+            text: "How are you, Hanako? Your face is red."
+        },
+
+        {
+            speaker: mainCharacter.name,
+            text: "No!"
+        },
+
+        {
+            speaker: "Rika",
+            text: "Maybe, you've fallen for him?"
+        },
+
+        {
+            speaker: mainCharacter.name,
+            text: "..."
+
+        }
+
+    ], beginGameSystem);
+
+}
+
+
+/* =========================================================
+   GAME SYSTEM
+========================================================= */
+
+function beginGameSystem() {
+
+    document.getElementById("loveGauge").style.display = "block";
+
+    updateGauge();
+
+    showMainChoices();
+
+}
+
+
+function updateGauge() {
+
+    loveGauge = Math.max(0, Math.min(100, loveGauge));
+
+    document.getElementById("gaugeNumber").textContent =
+        loveGauge;
+
+    document.getElementById("gaugeInner").style.width =
+        loveGauge + "%";
+
+}
+
+
+/* =========================================================
+   MAIN CHOICES
+========================================================= */
+
+function showMainChoices() {
+
+    openChoices(
+        "What will Hanako do?",
+        [
+            {
+                text: "A. Talk",
+                action: showTalkChoices
+            },
+            {
+                text: "B. Run away from school",
+                action: startArcade
+            },
+            {
+                text: "C. Fight",
+                action: fightScene
+            },
+            {
+                text: "D. ♥",
+                action: confession
+            }
+        ]
+    );
+
+}
+
+
+function openChoices(title, choices) {
+
+    document.getElementById("choiceTitle").textContent = title;
+
+    const container =
+        document.getElementById("choiceButtons");
+
+    container.innerHTML = "";
+
+    choices.forEach(choice => {
+
+        const button = document.createElement("button");
+
+        button.className = "choice";
+
+        button.textContent = choice.text;
+
+        button.onclick = () => {
+
+            document
+                .getElementById("choicePanel")
+                .classList.remove("active");
+
+            choice.action();
+
+        };
+
+        container.appendChild(button);
+
+    });
+
+    document
+        .getElementById("choicePanel")
+        .classList.add("active");
+
+}
+
+
+/* =========================================================
+   TALK
+========================================================= */
+
+function showTalkChoices() {
+
+    openChoices(
+        "What should Hanako ask?",
+        [
+            {
+                text: "What is your favorite food?",
+                action: () => talk("food")
+            },
+            {
+                text: "What is your favorite color?",
+                action: () => talk("color")
+            },
+            {
+                text: "What is your favorite animal?",
+                action: () => talk("animal")
+            },
+            {
+                text: "What is your favorite sport?",
+                action: () => talk("sport")
+            }
+        ]
+    );
+
+}
+
+
+function talk(type) {
+
+    const questions = {
+
+        food: [
+            "What is your favorite food?",
+            "I like rice."
+        ],
+
+        color: [
+            "What is your favorite color?",
+            "I like blue."
+        ],
+
+        animal: [
+            "What is your favorite animal?",
+            "I like cat."
+        ],
+
+        sport: [
+            "What is your favorite sport?",
+            "I like soccer."
+        ]
+
+    };
+
+    const q = questions[type];
+
+    showCharacter("Left", mainCharacter, "normal");
+    showCharacter("Right", boyfriend, "normal");
+
+    dialogueSequence([
+
+        {
+            speaker: mainCharacter.name,
+            text: q[0]
+        },
+
+        {
+            speaker: boyfriend.name,
+            text: q[1]
+        }
+
+    ], () => {
+
+        loveGauge += 20 + Math.floor(Math.random() * 6);
+
+        updateGauge();
+
+        setTimeout(() => {
+
+            showMainChoices();
+
+        }, 300);
+
+    });
+
+}
+
+
+/* =========================================================
+   FIGHT
+========================================================= */
+
+function fightScene() {
+
+    showCharacter("Left", mainCharacter, "angry");
+    showCharacter("Right", boyfriend, "angry");
+
+    document
+        .getElementById("characterLeft")
+        .classList.add("shake");
+
+    document
+        .getElementById("characterRight")
+        .classList.add("shake");
+
+    say(
+        mainCharacter.name,
+        "I will fight you!",
+        () => {
+
+            setTimeout(() => {
+
+                document
+                    .getElementById("characterLeft")
+                    .classList.remove("shake");
+
+                document
+                    .getElementById("characterRight")
+                    .classList.remove("shake");
+
+                loveGauge = 0;
+
+                updateGauge();
+
+                gameOver(
+                    "GAME OVER",
+                    "You chose violence in a love game."
+                );
+
+            }, 700);
+
+        }
+    );
+
+}
+
+
+/* =========================================================
+   CONFESSION
+========================================================= */
+
+function confession() {
+
+    showCharacter("Left", mainCharacter, "embarrassed");
+    showCharacter("Right", boyfriend, "normal");
+
+    dialogueSequence([
+
+        {
+            speaker: mainCharacter.name,
+            text: "I like you. Would you be my boyfriend?"
+        }
+
+    ], () => {
+
+        processConfession();
+
+    });
+
+}
+
+
+function processConfession() {
+
+    if (loveGauge >= 100) {
+
+        marriedEnding();
+
+        return;
+
+    }
+
+    if (loveGauge <= 50) {
+
+        rejectedEnding();
+
+        return;
+
+    }
+
+    const success =
+        Math.random() * 100 < loveGauge;
+
+    if (success) {
+
+        datingEnding();
+
+    } else {
+
+        rejectedEnding();
+
+    }
+
+}
+
+
+/* =========================================================
+   ENDINGS
+========================================================= */
+
+function rejectedEnding() {
+
+    showCharacter("Right", boyfriend, "normal");
+
+    dialogueSequence([
+
+        {
+            speaker: boyfriend.name,
+            text: "Who are you?"
+        }
+
+    ], () => {
+
+        setTimeout(() => {
+
+            gameOver(
+                "GAME OVER",
+                "Taro is dating someone else."
+            );
+
+        }, 800);
+
+    });
+
+}
+
+
+function datingEnding() {
+
+    showCharacter("Right", boyfriend, "embarrassed");
+
+    dialogueSequence([
+
+        {
+            speaker: boyfriend.name,
+            text: "Yes."
+        }
+
+    ], () => {
+
+        setTimeout(() => {
+
+            gameClear(
+                "GAME CLEAR",
+                "Hanako and her boyfriend are now happily together."
+            );
+
+        }, 900);
+
+    });
+
+}
+
+
+function marriedEnding() {
+
+    showCharacter("Right", boyfriend, "embarrassed");
+
+    dialogueSequence([
+
+        {
+            speaker: boyfriend.name,
+            text: "Yes."
+        }
+
+    ], () => {
+
+        setTimeout(() => {
+
+            showScreen("endingScreen");
+
+            document.getElementById("endingTitle").textContent =
+                "...AFTER 10 YEARS";
+
+            document.getElementById("endingText").textContent =
+                "A white dove flies away from a church.";
+
+            document.getElementById("endingButtons").innerHTML = "";
+
+            const button =
+                document.createElement("button");
+
+            button.className = "menuButton";
+
+            button.textContent = "GAME CLEAR";
+
+            button.onclick = () => {
+
+                gameClear(
+                    "GAME CLEAR",
+                    "Hanako and her boyfriend got married."
+                );
+
+            };
+
+            document
+                .getElementById("endingButtons")
+                .appendChild(button);
+
+        }, 1000);
+
+    });
+
+}
+
+
+/* =========================================================
+   GAME OVER / CLEAR
+========================================================= */
+
+function gameOver(title, text) {
+
+    showScreen("endingScreen");
+
+    document.getElementById("endingTitle").textContent =
+        title;
+
+    document.getElementById("endingText").textContent =
+        text;
+
+    const buttons =
+        document.getElementById("endingButtons");
+
+    buttons.innerHTML = "";
+
+    const restartChapter =
+        document.createElement("button");
+
+    restartChapter.className = "menuButton";
+
+    restartChapter.textContent =
+        "RESTART FROM TRANSFER STUDENT";
+
+    restartChapter.onclick = () => {
+
+        showScreen("storyScreen");
+
+        loveGauge = 0;
+
+        updateGauge();
+
+        schoolScene();
+
+    };
+
+    const restartAll =
+        document.createElement("button");
+
+    restartAll.className = "menuButton";
+
+    restartAll.textContent =
+        "START FROM BEGINNING";
+
+    restartAll.onclick = () => {
+
+        startGame();
+
+    };
+
+    buttons.appendChild(restartChapter);
+
+    buttons.appendChild(restartAll);
+
+}
+
+
+function gameClear(title, text) {
+
+    showScreen("endingScreen");
+
+    document.getElementById("endingTitle").textContent =
+        title;
+
+    document.getElementById("endingText").textContent =
+        text;
+
+    document.getElementById("endingButtons").innerHTML = "";
+
+    const button =
+        document.createElement("button");
+
+    button.className = "menuButton";
+
+    button.textContent = "PLAY AGAIN";
+
+    button.onclick = () => {
+
+        openCharacterSelect();
+
+    };
+
+    document
+        .getElementById("endingButtons")
+        .appendChild(button);
+
+}
+
+
+/* =========================================================
+   ARCADE MINI GAME
+========================================================= */
+
+const canvas =
+    document.getElementById("arcadeCanvas");
+
+const ctx =
+    canvas.getContext("2d");
+
+let player = {
+    x: 70,
+    y: 70,
+    size: 18
+};
+
+let teachers = [];
+
+let goal = {
+    x: 830,
+    y: 530,
+    size: 30
+};
+
+let keys = {
+    up: false,
+    down: false,
+    left: false,
+    right: false
+};
+
+let dash = false;
+
+let stamina = 100;
+
+let arcadeRunning = false;
+
+const walls = [
+
+    {x: 0, y: 0, w: 900, h: 20},
+    {x: 0, y: 580, w: 900, h: 20},
+    {x: 0, y: 0, w: 20, h: 600},
+    {x: 880, y: 0, w: 20, h: 600},
+
+    {x: 150, y: 0, w: 30, h: 400},
+    {x: 300, y: 200, w: 30, h: 400},
+    {x: 450, y: 0, w: 30, h: 400},
+    {x: 600, y: 200, w: 30, h: 400},
+    {x: 750, y: 0, w: 30, h: 400}
+
+];
+
+
+function startArcade() {
+
+    showScreen("arcadeScreen");
+
+    player = {
+        x: 70,
+        y: 70,
+        size: 18
+    };
+
+    teachers = [
+
+        {
+            x: 420,
+            y: 100,
+            size: 20
+        },
+
+        {
+            x: 650,
+            y: 500,
+            size: 20
+        }
+
+    ];
+
+    stamina = 100;
+
+    arcadeRunning = true;
+
+    requestAnimationFrame(arcadeLoop);
+
+}
+
+
+function controlStart(direction) {
+
+    keys[direction] = true;
+
+}
+
+
+function controlStop(direction) {
+
+    keys[direction] = false;
+
+}
+
+
+function collidesWall(x, y, size) {
+
+    for (const wall of walls) {
+
+        if (
+            x < wall.x + wall.w &&
+            x + size > wall.x &&
+            y < wall.y + wall.h &&
+            y + size > wall.y
+        ) {
+            return true;
+        }
+
+    }
+
+    return false;
+
+}
+
+
+function movePlayer(dx, dy) {
+
+    const newX = player.x + dx;
+
+    if (!collidesWall(newX, player.y, player.size)) {
+        player.x = newX;
+    }
+
+    const newY = player.y + dy;
+
+    if (!collidesWall(player.x, newY, player.size)) {
+        player.y = newY;
+    }
+
+}
+
+
+function arcadeLoop() {
+
+    if (!arcadeRunning) {
+        return;
+    }
+
+    let speed = 15;
+
+    if (dash && stamina > 0) {
+
+        speed = 27;
+
+        stamina -= 1;
+
+    } else {
+
+        stamina += .4;
+
+    }
+
+    stamina =
+        Math.max(0, Math.min(100, stamina));
+
+    document.getElementById("staminaInner").style.width =
+        stamina + "%";
+
+    let dx = 0;
+    let dy = 0;
+
+    if (keys.up) dy -= speed;
+    if (keys.down) dy += speed;
+    if (keys.left) dx -= speed;
+    if (keys.right) dx += speed;
+
+    movePlayer(dx / 30, dy / 30);
+
+    moveTeachers();
+
+    drawArcade();
+
+    checkArcade();
+
+    requestAnimationFrame(arcadeLoop);
+
+}
+
+
+function moveTeachers() {
+
+    teachers.forEach(teacher => {
+
+        const dx =
+            player.x - teacher.x;
+
+        const dy =
+            player.y - teacher.y;
+
+        const distance =
+            Math.sqrt(dx * dx + dy * dy);
+
+        if (distance < 260) {
+
+            const speed = 1.1;
+
+            teacher.x +=
+                (dx / distance) * speed;
+
+            teacher.y +=
+                (dy / distance) * speed;
+
+        }
+
+    });
+
+}
+
+
+function drawArcade() {
+
+    ctx.clearRect(
+        0,
+        0,
+        canvas.width,
+        canvas.height
+    );
+
+    ctx.fillStyle = "#151515";
+
+    ctx.fillRect(
+        0,
+        0,
+        canvas.width,
+        canvas.height
+    );
+
+    /* walls */
+
+    ctx.fillStyle = "#522a64";
+
+    walls.forEach(wall => {
+
+        ctx.fillRect(
+            wall.x,
+            wall.y,
+            wall.w,
+            wall.h
+        );
+
+    });
+
+    /* goal */
+
+    ctx.fillStyle = "#4cff8a";
+
+    ctx.fillRect(
+        goal.x,
+        goal.y,
+        goal.size,
+        goal.size
+    );
+
+    /* teachers */
+
+    teachers.forEach(teacher => {
+
+        ctx.fillStyle = "#e74c3c";
+
+        ctx.beginPath();
+
+        ctx.arc(
+            teacher.x,
+            teacher.y,
+            teacher.size,
+            0,
+            Math.PI * 2
+        );
+
+        ctx.fill();
+
+    });
+
+    /* player */
+
+    ctx.fillStyle = "#ff70b7";
+
+    ctx.fillRect(
+        player.x,
+        player.y,
+        player.size,
+        player.size
+    );
+
+}
+
+
+function checkArcade() {
+
+    const goalDistance =
+        Math.hypot(
+            player.x - goal.x,
+            player.y - goal.y
+        );
+
+    if (goalDistance < 40) {
+
+        arcadeRunning = false;
+
+        loveGauge += 80;
+
+        updateGauge();
+
+        showScreen("storyScreen");
+
+        showMainChoices();
+
+        return;
+
+    }
+
+    for (const teacher of teachers) {
+
+        const distance =
+            Math.hypot(
+                player.x - teacher.x,
+                player.y - teacher.y
+            );
+
+        if (distance < 30) {
+
+            arcadeRunning = false;
+
+            loveGauge = 0;
+
+            updateGauge();
+
+            gameOver(
+                "GAME OVER",
+                "The teacher caught you."
+            );
+
+            return;
+
+        }
+
+    }
+
+}
+
+
+/* =========================================================
+   KEYBOARD CONTROLS
+========================================================= */
+
+document.addEventListener("keydown", event => {
+
+    if (event.key === "ArrowUp" || event.key === "w") {
+        keys.up = true;
+    }
+
+    if (event.key === "ArrowDown" || event.key === "s") {
+        keys.down = true;
+    }
+
+    if (event.key === "ArrowLeft" || event.key === "a") {
+        keys.left = true;
+    }
+
+    if (event.key === "ArrowRight" || event.key === "d") {
+        keys.right = true;
+    }
+
+    if (event.code === "Space") {
+        dash = true;
+    }
+
+});
+
+
+document.addEventListener("keyup", event => {
+
+    if (event.key === "ArrowUp" || event.key === "w") {
+        keys.up = false;
+    }
+
+    if (event.key === "ArrowDown" || event.key === "s") {
+        keys.down = false;
+    }
+
+    if (event.key === "ArrowLeft" || event.key === "a") {
+        keys.left = false;
+    }
+
+    if (event.key === "ArrowRight" || event.key === "d") {
+        keys.right = false;
+    }
+
+    if (event.code === "Space") {
+        dash = false;
+    }
+
+});
+
+
+/* =========================================================
+   INITIALIZE
+========================================================= */
+
+refreshCharacterSelect();
+
+</script>
+
+</body>
+</html>
