@@ -68,19 +68,7 @@ button {
 }
 
 /* A cheerful school courtyard / school-building backdrop */
-#titleScreen::before {
-    content: "";
-    position: absolute;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    height: 43%;
-    z-index: 0;
-    background:
-        linear-gradient(180deg, transparent 0 8%, rgba(120,180,92,.18) 8% 100%),
-        repeating-linear-gradient(90deg, transparent 0 74px, rgba(255,255,255,.18) 74px 76px),
-        #8cc56f;
-}
+#titleScreen::before { display:none !important; content:none !important; }
 
 #titleScreen::after {
     content: "";
@@ -1657,8 +1645,11 @@ body.smartphone #arcadeCrosshair {
 ===================================================== */
 
 #titleScreen {
-    background:
-        linear-gradient(180deg, #73cef7 0%, #bfeeff 48%, #e9f8ff 49%, #91b96f 50%, #6e9a59 100%);
+    background-image: url("./images/title_school.png");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-color: #8ec8ef;
     overflow: hidden;
 }
 
@@ -1676,16 +1667,7 @@ body.smartphone #arcadeCrosshair {
     opacity: .96;
 }
 
-#titleScreen::after {
-    content: "";
-    position: absolute;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    height: 10%;
-    background: repeating-linear-gradient(90deg, #687b8b 0 90px, #8394a1 90px 180px);
-    border-top: 5px solid rgba(255,255,255,.5);
-}
+#titleScreen::after { display:none !important; content:none !important; }
 
 
 #characterScreen {
@@ -1747,9 +1729,9 @@ body.smartphone #arcadeCrosshair {
 
 #storyBackButton {
     position: absolute;
-    top: 12px;
-    right: 14px;
-    left: auto;
+    top: 14px;
+    left: 14px;
+    right: auto;
     z-index: 240;
     border: 2px solid rgba(255,255,255,.95);
     border-radius: 14px;
@@ -1761,47 +1743,6 @@ body.smartphone #arcadeCrosshair {
 }
 
 #storyBackButton:hover { transform: translateY(-1px); }
-
-#storySkipButton {
-    position: absolute;
-    top: 61px;
-    right: 14px;
-    left: auto;
-    z-index: 240;
-    border: 2px solid rgba(255,255,255,.9);
-    border-radius: 14px;
-    padding: 8px 15px;
-    background: rgba(38,78,103,.68);
-    color: white;
-    font-weight: 900;
-    letter-spacing: .6px;
-    box-shadow: 0 5px 16px rgba(0,0,0,.16);
-    cursor: pointer;
-}
-#storySkipButton:hover { transform: translateY(-1px); }
-
-#chaseSubtitle {
-    position: absolute;
-    left: 50%;
-    top: 13%;
-    transform: translateX(-50%);
-    z-index: 1210;
-    display: none;
-    max-width: min(86vw, 620px);
-    padding: 7px 13px;
-    border-radius: 999px;
-    background: rgba(20,26,40,.68);
-    color: rgba(255,244,248,.94);
-    border: 1px solid rgba(255,155,183,.46);
-    font-size: clamp(11px, 1.8vw, 16px);
-    font-weight: 900;
-    letter-spacing: .3px;
-    text-align: center;
-    text-shadow: 0 1px 4px rgba(0,0,0,.5);
-    pointer-events: none;
-}
-#chaseSubtitle.active { display: block; animation: chaseSubtitleIn .18s ease-out both; }
-@keyframes chaseSubtitleIn { from { opacity: 0; transform: translateX(-50%) translateY(-5px); } to { opacity: 1; transform: translateX(-50%) translateY(0); } }
 
 #arcadeBackButton {
     position:absolute;
@@ -1819,6 +1760,29 @@ body.smartphone #arcadeCrosshair {
     cursor:pointer;
 }
 #arcadeBackButton:hover { transform:translateY(-1px); }
+#chaseNotice {
+    position:absolute;
+    left:50%;
+    top:13%;
+    transform:translateX(-50%);
+    z-index:1210;
+    display:none;
+    padding:6px 12px;
+    border-radius:10px;
+    background:rgba(30,24,46,.72);
+    color:rgba(255,238,246,.94);
+    border:1px solid rgba(255,126,178,.35);
+    font-size:clamp(11px,1.7vw,15px);
+    font-weight:800;
+    letter-spacing:.2px;
+    text-shadow:0 1px 3px rgba(0,0,0,.55);
+    pointer-events:none;
+    opacity:0;
+    transition:opacity .18s ease;
+}
+#chaseNotice.active { display:block; opacity:1; }
+#miniMap.warning { box-shadow:0 0 0 3px rgba(255,50,90,.35), 0 0 22px rgba(255,50,90,.35); }
+
 
 #background.city {
     background:
@@ -1992,7 +1956,6 @@ body.smartphone #arcadeCrosshair {
 
 @media (max-width: 700px) {
     #storyBackButton { top: 8px; right: 8px; left: auto; padding: 7px 10px; font-size: 11px; }
-    #storySkipButton { top: 48px; right: 8px; padding: 6px 10px; font-size: 10px; }
     #choiceBox { bottom: 145px; }
     .characterSprite { width: min(46vw, 300px); height: 52vh; }
 }
@@ -2391,19 +2354,6 @@ body.smartphone #lookPad { pointer-events:none; opacity:.58; }
     0%,100%{transform:translateX(0);opacity:.35}
     50%{transform:translateX(3px);opacity:.7}
 }
-
-/* Restored title background from the original school-day scene. */
-#titleScreen {
-    background-image: url("./images/title_school.png") !important;
-    background-size: cover !important;
-    background-position: center center !important;
-    background-repeat: no-repeat !important;
-}
-#titleScreen::before,
-#titleScreen::after {
-    display: none !important;
-    content: none !important;
-}
 </style>
 </head>
 
@@ -2533,7 +2483,6 @@ body.smartphone #lookPad { pointer-events:none; opacity:.58; }
 
 <section id="storyScreen" class="screen">
     <button id="storyBackButton" class="storyBackButton" onclick="backFromStory()" aria-label="Back to character select">← BACK</button>
-    <button id="storySkipButton" class="storySkipButton" onclick="skipToChoices()" aria-label="Skip conversation">SKIP</button>
     <div id="background" class="city"></div>
     <div id="sceneCharacters"></div>
 
@@ -2594,7 +2543,7 @@ body.smartphone #lookPad { pointer-events:none; opacity:.58; }
     <div id="choiceBox">
         <button class="choice" onclick="mainChoice('talk')">A. Talk</button>
         <button class="choice" onclick="mainChoice('run')">B. Escape to the arcade</button>
-        <button class="choice" onclick="mainChoice('praise')">C. Praise</button>
+        <button class="choice" onclick="mainChoice('compliment')">C. Compliment</button>
         <button class="choice" onclick="mainChoice('confess')">D. ♡</button>
     </div>
 
@@ -2610,7 +2559,7 @@ body.smartphone #lookPad { pointer-events:none; opacity:.58; }
 
     <div id="arcadeScreen">
         <button id="arcadeBackButton" class="arcadeBackButton" onclick="backFromArcade()" aria-label="Back from arcade">← BACK</button>
-        <div id="chaseSubtitle" aria-live="polite"></div>
+        <div id="chaseNotice" aria-live="polite"></div>
         <canvas id="arcadeCanvas"></canvas>
         <div id="arcadeCrosshair"></div>
         <canvas id="miniMap" width="210" height="150"></canvas>
@@ -2738,7 +2687,6 @@ function continueToChoices() {
     document.getElementById("loveGauge").classList.remove("hidden");
     document.getElementById("dialogueBox").style.display = "none";
     document.getElementById("choiceBox").style.display = "none";
-    document.getElementById("storySkipButton").style.display = "none";
     document.getElementById("background").className = "school";
     updateLove();
     resetArcadeWorld();
@@ -2779,15 +2727,15 @@ function backFromArcade(){
     document.getElementById("dashButton").classList.remove("active");
     resetJoystick();
     document.getElementById("arcadeScreen").style.display="none";
+    document.getElementById("chaseNotice").classList.remove("active");
     document.getElementById("miniMap").style.display="none";
     document.getElementById("captureOverlay").style.display="none";
     document.getElementById("missionCard").classList.remove("active");
     document.getElementById("runTransition").classList.remove("active");
     clearCharacters();
-    document.getElementById("background").className="school";
+    document.getElementById("background").className="city";
     document.getElementById("loveGauge").classList.remove("hidden");
     document.getElementById("dialogueBox").style.display="none";
-    document.getElementById("storySkipButton").style.display="none";
     document.getElementById("choiceBriefing").classList.remove("active");
     choiceBriefingActive=false;
     restoreMainChoices();
@@ -2819,46 +2767,35 @@ function backToTitle() {
     showScreen("titleScreen", false);
 }
 
-function skipToChoices() {
-    if (ending || inArcade || arcadeIntroPlaying) return;
-    if (dialogueTimer) clearInterval(dialogueTimer);
-    dialogueTimer = null;
-    dialogueResolve = null;
-    synopsisResolve = null;
-    dialogueTyping = false;
-    currentTypedText = "";
-    currentTypedIndex = 0;
-    storyIndex = currentStory.length;
-    clearCharacters();
-    document.getElementById("speaker").textContent = "";
-    document.getElementById("dialogue").textContent = "";
-    document.getElementById("continueHint").textContent = "";
-    document.getElementById("continueHint").style.opacity = "0";
-    document.getElementById("classroomChatter").classList.remove("active");
-    document.getElementById("introCard").classList.remove("active");
-    document.getElementById("choiceBriefing").classList.remove("active");
-    document.getElementById("runTransition").classList.remove("active");
-    document.getElementById("missionCard").classList.remove("active");
-    document.getElementById("dialogueBox").style.display = "none";
-    document.getElementById("storySkipButton").style.display = "none";
-    classroomSynopsisShown = true;
-    choiceBriefingActive = false;
-    actionLocked = false;
-    beginChoiceMode();
-}
-
-function backFromStory() {
+async function backFromStory() {
     if (inArcade || arcadeIntroPlaying || ending) return;
+
+    storyFlowToken++;
     clearDialogueState();
-    clearCharacters();
     document.getElementById("classroomChatter").classList.remove("active");
     document.getElementById("choiceBriefing").classList.remove("active");
     document.getElementById("introCard").classList.remove("active");
-    document.getElementById("dialogueBox").style.display = "none";
+    document.getElementById("dialogueBox").style.display = "block";
     document.getElementById("choiceBox").style.display = "none";
-    screenHistory = ["characterScreen"];
-    history.replaceState({ game: true, screen: "characterScreen" }, "", location.href);
-    showCharacterSelect(false);
+
+    if(currentDisplayedStoryIndex <= 0){
+        currentDisplayedStoryIndex=-1;
+        storyIndex=0;
+        document.getElementById("dialogueBox").style.display="none";
+        clearCharacters();
+        screenHistory = ["characterScreen"];
+        history.replaceState({ game: true, screen: "characterScreen" }, "", location.href);
+        showCharacterSelect(false);
+        return;
+    }
+
+    const targetIndex=currentDisplayedStoryIndex-1;
+    storyIndex=targetIndex+1;
+    currentDisplayedStoryIndex=targetIndex;
+    setActionLock(true);
+    const line=currentStory[targetIndex];
+    await say(line.speaker,line.text,line.expression,line.side,line.silhouette,line.background);
+    setActionLock(false);
 }
 
 window.addEventListener("load", () => {
@@ -2888,11 +2825,11 @@ window.addEventListener("popstate", () => {
 
 
 const characters = [
-    { name: "Masugu", image: "./images/masugu.png" },
-    { name: "Mizuta", image: "./images/mizuta.png" },
-    { name: "Takuto", image: "./images/takuto.png" },
-    { name: "Kowada", image: "./images/kowada.png" },
-    { name: "Junya", image: "./images/junya.png" }
+    { name: "Masugu", image: "./images/masugu.png", food: "rice", color: "blue", sport: "tennis", animal: "cats" },
+    { name: "Mizuta", image: "./images/mizuta.png", food: "water", color: "yellow", sport: "baseball", animal: "human" },
+    { name: "Takuto", image: "./images/takuto.png", food: "protein", color: "green", sport: "boxing", animal: "I don't like animals." },
+    { name: "Kowada", image: "./images/kowada.png", food: "rice", color: "red", sport: "soccer", animal: "cats" },
+    { name: "Junya", image: "./images/junya.png", food: "crazy food", color: "purple", sport: "tennis", animal: "dogs" }
 ];
 
 function assetUrl(path) {
@@ -2936,6 +2873,8 @@ let dialogueResolve = null;
 let currentTypedText = "";
 let currentTypedIndex = 0;
 let synopsisResolve = null;
+let storyFlowToken = 0;
+let currentDisplayedStoryIndex = -1;
 
 /* =====================================================
    CHARACTER ART
@@ -3280,11 +3219,12 @@ async function startStory() {
     hasStartedOnce = true;
     setActionLock(true);
     ending=false; inArcade=false; arcadeRunning=false; love=10; storyIndex=0;
+    storyFlowToken++;
+    currentDisplayedStoryIndex=-1;
     classroomSynopsisShown=false; choiceBriefingActive=false; updateLove();
     showScreen("storyScreen");
     document.getElementById("loveGauge").classList.add("hidden");
     document.getElementById("choiceBox").style.display="none";
-    document.getElementById("storySkipButton").style.display="block";
     document.getElementById("dialogueBox").style.display="block";
     document.getElementById("arcadeScreen").style.display="none";
     document.getElementById("fightOverlay").classList.remove("active");
@@ -3305,8 +3245,8 @@ async function startStory() {
         {speaker:mainName(),text:"(Oh, he's amazing...)",expression:"shy"},
         {speaker:mainName(),text:"(He is very beautiful.)",expression:"shy"},
         {speaker:mainName(),text:"(If I am his girlfriend, I will be very happy.)",expression:"shy"},
-        {speaker:mainName(),text:"(And I will go to meet him to date with him everyday.)",expression:"shy"},
-        {speaker:mainName(),text:"(Every weekend, we will have a party, just the two of us, to celebrate the day which is our anniversary.)",expression:"shy"},
+        {speaker:mainName(),text:"(And I will go meet him and date him every day.)",expression:"shy"},
+        {speaker:mainName(),text:"(Every weekend, we will have a party, just the two of us, to celebrate our anniversary.)",expression:"shy"},
         {speaker:mainName(),text:"(And.....)",expression:"shy"},
         {speaker:boyName(),text:"Hey, hey, are you OK?",expression:"confused",side:"right"},
         {speaker:mainName(),text:"Oh, sorry. HAHAHA. ...OMG! It's already 8:13!? Sorry, good luck!",expression:"surprised"},
@@ -3345,20 +3285,28 @@ function playClassroomChatter() {
     return new Promise(resolve => setTimeout(() => {
         chatter.classList.remove("active");
         resolve();
-    }, 4500));
+    }, 1500));
 }
 async function playStory() {
     if (inArcade || ending) return;
     if (dialogueTyping) { finishTyping(); return; }
     if (storyIndex>=currentStory.length) { await beginChoiceMode(); return; }
+    const token=storyFlowToken;
     setActionLock(true);
-    const line=currentStory[storyIndex++];
+    const lineIndex=storyIndex++;
+    currentDisplayedStoryIndex=lineIndex;
+    const line=currentStory[lineIndex];
     if (line.speaker===boyName() && line.text.startsWith("Ouch!!")) {
-        document.getElementById("dialogueBox").style.display="none"; await playCollisionAnimation(); document.getElementById("dialogueBox").style.display="block";
+        document.getElementById("dialogueBox").style.display="none";
+        await playCollisionAnimation();
+        if(token!==storyFlowToken) return;
+        document.getElementById("dialogueBox").style.display="block";
     }
     await say(line.speaker,line.text,line.expression,line.side,line.silhouette,line.background);
+    if(token!==storyFlowToken) return;
     if (line.speaker === boyName() && line.text.startsWith("Hello, everyone.")) {
         await playClassroomChatter();
+        if(token!==storyFlowToken) return;
     }
     setActionLock(false);
 }
@@ -3391,31 +3339,25 @@ document.addEventListener("keydown", event => {
 function updateLove(){love=Math.max(0,Math.min(100,love));document.getElementById("loveBar").style.width=love+"%";document.getElementById("loveValue").textContent=Math.floor(love)+"%";}
 function restoreMainChoices(){
     const box=document.getElementById("choiceBox");
-    box.innerHTML=`<button class="choice" onclick="mainChoice('talk')">A. Talk</button><button class="choice" onclick="mainChoice('run')">B. Escape to the arcade</button><button class="choice" onclick="mainChoice('praise')">C. Praise</button><button class="choice" onclick="mainChoice('confess')">D. ♡</button>`;
+    box.innerHTML=`<button class="choice" onclick="mainChoice('talk')">A. Talk</button><button class="choice" onclick="mainChoice('run')">B. Escape to the arcade</button><button class="choice" onclick="mainChoice('compliment')">C. Compliment</button><button class="choice" onclick="mainChoice('confess')">D. ♡</button>`;
     box.style.display="grid"; box.classList.remove("ui-locked"); document.querySelectorAll("#choiceBox button").forEach(b=>b.classList.remove("ui-disabled"));
 }
 async function beginChoiceMode(){
     if(inArcade||ending||choiceBriefingActive)return;
-    document.getElementById("loveGauge").classList.remove("hidden"); document.getElementById("dialogueBox").style.display="none"; document.getElementById("choiceBox").style.display="none"; document.getElementById("storySkipButton").style.display="none";
+    document.getElementById("loveGauge").classList.remove("hidden"); document.getElementById("dialogueBox").style.display="none"; document.getElementById("choiceBox").style.display="none";
     choiceBriefingActive=true; setActionLock(true); document.getElementById("choiceBriefing").classList.add("active");
 }
 function mainChoice(choice){
     if(actionLocked||ending||inArcade)return; setActionLock(true); document.getElementById("choiceBox").style.display="none";
-    if(choice==='talk')talkChoice(); else if(choice==='run')startArcadeIntro(); else if(choice==='praise')praiseEnding(); else if(choice==='confess')confess();
+    if(choice==='talk')talkChoice(); else if(choice==='run')startArcadeIntro(); else if(choice==='compliment')complimentChoice(); else if(choice==='confess')confess();
 }
 function talkChoice(){
-    const personality = {
-        Mizuta: { food:"water", color:"yellow", sport:"baseball", animal:"human" },
-        Kowada: { food:"rice", color:"red", sport:"soccer", animal:"cats" },
-        Takuto: { food:"protein", color:"green", sport:"boxing", animal:"I don't like animals" },
-        Junya: { food:"crazy food", color:"purple", sport:"tennis", animal:"dogs" },
-        Masugu: { food:"rice", color:"blue", sport:"tennis", animal:"cats" }
-    }[boyName()] || { food:"rice", color:"blue", sport:"tennis", animal:"cats" };
+    const boy = boyData();
     const questions=[
-        {q:"What's your favorite food?",a:`I like ${personality.food}.`},
-        {q:"What's your favorite color?",a:`I like ${personality.color}.`},
-        {q:"What's your favorite animal?",a:personality.animal === "I don't like animals" ? "I don't like animals." : `I like ${personality.animal}.`},
-        {q:"What's your favorite sport?",a:`I like ${personality.sport}.`}
+        {q:"What's your favorite food?",a:`I like ${boy.food}.`},
+        {q:"What's your favorite color?",a:`I like ${boy.color}.`},
+        {q:"What's your favorite animal?",a:boy.animal === "I don't like animals." ? "I don't like animals." : `I like ${boy.animal === "human" ? "humans" : boy.animal}.`},
+        {q:"What sports do you like?",a:`I like ${boy.sport}.`}
     ];
     const box=document.getElementById("choiceBox"); box.innerHTML=""; box.style.display="grid"; setActionLock(false);
     questions.forEach((q,index)=>{
@@ -3428,25 +3370,50 @@ function talkChoice(){
         }; box.appendChild(button);
     });
 }
+
+async function complimentChoice(){
+    document.getElementById("dialogueBox").style.display="block";
+    await say(mainName(),"I think you are really cool.","shy","left");
+    await waitForDialogueAdvance();
+    await say(boyName(),"Thank you! That's really nice of you.","shy","right");
+    love+=12;
+    updateLove();
+    await waitForDialogueAdvance();
+    document.getElementById("dialogueBox").style.display="none";
+    restoreMainChoices();
+    setActionLock(false);
+}
+
 /* =====================================================
    FIGHT
 ===================================================== */
-async function praiseEnding(){
-    if(ending||inArcade)return;
-    document.getElementById("choiceBox").style.display="none";
-    document.getElementById("dialogueBox").style.display="block";
-    await say(mainName(),"You are amazing! I really like you.","shy","left");
-    await waitForDialogueAdvance();
-    love=Math.min(100,love+10);
-    updateLove();
-    restoreMainChoices();
-    actionLocked=false;
+async function fightEnding(){
+    if(ending||inArcade)return; const overlay=document.getElementById("fightOverlay"); document.getElementById("heartBreak").classList.add("hidden");
+    document.getElementById("choiceBox").style.display="none"; document.getElementById("dialogueBox").style.display="none";
+    document.getElementById("fightHanako").innerHTML=characterArtSvg("Hanako"); document.getElementById("fightBoy").innerHTML=`<img class="fightArt" src="${boyData().image}" alt="${boyName()}">`;
+    overlay.classList.remove("active"); void overlay.offsetWidth; overlay.classList.add("active"); await new Promise(r=>setTimeout(r,2050)); overlay.classList.remove("active"); await new Promise(r=>setTimeout(r,350)); showGameOver("The fight ended your love story.",true);
 }
 /* =====================================================
    CONFESSION
 ===================================================== */
-async function confess(){document.getElementById("dialogueBox").style.display="block";await say(mainName(),"I like you. Would you be my boyfriend?","shy","left");await waitForDialogueAdvance();if(love>=100)await marriageEnding();else if(love>=51)await datingEnding();else await rejectionEnding();}
-async function rejectionEnding(){await say(boyName(),"Who are you?","confused","right");await waitForDialogueAdvance();showGameOver("He was already dating Yumi or Rika.",true);}
+async function confess(){
+    document.getElementById("dialogueBox").style.display="block";
+    await say(mainName(),"I like you. Would you be my boyfriend?","shy","left");
+    await waitForDialogueAdvance();
+    if(love>=100){
+        await marriageEnding();
+    }else if(love>=50){
+        if(Math.random()*100 < love) await datingEnding();
+        else await rejectionEnding();
+    }else{
+        await rejectionEnding();
+    }
+}
+async function rejectionEnding(){
+    await say(boyName(),"Sorry, you are a just friend.","confused","right");
+    await waitForDialogueAdvance();
+    showGameOver("He turned you down.",true);
+}
 async function datingEnding(){await say(boyName(),"Yes.","shy","right");await waitForDialogueAdvance();showEnding("GAME CLEAR",mainName()+" and "+boyName()+" are finally together!","dating");}
 async function marriageEnding(){await say(boyName(),"Yes.","shy","right");await waitForDialogueAdvance();showEnding("MARRIAGE END","...after 10 years\n\nA white dove flies away from a church.","marriage");}
 /* =====================================================
@@ -3454,6 +3421,7 @@ async function marriageEnding(){await say(boyName(),"Yes.","shy","right");await 
 ===================================================== */
 function showGameOver(text,showHeart=true){
     document.getElementById("gameOverContinueButton").style.display = "block";
+    hasStartedOnce=false;
     document.getElementById("playAgainButton").style.display = "none";
     document.getElementById("endingScreen").classList.remove("marriageMode");
     ending=true; actionLocked=true; arcadeIntroPlaying=false; inArcade=false; arcadeRunning=false; document.getElementById("arcadeScreen").style.display="none"; document.getElementById("miniMap").style.display="none"; document.getElementById("darkFade").style.opacity="0"; showScreen("endingScreen"); document.getElementById("endingTitle").textContent="GAME OVER"; document.getElementById("endingText").textContent=text;
@@ -3497,6 +3465,8 @@ function showEnding(title,text,type){
 ===================================================== */
 function playAgain(){
     // A clear can always be replayed from boyfriend selection.
+    storyFlowToken++;
+    currentDisplayedStoryIndex=-1;
     ending=false;
     inArcade=false;
     arcadeRunning=false;
@@ -3518,6 +3488,8 @@ function playAgain(){
 
 function restartGame(){
     ending = false;
+    storyFlowToken++;
+    currentDisplayedStoryIndex=-1;
     inArcade = false;
     arcadeRunning = false;
     love = 10;
@@ -3554,9 +3526,10 @@ function restartGame(){
     clearCharacters();
     resetArcadeWorld();
 
-    screenHistory = ["storyScreen"];
-    history.replaceState({game:true,screen:"storyScreen"},"",location.href);
-    continueToChoices();
+    screenHistory = ["titleScreen"];
+    history.replaceState({game:true,screen:"titleScreen"},"",location.href);
+    showScreen("titleScreen", false);
+    requestGameStart();
 }
 
 /* =====================================================
@@ -3564,50 +3537,56 @@ function restartGame(){
 ===================================================== */
 
 const maze = [
-    "####################.####################",
-    "####################.####################",
-    "#######...........................#######",
-    "#######...........................#######",
-    "#######..~~...................~~..#######",
-    "#######...........................#######",
-    "#######...........................#######",
-    "#######...........................#######",
-    "#########.#.#..####.#...#.#.#.#.#########",
-    "#########.#.........#...#.#.#.#.#########",
-    "#########.#.#.#.#..##.#.#.......#########",
-    "#########.....#.......#...#.....#########",
-    "#########.###.#######.#.###...#.#########",
-    "#########...#...#.......#.......#########",
-    "#########.#.###.#.##.##.###.###.#########",
-    "#########.#...#.#.......#...#.#.#########",
-    "#########.#.....####..#...#.#...#########",
-    "#########.....#...........#...#.#########",
-    "###########...###...#.#####.#...#########",
-    "#########.........#.........#.#.#########",
-    "#########.........#.###.####....#########",
-    "#########.........#.............#########",
-    "#########........##.#...#.##....#########",
-    "####.................................####",
-    "####..............~~.~~..............####",
-    "####.................................####",
-    "####..~~~.......................~~~..####",
-    "####.................................####",
-    "####.................................####",
-    "#########################################",
-    "#########################################"
+    '################.################',
+    '################.################',
+    '##..........#..................##',
+    '##..........#..................##',
+    '##.####.#####.......#..........##',
+    '##..................#..........##',
+    '##..........###.###.#..........##',
+    '##..................####.#####.##',
+    '##.............................##',
+    '##..###.###.........#..........##',
+    '##..................#..........##',
+    '##############.....##############',
+    '##############.....##############',
+    '##############.....##############',
+    '##..........#..................##',
+    '##...###.##.#..................##',
+    '##.............................##',
+    '##.####.#####........#.........##',
+    '##..........#........#.........##',
+    '##..........#..................##',
+    '##...................###.#####.##',
+    '##...................#.........##',
+    '##...................#.........##',
+    '#################################',
+    '#################################'
 ];
 
 /*
-   The arcade is deliberately shaped like a small hourglass: a broad lower
-   starting plaza feeds into a dense middle labyrinth, which opens into a
-   second broad upper room and finally the glowing exit at the top.
-   The open areas are for rhythm and visibility; the dense sections provide
-   the actual chase routes. A few '~' cells are low arcade walls.
+   The arcade is shaped like a two-stage gourd: a wide lower stage,
+   a narrow central neck, and a second upper stage leading to the
+   physical exit in the top wall. The open plazas deliberately
+   alternate with tighter horizontal/vertical corridors.
 */
 
-const safetyZones = [
-    { x: 12.5, y: 17.5, radius: 1.35, name: "SAFE ZONE 1" },
-    { x: 28.5, y: 12.5, radius: 1.35, name: "SAFE ZONE 2" }
+const LOW_WALLS = new Set([
+    "3,4","4,4","5,4","6,4","8,4","9,4",
+    "20,7","21,7","22,7","23,7",
+    "3,17","4,17","5,17","6,17","8,17","9,17",
+    "21,20","22,20","23,20"
+]);
+
+const SAFETY_ZONES = [
+    {x:5, y:18, w:4, h:3, label:"SAFE"},
+    {x:24, y:2, w:5, h:3, label:"SAFE"}
+];
+
+const BOOST_PICKUPS = [
+    {x:10.5, y:18.5, collected:false},
+    {x:24.5, y:9.5, collected:false},
+    {x:16.5, y:5.5, collected:false}
 ];
 
 const arcadeCanvas = document.getElementById("arcadeCanvas");
@@ -3625,7 +3604,7 @@ const DASH_SPEED = 3;
 const FIELD_OF_VIEW = Math.PI / 3;
 const HALF_FOV = FIELD_OF_VIEW / 2;
 
-const MAX_RAY_DISTANCE = 42;
+const MAX_RAY_DISTANCE = 32;
 
 const WALL_HEIGHT = 1.0;
 
@@ -3638,12 +3617,14 @@ let renderColumns = RENDER_COLUMNS_DESKTOP;
    PLAYER
 ===================================================== */
 
+const MAX_STAMINA = 300;
 let player = {
-    // The lower-stage plaza is deliberately distant from all three teachers.
-    x: 20.5,
-    y: 27.5,
+    // Start in the lower-stage plaza.
+    x: 16.5,
+    y: 20.5,
     angle: -Math.PI / 2,
-    stamina: 300
+    stamina: MAX_STAMINA,
+    speedBoostTimer: 0
 };
 
 /* =====================================================
@@ -3651,14 +3632,15 @@ let player = {
 ===================================================== */
 
 let teachers = [
-    { x: 5.5, y: 25.5, angle: 0, stage: "lower", chasing: false, pathTimer: 0, path: null, wanderTarget: null, wanderTimer: 0, lostTimer: 0, chaseAnnounced: false },
-    { x: 11.5, y: 4.5, angle: 0, stage: "upper", chasing: false, pathTimer: 0, path: null, wanderTarget: null, wanderTimer: 0, lostTimer: 0, chaseAnnounced: false },
-    { x: 29.5, y: 4.5, angle: Math.PI, stage: "upper", chasing: false, pathTimer: 0, path: null, wanderTarget: null, wanderTimer: 0, lostTimer: 0, chaseAnnounced: false }
+    {x:27.5,y:19.5,angle:Math.PI,chasing:false,pathTimer:0,path:null,wanderTarget:null,wanderTimer:0,chaseLostTimer:0},
+    {x:7.5,y:6.5,angle:0,chasing:false,pathTimer:0,path:null,wanderTarget:null,wanderTimer:0,chaseLostTimer:0},
+    {x:25.5,y:8.5,angle:Math.PI,chasing:false,pathTimer:0,path:null,wanderTarget:null,wanderTimer:0,chaseLostTimer:0}
 ];
 
 let exitPoint = {
-    x: 20.5,
-    y: 0.5
+    // The exit is a real doorway in the top wall of the upper stage.
+    x: 16.5,
+    y: 0.45
 };
 
 /* Decorative arcade machines placed on the walkable floor. They are visual
@@ -3710,8 +3692,6 @@ let dashTouch = false;
 
 let arcadeRunning = false;
 let previousTime = performance.now();
-let chaseSubtitleTimer = null;
-let chaseActive = false;
 
 /* =====================================================
    KEYBOARD
@@ -3769,7 +3749,7 @@ function isWall(x, y) {
         return true;
     }
 
-    return maze[ty][tx] === "#" || maze[ty][tx] === "~";
+    return maze[ty][tx] === "#";
 }
 
 function isWalkableTile(x, y) {
@@ -3785,7 +3765,7 @@ function isWalkableTile(x, y) {
         return false;
     }
 
-    return maze[ty][tx] !== "#" && maze[ty][tx] !== "~";
+    return maze[ty][tx] !== "#";
 }
 
 function clamp(value, min, max) {
@@ -3811,6 +3791,59 @@ function angleDifference(from, to) {
 function distanceBetween(a, b) {
     return Math.hypot(a.x - b.x, a.y - b.y);
 }
+function isInSafetyZone(entity) {
+    return SAFETY_ZONES.some(zone =>
+        entity.x >= zone.x && entity.x <= zone.x + zone.w &&
+        entity.y >= zone.y && entity.y <= zone.y + zone.h
+    );
+}
+
+function shortestPathDistance(sx, sy, tx, ty, maxDistance = Infinity) {
+    const startX = Math.floor(sx);
+    const startY = Math.floor(sy);
+    const targetX = Math.floor(tx);
+    const targetY = Math.floor(ty);
+    if (startX === targetX && startY === targetY) return 0;
+    const queue = [{x:startX,y:startY,d:0}];
+    const visited = new Set([`${startX},${startY}`]);
+    let index = 0;
+    const dirs = [[1,0],[-1,0],[0,1],[0,-1]];
+    while(index < queue.length){
+        const current = queue[index++];
+        if(current.d >= maxDistance) continue;
+        for(const [dx,dy] of dirs){
+            const nx=current.x+dx, ny=current.y+dy;
+            if(ny<0 || ny>=maze.length || nx<0 || nx>=maze[ny].length || maze[ny][nx]==="#") continue;
+            const key=`${nx},${ny}`;
+            if(visited.has(key)) continue;
+            const nextD=current.d+1;
+            if(nx===targetX && ny===targetY) return nextD;
+            visited.add(key);
+            queue.push({x:nx,y:ny,d:nextD});
+        }
+    }
+    return Infinity;
+}
+
+function showChaseNotice(){
+    const notice=document.getElementById("chaseNotice");
+    notice.textContent=`${mainName()}, ${boyName()}! I found you!`;
+    notice.classList.add("active");
+    clearTimeout(showChaseNotice.timer);
+    showChaseNotice.timer=setTimeout(()=>notice.classList.remove("active"),2600);
+}
+
+function collectBoostPickups(){
+    for(const pickup of BOOST_PICKUPS){
+        if(pickup.collected) continue;
+        if(distanceBetween(player,pickup)<.62){
+            pickup.collected=true;
+            player.speedBoostTimer=6;
+            player.stamina=Math.min(MAX_STAMINA,player.stamina+90);
+        }
+    }
+}
+
 
 /* =====================================================
    COLLISION-AWARE MOVEMENT
@@ -3824,7 +3857,7 @@ function circleHitsWall(x, y, radius) {
 
     for (let ty = minY; ty <= maxY; ty++) {
         for (let tx = minX; tx <= maxX; tx++) {
-            if (maze[ty][tx] !== "#" && maze[ty][tx] !== "~") continue;
+            if (maze[ty][tx] !== "#") continue;
             const nearestX = clamp(x, tx, tx + 1);
             const nearestY = clamp(y, ty, ty + 1);
             const dx = x - nearestX;
@@ -3957,11 +3990,13 @@ function updatePlayer(dt) {
     const turning = Math.abs(turn) > .05;
 
     const dash = keys["shift"] || dashTouch;
+    player.speedBoostTimer=Math.max(0,player.speedBoostTimer-dt);
 
     let speed = NORMAL_SPEED;
+    if(player.speedBoostTimer>0) speed += .75;
 
     if (dash && moving && player.stamina > 0) {
-        speed = DASH_SPEED;
+        speed += DASH_SPEED - NORMAL_SPEED;
         player.stamina -= 42 * dt;
         if (player.stamina <= 0 && dashTouch) {
             dashTouch = false;
@@ -3971,9 +4006,10 @@ function updatePlayer(dt) {
         player.stamina += 20 * dt;
     }
 
-    player.stamina = clamp(player.stamina, 0, 100);
+    player.stamina = clamp(player.stamina, 0, MAX_STAMINA);
+    collectBoostPickups();
 
-    document.getElementById("staminaBar").style.width = (player.stamina / 3) + "%";
+    document.getElementById("staminaBar").style.width = (player.stamina / MAX_STAMINA * 100) + "%";
 
     if (turning) {
         const turnSpeed = 3.0;
@@ -4065,7 +4101,7 @@ function nextPathStep(sx, sy, tx, ty) {
                 continue;
             }
 
-            if (maze[ny][nx] === "#" || maze[ny][nx] === "~") {
+            if (maze[ny][nx] === "#") {
                 continue;
             }
 
@@ -4120,7 +4156,7 @@ function randomWalkTarget(teacher) {
             if (maze[y][x] !== ".") continue;
             const distanceFromPlayer = Math.hypot((x + .5) - player.x, (y + .5) - player.y);
             const distanceFromTeacher = Math.hypot((x + .5) - teacher.x, (y + .5) - teacher.y);
-            if (distanceFromPlayer > 7.5 && distanceFromTeacher > 1.2) {
+            if (distanceFromPlayer > 5.5 && distanceFromTeacher > 1.2) {
                 candidates.push({x, y});
             }
         }
@@ -4136,7 +4172,10 @@ function hasLineOfSight(a, b) {
     const steps = Math.max(1, Math.ceil(distance / .16));
     for (let i = 1; i < steps; i++) {
         const t = i / steps;
-        if (isWall(a.x + dx * t, a.y + dy * t)) return false;
+        const sampleX = a.x + dx * t;
+        const sampleY = a.y + dy * t;
+        const cellKey = `${Math.floor(sampleX)},${Math.floor(sampleY)}`;
+        if (isWall(sampleX, sampleY) && !LOW_WALLS.has(cellKey)) return false;
     }
     return true;
 }
@@ -4145,154 +4184,83 @@ function hasLineOfSight(a, b) {
    UPDATE TEACHERS
 ===================================================== */
 
-function gridDistanceBetween(sx, sy, tx, ty) {
-    const start = { x: Math.floor(sx), y: Math.floor(sy) };
-    const target = { x: Math.floor(tx), y: Math.floor(ty) };
-    if (start.x === target.x && start.y === target.y) return 0;
-    const queue = [start];
-    let qi = 0;
-    const visited = new Set([`${start.x},${start.y}`]);
-    const dirs = [[1,0],[-1,0],[0,1],[0,-1]];
-    while (qi < queue.length) {
-        const c = queue[qi++];
-        const d = c.d || 0;
-        for (const [dx,dy] of dirs) {
-            const nx=c.x+dx, ny=c.y+dy;
-            if (ny<0 || ny>=maze.length || nx<0 || nx>=maze[ny].length) continue;
-            if (maze[ny][nx] === "#" || maze[ny][nx] === "~") continue;
-            const key=`${nx},${ny}`;
-            if (visited.has(key)) continue;
-            if (nx===target.x && ny===target.y) return d+1;
-            visited.add(key);
-            queue.push({x:nx,y:ny,d:d+1});
-        }
-    }
-    return Infinity;
-}
-
-function isPlayerInSafetyZone() {
-    return safetyZones.some(zone => Math.hypot(player.x-zone.x, player.y-zone.y) <= zone.radius);
-}
-
-function beginChase(teacher) {
-    if (teacher.chasing) return;
-    teacher.chasing = true;
-    teacher.path = null;
-    teacher.pathTimer = 0;
-    teacher.lostTimer = 0;
-    teacher.chaseAnnounced = true;
-    chaseActive = true;
-    const subtitle = document.getElementById("chaseSubtitle");
-    subtitle.textContent = `Hanako, ${boyName()}! I found you!`;
-    subtitle.classList.remove("active");
-    void subtitle.offsetWidth;
-    subtitle.classList.add("active");
-    if (chaseSubtitleTimer) clearTimeout(chaseSubtitleTimer);
-    chaseSubtitleTimer = setTimeout(() => subtitle.classList.remove("active"), 2200);
-}
-
-function endTeacherChase(teacher) {
-    teacher.chasing = false;
-    teacher.path = null;
-    teacher.lostTimer = 0;
-    teacher.wanderTarget = null;
-    teacher.wanderTimer = 0;
-    if (!teachers.some(t => t.chasing)) {
-        chaseActive = false;
-        document.getElementById("chaseSubtitle").classList.remove("active");
-    }
-}
-
 function updateTeachers(dt) {
-    if (isPlayerInSafetyZone()) {
-        for (const teacher of teachers) {
-            if (teacher.chasing) endTeacherChase(teacher);
-        }
-    }
-
     for (const teacher of teachers) {
-        const distance = distanceBetween(teacher, player);
-        const visible = hasLineOfSight(teacher, player) && distance <= 10.5;
-        const routeDistance = gridDistanceBetween(teacher.x, teacher.y, player.x, player.y);
+        const euclideanDistance = distanceBetween(teacher, player);
+        const pathDistance = shortestPathDistance(teacher.x, teacher.y, player.x, player.y, 16);
+        const visible = euclideanDistance <= 4.5 && hasLineOfSight(teacher, player);
+        const nearEnough = pathDistance <= 10;
 
-        if (!teacher.chasing && !isPlayerInSafetyZone() && (visible || routeDistance <= 10)) {
-            beginChase(teacher);
+        if (!teacher.chasing && (visible || nearEnough)) {
+            teacher.chasing = true;
+            teacher.path = null;
+            teacher.pathTimer = 0;
+            teacher.chaseLostTimer = 0;
+            showChaseNotice();
+        }
+
+        if (teacher.chasing && isInSafetyZone(player)) {
+            teacher.chasing = false;
+            teacher.chaseLostTimer = 0;
+            teacher.path = null;
+        }
+
+        const playerMoving =
+            Math.abs(getForwardInput()) > .05 ||
+            Math.abs(getStrafeInput()) > .05 ||
+            Math.abs(getMobileForwardInput()) > .05 ||
+            Math.abs(getMobileStrafeInput()) > .05;
+        const playerDashing =
+            playerMoving &&
+            (keys["shift"] || dashTouch) &&
+            player.stamina > 0;
+        const playerCurrentSpeed =
+            NORMAL_SPEED + (player.speedBoostTimer > 0 ? .75 : 0) + (playerDashing ? DASH_SPEED - NORMAL_SPEED : 0);
+        const speed = teacher.chasing ? playerCurrentSpeed : NORMAL_SPEED;
+
+        if (teacher.chasing) {
+            const refreshedDistance = shortestPathDistance(teacher.x, teacher.y, player.x, player.y, 20);
+            const stillVisible = distanceBetween(teacher, player) <= 4.5 && hasLineOfSight(teacher, player);
+            if (refreshedDistance >= 15 && !stillVisible) teacher.chaseLostTimer += dt;
+            else teacher.chaseLostTimer = 0;
+            if (teacher.chaseLostTimer >= 4) {
+                teacher.chasing = false;
+                teacher.chaseLostTimer = 0;
+                teacher.path = null;
+            }
         }
 
         teacher.pathTimer -= dt;
         teacher.wanderTimer -= dt;
 
-        if (teacher.chasing) {
-            if (isPlayerInSafetyZone()) {
-                endTeacherChase(teacher);
-                continue;
-            }
-
-            const stillVisible = hasLineOfSight(teacher, player);
-            const stillNear = gridDistanceBetween(teacher.x, teacher.y, player.x, player.y) <= 15;
-
-            if (!stillVisible && !stillNear) {
-                teacher.lostTimer += dt;
-            } else {
-                teacher.lostTimer = 0;
-            }
-
-            if (teacher.lostTimer >= 4) {
-                endTeacherChase(teacher);
-                continue;
-            }
-
-            if (teacher.pathTimer <= 0) {
-                teacher.path = nextPathStep(teacher.x, teacher.y, player.x, player.y);
-                teacher.pathTimer = .14;
-            }
-
-            // Chasing teachers move at exactly the protagonist's current speed.
-            const moving =
-                Math.abs(getForwardInput()) > .05 ||
-                Math.abs(getStrafeInput()) > .05 ||
-                Math.abs(getMobileForwardInput()) > .05 ||
-                Math.abs(getMobileStrafeInput()) > .05;
-            const dashing = moving && (keys["shift"] || dashTouch) && player.stamina > 0;
-            const speed = dashing ? DASH_SPEED : NORMAL_SPEED;
-
-            if (teacher.path) {
-                const targetX = teacher.path.x + .5;
-                const targetY = teacher.path.y + .5;
-                const dx = targetX - teacher.x;
-                const dy = targetY - teacher.y;
-                const length = Math.hypot(dx, dy);
-                if (length > .01) {
-                    const ratio = Math.min(1, speed * dt / length);
-                    moveEntity(teacher, dx * ratio, dy * ratio);
-                    teacher.angle = Math.atan2(dy, dx);
-                }
-            }
-        } else {
-            // Before detection, every teacher simply wanders.
+        if (!teacher.chasing) {
             if (!teacher.wanderTarget || teacher.wanderTimer <= 0 || !teacher.path) {
                 teacher.wanderTarget = randomWalkTarget(teacher);
                 teacher.wanderTimer = 1.0 + Math.random() * 1.6;
                 teacher.path = teacher.wanderTarget
                     ? nextPathStep(teacher.x, teacher.y, teacher.wanderTarget.x, teacher.wanderTarget.y)
                     : null;
-                teacher.pathTimer = .24;
+                teacher.pathTimer = .22;
             } else if (teacher.pathTimer <= 0) {
                 teacher.path = nextPathStep(teacher.x, teacher.y, teacher.wanderTarget.x, teacher.wanderTarget.y);
-                teacher.pathTimer = .24;
+                teacher.pathTimer = .22;
             }
+        } else if (teacher.pathTimer <= 0) {
+            teacher.path = nextPathStep(teacher.x, teacher.y, player.x, player.y);
+            teacher.pathTimer = .12;
+        }
 
-            if (teacher.path) {
-                const targetX = teacher.path.x + .5;
-                const targetY = teacher.path.y + .5;
-                const dx = targetX - teacher.x;
-                const dy = targetY - teacher.y;
-                const length = Math.hypot(dx, dy);
-                if (length > .01) {
-                    const ratio = Math.min(1, NORMAL_SPEED * dt / length);
-                    moveEntity(teacher, dx * ratio, dy * ratio);
-                    teacher.angle = Math.atan2(dy, dx);
-                }
+        if (teacher.path) {
+            const targetX = teacher.path.x + .5;
+            const targetY = teacher.path.y + .5;
+            const dx = targetX - teacher.x;
+            const dy = targetY - teacher.y;
+            const length = Math.hypot(dx, dy);
+            if (length > .01) {
+                const step = speed * dt;
+                const ratio = Math.min(1, step / length);
+                moveEntity(teacher, dx * ratio, dy * ratio);
+                teacher.angle = Math.atan2(dy, dx);
             }
         }
 
@@ -4341,7 +4309,6 @@ function castRay(angle) {
     let side = 0;
     let distance = 0;
     let hit = false;
-    let rayWallType = "#";
 
     while (!hit && distance < MAX_RAY_DISTANCE) {
         if (sideDistX < sideDistY) {
@@ -4363,9 +4330,8 @@ function castRay(angle) {
             break;
         }
 
-        if (maze[mapY][mapX] === "#" || maze[mapY][mapX] === "~") {
+        if (maze[mapY][mapX] === "#") {
             hit = true;
-            rayWallType = maze[mapY][mapX];
         }
     }
 
@@ -4375,8 +4341,7 @@ function castRay(angle) {
             side,
             wallX: 0,
             mapX,
-            mapY,
-            wallType: rayWallType
+            mapY
         };
     }
 
@@ -4403,8 +4368,7 @@ function castRay(angle) {
         side,
         wallX,
         mapX,
-        mapY,
-        wallType: rayWallType
+        mapY
     };
 }
 
@@ -4930,11 +4894,9 @@ function drawWallSlice(screenX, screenWidth, ray) {
     const correctedDistance = ray.distance *
         Math.cos(normalizeAngle(player.angle - ray.angle));
     const safeDistance = Math.max(.0001, correctedDistance);
-    const wallHeightFactor = ray.wallType === "~" ? .56 : 1;
-    const wallHeight = (height * WALL_HEIGHT * wallHeightFactor) / safeDistance;
-    const top = ray.wallType === "~"
-        ? height * .56 - wallHeight
-        : (height - wallHeight) / 2;
+    const lowWall = LOW_WALLS.has(`${ray.mapX},${ray.mapY}`);
+    const wallHeight = (height * WALL_HEIGHT * (lowWall ? .48 : 1)) / safeDistance;
+    const top = lowWall ? height * .58 - wallHeight : (height - wallHeight) / 2;
     const bottom = top + wallHeight;
 
     const distanceBrightness = clamp(1 - safeDistance / MAX_RAY_DISTANCE, .16, 1);
@@ -5125,6 +5087,37 @@ function drawArcadeProp(prop, depthBuffer) {
     ctx.restore();
 }
 
+function drawBoostPickup(pickup, depthBuffer) {
+    const projection=projectSprite(pickup,"boost");
+    if(!projection) return;
+    const column=Math.floor(projection.screenX);
+    if(column<0 || column>=depthBuffer.length) return;
+    if(projection.correctedDistance>depthBuffer[column]) return;
+    const h=projection.size*.72;
+    const w=h*.58;
+    const left=projection.screenX-w/2;
+    const top=arcadeCanvas.height*.56-h*.42;
+    ctx.save();
+    ctx.globalCompositeOperation="lighter";
+    ctx.shadowBlur=Math.max(10,h*.16);
+    ctx.shadowColor="#ffe45c";
+    ctx.fillStyle="rgba(255,226,92,.25)";
+    ctx.fillRect(left-h*.12,top-h*.10,w+h*.24,h+h*.20);
+    ctx.globalCompositeOperation="source-over";
+    ctx.fillStyle="#151a2b";
+    ctx.fillRect(left,top,w,h);
+    ctx.strokeStyle="#ffe45c";
+    ctx.lineWidth=Math.max(2,h*.04);
+    ctx.strokeRect(left,top,w,h);
+    ctx.fillStyle="#65f4ff";
+    ctx.fillRect(left+w*.15,top+h*.18,w*.70,h*.30);
+    ctx.fillStyle="#ffe45c";
+    ctx.font=`900 ${Math.max(8,h*.13)}px Arial`;
+    ctx.textAlign="center";
+    ctx.fillText("BOOST",projection.screenX,top+h*.68);
+    ctx.restore();
+}
+
 function drawTeacherSprite(teacher, depthBuffer) {
     const projection = projectSprite(teacher, "teacher");
 
@@ -5229,6 +5222,37 @@ function drawTeacherSprite(teacher, depthBuffer) {
     ctx.restore();
 }
 
+function drawSafetyZones() {
+    const height = arcadeCanvas.height;
+    const depthBuffer = new Array(renderColumns);
+    for (let i=0;i<renderColumns;i++) depthBuffer[i]=MAX_RAY_DISTANCE;
+    for(const zone of SAFETY_ZONES){
+        const center={x:zone.x+zone.w/2,y:zone.y+zone.h/2};
+        const projection=projectSprite(center,"safety");
+        if(!projection) continue;
+        const column=Math.floor(projection.screenX);
+        if(column<0 || column>=depthBuffer.length) continue;
+        if(projection.correctedDistance>depthBuffer[column]) continue;
+        const size=clamp(height/(projection.correctedDistance+.4)*.32,18,180);
+        ctx.save();
+        ctx.globalCompositeOperation="lighter";
+        ctx.shadowBlur=18;
+        ctx.shadowColor="#47f0d8";
+        ctx.strokeStyle="rgba(71,240,216,.78)";
+        ctx.lineWidth=Math.max(2,size*.035);
+        ctx.beginPath();
+        ctx.ellipse(projection.screenX,height*.66,size,size*.22,0,0,Math.PI*2);
+        ctx.stroke();
+        ctx.fillStyle="rgba(71,240,216,.10)";
+        ctx.fill();
+        ctx.font=`900 ${Math.max(9,size*.10)}px Arial`;
+        ctx.textAlign="center";
+        ctx.fillStyle="rgba(220,255,250,.95)";
+        ctx.fillText("SAFE ZONE",projection.screenX,height*.63);
+        ctx.restore();
+    }
+}
+
 /* =====================================================
    DRAW EXIT BILLBOARD
 ===================================================== */
@@ -5238,10 +5262,9 @@ function drawExitBeacon() {
     const dy = exitPoint.y - player.y;
     const angleToExit = Math.atan2(dy, dx);
     const relative = normalizeAngle(angleToExit - player.angle);
-    const outside = Math.abs(relative) > HALF_FOV * 1.12;
-    const x = outside
-        ? (relative > 0 ? arcadeCanvas.width * .93 : arcadeCanvas.width * .07)
-        : arcadeCanvas.width * (0.5 + relative / FIELD_OF_VIEW);
+    if (Math.abs(relative) > HALF_FOV * 1.12) return;
+
+    const x = arcadeCanvas.width * (0.5 + relative / FIELD_OF_VIEW);
     const pulse = 1 + Math.sin(performance.now() / 180) * .08;
     const beamH = arcadeCanvas.height * .20 * pulse;
     const beamW = Math.max(4, arcadeCanvas.width * .008);
@@ -5266,39 +5289,8 @@ function drawExitBeacon() {
     ctx.fill();
     ctx.font = "900 12px Arial";
     ctx.textAlign = "center";
-    if (outside) {
-        ctx.fillText(relative > 0 ? "EXIT →" : "← EXIT", x, arcadeCanvas.height * .11);
-    } else {
-        ctx.fillText("EXIT", x, arcadeCanvas.height * .11);
-    }
+    ctx.fillText("EXIT", x, arcadeCanvas.height * .11);
     ctx.restore();
-}
-
-function drawSafetyZoneBeacons() {
-    for (const zone of safetyZones) {
-        const dx = zone.x - player.x;
-        const dy = zone.y - player.y;
-        const angle = normalizeAngle(Math.atan2(dy, dx) - player.angle);
-        if (Math.abs(angle) > HALF_FOV * 1.05) continue;
-        const distance = Math.max(.5, Math.hypot(dx, dy));
-        const x = arcadeCanvas.width * (0.5 + angle / FIELD_OF_VIEW);
-        const y = arcadeCanvas.height * .18;
-        const alpha = clamp(1 - distance / 18, .18, .88);
-        ctx.save();
-        ctx.globalCompositeOperation = "lighter";
-        ctx.fillStyle = `rgba(66,244,154,${alpha})`;
-        ctx.shadowBlur = 14;
-        ctx.shadowColor = "#42f49a";
-        ctx.beginPath();
-        ctx.arc(x, y, 7, 0, Math.PI * 2);
-        ctx.fill();
-        ctx.globalCompositeOperation = "source-over";
-        ctx.fillStyle = `rgba(228,255,240,${alpha})`;
-        ctx.font = "900 11px Arial";
-        ctx.textAlign = "center";
-        ctx.fillText("SAFE", x, y - 13);
-        ctx.restore();
-    }
 }
 
 function drawExit(depthBuffer) {
@@ -5410,11 +5402,12 @@ function drawArcade() {
     }
 
     drawExitBeacon();
-    drawSafetyZoneBeacons();
+    drawSafetyZones();
 
-    const GHOST_VISIBLE_DISTANCE = 4.8;
+    const GHOST_VISIBLE_DISTANCE = 6.5;
     const sortedSprites = [
         ...arcadeProps.map(prop => ({ entity: prop, kind: "prop" })),
+        ...BOOST_PICKUPS.filter(pickup => !pickup.collected).map(pickup => ({ entity: pickup, kind: "boost" })),
         ...teachers
             .filter(teacher => distanceBetween(teacher, player) <= GHOST_VISIBLE_DISTANCE)
             .map(teacher => ({ entity: teacher, kind: "teacher" }))
@@ -5424,6 +5417,7 @@ function drawArcade() {
 
     for (const item of sortedSprites) {
         if (item.kind === "prop") drawArcadeProp(item.entity, depthBuffer);
+        else if (item.kind === "boost") drawBoostPickup(item.entity, depthBuffer);
         else drawTeacherSprite(item.entity, depthBuffer);
     }
 
@@ -5451,9 +5445,7 @@ function drawMiniMap() {
 
     for (let y = 0; y < maze.length; y++) {
         for (let x = 0; x < maze[y].length; x++) {
-            if (maze[y][x] === "#") mctx.fillStyle = "#244f63";
-            else if (maze[y][x] === "~") mctx.fillStyle = "#557080";
-            else mctx.fillStyle = "#f3fbf7";
+            mctx.fillStyle = maze[y][x] === "#" ? "#244f63" : "#f3fbf7";
             mctx.fillRect(x * cellW, y * cellH, Math.ceil(cellW), Math.ceil(cellH));
         }
     }
@@ -5465,31 +5457,28 @@ function drawMiniMap() {
         mctx.fill();
     }
 
-    /* Safety zones are deliberately obvious on the map, but the exit is not. */
-    for (const zone of safetyZones) {
-        mctx.fillStyle = "rgba(40,190,120,.72)";
-        mctx.fillRect((zone.x - zone.radius) * cellW, (zone.y - zone.radius) * cellH, zone.radius * 2 * cellW, zone.radius * 2 * cellH);
-        mctx.strokeStyle = "#1d9b68";
-        mctx.lineWidth = 2;
-        mctx.strokeRect((zone.x - zone.radius) * cellW, (zone.y - zone.radius) * cellH, zone.radius * 2 * cellW, zone.radius * 2 * cellH);
-    }
+    SAFETY_ZONES.forEach(zone => {
+        mctx.fillStyle = "rgba(70,240,220,.48)";
+        mctx.fillRect(zone.x * cellW, zone.y * cellH, zone.w * cellW, zone.h * cellH);
+        mctx.strokeStyle = "rgba(40,170,155,.95)";
+        mctx.lineWidth = 1.5;
+        mctx.strokeRect(zone.x * cellW, zone.y * cellH, zone.w * cellW, zone.h * cellH);
+    });
 
     point(player, "#2c72ff", 5);
 
+    const chasingTeachers = teachers.filter(t => t.chasing);
+    chasingTeachers.forEach(teacher => point(teacher, "#ff3d70", 4));
     const nearestTeacher = teachers.length ? Math.min(...teachers.map(t => distanceBetween(t, player))) : Infinity;
-    const warning = nearestTeacher < 7.0 || teachers.some(t => t.chasing);
+    const warning = nearestTeacher < 6 || chasingTeachers.length > 0;
     map.classList.toggle("warning", warning);
-    for (const teacher of teachers) {
-        if (teacher.chasing) point(teacher, "#e42d58", 4.5);
-    }
-
     if (warning) {
         mctx.fillStyle = "rgba(210,20,55,.92)";
         mctx.fillRect(6, h - 24, w - 12, 18);
         mctx.fillStyle = "#fff";
         mctx.font = "900 11px Arial";
         mctx.textAlign = "center";
-        mctx.fillText(teachers.some(t => t.chasing) ? "!! CHASE !!" : "!! WARNING: SOMETHING IS NEARBY !!", w / 2, h - 11);
+        mctx.fillText("!! WARNING: SOMETHING IS NEARBY !!", w / 2, h - 11);
     }
 
     mctx.strokeStyle = "#2c72ff";
@@ -5529,7 +5518,6 @@ async function startArcadeIntro(){
     if(ending||inArcade||arcadeIntroPlaying)return;
     document.getElementById("choiceBox").style.display="none";
     document.getElementById("loveGauge").classList.add("hidden");
-    document.getElementById("storySkipButton").style.display="none";
     document.getElementById("dialogueBox").style.display="block";
     document.getElementById("background").className="school";
     document.getElementById("missionCard").classList.remove("active");
@@ -5580,34 +5568,31 @@ async function startArcadeIntro(){
 }
 
 function resetArcadeWorld() {
-    // Start in the middle of the lower plaza. All three teachers begin far away.
-    player.x = 20.5;
-    player.y = 27.5;
+    player.x = 16.5;
+    player.y = 20.5;
     player.angle = -Math.PI / 2;
-    player.stamina = 300;
+    player.stamina = MAX_STAMINA;
+    player.speedBoostTimer = 0;
     teachers = [
-        { x: 5.5, y: 25.5, angle: 0, stage: "lower", chasing: false, pathTimer: 0, path: null, wanderTarget: null, wanderTimer: 0, lostTimer: 0, chaseAnnounced: false },
-        { x: 11.5, y: 4.5, angle: 0, stage: "upper", chasing: false, pathTimer: 0, path: null, wanderTarget: null, wanderTimer: 0, lostTimer: 0, chaseAnnounced: false },
-        { x: 29.5, y: 4.5, angle: Math.PI, stage: "upper", chasing: false, pathTimer: 0, path: null, wanderTarget: null, wanderTimer: 0, lostTimer: 0, chaseAnnounced: false }
+        {x:27.5,y:19.5,angle:Math.PI,chasing:false,pathTimer:0,path:null,wanderTarget:null,wanderTimer:0,chaseLostTimer:0},
+        {x:7.5,y:6.5,angle:0,chasing:false,pathTimer:0,path:null,wanderTarget:null,wanderTimer:0,chaseLostTimer:0},
+        {x:25.5,y:8.5,angle:Math.PI,chasing:false,pathTimer:0,path:null,wanderTarget:null,wanderTimer:0,chaseLostTimer:0}
     ];
-    exitPoint = { x: 20.5, y: 0.5 };
+    exitPoint = { x: 16.5, y: 0.45 };
+    BOOST_PICKUPS.forEach(pickup => pickup.collected=false);
     joystickX = 0;
     joystickY = 0;
     lookX = 0;
     dashTouch = false;
     document.getElementById("dashButton").classList.remove("active");
     document.getElementById("captureTeacherFocus").classList.remove("active");
-    document.getElementById("chaseSubtitle").classList.remove("active");
-    chaseActive = false;
-    if (chaseSubtitleTimer) clearTimeout(chaseSubtitleTimer);
-    chaseSubtitleTimer = null;
+    document.getElementById("chaseNotice").classList.remove("active");
     cameraBobTime = 0;
     cameraBobAmount = 0;
     screenLookActive = false;
     screenLookPointerId = null;
     resetJoystick();
 }
-
 function startArcade() {
     resetArcadeWorld();
     inArcade = true;
@@ -5619,6 +5604,8 @@ function startArcade() {
 
     document.getElementById("background").className = "arcade";
     document.getElementById("miniMap").style.display = "block";
+    document.getElementById("staminaBar").style.width = "100%";
+    document.getElementById("chaseNotice").classList.remove("active");
 
     document.getElementById("captureOverlay").style.display = "none";
     document.getElementById("darkFade").style.opacity = "0";
@@ -5767,6 +5754,7 @@ async function arcadeSuccess(){
     actionLocked=true;
     love=80;
     updateLove();
+    document.getElementById("chaseNotice").classList.remove("active");
     document.getElementById("arcadeScreen").style.display="none";
     document.getElementById("miniMap").style.display="none";
     document.getElementById("dialogueBox").style.display="none";
