@@ -1,0 +1,5119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Tohkatsu Hanako's Love Romance</title>
+
+<style>
+/* =====================================================
+   PASSWORD SCREEN
+===================================================== */
+
+#passwordScreen {
+    position: fixed;
+    inset: 0;
+    z-index: 99999;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    overflow: hidden;
+    background:
+        linear-gradient(180deg, #8edcff 0%, #dff5ff 58%, #f8efd8 100%);
+}
+
+/* Friendly password-screen decorations */
+.passwordSky {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    overflow: hidden;
+}
+
+.passwordCloud {
+    position: absolute;
+    width: 150px;
+    height: 48px;
+    border-radius: 999px;
+    background: rgba(255,255,255,.78);
+    box-shadow: 35px -12px 0 4px rgba(255,255,255,.78), 75px 2px 0 -2px rgba(255,255,255,.78);
+    opacity: .75;
+}
+
+.passwordCloud.c1 { top: 12%; left: 8%; transform: scale(.8); }
+.passwordCloud.c2 { top: 20%; right: 5%; transform: scale(.65); }
+
+.passwordBalloon {
+    position: absolute;
+    width: 54px;
+    height: 68px;
+    border-radius: 52% 48% 48% 52%;
+    box-shadow: inset -8px -10px 0 rgba(0,0,0,.08), 0 8px 16px rgba(40,80,100,.13);
+    animation: balloonFloat 3.5s ease-in-out infinite;
+}
+.passwordBalloon::before {
+    content: "";
+    position: absolute;
+    left: 50%;
+    bottom: -38px;
+    width: 1px;
+    height: 40px;
+    background: rgba(70,80,90,.5);
+}
+.passwordBalloon::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    bottom: -4px;
+    transform: translateX(-50%);
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-top: 8px solid currentColor;
+}
+.passwordBalloon.b1 { left: 8%; top: 27%; background:#ff7ca8; color:#ff7ca8; }
+.passwordBalloon.b2 { left: 18%; top: 10%; background:#ffd75e; color:#ffd75e; animation-delay:.6s; transform:scale(.78); }
+.passwordBalloon.b3 { right: 9%; top: 30%; background:#7cbcff; color:#7cbcff; animation-delay:1.1s; }
+.passwordBalloon.b4 { right: 20%; top: 11%; background:#b891ef; color:#b891ef; animation-delay:1.7s; transform:scale(.8); }
+
+@keyframes balloonFloat {
+    0%,100% { margin-top:0; }
+    50% { margin-top:-12px; }
+}
+
+.passwordSchool {
+    position: absolute;
+    left: 50%;
+    bottom: -3%;
+    transform: translateX(-50%);
+    width: min(760px, 88vw);
+    height: 28%;
+    border: 5px solid #c6a96b;
+    border-bottom: 0;
+    border-radius: 18px 18px 0 0;
+    background: #fff8e8;
+    box-shadow: 0 -8px 30px rgba(60,90,110,.12);
+    opacity: .82;
+}
+
+.passwordSchool::before {
+    content: "TOHKATSU JUNIOR HIGH SCHOOL";
+    position: absolute;
+    left: 50%;
+    top: 12px;
+    transform: translateX(-50%);
+    padding: 5px 13px;
+    border: 2px solid #c6a96b;
+    border-radius: 7px;
+    background: #fffdf5;
+    color: #526579;
+    font-size: 11px;
+    font-weight: bold;
+    letter-spacing: 1.5px;
+    white-space: nowrap;
+}
+
+#passwordBox {
+    position: relative;
+    z-index: 5;
+    width: min(430px, 88vw);
+    text-align: center;
+    padding: 30px 30px 25px;
+    border: 3px solid #ffffff;
+    border-radius: 24px;
+    background: rgba(255,255,255,.94);
+    box-shadow: 0 16px 45px rgba(45,85,110,.22);
+    animation: passwordPop .28s ease-out;
+}
+
+@keyframes passwordPop {
+    from { opacity: 0; transform: scale(.96) translateY(10px); }
+    to { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+#passwordTitle {
+    margin-bottom: 8px;
+    color: #3d5872;
+    font-size: clamp(27px, 6vw, 36px);
+    font-weight: 900;
+    letter-spacing: 1px;
+    text-shadow: 0 2px 0 #fff;
+}
+
+#passwordSubtitle {
+    margin-bottom: 22px;
+    color: #e25582;
+    font-size: 14px;
+    font-weight: bold;
+    letter-spacing: 2px;
+}
+
+#passwordInput {
+    display: block;
+    width: 100%;
+    height: 48px;
+    padding: 10px 14px;
+    border: 2px solid #555;
+    border-radius: 8px;
+    outline: none;
+    background: #f8fbff;
+    color: #31465c;
+    text-align: center;
+    font-size: 20px;
+    letter-spacing: 2px;
+}
+
+#passwordInput:focus {
+    border-color: #ef6e98;
+}
+
+#passwordButton {
+    display: block;
+    width: 100%;
+    margin-top: 18px;
+    padding: 12px;
+    border: 2px solid #ef6e98;
+    border-radius: 11px;
+    background: #ef6e98;
+    color: white;
+    font-size: 19px;
+    cursor: pointer;
+    transition: .15s;
+}
+
+#passwordButton:hover {
+    background: #df4f7c;
+    color: white;
+}
+
+#passwordError {
+    min-height: 20px;
+    margin-top: 14px;
+    color: #df4f6f;
+    font-size: 14px;
+    opacity: 0;
+    transition: .15s;
+}
+
+#passwordError.show {
+    opacity: 1;
+}
+
+/* =====================================================
+   GENERAL
+===================================================== */
+
+* {
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+}
+
+html,
+body {
+    margin: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background: #111;
+    font-family: Arial, Helvetica, sans-serif;
+    color: white;
+}
+
+button {
+    font-family: inherit;
+}
+
+#game {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    background: #111;
+}
+
+.screen {
+    position: absolute;
+    inset: 0;
+    display: none;
+}
+
+.screen.active {
+    display: flex;
+}
+
+.hidden {
+    display: none !important;
+}
+
+/* =====================================================
+   TITLE
+===================================================== */
+
+#titleScreen {
+    position: absolute;
+    background: linear-gradient(180deg, #75cdf7 0%, #cceeff 55%, #f8f0d9 100%);
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    text-align: center;
+    overflow: hidden;
+    isolation: isolate;
+}
+
+/* A cheerful school courtyard / school-building backdrop */
+#titleScreen::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 43%;
+    z-index: 0;
+    background:
+        linear-gradient(180deg, transparent 0 8%, rgba(120,180,92,.18) 8% 100%),
+        repeating-linear-gradient(90deg, transparent 0 74px, rgba(255,255,255,.18) 74px 76px),
+        #8cc56f;
+}
+
+#titleScreen::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    bottom: 17%;
+    transform: translateX(-50%);
+    width: min(720px, 78vw);
+    height: 50%;
+    z-index: 0;
+    border: 5px solid #d6b46b;
+    border-bottom: 0;
+    border-radius: 18px 18px 0 0;
+    background:
+        linear-gradient(#fff7e8 0 100%);
+    box-shadow: 0 18px 0 rgba(80,90,70,.14), 0 12px 35px rgba(40,70,90,.22);
+}
+
+.title {
+    position: relative;
+    z-index: 5;
+    font-size: clamp(38px, 7vw, 86px);
+    line-height: 1;
+    margin-bottom: 55px;
+    color: #24314a;
+    text-shadow: 0 3px 0 rgba(255,255,255,.9), 0 7px 20px rgba(30,60,80,.22);
+}
+
+.title span {
+    color: #e84d86;
+}
+
+.menuButton {
+    display: block;
+    width: 260px;
+    margin: 12px;
+    padding: 15px 25px;
+    border: 2px solid #5d7798;
+    border-radius: 10px;
+    background: rgba(255,255,255,.88);
+    color: #24314a;
+    font-size: 22px;
+    cursor: pointer;
+    transition: .15s;
+    box-shadow: 0 6px 16px rgba(50,80,100,.16);
+}
+
+.menuButton:hover {
+    background: #f8fbff;
+    color: #d83f78;
+    transform: scale(1.04);
+}
+
+
+.titleParty {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 4;
+}
+.titleParty .balloon {
+    position: absolute;
+    width: 48px;
+    height: 62px;
+    border-radius: 50%;
+    box-shadow: inset -7px -8px 0 rgba(0,0,0,.08);
+    animation: balloonFloat 4s ease-in-out infinite;
+}
+.titleParty .p1 { left: 8%; top: 16%; background:#ff82ad; }
+.titleParty .p2 { right: 9%; top: 14%; background:#79baf7; animation-delay:.8s; }
+.titleParty .p3 { left: 18%; top: 7%; width:36px; height:48px; background:#ffd65d; animation-delay:1.4s; }
+.titleParty .p4 { right: 19%; top: 8%; width:36px; height:48px; background:#b394e8; animation-delay:2s; }
+.titleParty .schoolStar {
+    position:absolute; color:#fff; text-shadow:0 2px 8px rgba(40,80,110,.3); font-size:28px;
+}
+.titleParty .s1 { left: 24%; top: 24%; }
+.titleParty .s2 { right: 24%; top: 23%; font-size:20px; }
+
+/* School facade details */
+.titleDecoration {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.schoolRoof {
+    position: absolute;
+    left: 50%;
+    bottom: 59%;
+    transform: translateX(-50%);
+    width: min(790px, 84vw);
+    height: 24px;
+    background: #5d6878;
+    clip-path: polygon(4% 100%, 50% 0, 96% 100%);
+    filter: drop-shadow(0 5px 3px rgba(0,0,0,.18));
+}
+
+.schoolNameplate {
+    position: absolute;
+    left: 50%;
+    bottom: 49%;
+    transform: translateX(-50%);
+    padding: 7px 22px;
+    border-radius: 8px;
+    background: #fffdf4;
+    border: 2px solid #b99d62;
+    color: #46566b;
+    font-size: clamp(11px, 1.6vw, 16px);
+    font-weight: bold;
+    letter-spacing: 2px;
+    box-shadow: 0 3px 9px rgba(0,0,0,.12);
+}
+
+.schoolWindows {
+    position: absolute;
+    left: 50%;
+    bottom: 25%;
+    transform: translateX(-50%);
+    width: min(620px, 67vw);
+    height: 16%;
+    background:
+        repeating-linear-gradient(90deg,
+            #8fd7ef 0 54px,
+            #53677b 54px 60px);
+    border: 5px solid #53677b;
+    box-shadow: inset 0 0 0 4px rgba(255,255,255,.7);
+    opacity: .95;
+}
+
+.schoolDoor {
+    position: absolute;
+    left: 50%;
+    bottom: 12%;
+    transform: translateX(-50%);
+    width: 92px;
+    height: 105px;
+    background: linear-gradient(90deg, #657b91 0 48%, #50667b 48% 52%, #657b91 52%);
+    border: 5px solid #42566b;
+    border-bottom: 0;
+    border-radius: 7px 7px 0 0;
+    box-shadow: 0 5px 10px rgba(0,0,0,.18);
+}
+
+.schoolTree {
+    position: absolute;
+    bottom: 12%;
+    width: 115px;
+    height: 115px;
+    border-radius: 50%;
+    background: #65aa61;
+    box-shadow: inset -15px -12px 0 rgba(50,100,55,.14), 0 9px 18px rgba(50,80,50,.16);
+}
+
+.schoolTree::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: 82px;
+    transform: translateX(-50%);
+    width: 20px;
+    height: 55px;
+    background: #8b6849;
+}
+
+.treeLeft { left: 7%; }
+.treeRight { right: 7%; }
+
+.schoolGate {
+    position: absolute;
+    left: 50%;
+    bottom: 4%;
+    transform: translateX(-50%);
+    width: min(900px, 94vw);
+    height: 18px;
+    background: #6b7887;
+    border-radius: 8px;
+    box-shadow: 0 8px 0 rgba(50,60,70,.12);
+}
+
+.titleRibbon {
+    position: relative;
+    z-index: 5;
+    margin-bottom: 18px;
+    padding: 7px 18px;
+    border: 1px solid rgba(75,93,115,.45);
+    border-radius: 999px;
+    background: rgba(255,255,255,.78);
+    color: #4c6078;
+    font-size: 13px;
+    font-weight: bold;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    box-shadow: 0 5px 20px rgba(0,0,0,.10);
+}
+
+.titleTagline {
+    position: relative;
+    z-index: 5;
+    margin-top: -35px;
+    margin-bottom: 28px;
+    color: #40566e;
+    font-size: clamp(14px, 2vw, 20px);
+    letter-spacing: 2px;
+    text-shadow: 0 2px 8px rgba(255,255,255,.9);
+}
+
+.titleButtons {
+    position: relative;
+    z-index: 6;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.startButton {
+    position: relative;
+    width: 290px;
+    font-size: 25px;
+    font-weight: bold;
+    background: linear-gradient(135deg, #f2769e, #e94b7d);
+    border-color: #fff0f5;
+    color: white;
+    box-shadow: 0 8px 24px rgba(190,60,100,.28);
+}
+
+.startButton::after {
+    content: "★";
+    position: absolute;
+    right: 18px;
+    animation: tinyHeart 1.3s ease-in-out infinite;
+}
+
+.titleNote {
+    position: absolute;
+    left: 50%;
+    bottom: 18px;
+    transform: translateX(-50%);
+    z-index: 6;
+    width: min(520px, 82vw);
+    color: rgba(45,65,80,.72);
+    font-size: 11px;
+    letter-spacing: 1px;
+}
+
+@keyframes tinyHeart {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.25); }
+}
+
+@media (max-width: 700px) {
+    .schoolRoof { bottom: 57%; }
+    .schoolWindows { width: 70vw; height: 12%; }
+    .schoolDoor { bottom: 13%; width: 68px; height: 82px; }
+    .schoolTree { width: 72px; height: 72px; bottom: 12%; }
+    .schoolTree::after { top: 54px; height: 40px; width: 14px; }
+    .treeLeft { left: 3%; }
+    .treeRight { right: 3%; }
+    .titleRibbon { font-size: 10px; letter-spacing: 1.5px; }
+}
+
+/* =====================================================
+   MODALS
+===================================================== */
+
+.modal {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, .78);
+    z-index: 500;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.modal.active {
+    display: flex;
+}
+
+.modalBox {
+    width: min(700px, 95vw);
+    max-height: 90vh;
+    overflow: auto;
+    background: #17131b;
+    border: 2px solid #ff70bd;
+    border-radius: 18px;
+    padding: 30px;
+    box-shadow: 0 0 40px rgba(255, 20, 147, .35);
+}
+
+.modalBox h2 {
+    margin-top: 0;
+    color: #ff70bd;
+}
+
+.closeButton {
+    float: right;
+    background: none;
+    border: none;
+    color: white;
+    font-size: 28px;
+    cursor: pointer;
+}
+
+.creditText {
+    line-height: 1.8;
+    color: #ddd;
+}
+
+/* =====================================================
+   SETTINGS
+===================================================== */
+
+.settingRow {
+    margin: 25px 0;
+}
+
+.settingTitle {
+    font-size: 20px;
+    margin-bottom: 12px;
+}
+
+.settingChoice {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.settingChoice button {
+    flex: 1;
+    min-width: 150px;
+    padding: 13px;
+    border-radius: 10px;
+    border: 2px solid #555;
+    background: #222;
+    color: white;
+    cursor: pointer;
+}
+
+.settingChoice button.selected {
+    border-color: #ff70bd;
+    background: #4b183b;
+}
+
+/* =====================================================
+   CHARACTER SELECT
+===================================================== */
+
+#characterScreen {
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    background:
+        radial-gradient(circle at 50% 12%, rgba(255,255,255,.95), rgba(255,255,255,0) 34%),
+        linear-gradient(180deg, #8edcff 0%, #dff7ff 54%, #fff0d6 100%);
+    padding: 18px;
+    overflow: hidden;
+}
+
+.characterSelectClouds {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    overflow: hidden;
+}
+
+.characterSelectClouds::before,
+.characterSelectClouds::after {
+    content: "";
+    position: absolute;
+    width: 210px;
+    height: 58px;
+    border-radius: 999px;
+    background: rgba(255,255,255,.78);
+    box-shadow: 45px -14px 0 6px rgba(255,255,255,.78), 100px 2px 0 -4px rgba(255,255,255,.78);
+}
+
+.characterSelectClouds::before { left: -40px; top: 12%; }
+.characterSelectClouds::after { right: -70px; top: 22%; transform: scale(.72); }
+
+.characterSelectBack {
+    position: absolute;
+    left: 18px;
+    top: 18px;
+    z-index: 20;
+}
+
+.selectTitle {
+    position: relative;
+    z-index: 5;
+    margin-top: 4px;
+    font-size: clamp(28px, 5vw, 50px);
+    color: #385c78;
+    text-align: center;
+    font-weight: 900;
+    text-shadow: 0 3px 0 #fff, 0 8px 20px rgba(50,90,120,.18);
+}
+
+.selectSubtitle {
+    position: relative;
+    z-index: 5;
+    margin: 5px 0 12px;
+    color: #e25782;
+    font-weight: bold;
+    letter-spacing: 1px;
+}
+
+.selectionArea {
+    position: relative;
+    z-index: 5;
+    width: min(1000px, 96vw);
+    display: grid;
+    grid-template-columns: minmax(210px, 280px) 1fr;
+    gap: 18px;
+    align-items: stretch;
+}
+
+.selectionBox {
+    background: rgba(255,255,255,.82);
+    border: 3px solid rgba(255,255,255,.95);
+    border-radius: 22px;
+    padding: 16px;
+    box-shadow: 0 12px 30px rgba(60,100,120,.18);
+    color: #38526a;
+}
+
+.selectionBox h2 {
+    text-align: center;
+    margin: 0 0 8px;
+    font-size: 17px;
+}
+
+.characterPreview {
+    height: 330px;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    overflow: hidden;
+    position: relative;
+    border-radius: 16px;
+    background: linear-gradient(180deg, #effaff, #fff7ed);
+    border: 2px solid #d9edf5;
+}
+
+.characterPreview img {
+    max-height: 310px;
+    max-width: 92%;
+    object-fit: contain;
+    display: block;
+}
+
+.fixedLabel {
+    text-align: center;
+    color: #3d617c;
+    margin-top: 8px;
+    font-size: 20px;
+    font-weight: 900;
+}
+
+.hanakoArt {
+    width: 190px;
+    height: 315px;
+    display: block;
+}
+
+.carouselFrame {
+    position: relative;
+    display: grid;
+    grid-template-columns: 44px 1fr 44px;
+    gap: 8px;
+    align-items: center;
+}
+
+.carouselViewport {
+    overflow: hidden;
+    border-radius: 18px;
+    touch-action: pan-y;
+}
+
+.carouselTrack {
+    display: flex;
+    transition: transform .35s cubic-bezier(.2,.8,.2,1);
+    will-change: transform;
+}
+
+.characterCard {
+    flex: 0 0 100%;
+    min-width: 100%;
+    padding: 8px 18px 4px;
+    text-align: center;
+    cursor: pointer;
+}
+
+.characterCard .cardImageWrap {
+    height: 330px;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    border-radius: 16px;
+    background: linear-gradient(180deg, #f3fcff, #fff4e8);
+    border: 2px solid #d6eaf3;
+    overflow: hidden;
+}
+
+.characterCard img {
+    max-width: 94%;
+    max-height: 320px;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+}
+
+.characterCardName {
+    margin-top: 8px;
+    color: #385c78;
+    font-size: 22px;
+    font-weight: 900;
+}
+
+.carouselArrow {
+    width: 44px;
+    height: 56px;
+    border: 2px solid #9bc9df;
+    border-radius: 15px;
+    background: rgba(255,255,255,.92);
+    color: #39708d;
+    font-size: 28px;
+    cursor: pointer;
+    box-shadow: 0 5px 15px rgba(60,100,120,.15);
+}
+
+.carouselArrow:hover { transform: scale(1.05); }
+.carouselArrow:disabled { opacity:.32; cursor:default; transform:none !important; }
+
+.carouselDots {
+    display: flex;
+    justify-content: center;
+    gap: 7px;
+    margin-top: 7px;
+}
+
+.carouselDot {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: #bfd7e4;
+    transition: .2s;
+}
+
+.carouselDot.selected {
+    width: 24px;
+    border-radius: 10px;
+    background: #e96b95;
+}
+
+.characterStartButton {
+    position: relative;
+    z-index: 8;
+    margin: 12px auto 0;
+    width: min(300px, 80vw);
+}
+
+@media (max-width: 760px) {
+    #characterScreen { overflow: auto; }
+    .selectionArea { grid-template-columns: 1fr; }
+    .selectionBox:first-child { display: none; }
+    .characterCard .cardImageWrap { height: 290px; }
+    .characterCard img { max-height: 280px; }
+    .characterSelectBack { top: 10px; left: 10px; }
+}
+
+
+
+/* =====================================================
+   RICH STORY BACKGROUNDS
+===================================================== */
+
+#background.city {
+    background:
+        linear-gradient(to bottom, #77c9f5 0 46%, #f8dfb2 46% 52%, #8d9aa5 52% 100%);
+    overflow: hidden;
+}
+
+#background.city::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 48%;
+    background:
+        linear-gradient(90deg, transparent 0 5%, #687887 5% 18%, transparent 18% 23%, #8a98a5 23% 35%, transparent 35% 42%, #687887 42% 58%, transparent 58% 65%, #7b8997 65% 82%, transparent 82% 88%, #647585 88% 100%);
+    clip-path: polygon(0 28%, 5% 28%, 5% 0, 18% 0, 18% 22%, 23% 22%, 23% 8%, 35% 8%, 35% 34%, 42% 34%, 42% 3%, 58% 3%, 58% 28%, 65% 28%, 65% 12%, 82% 12%, 82% 32%, 88% 32%, 88% 0, 100% 0, 100% 100%, 0 100%);
+    opacity: .88;
+}
+
+#background.city::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 28%;
+    background: repeating-linear-gradient(90deg, #4e5962 0 80px, #626d75 80px 160px);
+    box-shadow: 0 -10px 0 rgba(255,255,255,.45);
+}
+
+#background.school {
+    background:
+        linear-gradient(to bottom, #78c8f3 0 42%, #dff4ff 42% 55%, #83a56f 55% 100%);
+    overflow: hidden;
+}
+
+#background.school::before {
+    content: "TOHKATSU JUNIOR HIGH SCHOOL";
+    position: absolute;
+    left: 50%;
+    bottom: 20%;
+    transform: translateX(-50%);
+    width: min(760px, 82vw);
+    height: 42%;
+    border: 5px solid #d2b777;
+    border-bottom: 0;
+    border-radius: 18px 18px 0 0;
+    background:
+        repeating-linear-gradient(90deg, #9dd8ef 0 54px, #597388 54px 61px);
+    color: #42566c;
+    text-align: center;
+    padding-top: 14px;
+    font-size: clamp(11px, 1.7vw, 17px);
+    font-weight: 900;
+    letter-spacing: 2px;
+    box-shadow: 0 -10px 25px rgba(50,90,70,.14);
+}
+
+#background.school::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 20%;
+    background: repeating-linear-gradient(90deg, #718a5c 0 120px, #7f9867 120px 240px);
+    border-top: 5px solid rgba(255,255,255,.35);
+}
+
+#background.arcade {
+    background:
+        radial-gradient(circle at 50% 20%, rgba(255,220,90,.25), transparent 25%),
+        linear-gradient(180deg, #78cde8, #f6a4c8 48%, #ffd76d 100%);
+}
+
+
+.fullArtHolder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+}
+
+.fullCharacterArt {
+    width: min(100%, 330px);
+    height: 100%;
+    display: block;
+    overflow: visible;
+    filter: drop-shadow(0 10px 15px rgba(0,0,0,.20));
+}
+
+/* =====================================================
+   COLLISION ANIMATION
+===================================================== */
+
+#collisionFX {
+    position: absolute;
+    inset: 0;
+    z-index: 80;
+    display: none;
+    align-items: flex-end;
+    justify-content: center;
+    padding-bottom: 150px;
+    pointer-events: none;
+    overflow: hidden;
+}
+
+#collisionFX.active { display: flex; }
+
+.collisionPerson {
+    position: absolute;
+    bottom: 0;
+    width: 220px;
+    height: 350px;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+}
+
+.collisionPerson.hanako { left: 15%; animation: collisionHanako .9s cubic-bezier(.2,.8,.2,1); }
+.collisionPerson.boy { right: 15%; animation: collisionBoy .9s cubic-bezier(.2,.8,.2,1); }
+.collisionBang {
+    position: absolute;
+    left: 50%;
+    top: 38%;
+    transform: translate(-50%,-50%) scale(.1);
+    color: #ffcf4a;
+    font-size: clamp(52px, 10vw, 110px);
+    font-weight: 900;
+    text-shadow: 4px 4px 0 #e6577f, -3px -3px 0 #fff;
+    animation: collisionBang .9s ease-out;
+}
+
+@keyframes collisionHanako {
+    0% { transform: translateX(-45vw) rotate(-12deg); }
+    55% { transform: translateX(80px) rotate(8deg); }
+    100% { transform: translateX(0) rotate(0); }
+}
+
+@keyframes collisionBoy {
+    0% { transform: translateX(45vw) rotate(12deg); }
+    55% { transform: translateX(-80px) rotate(-8deg); }
+    100% { transform: translateX(0) rotate(0); }
+}
+
+@keyframes collisionBang {
+    0%,25% { opacity:0; transform:translate(-50%,-50%) scale(.1) rotate(-15deg); }
+    45% { opacity:1; transform:translate(-50%,-50%) scale(1.2) rotate(8deg); }
+    100% { opacity:0; transform:translate(-50%,-50%) scale(.8) rotate(-5deg); }
+}
+
+/* =====================================================
+   DIALOGUE BUBBLE POINTER
+===================================================== */
+
+#dialogueBox {
+    border-radius: 24px 24px 0 0;
+    box-shadow: 0 -8px 25px rgba(0,0,0,.18);
+}
+
+#dialogueBox::before {
+    content: "";
+    position: absolute;
+    bottom: 100%;
+    width: 0;
+    height: 0;
+    border-top: 20px solid rgba(0,0,0,.88);
+    filter: drop-shadow(0 -1px 0 rgba(255,255,255,.18));
+}
+
+#dialogueBox.pointer-left::before {
+    left: 12%;
+    border-left: 18px solid transparent;
+    border-right: 18px solid transparent;
+}
+
+#dialogueBox.pointer-right::before {
+    right: 12%;
+    border-left: 18px solid transparent;
+    border-right: 18px solid transparent;
+}
+
+#dialogueBox.pointer-center::before {
+    left: 50%;
+    transform: translateX(-50%);
+    border-left: 18px solid transparent;
+    border-right: 18px solid transparent;
+}
+
+/* =====================================================
+   INTRODUCTION CARD
+===================================================== */
+
+#introCard {
+    position: absolute;
+    inset: 0;
+    z-index: 90;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 25px;
+    background: linear-gradient(180deg, rgba(40,92,125,.30), rgba(20,30,50,.62));
+}
+
+#introCard.active { display: flex; }
+
+.introCardInner {
+    width: min(760px, 92vw);
+    padding: 34px 34px 30px;
+    border: 3px solid rgba(255,255,255,.92);
+    border-radius: 24px;
+    background: rgba(255,255,255,.94);
+    color: #38566e;
+    text-align: center;
+    box-shadow: 0 20px 55px rgba(0,0,0,.24);
+    animation: introCardIn .7s cubic-bezier(.2,.8,.2,1);
+}
+
+.introKicker {
+    color: #e35d89;
+    font-weight: 900;
+    letter-spacing: 3px;
+    font-size: 13px;
+}
+
+.introCardInner h2 {
+    margin: 9px 0 17px;
+    font-size: clamp(25px, 5vw, 42px);
+}
+
+.introCardInner p {
+    margin: 0;
+    font-size: clamp(16px, 2.5vw, 21px);
+    line-height: 1.75;
+}
+
+@keyframes introCardIn {
+    from { opacity: 0; transform: translateY(28px) scale(.96); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* =====================================================
+   RUN TO ARCADE TRANSITION
+===================================================== */
+
+#runTransition {
+    position: absolute;
+    inset: 0;
+    z-index: 110;
+    display: none;
+    align-items: flex-end;
+    justify-content: center;
+    overflow: hidden;
+    background: linear-gradient(180deg, #72c8ee, #ffd0d9 60%, #ffc65e);
+}
+
+#runTransition.active { display: flex; }
+.runStreet { position:absolute; inset:0; background:repeating-linear-gradient(90deg, transparent 0 90px, rgba(255,255,255,.24) 90px 94px); animation: streetMove .5s linear infinite; }
+.runCharacter { position:absolute; bottom:8%; width:190px; height:330px; }
+.runCharacter.hanako { left:18%; animation: runHanako 1.4s ease-in-out infinite; }
+.runCharacter.boy { right:18%; animation: runBoy 1.4s ease-in-out infinite; }
+.runCaption { position:absolute; top:12%; color:white; font-weight:900; font-size:clamp(28px,6vw,60px); text-shadow:3px 3px 0 #e45b84; }
+@keyframes streetMove { from{transform:translateX(0)} to{transform:translateX(-94px)} }
+@keyframes runHanako { 0%,100%{transform:translateY(0) rotate(-3deg)} 50%{transform:translateY(-15px) rotate(4deg)} }
+@keyframes runBoy { 0%,100%{transform:translateY(-4px) rotate(3deg)} 50%{transform:translateY(-18px) rotate(-4deg)} }
+
+/* =====================================================
+   ARCADE MISSION CARD
+===================================================== */
+
+#missionCard {
+    position: absolute;
+    inset: 0;
+    z-index: 120;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(180deg, rgba(54,164,206,.45), rgba(246,137,178,.60));
+    padding: 22px;
+}
+
+#missionCard.active { display: flex; }
+
+.missionInner {
+    width: min(760px, 92vw);
+    text-align: center;
+    padding: 32px;
+    border: 4px solid white;
+    border-radius: 28px;
+    background: rgba(255,255,255,.95);
+    color: #38566e;
+    box-shadow: 0 18px 50px rgba(0,0,0,.25);
+    animation: missionPop .6s cubic-bezier(.2,.8,.2,1);
+}
+
+.missionKicker { color:#e65d8c; font-weight:900; letter-spacing:4px; }
+.missionInner h2 { margin:8px 0 12px; font-size:clamp(30px,6vw,54px); }
+.missionInner p { margin:0; font-size:clamp(17px,2.8vw,24px); line-height:1.55; }
+
+@keyframes missionPop {
+    from { opacity:0; transform:scale(.88) rotate(-2deg); }
+    to { opacity:1; transform:scale(1) rotate(0); }
+}
+
+/* =====================================================
+   ARCADE HUD / MINI MAP / LOOK PAD
+===================================================== */
+
+#arcadeScreen {
+    background: #79cfe7;
+}
+
+#arcadeHUD {
+    padding: 13px 16px;
+    border: 2px solid rgba(255,255,255,.75);
+    border-radius: 16px;
+    background: rgba(35,74,105,.72);
+    box-shadow: 0 8px 22px rgba(0,0,0,.18);
+}
+
+#arcadeHUD b { color: #ffe56b; font-size: 20px; }
+
+#miniMap {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    width: 210px;
+    height: 150px;
+    z-index: 30;
+    border: 3px solid white;
+    border-radius: 14px;
+    background: rgba(20,40,60,.76);
+    box-shadow: 0 8px 22px rgba(0,0,0,.2);
+}
+
+#lookPad {
+    display: none;
+    position: absolute;
+    right: 22px;
+    bottom: 22px;
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    border: 2px solid rgba(255,255,255,.45);
+    background: rgba(255,255,255,.13);
+    color: rgba(255,255,255,.72);
+    font-weight: bold;
+    align-items: center;
+    justify-content: center;
+    pointer-events: auto;
+    touch-action: none;
+    user-select: none;
+}
+
+@media (max-width: 700px) {
+    #miniMap { width: 150px; height: 108px; top: 10px; right: 10px; }
+    body.smartphone #lookPad { display: flex; }
+    body.smartphone #joystick { left: 20px; bottom: 20px; }
+    body.smartphone #dashButton { right: 35px; bottom: 190px; }
+    body.smartphone #arcadeHUD { transform: scale(.78); transform-origin: top left; }
+}
+/* =====================================================
+   STORY
+===================================================== */
+
+#storyScreen {
+    background: #111;
+}
+
+#background {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(rgba(30, 30, 60, .1), rgba(0, 0, 0, .3)), #6e8496;
+    transition: background .5s;
+}
+
+#background.city {
+    background:
+        linear-gradient(rgba(30, 60, 100, .2), rgba(0, 0, 0, .35)),
+        repeating-linear-gradient(90deg, #788998 0 90px, #697a8a 90px 180px);
+}
+
+#background.school {
+    background: linear-gradient(#b8c4d0, #e1e5e8 65%, #8a8d91);
+}
+
+#background.arcade {
+    background: radial-gradient(circle, #453c61, #17131f 60%, #08080c);
+}
+
+#sceneCharacters {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+}
+
+.characterSprite {
+    position: absolute;
+    bottom: 140px;
+    width: min(38vw, 420px);
+    height: 60vh;
+    max-height: 650px;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    transition: .25s;
+}
+
+.characterSprite.left {
+    left: 5%;
+}
+
+.characterSprite.right {
+    right: 5%;
+}
+
+.characterSprite.center {
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.characterImage {
+    max-width: 100%;
+    max-height: 100%;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+    display: block;
+    filter: none;
+    user-select: none;
+    -webkit-user-drag: none;
+}
+
+.characterSilhouette {
+    position: relative;
+    width: 150px;
+    height: 360px;
+    filter: brightness(0);
+}
+
+.characterSilhouetteHead {
+    position: absolute;
+    width: 100px;
+    height: 110px;
+    left: 25px;
+    top: 0;
+    border-radius: 50%;
+    background: #000;
+}
+
+.characterSilhouetteHair {
+    position: absolute;
+    width: 105px;
+    height: 70px;
+    left: 23px;
+    top: -4px;
+    background: #000;
+    border-radius: 55% 55% 25% 25%;
+}
+
+.characterSilhouetteBody {
+    position: absolute;
+    width: 145px;
+    height: 230px;
+    left: 3px;
+    top: 100px;
+    border-radius: 50px 50px 10px 10px;
+    background: #000;
+}
+
+.characterSilhouetteEyes {
+    position: absolute;
+    top: 45px;
+    left: 43px;
+    font-size: 20px;
+    letter-spacing: 25px;
+    color: #111;
+    z-index: 2;
+}
+
+.characterSilhouetteMouth {
+    position: absolute;
+    top: 75px;
+    left: 45px;
+    z-index: 2;
+    font-size: 25px;
+    color: #111;
+}
+
+.spriteLabel {
+    position: absolute;
+    bottom: -25px;
+    font-size: 18px;
+    text-shadow: 0 2px 5px #000;
+    white-space: nowrap;
+}
+
+.expression-surprised .characterImage,
+.expression-angry .characterImage,
+.expression-shy .characterImage {
+    transform: none;
+}
+
+/* =====================================================
+   DIALOGUE
+===================================================== */
+
+#dialogueBox {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    min-height: 145px;
+    background: rgba(0, 0, 0, .88);
+    border-top: 2px solid rgba(255, 255, 255, .25);
+    padding: 22px 28px 20px;
+    z-index: 20;
+}
+
+#speaker {
+    color: #ff70bd;
+    font-weight: bold;
+    font-size: 22px;
+    margin-bottom: 10px;
+}
+
+#dialogue {
+    font-size: clamp(18px, 2.5vw, 26px);
+    line-height: 1.45;
+    min-height: 70px;
+}
+
+#continueHint {
+    position: absolute;
+    right: 20px;
+    bottom: 10px;
+    opacity: .55;
+    font-size: 13px;
+}
+
+#choiceBox {
+    position: absolute;
+    left: 50%;
+    bottom: 170px;
+    transform: translateX(-50%);
+    width: min(650px, 90vw);
+    display: none;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    z-index: 50;
+}
+
+.choice {
+    padding: 18px;
+    border-radius: 12px;
+    border: 2px solid #ff70bd;
+    background: rgba(20, 10, 20, .92);
+    color: white;
+    font-size: 18px;
+    cursor: pointer;
+}
+
+.choice:hover {
+    background: #ff70bd;
+    color: #170914;
+}
+
+/* =====================================================
+   LOVE GAUGE
+===================================================== */
+
+#loveGauge {
+    position: absolute;
+    top: 15px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: min(550px, 70vw);
+    z-index: 100;
+}
+
+.loveLabel {
+    text-align: center;
+    font-weight: bold;
+    margin-bottom: 5px;
+    text-shadow: 0 2px 4px #000;
+}
+
+.loveBarOuter {
+    height: 22px;
+    border: 2px solid white;
+    border-radius: 20px;
+    overflow: hidden;
+    background: #222;
+}
+
+#loveBar {
+    width: 0%;
+    height: 100%;
+    background: linear-gradient(90deg, #7a002c, #ff1493, #ff80c0);
+    transition: .5s;
+}
+
+#loveValue {
+    text-align: center;
+    margin-top: 4px;
+    font-size: 14px;
+}
+
+/* =====================================================
+   3D ARCADE CONTAINER
+===================================================== */
+
+#arcadeScreen {
+    position: absolute;
+    inset: 0;
+    background: #050609;
+    display: none;
+    z-index: 200;
+    overflow: hidden;
+}
+
+#arcadeCanvas {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    display: block;
+    image-rendering: auto;
+}
+
+#arcadeHUD {
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    z-index: 20;
+    text-shadow: 0 2px 4px #000;
+    pointer-events: none;
+}
+
+#staminaOuter {
+    width: 220px;
+    height: 16px;
+    border: 2px solid white;
+    margin-top: 7px;
+    background: #222;
+}
+
+#staminaBar {
+    width: 100%;
+    height: 100%;
+    background: #5de6ff;
+}
+
+#arcadeHint {
+    margin-top: 8px;
+    font-size: 13px;
+    opacity: .8;
+}
+
+#arcadeCrosshair {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 18px;
+    height: 18px;
+    margin-left: -9px;
+    margin-top: -9px;
+    z-index: 15;
+    pointer-events: none;
+    opacity: .65;
+}
+
+#arcadeCrosshair::before,
+#arcadeCrosshair::after {
+    content: "";
+    position: absolute;
+    background: rgba(255, 255, 255, .8);
+}
+
+#arcadeCrosshair::before {
+    left: 8px;
+    top: 0;
+    width: 2px;
+    height: 18px;
+}
+
+#arcadeCrosshair::after {
+    left: 0;
+    top: 8px;
+    width: 18px;
+    height: 2px;
+}
+
+/* =====================================================
+   MOBILE CONTROLS
+===================================================== */
+
+#mobileControls {
+    position: absolute;
+    inset: 0;
+    z-index: 50;
+    pointer-events: none;
+    display: none;
+}
+
+#joystick {
+    position: absolute;
+    left: 30px;
+    bottom: 30px;
+    width: 145px;
+    height: 145px;
+    border-radius: 50%;
+    border: 2px solid rgba(255, 255, 255, .35);
+    background: rgba(255, 255, 255, .08);
+    pointer-events: auto;
+    touch-action: none;
+}
+
+#joystickKnob {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 65px;
+    height: 65px;
+    margin-left: -32.5px;
+    margin-top: -32.5px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, .35);
+}
+
+#dashButton {
+    position: absolute;
+    right: 30px;
+    bottom: 45px;
+    width: 105px;
+    height: 105px;
+    border-radius: 50%;
+    border: 3px solid #ff70bd;
+    background: rgba(255, 20, 147, .3);
+    color: white;
+    font-weight: bold;
+    pointer-events: auto;
+    touch-action: none;
+}
+
+/* =====================================================
+   CAPTURE
+===================================================== */
+
+#captureOverlay {
+    position: absolute;
+    inset: 0;
+    display: none;
+    background: rgba(0, 0, 0, .4);
+    z-index: 300;
+}
+
+#captureDialogue {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    min-height: 170px;
+    background: rgba(0, 0, 0, .94);
+    border-top: 2px solid white;
+    padding: 25px;
+}
+
+#captureSpeaker {
+    color: #ff70bd;
+    font-weight: bold;
+    font-size: 22px;
+}
+
+#captureText {
+    margin-top: 10px;
+    font-size: 24px;
+    line-height: 1.4;
+}
+
+/* =====================================================
+   DARK FADE
+===================================================== */
+
+#darkFade {
+    position: absolute;
+    inset: 0;
+    background: #000;
+    opacity: 0;
+    pointer-events: none;
+    z-index: 1000;
+}
+
+/* =====================================================
+   ENDINGS
+===================================================== */
+
+#endingScreen {
+    background: #050505;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    text-align: center;
+    padding: 30px;
+}
+
+#endingScreen h1 {
+    font-size: clamp(40px, 8vw, 80px);
+    color: #ff70bd;
+}
+
+.endingText {
+    max-width: 700px;
+    font-size: 22px;
+    line-height: 1.6;
+}
+
+.endButtons {
+    margin-top: 35px;
+}
+
+/* =====================================================
+   HEART BREAK
+===================================================== */
+
+#heartBreak {
+    font-size: 100px;
+    animation: heartBreak .8s ease forwards;
+}
+
+@keyframes heartBreak {
+    0% {
+        transform: scale(1);
+    }
+    45% {
+        transform: scale(1.35);
+    }
+    100% {
+        transform: scale(.8) rotate(-15deg);
+        opacity: .2;
+    }
+}
+
+/* =====================================================
+   MOBILE
+===================================================== */
+
+body.smartphone #choiceBox {
+    grid-template-columns: 1fr;
+    bottom: 155px;
+}
+
+body.smartphone .characterSprite {
+    bottom: 145px;
+    transform: scale(.8);
+}
+
+body.smartphone .characterSprite.left {
+    left: -40px;
+}
+
+body.smartphone .characterSprite.right {
+    right: -40px;
+}
+
+body.smartphone .characterSprite.center {
+    left: 50%;
+    transform: translateX(-50%) scale(.8);
+}
+
+body.smartphone #dialogueBox {
+    min-height: 155px;
+    padding: 17px;
+}
+
+body.smartphone #dialogue {
+    font-size: 17px;
+}
+
+body.smartphone #mobileControls {
+    display: block;
+}
+
+body.smartphone #arcadeHint {
+    display: none;
+}
+
+body.smartphone #arcadeCrosshair {
+    opacity: .45;
+}
+
+/* =====================================================
+   SMALL SCREEN
+===================================================== */
+
+@media (max-width: 700px) {
+    .characterList {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .characterPreview {
+        height: 190px;
+    }
+
+    .modalBox {
+        padding: 20px;
+    }
+}
+
+/* =====================================================
+   FINAL VISUAL / LAYOUT OVERRIDES
+   These rules intentionally live at the end of the stylesheet
+   so earlier prototype styles cannot accidentally cover them.
+===================================================== */
+
+#titleScreen {
+    background:
+        linear-gradient(180deg, #73cef7 0%, #bfeeff 48%, #e9f8ff 49%, #91b96f 50%, #6e9a59 100%);
+    overflow: hidden;
+}
+
+#titleScreen::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 46%;
+    background:
+        linear-gradient(180deg, transparent 0 9%, rgba(255,255,255,.35) 9% 10%, transparent 10% 100%),
+        repeating-linear-gradient(90deg, #f7e6c5 0 80px, #e6cfaa 80px 84px);
+    clip-path: polygon(0 28%, 8% 22%, 16% 25%, 25% 18%, 35% 24%, 46% 15%, 58% 22%, 69% 16%, 81% 24%, 91% 19%, 100% 25%, 100% 100%, 0 100%);
+    opacity: .96;
+}
+
+#titleScreen::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 10%;
+    background: repeating-linear-gradient(90deg, #687b8b 0 90px, #8394a1 90px 180px);
+    border-top: 5px solid rgba(255,255,255,.5);
+}
+
+#passwordScreen {
+    background:
+        linear-gradient(180deg, #74cef7 0%, #c9f0ff 52%, #e8f7df 53%, #87ad68 100%);
+}
+
+#passwordBox {
+    width: min(470px, 90vw);
+    border-color: #fff;
+    background: rgba(255,255,255,.97);
+}
+
+#passwordBox::before {
+    content: "WELCOME TO TOHKATSU JUNIOR HIGH!";
+    display: block;
+    margin: -6px 0 12px;
+    color: #e15c87;
+    font-size: 12px;
+    font-weight: 900;
+    letter-spacing: 2px;
+}
+
+#characterScreen {
+    background:
+        linear-gradient(180deg, #6ec9f5 0%, #d9f5ff 57%, #f8f0d6 58%, #a6c77e 100%);
+}
+
+#characterScreen::after {
+    content: "TOHKATSU JUNIOR HIGH SCHOOL • CHARACTER SELECTION";
+    position: absolute;
+    left: 50%;
+    bottom: 10px;
+    transform: translateX(-50%);
+    color: rgba(55,82,103,.58);
+    font-size: 10px;
+    font-weight: 900;
+    letter-spacing: 1.5px;
+    white-space: nowrap;
+    pointer-events: none;
+}
+
+.characterCard .cardImageWrap {
+    background: linear-gradient(180deg, #f9fdff 0%, #eaf7ff 58%, #fff1d8 100%);
+    border: 3px solid rgba(255,255,255,.95);
+    box-shadow: inset 0 -30px 50px rgba(115,190,225,.08);
+}
+
+.characterCard img,
+.characterImage {
+    width: auto;
+    height: auto;
+    max-width: 94%;
+    max-height: 100%;
+    object-fit: contain;
+    object-position: center bottom;
+}
+
+.characterCardName {
+    color: #36556d;
+    text-shadow: 0 1px 0 white;
+}
+
+.imageLoadFailed {
+    position: relative;
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(180deg, #fff, #edf8ff) !important;
+}
+
+.imageLoadFailed::after {
+    content: "CHARACTER IMAGE";
+    position: absolute;
+    color: #86a1b3;
+    font-size: 11px;
+    font-weight: 900;
+    letter-spacing: 1px;
+}
+
+#storyBackButton {
+    position: absolute;
+    top: 14px;
+    left: 14px;
+    z-index: 240;
+    border: 2px solid rgba(255,255,255,.95);
+    border-radius: 14px;
+    padding: 10px 15px;
+    background: rgba(38,78,103,.82);
+    color: white;
+    font-weight: 900;
+    box-shadow: 0 6px 18px rgba(0,0,0,.18);
+}
+
+#storyBackButton:hover { transform: translateY(-1px); }
+
+#background.city {
+    background:
+        linear-gradient(to bottom, #68c7f2 0 46%, #f7d8a9 46% 53%, #7e8d97 53% 100%);
+}
+
+#background.city::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background:
+        linear-gradient(180deg, transparent 0 35%, rgba(255,255,255,.28) 35% 36%, transparent 36%),
+        linear-gradient(90deg, transparent 0 6%, #dce6ec 6% 18%, transparent 18% 23%, #c7d4dc 23% 37%, transparent 37% 43%, #e3ebef 43% 58%, transparent 58% 64%, #c8d5dc 64% 80%, transparent 80% 87%, #dfe9ed 87% 100%);
+    opacity: .95;
+}
+
+#background.city::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 18%;
+    background:
+        repeating-linear-gradient(90deg, #697780 0 80px, #7d8c94 80px 160px);
+    border-top: 4px solid rgba(255,255,255,.42);
+}
+
+#background.school {
+    background:
+        linear-gradient(180deg, #69c8f3 0 43%, #d9f3ff 43% 57%, #86ad67 57% 100%);
+    overflow: hidden;
+}
+
+#background.school::before {
+    content: "TOHKATSU JUNIOR HIGH SCHOOL";
+    position: absolute;
+    left: 50%;
+    bottom: 15%;
+    transform: translateX(-50%);
+    width: min(850px, 84vw);
+    height: 48%;
+    border: 7px solid #d0ae69;
+    border-bottom: 0;
+    border-radius: 22px 22px 0 0;
+    background:
+        repeating-linear-gradient(90deg, #fff9e8 0 62px, #83c8e7 62px 70px);
+    color: #4b6073;
+    text-align: center;
+    padding-top: 16px;
+    font-size: clamp(12px, 2vw, 19px);
+    font-weight: 900;
+    letter-spacing: 2px;
+    box-shadow: 0 -12px 30px rgba(40,80,100,.12);
+}
+
+#background.school::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 15%;
+    background:
+        linear-gradient(90deg, transparent 0 8%, #6c8e55 8% 12%, transparent 12% 20%, #6c8e55 20% 24%, transparent 24% 76%, #6c8e55 76% 80%, transparent 80% 88%, #6c8e55 88% 92%, transparent 92%),
+        #83a965;
+    border-top: 5px solid rgba(255,255,255,.35);
+}
+
+#background.arcade {
+    background:
+        radial-gradient(circle at 20% 18%, rgba(255,235,105,.55), transparent 13%),
+        radial-gradient(circle at 80% 20%, rgba(90,230,255,.48), transparent 15%),
+        linear-gradient(180deg, #54cce9 0%, #a9e9ef 42%, #f49bc8 43%, #ffd45c 100%);
+}
+
+#background.arcade::before {
+    content: "TOHKATSU GAME CENTER";
+    position: absolute;
+    left: 50%;
+    top: 9%;
+    transform: translateX(-50%);
+    color: #fff36c;
+    font-size: clamp(20px, 4vw, 44px);
+    font-weight: 900;
+    letter-spacing: 3px;
+    text-shadow: 0 0 10px #e63c9b, 3px 3px 0 #5b53bf;
+    white-space: nowrap;
+}
+
+#background.arcade::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 34%;
+    background:
+        repeating-linear-gradient(90deg, rgba(255,255,255,.30) 0 4px, transparent 4px 100px),
+        linear-gradient(180deg, rgba(255,255,255,.18), rgba(55,66,120,.18));
+    transform: perspective(500px) rotateX(55deg);
+    transform-origin: bottom;
+}
+
+#sceneCharacters { z-index: 25; }
+.characterSprite { z-index: 26; pointer-events: none; }
+
+#dialogueBox {
+    z-index: 70;
+    background: rgba(255,255,255,.96);
+    color: #294257;
+    border: 3px solid rgba(255,255,255,.95);
+}
+
+#dialogueBox #speaker { color: #e25b88; text-shadow: none; }
+#dialogueBox #dialogue { color: #294257; }
+#dialogueBox::before { border-top-color: rgba(255,255,255,.96); }
+
+#choiceBox {
+    z-index: 75;
+    width: min(680px, 92vw);
+    padding: 14px;
+    gap: 10px;
+    background: rgba(255,255,255,.95);
+    border: 3px solid #fff;
+    border-radius: 22px;
+    box-shadow: 0 14px 35px rgba(40,80,105,.22);
+}
+
+#choiceBox .choice {
+    border-color: #a9d4e7;
+    background: linear-gradient(180deg, #fff, #eefaff);
+    color: #36556d;
+    border-radius: 14px;
+}
+
+#loveGauge { z-index: 80; }
+
+.spriteLabel {
+    position: absolute;
+    bottom: 4px;
+    padding: 5px 10px;
+    border-radius: 999px;
+    background: rgba(255,255,255,.88);
+    color: #35536a;
+    font-weight: 900;
+    font-size: 13px;
+    box-shadow: 0 3px 10px rgba(0,0,0,.12);
+}
+
+#arcadeScreen { z-index: 300; background: transparent; }
+#arcadeCanvas { background: #7dd7ec; }
+
+#miniMap {
+    background: rgba(255,255,255,.94);
+    border-color: #fff;
+}
+
+#captureOverlay,
+#runTransition,
+#missionCard { pointer-events: auto; }
+
+#captureOverlay[style*="block"] { cursor: pointer; }
+
+@media (max-width: 700px) {
+    #storyBackButton { top: 8px; left: 8px; padding: 8px 11px; font-size: 12px; }
+    #choiceBox { bottom: 145px; }
+    .characterSprite { width: min(46vw, 300px); height: 52vh; }
+}
+
+</style>
+<style>
+/* =====================================================
+   2026-10-05 INTERACTION + VISUAL POLISH
+===================================================== */
+#background {
+    z-index: 0;
+    background-color: #8fb2c3;
+}
+#background.city {
+    background-color: #b7dff0;
+    background-image: linear-gradient(rgba(255,255,255,.04),rgba(20,35,45,.12)), url("images/city_bg.png");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+#background.school {
+    background-color: #ddd5bf;
+    background-image: linear-gradient(rgba(255,255,255,.02),rgba(30,35,30,.08)), url("images/classroom_bg.png");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+#background.arcade {
+    background-color: #5bc8e5;
+    background-image: linear-gradient(rgba(25,20,55,.02),rgba(10,10,30,.10)), url("images/arcade_bg.png");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+#introCard, #choiceBriefing { cursor: pointer; }
+#introCard .introCardInner, .choiceBriefingInner { user-select:none; }
+.synopsisHint {
+    margin-top: 22px;
+    color:#e15b87;
+    font-weight:900;
+    letter-spacing:2px;
+    font-size:12px;
+    animation: hintPulse 1.4s ease-in-out infinite;
+}
+@keyframes hintPulse { 0%,100%{opacity:.55} 50%{opacity:1} }
+#choiceBriefing {
+    position:absolute;
+    inset:0;
+    z-index:95;
+    display:none;
+    align-items:center;
+    justify-content:center;
+    padding:24px;
+    background:linear-gradient(180deg,rgba(32,75,102,.30),rgba(20,35,50,.58));
+}
+#choiceBriefing.active { display:flex; }
+.choiceBriefingInner {
+    width:min(700px,92vw);
+    padding:34px 32px 28px;
+    border:3px solid rgba(255,255,255,.94);
+    border-radius:24px;
+    background:rgba(255,255,255,.96);
+    color:#38566e;
+    text-align:center;
+    box-shadow:0 20px 55px rgba(0,0,0,.24);
+    animation:introCardIn .55s cubic-bezier(.2,.8,.2,1);
+}
+.choiceBriefingInner h2 { margin:8px 0 14px; font-size:clamp(27px,5vw,44px); }
+.choiceBriefingInner p { margin:0; font-size:clamp(16px,2.5vw,21px); line-height:1.7; }
+
+/* Organic silhouettes: solid fill, no outline, no facial marks. */
+.fullCharacterArt { filter: drop-shadow(0 12px 18px rgba(8,20,30,.26)); }
+.realisticSilhouette { filter: drop-shadow(0 12px 18px rgba(8,20,30,.30)); }
+
+/* Collision: flash + screen shake + impact lettering. */
+#collisionFX::before {
+    content:"";
+    position:absolute;
+    inset:0;
+    background:rgba(255,245,195,0);
+    animation:collisionFlash .9s ease-out;
+    pointer-events:none;
+}
+#collisionFX.active { animation: collisionShake .52s ease-in-out; }
+.collisionBang { letter-spacing:3px; }
+@keyframes collisionShake {
+    0%,100%{transform:translateX(0)} 20%{transform:translateX(-12px) rotate(-1deg)} 40%{transform:translateX(12px) rotate(1deg)} 60%{transform:translateX(-8px)} 80%{transform:translateX(7px)}
+}
+@keyframes collisionFlash { 0%,100%{background:rgba(255,245,195,0)} 30%{background:rgba(255,245,195,.58)} 55%{background:rgba(255,255,255,.10)} }
+
+
+@media (max-width:700px) {
+    .chatterBubble { font-size:12px; padding:8px 11px; }
+    .collisionPerson { width:190px; height:315px; }
+    #captureTeacherFocus { top:3%; height:190px; }
+    #captureTeacherFocus .fullCharacterArt { width:320px; height:552px; }
+    .weddingPerson { width:150px; height:300px; }
+    .weddingPerson .fullCharacterArt { width:150px; height:285px; }
+    .weddingPerson .weddingBoyArt { height:285px; }
+}
+</style>
+</head>
+
+<body>
+
+<!-- =====================================================
+     PASSWORD SCREEN
+===================================================== -->
+
+<div id="passwordScreen">
+    <div class="passwordSky" aria-hidden="true">
+        <div class="passwordCloud c1"></div>
+        <div class="passwordCloud c2"></div>
+        <div class="passwordBalloon b1"></div>
+        <div class="passwordBalloon b2"></div>
+        <div class="passwordBalloon b3"></div>
+        <div class="passwordBalloon b4"></div>
+        <div class="passwordSchool"></div>
+    </div>
+    <div id="passwordBox">
+        <div id="passwordTitle">TOHKATSU HANAKO'S<br>LOVE ROMANCE</div>
+        <div id="passwordSubtitle">WELCOME TO SCHOOL! ♡</div>
+        <div style="color:#526579; font-size:14px; margin:-8px 0 20px;">Enter the secret password to begin.</div>
+        <input
+            id="passwordInput"
+            type="password"
+            autocomplete="off"
+            inputmode="text"
+            onkeydown="if(event.key === 'Enter') checkPassword()"
+        >
+        <button id="passwordButton" onclick="checkPassword()">
+            ENTER
+        </button>
+        <div id="passwordError">
+            Incorrect password.
+        </div>
+    </div>
+</div>
+
+<div id="game">
+
+<!-- =====================================================
+     TITLE SCREEN
+===================================================== -->
+
+<section id="titleScreen" class="screen active">
+
+    <div class="titleParty" aria-hidden="true">
+        <div class="balloon p1"></div>
+        <div class="balloon p2"></div>
+        <div class="balloon p3"></div>
+        <div class="balloon p4"></div>
+        <div class="schoolStar s1">✦</div>
+        <div class="schoolStar s2">✧</div>
+    </div>
+
+    <div class="titleDecoration" aria-hidden="true">
+        <div class="schoolRoof"></div>
+        <div class="schoolWindows"></div>
+        <div class="schoolDoor"></div>
+        <div class="schoolTree treeLeft"></div>
+        <div class="schoolTree treeRight"></div>
+        <div class="schoolGate"></div>
+    </div>
+
+    <div class="title">
+        Tohkatsu Hanako's<br>
+        <span>Love Romance</span>
+    </div>
+
+    <div class="titleButtons">
+        <button class="menuButton startButton" onclick="requestGameStart()">
+            GAME START
+        </button>
+
+        <button class="menuButton" onclick="openModal('creditModal')">
+            CREDIT
+        </button>
+
+        <button class="menuButton" onclick="openModal('settingsModal')">
+            SETTINGS
+        </button>
+    </div>
+
+</section>
+
+<!-- =====================================================
+     CREDIT
+===================================================== -->
+
+<div id="creditModal" class="modal">
+    <div class="modalBox">
+        <button class="closeButton" onclick="closeModal('creditModal')">×</button>
+        <h2>Credit</h2>
+        <div class="creditText">
+            3-2-26-b<br>
+            Nakajima Kei<br><br>
+            story: Nakajima Kei<br>
+            code: ChatGPT<br>
+            site: GitHub<br><br>
+            <b>Special thanks:</b><br><br>
+            Ishida Masugu.<br>
+            Kowada Izuru.<br>
+            Sato Junya.<br>
+            Miura Takuto.<br>
+            Mizuta Taihei.
+        </div>
+    </div>
+</div>
+
+<!-- =====================================================
+     SETTINGS
+===================================================== -->
+
+<div id="settingsModal" class="modal">
+    <div class="modalBox">
+        <button class="closeButton" onclick="closeModal('settingsModal')">×</button>
+        <h2>Settings</h2>
+
+        <div class="settingRow">
+            <div class="settingTitle">Device Mode</div>
+            <div class="settingChoice">
+                <button id="pcButton" onclick="setDeviceMode('pc')">PC</button>
+                <button id="smartphoneButton" onclick="setDeviceMode('smartphone')">Smartphone</button>
+            </div>
+        </div>
+
+        <p>PC mode uses keyboard controls.</p>
+        <p>Smartphone mode uses a virtual joystick and DASH button.</p>
+    </div>
+</div>
+
+<!-- =====================================================
+     CHARACTER SELECT
+===================================================== -->
+
+<section id="characterScreen" class="screen">
+    <div class="characterSelectClouds" aria-hidden="true"></div>
+
+    <button class="menuButton characterSelectBack" onclick="backToTitle()">BACK</button>
+
+    <div class="selectTitle">Choose Your Boyfriend</div>
+    <div class="selectSubtitle">Swipe left or right to choose a classmate.</div>
+
+    <div class="selectionArea">
+        <div class="selectionBox">
+            <h2>Main Character</h2>
+            <div id="mainPreview" class="characterPreview"></div>
+            <div class="fixedLabel">Hanako</div>
+        </div>
+
+        <div class="selectionBox">
+            <h2>Boyfriend</h2>
+            <div class="carouselFrame">
+                <button class="carouselArrow" onclick="changeBoy(-1)" aria-label="Previous">‹</button>
+                <div id="boyCarouselViewport" class="carouselViewport">
+                    <div id="boyTrack" class="carouselTrack"></div>
+                </div>
+                <button class="carouselArrow" onclick="changeBoy(1)" aria-label="Next">›</button>
+            </div>
+            <div id="carouselDots" class="carouselDots"></div>
+        </div>
+    </div>
+
+    <button class="menuButton startButton characterStartButton" onclick="startStory()">
+        START STORY
+    </button>
+</section>
+
+<!-- =====================================================
+     STORY SCREEN
+===================================================== -->
+
+<section id="storyScreen" class="screen">
+    <button id="storyBackButton" class="storyBackButton" onclick="backFromStory()" aria-label="Back to character select">← BACK</button>
+    <div id="background" class="city"></div>
+    <div id="sceneCharacters"></div>
+
+    <div id="introCard">
+        <div class="introCardInner">
+            <div class="introKicker" id="introKicker">TOHKATSU JUNIOR HIGH SCHOOL</div>
+            <h2 id="introTitle">A Very Normal School Day</h2>
+            <p id="introText">Hanako, a student at Tohkatsu JHS, was rushing to school because she was almost late — while, somewhere in her heart, she could feel a strange little flutter of excitement.</p>
+            <div class="synopsisHint">TAP TO CONTINUE</div>
+        </div>
+    </div>
+
+    <div id="choiceBriefing">
+        <div class="choiceBriefingInner">
+            <div class="introKicker">A NEW SCHOOL DAY</div>
+            <h2>Time to get closer.</h2>
+            <p>Hanako has finally met the transfer student. Choose what she does next and fill the LOVE GAUGE. Every choice can change the ending.</p>
+            <div class="synopsisHint">TAP TO CONTINUE</div>
+        </div>
+    </div>
+
+    <div id="classroomChatter" aria-hidden="true">
+        <div class="chatterBubble chatter1">A transfer student!</div>
+        <div class="chatterBubble chatter2">Who is he?</div>
+        <div class="chatterBubble chatter3">He's new!</div>
+        <div class="chatterBubble chatter4">What's his name?</div>
+    </div>
+
+    <div id="missionCard">
+        <div class="missionInner">
+            <div class="missionKicker">COUPLE MISSION!</div>
+            <h2>ESCAPE THE GAME CENTER!</h2>
+            <p>Escape from the teachers roaming the arcade — together!</p>
+        </div>
+    </div>
+
+    <div id="collisionFX">
+        <div id="collisionHanako" class="collisionPerson hanako"></div>
+        <div class="collisionBang">BUMP!</div>
+        <div id="collisionBoy" class="collisionPerson boy"></div>
+    </div>
+
+    <div id="runTransition">
+        <div class="runStreet"></div>
+        <div class="runCaption">RUNNING TO THE GAME CENTER!</div>
+        <div id="runHanako" class="runCharacter hanako"></div>
+        <div id="runBoy" class="runCharacter boy"></div>
+    </div>
+
+    <div id="loveGauge" class="hidden">
+        <div class="loveLabel">LOVE GAUGE</div>
+        <div class="loveBarOuter">
+            <div id="loveBar"></div>
+        </div>
+        <div id="loveValue">0%</div>
+    </div>
+
+    <div id="choiceBox">
+        <button class="choice" onclick="mainChoice('talk')">A. Talk</button>
+        <button class="choice" onclick="mainChoice('run')">B. Escape to the arcade</button>
+        <button class="choice" onclick="mainChoice('confess')">D. ♡</button>
+    </div>
+
+    <div id="dialogueBox">
+        <div id="speaker">Hanako</div>
+        <div id="dialogue"></div>
+        <div id="continueHint">CLICK / SPACE</div>
+    </div>
+
+    <!-- =================================================
+         3D ARCADE
+    ================================================= -->
+
+    <div id="arcadeScreen">
+        <canvas id="arcadeCanvas"></canvas>
+        <div id="arcadeCrosshair"></div>
+        <canvas id="miniMap" width="210" height="150"></canvas>
+
+        <div id="arcadeHUD">
+            <b>ESCAPE THE ARCADE!</b>
+            <div>STAMINA</div>
+            <div id="staminaOuter">
+                <div id="staminaBar"></div>
+            </div>
+            <div id="arcadeHint">
+                WASD: MOVE<br>
+                SHIFT: DASH<br>
+                LEFT / RIGHT: TURN<br>
+                PHONE: LEFT PAD = MOVE / SWIPE ANYWHERE = LOOK / DASH = TOGGLE
+            </div>
+        </div>
+
+        <div id="mobileControls">
+            <div id="lookPad">SWIPE ANYWHERE<br>TO LOOK</div>
+            <div id="joystick">
+                <div id="joystickKnob"></div>
+            </div>
+            <button id="dashButton">DASH</button>
+        </div>
+
+        <div id="captureOverlay">
+            <div id="captureTeacherFocus" aria-hidden="true"></div>
+            <div id="captureDialogue">
+                <div id="captureSpeaker">Teacher</div>
+                <div id="captureText">What are you doing!?!?</div>
+                <div id="continueHint">CLICK / SPACE</div>
+            </div>
+        </div>
+
+        <div id="darkFade"></div>
+
+    </div>
+</section>
+
+<!-- =====================================================
+     ENDING
+===================================================== -->
+
+<section id="endingScreen" class="screen">
+    <div id="marriageScene" aria-hidden="true">
+        <div class="weddingSky"></div>
+        <div class="weddingChurch"><div class="churchCross">✦</div></div>
+        <div class="weddingConfetti confettiA">✦　✧　✦</div>
+        <div class="weddingConfetti confettiB">✧　✦　✧</div>
+        <div class="weddingCouple">
+            <div id="marriageHanako" class="weddingPerson weddingBride"></div>
+            <div id="marriageBoy" class="weddingPerson weddingGroom"></div>
+        </div>
+        <div class="weddingDoves">🕊️　🕊️　🕊️</div>
+        <div class="weddingCaption">10 YEARS LATER</div>
+    </div>
+    <div id="heartBreak" class="hidden">💔</div>
+    <h1 id="endingTitle">GAME OVER</h1>
+    <div id="endingText" class="endingText"></div>
+    <div class="endButtons">
+        <button class="menuButton" onclick="restartGame()">
+            Restart game
+        </button>
+        <button class="menuButton" onclick="backToTitle()">
+            Title screen
+        </button>
+    </div>
+</section>
+
+</div>
+
+<script>
+/* =====================================================
+   PASSWORD + NAVIGATION
+===================================================== */
+
+const GAME_PASSWORD = "Tohkatsu9";
+let gameUnlocked = true;
+let screenHistory = [];
+let suppressHistory = false;
+
+function openPasswordGate() {
+    const passwordScreen = document.getElementById("passwordScreen");
+    passwordScreen.style.display = "flex";
+    const input = document.getElementById("passwordInput");
+    const error = document.getElementById("passwordError");
+    error.classList.remove("show");
+    setTimeout(() => input.focus(), 40);
+}
+
+function requestGameStart() {
+    showCharacterSelect(true);
+}
+
+function cancelPassword() {
+    /* There is intentionally no BACK action on the password gate. */
+    openPasswordGate();
+}
+
+function checkPassword() {
+    const input = document.getElementById("passwordInput");
+    const error = document.getElementById("passwordError");
+
+    if (input.value === GAME_PASSWORD) {
+        gameUnlocked = true;
+        document.getElementById("passwordScreen").style.display = "none";
+        error.classList.remove("show");
+        input.value = "";
+        screenHistory = ["titleScreen"];
+        showScreen("titleScreen", false);
+        history.replaceState({ game: true, screen: "titleScreen" }, "", location.href);
+    } else {
+        error.classList.add("show");
+        input.value = "";
+        input.focus();
+    }
+}
+
+function showScreen(id, pushHistory = true) {
+    if (!gameUnlocked && id !== "titleScreen") {
+        openPasswordGate();
+        return;
+    }
+
+    document.querySelectorAll(".screen").forEach(screen => {
+        screen.classList.remove("active");
+    });
+
+    const target = document.getElementById(id);
+    if (!target) return;
+    target.classList.add("active");
+
+    if (pushHistory && gameUnlocked && !suppressHistory) {
+        const last = screenHistory[screenHistory.length - 1];
+        if (last !== id) {
+            screenHistory.push(id);
+            history.pushState({ game: true, screen: id }, "", location.href);
+        }
+    }
+}
+
+function showCharacterSelect(pushHistory = true) {
+    if (!gameUnlocked) {
+        openPasswordGate();
+        return;
+    }
+    updateCharacterSelect();
+    showScreen("characterScreen", pushHistory);
+}
+
+function backToTitle() {
+    if (!gameUnlocked) {
+        openPasswordGate();
+        return;
+    }
+    if (screenHistory.length > 1) {
+        history.back();
+    } else {
+        showScreen("titleScreen", false);
+    }
+}
+
+function backFromStory() {
+    if (!gameUnlocked || inArcade || arcadeIntroPlaying || ending) return;
+    clearDialogueState();
+    clearCharacters();
+    document.getElementById("classroomChatter").classList.remove("active");
+    if (screenHistory.length > 1) {
+        history.back();
+    } else {
+        showCharacterSelect(false);
+    }
+}
+
+window.addEventListener("load", () => {
+    document.getElementById("passwordScreen").style.display = "none";
+    gameUnlocked = true;
+    document.querySelectorAll(".screen").forEach(screen => screen.classList.remove("active"));
+    screenHistory = ["titleScreen"];
+    history.replaceState({ game: true, screen: "titleScreen" }, "", location.href);
+    showScreen("titleScreen", false);
+});
+
+window.addEventListener("popstate", () => {
+    if (!gameUnlocked) {
+        /* The browser Back button can never bypass the gate. */
+        history.pushState({ locked: true, screen: "password" }, "", location.href);
+        openPasswordGate();
+        return;
+    }
+
+    if (screenHistory.length > 1) {
+        screenHistory.pop();
+        const previous = screenHistory[screenHistory.length - 1];
+        suppressHistory = true;
+        if (previous === "characterScreen") showCharacterSelect(false);
+        else showScreen(previous, false);
+        suppressHistory = false;
+    } else {
+        showScreen("titleScreen", false);
+    }
+});
+
+/* =====================================================
+   CHARACTER DATA
+===================================================== */
+
+
+
+const characters = [
+    { name: "Masugu", image: "./images/masugu.png", favoriteFood: "rice", color: "blue", sport: "tennis", animal: "cat" },
+    { name: "Mizuta", image: "./images/mizuta.png", favoriteFood: "pudding", color: "blue", sport: "baseball", animal: "cat" },
+    { name: "Takuto", image: "./images/takuto.png", favoriteFood: "protein", color: "red", sport: "boxing", animal: "none" },
+    { name: "Kowada", image: "./images/kowada.png", favoriteFood: "rice", color: "yellow", sport: "figure skating", animal: "dog" },
+    { name: "Junya", image: "./images/junya.png", favoriteFood: "Crazy Drink", color: "green", sport: "indiaca", animal: "monkey" }
+];
+
+function assetUrl(path) {
+    return new URL(path, document.baseURI).href;
+}
+
+function imageWithFallback(img, name) {
+    img.src = assetUrl(img.dataset.asset || img.getAttribute("src"));
+    img.onerror = () => {
+        img.onerror = null;
+        img.removeAttribute("src");
+        img.alt = name + " image";
+        img.style.opacity = "0";
+        img.parentElement.classList.add("imageLoadFailed");
+    };
+}
+
+const HANAKO_NAME = "Hanako";
+let selectedBoy = 0;
+let boyCarouselTouchStart = null;
+
+/* =====================================================
+   GAME STATE
+===================================================== */
+
+let love = 0;
+let storyIndex = 0;
+let currentStory = [];
+let gameMode = "pc";
+let inArcade = false;
+let ending = false;
+let captureStep = 0;
+let introPlaying = false;
+let arcadeIntroPlaying = false;
+let classroomSynopsisShown = false;
+let choiceBriefingActive = false;
+let actionLocked = false;
+let dialogueTyping = false;
+let dialogueTimer = null;
+let dialogueResolve = null;
+let currentTypedText = "";
+let currentTypedIndex = 0;
+let synopsisResolve = null;
+
+/* =====================================================
+   CHARACTER ART
+===================================================== */
+
+function characterArtSvg(name) {
+    const hair = {
+        Hanako: `M58 108 C48 82 50 49 71 28 C87 12 112 12 130 27 C151 44 154 77 143 106 C137 87 126 69 102 64 C78 69 67 88 58 108 Z M60 86 C43 105 46 137 64 153 C74 142 80 128 82 111 C75 105 68 97 60 86 Z M140 84 C157 104 154 137 136 153 C126 141 120 126 118 109 C126 102 133 94 140 84 Z`,
+        Yumi: `M56 101 C47 66 60 36 85 23 C111 9 142 25 149 54 C154 76 147 96 140 108 C129 78 115 65 97 64 C79 66 67 80 56 101 Z M61 68 C42 74 36 93 43 112 C50 130 63 136 75 126 L78 102 C68 94 63 82 61 68 Z M139 61 C158 64 168 81 162 100 C157 118 143 129 129 123 L123 101 C132 91 137 77 139 61 Z`,
+        Rika: `M58 105 C48 72 53 42 75 25 C98 7 129 16 143 40 C156 62 153 88 143 108 C132 79 118 66 98 64 C78 67 68 84 58 105 Z M66 53 C43 50 32 65 36 83 C40 101 53 112 69 111 L77 90 C68 80 64 68 66 53 Z M134 42 C153 36 168 48 168 66 C168 87 153 104 137 108 L123 89 C133 76 137 61 134 42 Z`,
+        Teacher: `M60 96 C52 66 58 39 79 25 C101 10 128 16 142 38 C155 59 151 86 141 103 C129 79 116 68 99 66 C81 68 69 81 60 96 Z M59 68 C47 70 39 81 41 94 C43 108 53 118 65 118 L76 96 C68 87 63 77 59 68 Z`
+    };
+    const torso = name === "Teacher"
+        ? `M72 145 C82 137 118 137 128 145 C139 181 143 226 146 292 C132 307 68 307 54 292 C57 226 61 181 72 145 Z M76 287 C92 295 108 295 124 287 L134 333 L66 333 Z`
+        : `M73 145 C83 138 117 138 127 145 C137 182 141 219 143 241 C132 253 68 253 57 241 C59 219 63 182 73 145 Z M58 236 C75 246 125 246 142 236 L155 284 L45 284 Z`;
+    const arms = `M74 150 C64 160 60 181 56 201 L45 232 C42 241 47 248 54 245 L70 214 C78 193 82 171 82 158 Z M126 150 C136 160 140 181 144 201 L155 232 C158 241 153 248 146 245 L130 214 C122 193 118 171 118 158 Z`;
+    const legs = name === "Teacher"
+        ? `M69 328 L92 328 L88 339 L72 339 Z M108 328 L131 328 L128 339 L112 339 Z`
+        : `M69 279 L91 279 L88 326 L74 326 Z M109 279 L131 279 L126 326 L113 326 Z`;
+    return `<svg class="fullCharacterArt realisticSilhouette" viewBox="0 0 200 345" xmlns="http://www.w3.org/2000/svg" aria-label="${name} silhouette" role="img">
+        <ellipse cx="100" cy="339" rx="52" ry="6" fill="#14202a" opacity=".20"/>
+        <g fill="#17222d">
+            <path d="${legs}"/>
+            <path d="${torso}"/>
+            <path d="${arms}"/>
+            <rect x="90" y="123" width="20" height="31" rx="8"/>
+            <path d="M61 76 C60 51 76 30 99 29 C123 29 140 49 139 77 C139 108 123 133 100 133 C77 133 61 108 61 76 Z"/>
+            <path d="${hair[name] || hair.Hanako}"/>
+        </g>
+    </svg>`;
+}
+
+function createCharacterButtons() {
+    const track = document.getElementById("boyTrack");
+    const dots = document.getElementById("carouselDots");
+    track.innerHTML = "";
+    dots.innerHTML = "";
+
+    characters.forEach((character, index) => {
+        const card = document.createElement("div");
+        card.className = "characterCard";
+        card.innerHTML = `
+            <div class="cardImageWrap">
+                <img data-asset="${character.image}" alt="${character.name}" loading="eager" decoding="async">
+            </div>
+            <div class="characterCardName">${character.name}</div>
+        `;
+        card.addEventListener("click", () => {
+            selectedBoy = index;
+            updateCharacterSelect();
+        });
+        track.appendChild(card);
+        imageWithFallback(card.querySelector("img"), character.name);
+
+        const dot = document.createElement("div");
+        dot.className = "carouselDot";
+        dots.appendChild(dot);
+    });
+
+    const viewport = document.getElementById("boyCarouselViewport");
+    viewport.addEventListener("pointerdown", event => {
+        boyCarouselTouchStart = event.clientX;
+        viewport.setPointerCapture?.(event.pointerId);
+    });
+    viewport.addEventListener("pointerup", event => {
+        if (boyCarouselTouchStart === null) return;
+        const dx = event.clientX - boyCarouselTouchStart;
+        if (Math.abs(dx) > 45) changeBoy(dx < 0 ? 1 : -1);
+        boyCarouselTouchStart = null;
+    });
+    viewport.addEventListener("pointercancel", () => boyCarouselTouchStart = null);
+
+    updateCharacterSelect();
+}
+
+function changeBoy(delta) {
+    const next = selectedBoy + delta;
+    if (next < 0 || next >= characters.length) return;
+    selectedBoy = next;
+    updateCharacterSelect();
+}
+
+function updateCharacterSelect() {
+    const track = document.getElementById("boyTrack");
+    track.style.transform = `translateX(-${selectedBoy * 100}%)`;
+
+    document.querySelectorAll("#carouselDots .carouselDot").forEach((dot, index) => {
+        dot.classList.toggle("selected", index === selectedBoy);
+    });
+    const arrows = document.querySelectorAll(".carouselArrow");
+    if (arrows[0]) arrows[0].disabled = selectedBoy === 0;
+    if (arrows[1]) arrows[1].disabled = selectedBoy === characters.length - 1;
+
+    const preview = document.getElementById("mainPreview");
+    preview.innerHTML = characterArtSvg("Hanako");
+}
+
+createCharacterButtons();
+
+characters.forEach(character => {
+    const preload = new Image();
+    preload.src = assetUrl(character.image);
+});
+
+/* Screen management is defined once in the PASSWORD + NAVIGATION block above. */
+
+/* =====================================================
+   NAME HELPERS
+===================================================== */
+
+function mainName() { return HANAKO_NAME; }
+function boyName() { return characters[selectedBoy].name; }
+function boyData() { return characters[selectedBoy]; }
+
+/* =====================================================
+   CHARACTER SPRITE
+===================================================== */
+
+function showCharacter(name, side = null, expression = "normal") {
+    const resolvedSide = resolveStorySide(name, side);
+    const container = document.getElementById("sceneCharacters");
+    container.innerHTML = "";
+
+    const sprite = document.createElement("div");
+    sprite.className = "characterSprite " + resolvedSide + " expression-" + expression;
+
+    if (name === boyName()) {
+        const img = document.createElement("img");
+        img.className = "characterImage";
+        img.dataset.asset = boyData().image;
+        img.alt = boyName();
+        img.loading = "eager";
+        img.decoding = "async";
+        sprite.appendChild(img);
+        imageWithFallback(img, boyName());
+    } else {
+        const art = document.createElement("div");
+        art.className = "fullArtHolder";
+        art.innerHTML = characterArtSvg(name === mainName() ? "Hanako" : name);
+        sprite.appendChild(art);
+    }
+
+    const label = document.createElement("div");
+    label.className = "spriteLabel";
+    label.textContent = name;
+    sprite.appendChild(label);
+
+    container.appendChild(sprite);
+}
+
+/* =====================================================
+   DIALOGUE
+===================================================== */
+
+function clearDialogueState() {
+    if (dialogueTimer) clearInterval(dialogueTimer);
+    dialogueTimer = null;
+    const resolve = dialogueResolve;
+    dialogueResolve = null;
+    if (resolve) resolve();
+    dialogueTyping = false;
+    currentTypedText = "";
+    currentTypedIndex = 0;
+    document.getElementById("speaker").textContent = "";
+    document.getElementById("dialogue").textContent = "";
+    const hint = document.getElementById("continueHint");
+    hint.textContent = "";
+    hint.style.opacity = "0";
+}
+
+function resolveStorySide(speaker, side) {
+    if (side === "center") return "center";
+    if (side === "left" || side === "right") return side;
+    return speaker === mainName() ? "left" : "right";
+}
+
+function say(speaker, text, expression = "normal", side = null, silhouette = false, background = null) {
+    if (background) document.getElementById("background").className = background;
+    const resolvedSide = resolveStorySide(speaker, side);
+    const dialogueBox = document.getElementById("dialogueBox");
+    dialogueBox.classList.remove("pointer-left", "pointer-right", "pointer-center");
+    dialogueBox.classList.add(resolvedSide === "right" ? "pointer-right" : resolvedSide === "center" ? "pointer-center" : "pointer-left");
+    document.getElementById("speaker").textContent = speaker;
+    const dialogue = document.getElementById("dialogue");
+    const hint = document.getElementById("continueHint");
+    hint.textContent = "TYPING...";
+    hint.style.opacity = ".35";
+    showCharacter(speaker, resolvedSide, expression);
+    if (dialogueTimer) clearInterval(dialogueTimer);
+    dialogueTyping = true;
+    currentTypedText = text;
+    currentTypedIndex = 0;
+    dialogue.textContent = "";
+    return new Promise(resolve => {
+        dialogueResolve = resolve;
+        const speed = Math.max(18, Math.min(34, 620 / Math.max(text.length, 1)));
+        dialogueTimer = setInterval(() => {
+            currentTypedIndex++;
+            dialogue.textContent = text.slice(0, currentTypedIndex);
+            if (currentTypedIndex >= text.length) finishTyping();
+        }, speed);
+    });
+}
+function finishTyping() {
+    if (!dialogueTyping) return;
+    if (dialogueTimer) clearInterval(dialogueTimer);
+    dialogueTimer = null;
+    document.getElementById("dialogue").textContent = currentTypedText;
+    dialogueTyping = false;
+    const hint = document.getElementById("continueHint");
+    hint.textContent = "TAP / CLICK / SPACE";
+    hint.style.opacity = ".55";
+    const resolve = dialogueResolve;
+    dialogueResolve = null;
+    if (resolve) resolve();
+}
+function waitForDialogueAdvance() {
+    return new Promise(resolve => { dialogueResolve = resolve; });
+}
+function advanceDialogue() {
+    if (dialogueTyping) { finishTyping(); return true; }
+    if (dialogueResolve) {
+        const resolve = dialogueResolve;
+        dialogueResolve = null;
+        resolve();
+        return true;
+    }
+    return false;
+}
+
+function clearCharacters() {
+    document.getElementById("sceneCharacters").innerHTML = "";
+}
+
+/* =====================================================
+   MODALS
+===================================================== */
+
+function openModal(id) {
+    document.getElementById(id).classList.add("active");
+}
+
+function closeModal(id) {
+    document.getElementById(id).classList.remove("active");
+}
+
+/* =====================================================
+   DEVICE MODE
+===================================================== */
+
+function setDeviceMode(mode) {
+    gameMode = mode;
+
+    document.body.classList.toggle(
+        "smartphone",
+        mode === "smartphone"
+    );
+
+    document.getElementById("pcButton").classList.toggle(
+        "selected",
+        mode === "pc"
+    );
+
+    document.getElementById("smartphoneButton").classList.toggle(
+        "selected",
+        mode === "smartphone"
+    );
+
+    localStorage.setItem("deviceMode", mode);
+}
+
+const savedMode = localStorage.getItem("deviceMode");
+setDeviceMode(savedMode || "pc");
+
+/* =====================================================
+   STORY
+===================================================== */
+function setActionLock(locked) {
+    actionLocked = locked;
+    const box = document.getElementById("choiceBox");
+    if (box) box.classList.toggle("ui-locked", locked);
+    document.querySelectorAll("#choiceBox button").forEach(btn => btn.classList.toggle("ui-disabled", locked));
+}
+function playCollisionAnimation() {
+    return new Promise(resolve => {
+        const fx = document.getElementById("collisionFX");
+        document.getElementById("collisionHanako").innerHTML = characterArtSvg("Hanako");
+        const boy = document.createElement("img");
+        boy.className = "collisionArt";
+        boy.src = boyData().image;
+        boy.alt = boyName();
+        boy.loading = "eager";
+        const visibleHeightFraction = {
+            Masugu: .692,
+            Mizuta: 1,
+            Takuto: .823,
+            Kowada: .884,
+            Junya: .763
+        }[boyName()] || .82;
+        boy.style.setProperty("--collision-height", `${Math.round(300 / visibleHeightFraction)}px`);
+        document.getElementById("collisionBoy").innerHTML = "";
+        document.getElementById("collisionBoy").appendChild(boy);
+        fx.classList.remove("active"); void fx.offsetWidth; fx.classList.add("active");
+        setTimeout(() => { fx.classList.remove("active"); resolve(); }, 1050);
+    });
+}
+function showSynopsis(kicker, title, text) {
+    const card = document.getElementById("introCard");
+    document.getElementById("introKicker").textContent = kicker;
+    document.getElementById("introTitle").textContent = title;
+    document.getElementById("introText").textContent = text;
+    card.classList.add("active");
+    return new Promise(resolve => { synopsisResolve = resolve; });
+}
+function dismissSynopsis() {
+    const card = document.getElementById("introCard");
+    if (!card.classList.contains("active")) return false;
+    card.classList.remove("active");
+    const resolve = synopsisResolve; synopsisResolve = null;
+    if (resolve) resolve();
+    return true;
+}
+async function startStory() {
+    if (actionLocked) return;
+    setActionLock(true);
+    ending=false; inArcade=false; arcadeRunning=false; love=10; storyIndex=0;
+    classroomSynopsisShown=false; choiceBriefingActive=false; updateLove();
+    showScreen("storyScreen");
+    document.getElementById("loveGauge").classList.add("hidden");
+    document.getElementById("choiceBox").style.display="none";
+    document.getElementById("dialogueBox").style.display="block";
+    document.getElementById("arcadeScreen").style.display="none";
+    document.getElementById("missionCard").classList.remove("active");
+    document.getElementById("runTransition").classList.remove("active");
+    document.getElementById("collisionFX").classList.remove("active");
+    document.getElementById("choiceBriefing").classList.remove("active");
+    document.getElementById("classroomChatter").classList.remove("active");
+    document.getElementById("heartBreak").classList.add("hidden");
+    clearDialogueState();
+    arcadeIntroPlaying=false; resetArcadeWorld(); document.getElementById("background").className="city";
+    currentStory=[
+        {speaker:mainName(),text:"My name is Tohkatsu Hanako! A very, very normal girl who goes to Tohkatsu JHS.",expression:"normal",background:"city"},
+        {speaker:mainName(),text:"OMG!! I'll be late for school!",expression:"surprised"},
+        {speaker:mainName(),text:"I must run!!!",expression:"surprised"},
+        {speaker:boyName(),text:"Ouch!! ...Sorry, are you OK??",expression:"normal",side:"right"},
+        {speaker:mainName(),text:"I'm OK. And you too?",expression:"nervous"},
+        {speaker:mainName(),text:"(Oh, he's amazing...)",expression:"shy"},
+        {speaker:mainName(),text:"(He is very beautiful.)",expression:"shy"},
+        {speaker:mainName(),text:"(If I am his girlfriend, I will be very happy.)",expression:"shy"},
+        {speaker:mainName(),text:"(And I will go to meet him to date with him everyday. Every weekend, we will have a party just two of us to celebrate the day which our anniversary.)",expression:"shy"},
+        {speaker:mainName(),text:"(And.....)",expression:"shy"},
+        {speaker:boyName(),text:"Hey, hey, are you OK?",expression:"confused",side:"right"},
+        {speaker:mainName(),text:"Oh, sorry. HAHAHA. ...OMG! It's already 8:13!? Sorry, good luck!",expression:"surprised"},
+        {speaker:"Teacher",text:"Hanako! You were late again!?",background:"school"},
+        {speaker:mainName(),text:"Sorry...",expression:"normal"},
+        {speaker:"Teacher",text:"Not at all... Be careful."},
+        {speaker:mainName(),text:"Yes...",expression:"normal"},
+        {speaker:"Teacher",text:"Now, today I'd like to introduce you to a transfer student."},
+        {speaker:mainName(),text:"Transfer student...?",expression:"surprised"},
+        {speaker:"Teacher",text:"Come! "+boyName()+"!"},
+        {speaker:boyName(),text:"Hello, everyone. My name is "+boyName()+".",side:"right"},
+        {speaker:mainName(),text:"OMG! He was the one from this morning...",expression:"shy"},
+        {speaker:"Yumi",text:"How are you, Hanako? Your face is red.",side:"right"},
+        {speaker:mainName(),text:"No!",expression:"shy"},
+        {speaker:"Rika",text:"Maybe you've fallen for him?",side:"right"},
+        {speaker:mainName(),text:"...",expression:"shy"}
+    ];
+    clearCharacters();
+    await showSynopsis("TOHKATSU JUNIOR HIGH SCHOOL","A Very Normal School Day","Hanako, a student at Tohkatsu JHS, was rushing to school because she was almost late — while, somewhere in her heart, she could feel a strange little flutter of excitement.");
+    setActionLock(false);
+}
+async function showClassroomSynopsis() {
+    setActionLock(true); document.getElementById("dialogueBox").style.display="none";
+    await showSynopsis("CLASS 3-2","At Last, The Classroom","Hanako has finally made it to class. But the strange excitement from this morning is still in her heart — and today, a transfer student is about to change her ordinary school day.");
+    document.getElementById("dialogueBox").style.display="block"; classroomSynopsisShown=true;
+}
+function playClassroomChatter() {
+    const chatter = document.getElementById("classroomChatter");
+    chatter.classList.remove("active");
+    void chatter.offsetWidth;
+    chatter.classList.add("active");
+    return new Promise(resolve => setTimeout(() => {
+        chatter.classList.remove("active");
+        resolve();
+    }, 1250));
+}
+async function playStory() {
+    if (inArcade || ending) return;
+    if (dialogueTyping) { finishTyping(); return; }
+    if (storyIndex>=currentStory.length) { await beginChoiceMode(); return; }
+    if (storyIndex===8 && !classroomSynopsisShown) { document.getElementById("background").className="school"; await showClassroomSynopsis(); setActionLock(false); return; }
+    setActionLock(true);
+    const line=currentStory[storyIndex++];
+    if (line.speaker===boyName() && line.text.startsWith("Ouch!!")) {
+        document.getElementById("dialogueBox").style.display="none"; await playCollisionAnimation(); document.getElementById("dialogueBox").style.display="block";
+    }
+    await say(line.speaker,line.text,line.expression,line.side,line.silhouette,line.background);
+    if (line.speaker === boyName() && line.text.startsWith("Hello, everyone.")) {
+        await playClassroomChatter();
+    }
+    setActionLock(false);
+}
+
+document.addEventListener("click", event => {
+    const storyScreen=document.getElementById("storyScreen"); if(!storyScreen.classList.contains("active")) return;
+    if(event.target.closest("button")||event.target.closest(".modal")||event.target.closest("#choiceBox")||event.target.closest("#captureOverlay")||event.target.closest("#mobileControls")) return;
+    if(dismissSynopsis()) return;
+    const briefing=document.getElementById("choiceBriefing");
+    if(briefing.classList.contains("active")){briefing.classList.remove("active");choiceBriefingActive=false;restoreMainChoices();setActionLock(false);return;}
+    if(advanceDialogue()) return;
+    if(arcadeIntroPlaying) return;
+    if(!inArcade&&!ending&&!actionLocked) playStory();
+});
+document.addEventListener("keydown", event => {
+    if(event.code!=="Space") return;
+    const storyScreen=document.getElementById("storyScreen"); if(!storyScreen.classList.contains("active")) return;
+    event.preventDefault();
+    if(dismissSynopsis()) return;
+    const briefing=document.getElementById("choiceBriefing");
+    if(briefing.classList.contains("active")){briefing.classList.remove("active");choiceBriefingActive=false;restoreMainChoices();setActionLock(false);return;}
+    if(advanceDialogue()) return;
+    if(arcadeIntroPlaying) return;
+    if(!inArcade&&!ending&&!actionLocked) playStory();
+});
+
+/* =====================================================
+   LOVE GAUGE
+===================================================== */
+function updateLove(){love=Math.max(0,Math.min(100,love));document.getElementById("loveBar").style.width=love+"%";document.getElementById("loveValue").textContent=Math.floor(love)+"%";}
+function restoreMainChoices(){
+    const box=document.getElementById("choiceBox");
+    box.innerHTML=`<button class="choice" onclick="mainChoice('talk')">A. Talk</button><button class="choice" onclick="mainChoice('run')">B. Escape to the arcade</button><button class="choice" onclick="mainChoice('confess')">C. ♡</button>`;
+    box.style.display="grid"; box.classList.remove("ui-locked"); document.querySelectorAll("#choiceBox button").forEach(b=>b.classList.remove("ui-disabled"));
+}
+async function beginChoiceMode(){
+    if(inArcade||ending||choiceBriefingActive)return;
+    document.getElementById("loveGauge").classList.remove("hidden"); document.getElementById("dialogueBox").style.display="none"; document.getElementById("choiceBox").style.display="none";
+    choiceBriefingActive=true; setActionLock(true); document.getElementById("choiceBriefing").classList.add("active");
+}
+function mainChoice(choice){
+    if(actionLocked||ending||inArcade)return; setActionLock(true); document.getElementById("choiceBox").style.display="none";
+    if(choice==='talk')talkChoice(); else if(choice==='run')startArcadeIntro(); else if(choice==='confess')confess();
+}
+function talkChoice(){
+    const c = boyData();
+    const animalAnswer = c.animal === "none" ? "I don't have a favorite animal." : `I like ${c.animal}s.`;
+    const questions=[
+        {q:"What's your favorite food?",a:`I like ${c.favoriteFood}.`},
+        {q:"What's your favorite color?",a:`I like ${c.color}.`},
+        {q:"What's your favorite animal?",a:animalAnswer},
+        {q:"What's your favorite sport?",a:`I like ${c.sport}.`}
+    ];
+    const box=document.getElementById("choiceBox"); box.innerHTML=""; box.style.display="grid"; setActionLock(false);
+    questions.forEach((q,index)=>{
+        const button=document.createElement("button"); button.className="choice"; button.textContent=`${String.fromCharCode(65+index)}. ${q.q}`;
+        button.onclick=async()=>{
+            if(actionLocked)return; setActionLock(true); box.style.display="none"; document.getElementById("dialogueBox").style.display="block";
+            await say(mainName(),q.q,"normal","left"); await waitForDialogueAdvance(); await say(boyName(),q.a,"normal","right");
+            const gain=Math.floor(Math.random()*4)+17; love+=gain; updateLove(); await waitForDialogueAdvance();
+            document.getElementById("dialogueBox").style.display="none"; restoreMainChoices(); setActionLock(false);
+        }; box.appendChild(button);
+    });
+}
+/* =====================================================
+   CONFESSION
+===================================================== */
+async function confess(){document.getElementById("dialogueBox").style.display="block";await say(mainName(),"I like you. Would you be my boyfriend?","shy","left");await waitForDialogueAdvance();if(love>=100)await marriageEnding();else if(love>=51)await datingEnding();else await rejectionEnding();}
+async function rejectionEnding(){await say(boyName(),"Who are you?","confused","right");await waitForDialogueAdvance();showGameOver("He was already dating Yumi or Rika.",true);}
+async function datingEnding(){await say(boyName(),"Yes.","shy","right");await waitForDialogueAdvance();showEnding("GAME CLEAR",mainName()+" and "+boyName()+" are finally together!","dating");}
+async function marriageEnding(){await say(boyName(),"Yes.","shy","right");await waitForDialogueAdvance();showEnding("MARRIAGE END","...after 10 years\n\nA white dove flies away from a church.","marriage");}
+/* =====================================================
+   GAME OVER / ENDING
+===================================================== */
+function showGameOver(text,showHeart=true){
+    ending=true; actionLocked=true; arcadeIntroPlaying=false; inArcade=false; arcadeRunning=false; document.getElementById("arcadeScreen").style.display="none"; document.getElementById("miniMap").style.display="none"; document.getElementById("darkFade").style.opacity="0"; showScreen("endingScreen"); document.getElementById("endingTitle").textContent="GAME OVER"; document.getElementById("endingText").textContent=text;
+    document.getElementById("marriageScene").classList.remove("active");
+    const heart=document.getElementById("heartBreak"); heart.classList.add("hidden"); if(showHeart){void heart.offsetWidth;heart.classList.remove("hidden");}
+}
+function showEnding(title,text,type){
+    ending=true; actionLocked=true; arcadeIntroPlaying=false; inArcade=false; arcadeRunning=false;
+    document.getElementById("arcadeScreen").style.display="none";
+    document.getElementById("miniMap").style.display="none";
+    document.getElementById("darkFade").style.opacity="0";
+    showScreen("endingScreen");
+    document.getElementById("endingTitle").textContent=title;
+    document.getElementById("endingText").textContent=text;
+    document.getElementById("heartBreak").classList.add("hidden");
+    const marriage=document.getElementById("marriageScene");
+    marriage.classList.remove("active");
+    if (type === "marriage") {
+        document.getElementById("marriageHanako").innerHTML=characterArtSvg("Hanako");
+        const boy=document.createElement("img");
+        boy.className="weddingBoyArt";
+        boy.src=boyData().image;
+        boy.alt=boyName();
+        boy.loading="eager";
+        const weddingVisibleHeightFraction = {Masugu:.692,Mizuta:1,Takuto:.823,Kowada:.884,Junya:.763}[boyName()] || .82;
+        boy.style.height = `${Math.round(330 / weddingVisibleHeightFraction)}px`;
+        document.getElementById("marriageBoy").innerHTML="";
+        document.getElementById("marriageBoy").appendChild(boy);
+        marriage.classList.add("active");
+    }
+}
+/* =====================================================
+   RESTART
+===================================================== */
+function restartGame(){
+    ending=false;inArcade=false;arcadeRunning=false;love=10;storyIndex=0;captureStep=0;introPlaying=false;arcadeIntroPlaying=false;classroomSynopsisShown=false;choiceBriefingActive=false;actionLocked=false;dialogueTyping=false;
+    if(dialogueTimer)clearInterval(dialogueTimer);dialogueTimer=null;dialogueResolve=null;synopsisResolve=null;updateLove();
+    document.getElementById("arcadeScreen").style.display="none";document.getElementById("darkFade").style.opacity="0";document.getElementById("captureOverlay").style.display="none";document.getElementById("introCard").classList.remove("active");document.getElementById("classroomChatter").classList.remove("active");clearDialogueState();document.getElementById("choiceBriefing").classList.remove("active");document.getElementById("missionCard").classList.remove("active");document.getElementById("runTransition").classList.remove("active");document.getElementById("heartBreak").classList.add("hidden");resetArcadeWorld();screenHistory=["characterScreen"];history.replaceState({game:true,screen:"characterScreen"},"",location.href);showCharacterSelect(false);
+}
+
+/* =====================================================
+   3D RAYCASTER: MAP
+===================================================== */
+
+const maze = [
+    '#######################################################',
+    '#.....#.........#.............#...#.....#...........#.#',
+    '#####.##.##.###.######.##.###.#.#.#.#..##.###.###.#.#.#',
+    '#...........#.#...................#.#.................#',
+    '#.#.........#.#####...........#.#.#.#.............###.#',
+    '#.#.............#...............#...#.............#...#',
+    '#...........###.#.#.............#.#.#.............#####',
+    '#.#.........#.#...#.............#.#...............#...#',
+    '#.#######.#.#.#####...........#.#.#.###.#.#.###.#.#...#',
+    '#.....#...#.#.....................#.......#.......#.#.#',
+    '#..##.#.....####.#.######.#.##.##.#.#########..####.#.#',
+    '#...#...#.#...#.....#.....#.....#...#.......#.......#.#',
+    '#.#####.###.#.#.###.#.###.##.##.#####.#####.####..#.#.#',
+    '#.............#...#.#.................#.#...#.....#.#.#',
+    '#.#######.###.###.#.#...............#.#.#.###.###.###.#',
+    '#...............#.#...................#...............#',
+    '#.##..........###.###...............#.#.............###',
+    '#.#...............#.................#.#...............#',
+    '#.#.#..........#######..............#.#.............#.#',
+    '#.#.................................#.#...............#',
+    '#.###.........#.#...##.............##.#.............#.#',
+    '#...#...........#.#.................#.#.............#.#',
+    '###.#.........###.###.#.#.#...#.###.#...............#.#',
+    '#.#...............#...#...#...#...#...#.............#.#',
+    '#.#.#.###.#.#.#####..##.#.#####.#.######..............#',
+    '#.........#.......#.....#...#...#...................#.#',
+    '#..###..#.#####.#.#.##.####.#.................#.#..##.#',
+    '#...#.......................#...............#...#.....#',
+    '###.#...##...........##..##.##..............###.##.####',
+    '#...#.................#...#...................#.#.....#',
+    '#.###.#.#.............#...###...............#.#.#.##..#',
+    '#.#.....#.............#.#...................#.#.......#',
+    '#.#######.#..########.#.##..#######.#.#.....#.#.#.###.#',
+    '#.........#.........................#.....#.#.....#...#',
+    '#######################################################'
+];
+
+/*
+   The original game was a top-down 2D maze.
+   This version keeps the exact maze layout but renders it
+   through a raycasting camera, so the arcade is now a
+   first-person pseudo-3D scene.
+*/
+
+/* Seal the entire outer edge so no accidental maze opening can lead outside. */
+const MAZE_WIDTH = 55;
+for (let y = 0; y < maze.length; y++) {
+    const cells = maze[y].padEnd(MAZE_WIDTH, "#").slice(0, MAZE_WIDTH).split("");
+    for (let x = 0; x < MAZE_WIDTH; x++) {
+        if (y === 0 || y === maze.length - 1 || x === 0 || x === MAZE_WIDTH - 1) {
+            cells[x] = "#";
+        }
+    }
+    maze[y] = cells.join("");
+}
+
+const arcadeCanvas = document.getElementById("arcadeCanvas");
+const ctx = arcadeCanvas.getContext("2d");
+
+/* =====================================================
+   3D SETTINGS
+===================================================== */
+
+const NORMAL_SPEED = 2;
+const DASH_SPEED = 3;
+
+const FIELD_OF_VIEW = Math.PI / 3;
+const HALF_FOV = FIELD_OF_VIEW / 2;
+
+const MAX_RAY_DISTANCE = 24;
+
+const WALL_HEIGHT = 1.0;
+
+const RENDER_COLUMNS_DESKTOP = 480;
+const RENDER_COLUMNS_MOBILE = 300;
+
+let renderColumns = RENDER_COLUMNS_DESKTOP;
+
+/* =====================================================
+   PLAYER
+===================================================== */
+
+let player = {
+    x: 17.5,
+    y: 13.5,
+    angle: 0,
+    stamina: 100
+};
+
+/* =====================================================
+   TEACHERS
+===================================================== */
+
+let teachers = [
+    { x: 27.5, y: 17.5, angle: 0, chasing: false, pathTimer: 0, path: null, direction: 0 },
+    { x: 37.5, y: 27.5, angle: Math.PI / 2, chasing: false, pathTimer: 0, path: null, direction: 1 },
+    { x: 49.5, y: 33.5, angle: Math.PI, chasing: false, pathTimer: 0, path: null, direction: 2 }
+];
+
+let exitPoint = {
+    x: 15.5,
+    y: 23.5
+};
+
+/* =====================================================
+   INPUT STATE
+===================================================== */
+
+const keys = {};
+
+let joystickX = 0;
+let joystickY = 0;
+let lookX = 0;
+let dashTouch = false;
+
+let arcadeRunning = false;
+let previousTime = performance.now();
+
+/* =====================================================
+   KEYBOARD
+===================================================== */
+
+window.addEventListener("keydown", event => {
+    const key = event.key.toLowerCase();
+    keys[key] = true;
+
+    if (
+        inArcade &&
+        ["arrowup", "arrowdown", "arrowleft", "arrowright", "w", "a", "s", "d", "shift"].includes(key)
+    ) {
+        event.preventDefault();
+    }
+});
+
+window.addEventListener("keyup", event => {
+    keys[event.key.toLowerCase()] = false;
+});
+
+/* =====================================================
+   RESIZE
+===================================================== */
+
+function resizeArcade() {
+    const width = window.innerWidth;
+    const height = window.innerHeight;
+
+    arcadeCanvas.width = width;
+    arcadeCanvas.height = height;
+
+    renderColumns = width < 700
+        ? RENDER_COLUMNS_MOBILE
+        : RENDER_COLUMNS_DESKTOP;
+}
+
+window.addEventListener("resize", resizeArcade);
+resizeArcade();
+
+/* =====================================================
+   MAP HELPERS
+===================================================== */
+
+function isWall(x, y) {
+    const tx = Math.floor(x);
+    const ty = Math.floor(y);
+
+    if (
+        ty < 0 ||
+        ty >= maze.length ||
+        tx < 0 ||
+        tx >= maze[ty].length
+    ) {
+        return true;
+    }
+
+    return maze[ty][tx] === "#";
+}
+
+function isWalkableTile(x, y) {
+    const tx = Math.floor(x);
+    const ty = Math.floor(y);
+
+    if (
+        ty < 0 ||
+        ty >= maze.length ||
+        tx < 0 ||
+        tx >= maze[ty].length
+    ) {
+        return false;
+    }
+
+    return maze[ty][tx] !== "#";
+}
+
+function clamp(value, min, max) {
+    return Math.max(min, Math.min(max, value));
+}
+
+function normalizeAngle(angle) {
+    while (angle <= -Math.PI) {
+        angle += Math.PI * 2;
+    }
+
+    while (angle > Math.PI) {
+        angle -= Math.PI * 2;
+    }
+
+    return angle;
+}
+
+function angleDifference(from, to) {
+    return normalizeAngle(to - from);
+}
+
+function distanceBetween(a, b) {
+    return Math.hypot(a.x - b.x, a.y - b.y);
+}
+
+/* =====================================================
+   COLLISION-AWARE MOVEMENT
+===================================================== */
+
+function moveEntity(entity, dx, dy) {
+    const radius = .18;
+    let blocked = false;
+
+    if (Math.abs(dx) > 0.000001) {
+        const nextX = entity.x + dx;
+        const edgeX = nextX + Math.sign(dx) * radius;
+
+        if (!isWall(edgeX, entity.y + radius) && !isWall(edgeX, entity.y - radius)) {
+            entity.x = nextX;
+        } else {
+            blocked = true;
+        }
+    }
+
+    if (Math.abs(dy) > 0.000001) {
+        const nextY = entity.y + dy;
+        const edgeY = nextY + Math.sign(dy) * radius;
+
+        if (!isWall(entity.x + radius, edgeY) && !isWall(entity.x - radius, edgeY)) {
+            entity.y = nextY;
+        } else {
+            blocked = true;
+        }
+    }
+
+    if (blocked && entity === player && inArcade && arcadeRunning) {
+        wallBumpTime = .16;
+    }
+}
+
+/* =====================================================
+   PLAYER INPUT FOR 3D
+===================================================== */
+
+function getForwardInput() {
+    let value = 0;
+
+    if (keys["w"] || keys["arrowup"]) {
+        value += 1;
+    }
+
+    if (keys["s"] || keys["arrowdown"]) {
+        value -= 1;
+    }
+
+    return value;
+}
+
+function getStrafeInput() {
+    let value = 0;
+
+    if (keys["a"]) {
+        value -= 1;
+    }
+
+    if (keys["d"]) {
+        value += 1;
+    }
+
+    return value;
+}
+
+function getTurnInput() {
+    let value = 0;
+
+    if (keys["arrowleft"]) {
+        value -= 1;
+    }
+
+    if (keys["arrowright"]) {
+        value += 1;
+    }
+
+    return value;
+}
+
+function getMobileForwardInput() {
+    return -joystickY;
+}
+
+function getMobileStrafeInput() {
+    return joystickX;
+}
+
+function getMobileTurnInput() {
+    return lookX;
+}
+
+/* =====================================================
+   UPDATE PLAYER
+===================================================== */
+
+function updatePlayer(dt) {
+    const keyboardForward = getForwardInput();
+    const keyboardStrafe = getStrafeInput();
+    const keyboardTurn = getTurnInput();
+
+    const mobileForward = getMobileForwardInput();
+    const mobileStrafe = getMobileStrafeInput();
+    const mobileTurn = getMobileTurnInput();
+
+    let forward = keyboardForward;
+    let strafe = keyboardStrafe;
+    let turn = keyboardTurn;
+
+    if (Math.abs(mobileForward) > .05 || Math.abs(mobileStrafe) > .05) {
+        forward = mobileForward;
+        strafe = mobileStrafe;
+    }
+
+    if (Math.abs(mobileTurn) > .05) {
+        turn = mobileTurn;
+    }
+
+    const moving =
+        Math.abs(forward) > .05 ||
+        Math.abs(strafe) > .05;
+
+    const turning = Math.abs(turn) > .05;
+
+    const dash = keys["shift"] || dashTouch;
+
+    let speed = NORMAL_SPEED;
+
+    if (dash && moving && player.stamina > 0) {
+        speed = DASH_SPEED;
+        player.stamina -= 42 * dt;
+        if (player.stamina <= 0 && dashTouch) {
+            dashTouch = false;
+            document.getElementById("dashButton").classList.remove("active");
+        }
+    } else if (!moving || !dashTouch) {
+        player.stamina += 20 * dt;
+    }
+
+    player.stamina = clamp(player.stamina, 0, 100);
+
+    document.getElementById("staminaBar").style.width = player.stamina + "%";
+
+    if (turning) {
+        const turnSpeed = 3.0;
+        player.angle += turn * turnSpeed * dt;
+        player.angle = normalizeAngle(player.angle);
+    }
+
+    if (moving) {
+        const forwardDistance = forward * speed * dt;
+        const strafeDistance = strafe * speed * dt;
+
+        const dx =
+            Math.cos(player.angle) * forwardDistance +
+            Math.cos(player.angle + Math.PI / 2) * strafeDistance;
+
+        const dy =
+            Math.sin(player.angle) * forwardDistance +
+            Math.sin(player.angle + Math.PI / 2) * strafeDistance;
+
+        const length = Math.hypot(dx, dy);
+
+        if (length > speed * dt && length > 0) {
+            const scale = (speed * dt) / length;
+            moveEntity(player, dx * scale, dy * scale);
+        } else {
+            moveEntity(player, dx, dy);
+        }
+    }
+}
+
+/* =====================================================
+   PATHFINDING FOR TEACHERS
+===================================================== */
+
+function nextPathStep(sx, sy, tx, ty) {
+    const start = {
+        x: Math.floor(sx),
+        y: Math.floor(sy)
+    };
+
+    const target = {
+        x: Math.floor(tx),
+        y: Math.floor(ty)
+    };
+
+    if (
+        start.x === target.x &&
+        start.y === target.y
+    ) {
+        return null;
+    }
+
+    const queue = [start];
+    let queueIndex = 0;
+
+    const visited = new Set([
+        `${start.x},${start.y}`
+    ]);
+
+    const parent = new Map();
+
+    const dirs = [
+        [1, 0],
+        [-1, 0],
+        [0, 1],
+        [0, -1]
+    ];
+
+    while (queueIndex < queue.length) {
+        const current = queue[queueIndex++];
+
+        if (
+            current.x === target.x &&
+            current.y === target.y
+        ) {
+            break;
+        }
+
+        for (const [dx, dy] of dirs) {
+            const nx = current.x + dx;
+            const ny = current.y + dy;
+
+            if (
+                ny < 0 ||
+                ny >= maze.length ||
+                nx < 0 ||
+                nx >= maze[ny].length
+            ) {
+                continue;
+            }
+
+            if (maze[ny][nx] === "#") {
+                continue;
+            }
+
+            const key = `${nx},${ny}`;
+
+            if (visited.has(key)) {
+                continue;
+            }
+
+            visited.add(key);
+            parent.set(key, current);
+
+            queue.push({
+                x: nx,
+                y: ny
+            });
+        }
+    }
+
+    const targetKey = `${target.x},${target.y}`;
+
+    if (!visited.has(targetKey)) {
+        return null;
+    }
+
+    let current = target;
+    let previous = null;
+
+    while (
+        current.x !== start.x ||
+        current.y !== start.y
+    ) {
+        previous = current;
+
+        const parentKey = `${current.x},${current.y}`;
+        const parentCell = parent.get(parentKey);
+
+        if (!parentCell) {
+            return null;
+        }
+
+        current = parentCell;
+    }
+
+    return previous;
+}
+
+/* =====================================================
+   UPDATE TEACHERS
+===================================================== */
+
+function getWalkableNeighbors(cellX, cellY) {
+    const dirs = [
+        { dx: 1, dy: 0, dir: 0 },
+        { dx: 0, dy: 1, dir: 1 },
+        { dx: -1, dy: 0, dir: 2 },
+        { dx: 0, dy: -1, dir: 3 }
+    ];
+    return dirs.filter(d => isWalkableTile(cellX + d.dx + .5, cellY + d.dy + .5));
+}
+
+function chooseTeacherRandomDirection(teacher) {
+    const cellX = Math.floor(teacher.x);
+    const cellY = Math.floor(teacher.y);
+    const neighbors = getWalkableNeighbors(cellX, cellY);
+    if (!neighbors.length) return null;
+
+    const reverseDir = (teacher.direction + 2) % 4;
+    let candidates = neighbors.filter(n => n.dir !== reverseDir);
+    if (!candidates.length) candidates = neighbors;
+
+    const straight = candidates.find(n => n.dir === teacher.direction);
+    const turns = candidates.filter(n => n.dir !== teacher.direction);
+    let chosen;
+    if (straight && Math.random() < .62) chosen = straight;
+    else if (turns.length) chosen = turns[Math.floor(Math.random() * turns.length)];
+    else chosen = straight || candidates[0];
+
+    teacher.direction = chosen.dir;
+    teacher.angle = Math.atan2(chosen.dy, chosen.dx);
+    teacher.path = { x: cellX + chosen.dx, y: cellY + chosen.dy };
+    teacher.pathTimer = .15;
+    return teacher.path;
+}
+
+function updateTeachers(dt) {
+    for (const teacher of teachers) {
+        const distance = distanceBetween(teacher, player);
+
+        // Wall-independent detection: 4 maze cells in any direction.
+        if (!teacher.chasing && distance <= 4) {
+            teacher.chasing = true;
+            teacher.pathTimer = 0;
+        }
+
+        if (teacher.chasing) {
+            const speed = DASH_SPEED;
+            teacher.pathTimer -= dt;
+            if (teacher.pathTimer <= 0) {
+                teacher.path = nextPathStep(teacher.x, teacher.y, player.x, player.y);
+                teacher.pathTimer = .20;
+            }
+            if (teacher.path) {
+                const targetX = teacher.path.x + .5;
+                const targetY = teacher.path.y + .5;
+                const dx = targetX - teacher.x;
+                const dy = targetY - teacher.y;
+                const length = Math.hypot(dx, dy);
+                if (length > .01) {
+                    const ratio = Math.min(1, speed * dt / length);
+                    teacher.x += dx * ratio;
+                    teacher.y += dy * ratio;
+                    teacher.angle = Math.atan2(dy, dx);
+                    teacher.direction = Math.round((teacher.angle / (Math.PI / 2) + 4) % 4);
+                }
+            }
+        } else {
+            // Patrol is corridor-following: straight, left, or right only.
+            // An immediate U-turn is allowed only at a genuine dead end.
+            teacher.pathTimer -= dt;
+            const atCenter = Math.abs((teacher.x % 1) - .5) < .08 && Math.abs((teacher.y % 1) - .5) < .08;
+            if (!teacher.path || (teacher.pathTimer <= 0 && atCenter)) chooseTeacherRandomDirection(teacher);
+
+            if (teacher.path) {
+                const targetX = teacher.path.x + .5;
+                const targetY = teacher.path.y + .5;
+                const dx = targetX - teacher.x;
+                const dy = targetY - teacher.y;
+                const length = Math.hypot(dx, dy);
+                const speed = NORMAL_SPEED * .78;
+                if (length <= .03) {
+                    teacher.x = targetX;
+                    teacher.y = targetY;
+                    teacher.path = null;
+                    teacher.pathTimer = 0;
+                } else {
+                    const ratio = Math.min(1, speed * dt / length);
+                    teacher.x += dx * ratio;
+                    teacher.y += dy * ratio;
+                    teacher.angle = Math.atan2(dy, dx);
+                }
+            }
+        }
+
+        if (distanceBetween(teacher, player) < .55) {
+            capturePlayer(teacher);
+            return;
+        }
+    }
+}
+
+function castRay(angle) {
+    const rayDirX = Math.cos(angle);
+    const rayDirY = Math.sin(angle);
+
+    let mapX = Math.floor(player.x);
+    let mapY = Math.floor(player.y);
+
+    const deltaDistX = Math.abs(1 / (rayDirX || 0.000001));
+    const deltaDistY = Math.abs(1 / (rayDirY || 0.000001));
+
+    let stepX;
+    let stepY;
+    let sideDistX;
+    let sideDistY;
+
+    if (rayDirX < 0) {
+        stepX = -1;
+        sideDistX = (player.x - mapX) * deltaDistX;
+    } else {
+        stepX = 1;
+        sideDistX = (mapX + 1 - player.x) * deltaDistX;
+    }
+
+    if (rayDirY < 0) {
+        stepY = -1;
+        sideDistY = (player.y - mapY) * deltaDistY;
+    } else {
+        stepY = 1;
+        sideDistY = (mapY + 1 - player.y) * deltaDistY;
+    }
+
+    let side = 0;
+    let distance = 0;
+    let hit = false;
+
+    while (!hit && distance < MAX_RAY_DISTANCE) {
+        if (sideDistX < sideDistY) {
+            sideDistX += deltaDistX;
+            mapX += stepX;
+            side = 0;
+        } else {
+            sideDistY += deltaDistY;
+            mapY += stepY;
+            side = 1;
+        }
+
+        if (
+            mapY < 0 ||
+            mapY >= maze.length ||
+            mapX < 0 ||
+            mapX >= maze[mapY].length
+        ) {
+            break;
+        }
+
+        if (maze[mapY][mapX] === "#") {
+            hit = true;
+        }
+    }
+
+    if (!hit) {
+        return {
+            distance: MAX_RAY_DISTANCE,
+            side,
+            wallX: 0,
+            mapX,
+            mapY
+        };
+    }
+
+    if (side === 0) {
+        distance = (mapX - player.x + (1 - stepX) / 2) / rayDirX;
+    } else {
+        distance = (mapY - player.y + (1 - stepY) / 2) / rayDirY;
+    }
+
+    distance = Math.max(.0001, distance);
+
+    let wallX;
+
+    if (side === 0) {
+        wallX = player.y + distance * rayDirY;
+    } else {
+        wallX = player.x + distance * rayDirX;
+    }
+
+    wallX -= Math.floor(wallX);
+
+    return {
+        distance,
+        side,
+        wallX,
+        mapX,
+        mapY
+    };
+}
+
+/* =====================================================
+   PROCEDURAL 3D MATERIAL SYSTEM
+===================================================== */
+
+/*
+   The original version drew every wall as a flat 2D rectangle.
+   The 3D version creates small procedural textures once and
+   reuses them during the raycasting pass. No external texture
+   files are required for the arcade itself.
+*/
+
+const wallTextureCanvas = document.createElement("canvas");
+const wallTextureContext = wallTextureCanvas.getContext("2d");
+
+const floorTextureCanvas = document.createElement("canvas");
+const floorTextureContext = floorTextureCanvas.getContext("2d");
+
+const ceilingTextureCanvas = document.createElement("canvas");
+const ceilingTextureContext = ceilingTextureCanvas.getContext("2d");
+
+const wallTextureSize = 128;
+const floorTextureSize = 128;
+const ceilingTextureSize = 128;
+
+function buildWallTexture() {
+    wallTextureCanvas.width = wallTextureSize;
+    wallTextureCanvas.height = wallTextureSize;
+
+    const context = wallTextureContext;
+
+    context.clearRect(
+        0,
+        0,
+        wallTextureSize,
+        wallTextureSize
+    );
+
+    const baseGradient = context.createLinearGradient(
+        0,
+        0,
+        0,
+        wallTextureSize
+    );
+
+    baseGradient.addColorStop(
+        0,
+        "#353a45"
+    );
+
+    baseGradient.addColorStop(
+        .5,
+        "#252a33"
+    );
+
+    baseGradient.addColorStop(
+        1,
+        "#171a20"
+    );
+
+    context.fillStyle = baseGradient;
+
+    context.fillRect(
+        0,
+        0,
+        wallTextureSize,
+        wallTextureSize
+    );
+
+    for (let y = 0; y < wallTextureSize; y += 16) {
+        context.fillStyle = "rgba(0,0,0,.12)";
+
+        context.fillRect(
+            0,
+            y,
+            wallTextureSize,
+            2
+        );
+    }
+
+    for (let x = 0; x < wallTextureSize; x += 32) {
+        context.fillStyle = "rgba(255,255,255,.035)";
+
+        context.fillRect(
+            x,
+            0,
+            2,
+            wallTextureSize
+        );
+    }
+
+    /* Repeating fluorescent panels. */
+
+    for (let y = 10; y < wallTextureSize; y += 32) {
+        context.fillStyle = "#222831";
+
+        context.fillRect(
+            8,
+            y,
+            wallTextureSize - 16,
+            16
+        );
+
+        context.fillStyle = "#4b535f";
+
+        context.fillRect(
+            12,
+            y + 4,
+            wallTextureSize - 24,
+            4
+        );
+
+        context.fillStyle = "#6be5ff";
+
+        context.fillRect(
+            16,
+            y + 5,
+            wallTextureSize - 32,
+            2
+        );
+    }
+
+    /* Small warning lights. */
+
+    context.fillStyle = "#ff3b65";
+
+    context.beginPath();
+
+    context.arc(
+        20,
+        118,
+        4,
+        0,
+        Math.PI * 2
+    );
+
+    context.fill();
+
+    context.fillStyle = "#ffe35c";
+
+    context.beginPath();
+
+    context.arc(
+        108,
+        118,
+        4,
+        0,
+        Math.PI * 2
+    );
+
+    context.fill();
+}
+
+function buildFloorTexture() {
+    floorTextureCanvas.width = floorTextureSize;
+    floorTextureCanvas.height = floorTextureSize;
+
+    const context = floorTextureContext;
+
+    context.clearRect(
+        0,
+        0,
+        floorTextureSize,
+        floorTextureSize
+    );
+
+    context.fillStyle = "#15151a";
+
+    context.fillRect(
+        0,
+        0,
+        floorTextureSize,
+        floorTextureSize
+    );
+
+    context.strokeStyle = "rgba(255,255,255,.07)";
+    context.lineWidth = 2;
+
+    for (let i = 0; i <= floorTextureSize; i += 16) {
+        context.beginPath();
+        context.moveTo(i, 0);
+        context.lineTo(i, floorTextureSize);
+        context.stroke();
+
+        context.beginPath();
+        context.moveTo(0, i);
+        context.lineTo(floorTextureSize, i);
+        context.stroke();
+    }
+
+    context.strokeStyle = "rgba(255,20,147,.045)";
+    context.lineWidth = 1;
+
+    for (let i = -floorTextureSize; i < floorTextureSize * 2; i += 32) {
+        context.beginPath();
+        context.moveTo(i, 0);
+        context.lineTo(i + floorTextureSize, floorTextureSize);
+        context.stroke();
+    }
+}
+
+function buildCeilingTexture() {
+    ceilingTextureCanvas.width = ceilingTextureSize;
+    ceilingTextureCanvas.height = ceilingTextureSize;
+
+    const context = ceilingTextureContext;
+
+    context.clearRect(
+        0,
+        0,
+        ceilingTextureSize,
+        ceilingTextureSize
+    );
+
+    context.fillStyle = "#171923";
+
+    context.fillRect(
+        0,
+        0,
+        ceilingTextureSize,
+        ceilingTextureSize
+    );
+
+    context.fillStyle = "rgba(255,255,255,.055)";
+
+    for (let y = 8; y < ceilingTextureSize; y += 32) {
+        context.fillRect(
+            8,
+            y,
+            ceilingTextureSize - 16,
+            12
+        );
+    }
+
+    context.fillStyle = "rgba(91,224,255,.13)";
+
+    for (let y = 11; y < ceilingTextureSize; y += 32) {
+        context.fillRect(
+            15,
+            y,
+            ceilingTextureSize - 30,
+            2
+        );
+    }
+}
+
+buildWallTexture();
+buildFloorTexture();
+buildCeilingTexture();
+
+/* =====================================================
+   3D LIGHTING HELPERS
+===================================================== */
+
+function getDistanceFog(distance) {
+    return clamp(
+        1 - distance / MAX_RAY_DISTANCE,
+        .08,
+        1
+    );
+}
+
+function shadeRGB(red, green, blue, brightness) {
+    const amount = clamp(
+        brightness,
+        0,
+        1
+    );
+
+    return `rgb(${Math.floor(red * amount)},${Math.floor(green * amount)},${Math.floor(blue * amount)})`;
+}
+
+function drawVerticalFog(screenX, screenWidth, top, bottom, distance) {
+    const fogAmount = clamp(
+        distance / MAX_RAY_DISTANCE,
+        0,
+        .82
+    );
+
+    if (fogAmount <= 0) {
+        return;
+    }
+
+    ctx.fillStyle = `rgba(20,23,35,${fogAmount * .55})`;
+
+    ctx.fillRect(
+        screenX,
+        top,
+        screenWidth,
+        bottom - top
+    );
+}
+
+/* =====================================================
+   PERSPECTIVE FLOOR / CEILING PASS
+===================================================== */
+
+function drawPerspectiveGround() {
+    const width = arcadeCanvas.width;
+    const height = arcadeCanvas.height;
+
+    const horizon = height * .5;
+    const cameraHeight = .5;
+
+    const rayLeftAngle = player.angle - HALF_FOV;
+    const rayRightAngle = player.angle + HALF_FOV;
+
+    const rayLeftX = Math.cos(rayLeftAngle);
+    const rayLeftY = Math.sin(rayLeftAngle);
+
+    const rayRightX = Math.cos(rayRightAngle);
+    const rayRightY = Math.sin(rayRightAngle);
+
+    const rowStep = 2;
+
+    for (let screenY = Math.floor(horizon + 2); screenY < height; screenY += rowStep) {
+        const denominator = screenY - horizon;
+
+        if (denominator <= 0) {
+            continue;
+        }
+
+        const rowDistance =
+            (cameraHeight * height) /
+            denominator;
+
+        const leftWorldX =
+            player.x + rowDistance * rayLeftX;
+
+        const leftWorldY =
+            player.y + rowDistance * rayLeftY;
+
+        const rightWorldX =
+            player.x + rowDistance * rayRightX;
+
+        const rightWorldY =
+            player.y + rowDistance * rayRightY;
+
+        const distanceShade = clamp(
+            1 - rowDistance / MAX_RAY_DISTANCE,
+            .08,
+            .85
+        );
+
+        const tileScale = 4;
+
+        const sampleX =
+            Math.floor(
+                ((leftWorldX + leftWorldY) * tileScale) % floorTextureSize
+            );
+
+        const sampleY =
+            Math.floor(
+                ((rightWorldX - rightWorldY) * tileScale) % floorTextureSize
+            );
+
+        const normalizedSampleX =
+            ((sampleX % floorTextureSize) + floorTextureSize) % floorTextureSize;
+
+        const normalizedSampleY =
+            ((sampleY % floorTextureSize) + floorTextureSize) % floorTextureSize;
+
+        const tileValue =
+            (normalizedSampleX + normalizedSampleY) % 32;
+
+        if (tileValue < 2) {
+            ctx.fillStyle = shadeRGB(
+                90,
+                86,
+                100,
+                distanceShade
+            );
+        } else {
+            ctx.fillStyle = shadeRGB(
+                35,
+                34,
+                40,
+                distanceShade
+            );
+        }
+
+        ctx.fillRect(
+            0,
+            screenY,
+            width,
+            rowStep + 1
+        );
+    }
+
+    /* Ceiling strips. */
+
+    for (let screenY = 0; screenY < Math.floor(horizon); screenY += rowStep) {
+        const verticalDistance =
+            horizon - screenY;
+
+        const shade = clamp(
+            1 - verticalDistance / height,
+            .08,
+            .7
+        );
+
+        ctx.fillStyle = shadeRGB(
+            22,
+            25,
+            35,
+            shade
+        );
+
+        ctx.fillRect(
+            0,
+            screenY,
+            width,
+            rowStep + 1
+        );
+    }
+}
+
+/* =====================================================
+   FIRST-PERSON CAMERA MOTION
+===================================================== */
+
+let cameraBobTime = 0;
+let cameraBobAmount = 0;
+let wallBumpTime = 0;
+
+function updateCameraBob(dt) {
+    const moving =
+        Math.abs(getForwardInput()) > .05 ||
+        Math.abs(getStrafeInput()) > .05 ||
+        Math.abs(getMobileForwardInput()) > .05;
+
+    if (moving && inArcade && arcadeRunning) {
+        cameraBobTime += dt * 8;
+        cameraBobAmount = Math.min(
+            .014,
+            cameraBobAmount + dt * .12
+        );
+    } else {
+        cameraBobAmount = Math.max(
+            0,
+            cameraBobAmount - dt * .22
+        );
+    }
+}
+
+function getCameraBobOffset() {
+    return Math.sin(cameraBobTime) * cameraBobAmount;
+}
+
+/* =====================================================
+   3D WORLD DRAWING: SKY AND FLOOR
+===================================================== */
+
+function drawSkyAndFloor() {
+    const width = arcadeCanvas.width;
+    const height = arcadeCanvas.height;
+    const horizon = height * .5;
+
+    const skyGradient = ctx.createLinearGradient(0, 0, 0, horizon);
+    skyGradient.addColorStop(0, "#58c8ef");
+    skyGradient.addColorStop(.55, "#a9ecf7");
+    skyGradient.addColorStop(1, "#ffe0a6");
+    ctx.fillStyle = skyGradient;
+    ctx.fillRect(0, 0, width, horizon);
+
+    /* Game-center ceiling panels and neon signs. */
+    ctx.fillStyle = "rgba(255,255,255,.78)";
+    for (let i = 0; i < 8; i++) {
+        const x = i * width / 8 + width * .03;
+        ctx.fillRect(x, horizon * .22, width * .10, 5);
+    }
+
+    ctx.font = `bold ${Math.max(18, width * .035)}px Arial`;
+    ctx.textAlign = "center";
+    ctx.fillStyle = "rgba(230,55,130,.72)";
+    ctx.fillText("TOHKATSU GAME CENTER", width / 2, horizon * .18);
+
+    const floorGradient = ctx.createLinearGradient(0, horizon, 0, height);
+    floorGradient.addColorStop(0, "#ffc4d8");
+    floorGradient.addColorStop(.5, "#7fd4e8");
+    floorGradient.addColorStop(1, "#f5c85c");
+    ctx.fillStyle = floorGradient;
+    ctx.fillRect(0, horizon, width, height - horizon);
+
+    ctx.strokeStyle = "rgba(255,255,255,.28)";
+    ctx.lineWidth = 2;
+    for (let y = horizon + 20; y < height; y += 26) {
+        ctx.beginPath();
+        ctx.moveTo(0, y);
+        ctx.lineTo(width, y);
+        ctx.stroke();
+    }
+}
+
+/* =====================================================
+   WALL SLICE DRAWING
+===================================================== */
+
+function drawWallSlice(screenX, screenWidth, ray) {
+    const height = arcadeCanvas.height;
+
+    const correctedDistance = ray.distance *
+        Math.cos(normalizeAngle(player.angle - ray.angle));
+    const safeDistance = Math.max(.0001, correctedDistance);
+    const wallHeight = (height * WALL_HEIGHT) / safeDistance;
+    const top = (height - wallHeight) / 2;
+    const bottom = top + wallHeight;
+
+    const distanceBrightness = clamp(1 - safeDistance / MAX_RAY_DISTANCE, .16, 1);
+    const sideBrightness = ray.side === 1 ? .72 : 1;
+    const brightness = distanceBrightness * sideBrightness;
+
+    /* Each wall cell is split into several arcade panels. */
+    const panel = Math.floor(ray.wallX * 8);
+    const palette = [
+        [39, 58, 83], [46, 43, 82], [31, 70, 88], [55, 44, 91],
+        [34, 63, 78], [47, 39, 76], [35, 78, 91], [52, 48, 83]
+    ];
+    const base = palette[panel % palette.length];
+    const red = Math.floor(base[0] * brightness);
+    const green = Math.floor(base[1] * brightness);
+    const blue = Math.floor(base[2] * brightness);
+
+    ctx.fillStyle = `rgb(${red},${green},${blue})`;
+    ctx.fillRect(screenX, top, Math.ceil(screenWidth + 1), wallHeight);
+
+    /* Panel seams and bright arcade trim. */
+    const seam = Math.max(1, wallHeight * .018);
+    ctx.fillStyle = `rgba(7,12,24,${.34 + (1 - brightness) * .2})`;
+    ctx.fillRect(screenX, top + wallHeight * .22, Math.ceil(screenWidth + 1), seam);
+    ctx.fillRect(screenX, top + wallHeight * .73, Math.ceil(screenWidth + 1), seam);
+
+    const neon = panel % 3 === 0 ? [255, 61, 174] : panel % 3 === 1 ? [69, 226, 255] : [255, 220, 82];
+    const neonAlpha = .30 * brightness;
+    ctx.fillStyle = `rgba(${neon[0]},${neon[1]},${neon[2]},${neonAlpha})`;
+    ctx.fillRect(screenX, top + wallHeight * .11, Math.ceil(screenWidth + 1), Math.max(1, wallHeight * .025));
+
+    if (panel % 2 === 0 && wallHeight > 70) {
+        ctx.fillStyle = `rgba(${neon[0]},${neon[1]},${neon[2]},${.22 * brightness})`;
+        ctx.fillRect(screenX, top + wallHeight * .38, Math.ceil(screenWidth + 1), Math.max(1, wallHeight * .018));
+    }
+
+    /* Bright ceiling/floor rails make the corridor read as an arcade. */
+    ctx.fillStyle = `rgba(255,255,255,${.10 * brightness})`;
+    ctx.fillRect(screenX, top, Math.ceil(screenWidth + 1), Math.max(1, wallHeight * .018));
+    ctx.fillStyle = `rgba(8,10,18,${.30 + (1 - brightness) * .24})`;
+    ctx.fillRect(screenX, bottom - Math.max(2, wallHeight * .06), Math.ceil(screenWidth + 1), Math.max(2, wallHeight * .06));
+}
+
+
+/* =====================================================
+   SPRITE PROJECTION
+===================================================== */
+
+function projectSprite(entity, kind) {
+    const dx = entity.x - player.x;
+    const dy = entity.y - player.y;
+
+    const distance = Math.hypot(dx, dy);
+
+    const angle = normalizeAngle(
+        Math.atan2(dy, dx) - player.angle
+    );
+
+    const correctedDistance =
+        distance * Math.cos(angle);
+
+    if (correctedDistance <= .1) {
+        return null;
+    }
+
+    if (Math.abs(angle) > HALF_FOV + .35) {
+        return null;
+    }
+
+    const width = arcadeCanvas.width;
+    const height = arcadeCanvas.height;
+
+    const screenX =
+        width / 2 +
+        (Math.tan(angle) / Math.tan(HALF_FOV)) *
+        (width / 2);
+
+    const size =
+        (height / correctedDistance) *
+        (kind === "teacher" ? .78 : .58);
+
+    return {
+        distance,
+        correctedDistance,
+        screenX,
+        size,
+        top: height / 2 - size * .5
+    };
+}
+
+/* =====================================================
+   DRAW TEACHER BILLBOARDS
+===================================================== */
+
+function drawTeacherSprite(teacher, depthBuffer) {
+    const projection = projectSprite(teacher, "teacher");
+
+    if (!projection) {
+        return;
+    }
+
+    const width = projection.size * .38;
+    const height = projection.size;
+    const left = projection.screenX - width / 2;
+    const top = projection.top;
+
+    const centerColumn = Math.floor(projection.screenX);
+
+    if (
+        centerColumn < 0 ||
+        centerColumn >= depthBuffer.length
+    ) {
+        return;
+    }
+
+    if (projection.correctedDistance > depthBuffer[centerColumn]) {
+        return;
+    }
+
+    ctx.save();
+
+    /* Teacher shadow / glow. */
+    ctx.fillStyle = "rgba(0,0,0,.35)";
+    ctx.beginPath();
+    ctx.ellipse(
+        projection.screenX,
+        top + height * .97,
+        width * .7,
+        height * .08,
+        0,
+        0,
+        Math.PI * 2
+    );
+    ctx.fill();
+
+    /* Head. */
+    ctx.fillStyle = "#050505";
+    ctx.beginPath();
+    ctx.arc(
+        projection.screenX,
+        top + height * .17,
+        width * .43,
+        0,
+        Math.PI * 2
+    );
+    ctx.fill();
+
+    /* Body. */
+    ctx.beginPath();
+    ctx.moveTo(
+        projection.screenX - width * .5,
+        top + height * .30
+    );
+    ctx.lineTo(
+        projection.screenX + width * .5,
+        top + height * .30
+    );
+    ctx.lineTo(
+        projection.screenX + width * .62,
+        top + height * .91
+    );
+    ctx.lineTo(
+        projection.screenX - width * .62,
+        top + height * .91
+    );
+    ctx.closePath();
+    ctx.fill();
+
+    /* Eyes. */
+    ctx.fillStyle = "#ffffff";
+    ctx.beginPath();
+    ctx.arc(
+        projection.screenX - width * .15,
+        top + height * .16,
+        Math.max(1, width * .055),
+        0,
+        Math.PI * 2
+    );
+    ctx.arc(
+        projection.screenX + width * .15,
+        top + height * .16,
+        Math.max(1, width * .055),
+        0,
+        Math.PI * 2
+    );
+    ctx.fill();
+
+    /* Chase indicator. */
+    if (teacher.chasing) {
+        ctx.fillStyle = "rgba(255,40,100,.8)";
+        ctx.font = `bold ${Math.max(10, width * .5)}px Arial`;
+        ctx.textAlign = "center";
+        ctx.fillText("!", projection.screenX, top - height * .05);
+    }
+
+    ctx.restore();
+}
+
+/* =====================================================
+   DRAW EXIT BILLBOARD
+===================================================== */
+
+function drawExit(depthBuffer) {
+    const projection = projectSprite(
+        exitPoint,
+        "exit"
+    );
+
+    if (!projection) {
+        return;
+    }
+
+    const centerColumn = Math.floor(projection.screenX);
+
+    if (
+        centerColumn < 0 ||
+        centerColumn >= depthBuffer.length
+    ) {
+        return;
+    }
+
+    if (projection.correctedDistance > depthBuffer[centerColumn]) {
+        return;
+    }
+
+    const size = projection.size * .55;
+    const left = projection.screenX - size * .65;
+    const top = arcadeCanvas.height / 2 - size * .45;
+
+    const pulse = 1 + Math.sin(performance.now() / 120) * .08;
+
+    ctx.save();
+
+    ctx.shadowBlur = 25;
+    ctx.shadowColor = "#ff1493";
+
+    ctx.fillStyle = "#ff1744";
+    ctx.fillRect(
+        left,
+        top,
+        size * 1.3,
+        size * .75
+    );
+
+    ctx.shadowBlur = 0;
+
+    ctx.fillStyle = "white";
+    ctx.font = `bold ${Math.max(10, size * .24)}px Arial`;
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
+
+    ctx.translate(
+        projection.screenX,
+        top + size * .38
+    );
+
+    ctx.scale(pulse, pulse);
+
+    ctx.fillText("EXIT", 0, 0);
+
+    ctx.restore();
+}
+
+/* =====================================================
+   3D DRAW LOOP
+===================================================== */
+
+function drawArcade() {
+    const width = arcadeCanvas.width;
+    const height = arcadeCanvas.height;
+
+    drawSkyAndFloor();
+
+    const bobOffset = getCameraBobOffset();
+
+    ctx.save();
+    ctx.translate(0, bobOffset * height);
+
+    drawPerspectiveGround();
+
+    const depthBuffer = new Array(renderColumns);
+
+    for (let column = 0; column < renderColumns; column++) {
+        const normalized =
+            (column + .5) / renderColumns;
+
+        const rayAngle =
+            player.angle -
+            HALF_FOV +
+            normalized * FIELD_OF_VIEW;
+
+        const ray = castRay(rayAngle);
+        ray.angle = rayAngle;
+
+        depthBuffer[column] =
+            ray.distance *
+            Math.cos(
+                normalizeAngle(
+                    player.angle - rayAngle
+                )
+            );
+
+        const screenX =
+            column * width / renderColumns;
+
+        const screenWidth =
+            width / renderColumns + .8;
+
+        drawWallSlice(
+            screenX,
+            screenWidth,
+            ray
+        );
+    }
+
+    const sortedTeachers = [...teachers].sort((a, b) => {
+        return distanceBetween(b, player) - distanceBetween(a, player);
+    });
+
+    for (const teacher of sortedTeachers) {
+        drawTeacherSprite(teacher, depthBuffer);
+    }
+
+    drawExit(depthBuffer);
+
+    ctx.restore();
+    drawMiniMap();
+}
+
+/* =====================================================
+   MINI MAP
+===================================================== */
+
+function drawMiniMap() {
+    const map = document.getElementById("miniMap");
+    const mctx = map.getContext("2d");
+    const w = map.width;
+    const h = map.height;
+    const cellW = w / maze[0].length;
+    const cellH = h / maze.length;
+
+    mctx.clearRect(0, 0, w, h);
+    mctx.fillStyle = "rgba(10,35,55,.92)";
+    mctx.fillRect(0, 0, w, h);
+
+    for (let y = 0; y < maze.length; y++) {
+        for (let x = 0; x < maze[y].length; x++) {
+            mctx.fillStyle = maze[y][x] === "#" ? "#244f63" : "#f3fbf7";
+            mctx.fillRect(x * cellW, y * cellH, Math.ceil(cellW), Math.ceil(cellH));
+        }
+    }
+
+    function point(entity, color, radius) {
+        mctx.fillStyle = color;
+        mctx.beginPath();
+        mctx.arc((entity.x) * cellW, (entity.y) * cellH, radius, 0, Math.PI * 2);
+        mctx.fill();
+    }
+
+    point(exitPoint, "#35d16f", 4);
+    teachers.forEach(t => point(t, "#ef4f68", 4));
+    point(player, "#2c72ff", 5);
+
+    mctx.strokeStyle = "#2c72ff";
+    mctx.lineWidth = 2;
+    mctx.beginPath();
+    mctx.moveTo(player.x * cellW, player.y * cellH);
+    mctx.lineTo(
+        (player.x + Math.cos(player.angle) * 1.8) * cellW,
+        (player.y + Math.sin(player.angle) * 1.8) * cellH
+    );
+    mctx.stroke();
+
+    mctx.fillStyle = "rgba(255,255,255,.9)";
+    mctx.font = "bold 10px Arial";
+    mctx.fillText("YOU", 6, 12);
+    mctx.fillStyle = "#ef4f68";
+    mctx.fillText("TEACHER", 45, 12);
+}
+
+/* =====================================================
+   EXIT CHECK
+===================================================== */
+
+function checkArcadeExit() {
+    if (
+        distanceBetween(player, exitPoint) < .85
+    ) {
+        arcadeSuccess();
+    }
+}
+
+/* =====================================================
+   START ARCADE
+===================================================== */
+
+async function startArcadeIntro(){
+    if(ending||inArcade||arcadeIntroPlaying)return;
+    document.getElementById("choiceBox").style.display="none";document.getElementById("loveGauge").classList.add("hidden");document.getElementById("dialogueBox").style.display="block";document.getElementById("background").className="school";document.getElementById("missionCard").classList.remove("active");arcadeIntroPlaying=true;
+    const lines=[
+        {speaker:mainName(),text:"It's our first day, but how about we skip school and go to the arcade?",side:"left"},
+        {speaker:boyName(),text:"What? Seriously...",side:"right"},
+        {speaker:mainName(),text:"Just come on!!",side:"left"},
+        {speaker:"Narration",text:"Hanako grabs his hand, and the two of them run toward the game center.",side:"center"},
+        {speaker:mainName(),text:"Look! There are so many games!",side:"left"},
+        {speaker:boyName(),text:"...Fine. Which one should we play first?",side:"right"},
+        {speaker:mainName(),text:"Hmm... what about this one?",side:"left"},
+        {speaker:"Teacher",text:"Hey! "+boyName()+"! Hanako!",side:"right"},
+        {speaker:mainName(),text:"Shh!!",side:"left"},
+        {speaker:boyName(),text:"Who is that?",side:"right"},
+        {speaker:mainName(),text:"Our teacher! Let's get out of here together!",side:"left"}
+    ];
+    for(const line of lines){
+        if(line.speaker==="Narration"){
+            clearCharacters();await say(line.speaker,line.text,"normal","center");document.getElementById("runHanako").innerHTML=characterArtSvg("Hanako");document.getElementById("runBoy").innerHTML=`<img class="runArt" src="${boyData().image}" alt="${boyName()}">`;const run=document.getElementById("runTransition");run.classList.add("active");await new Promise(r=>setTimeout(r,1150));run.classList.remove("active");document.getElementById("background").className="arcade";await waitForDialogueAdvance();
+        }else{await say(line.speaker,line.text,"normal",line.side);await waitForDialogueAdvance();}
+    }
+    const card=document.getElementById("missionCard");card.classList.add("active");await new Promise(r=>setTimeout(r,1500));card.classList.remove("active");arcadeIntroPlaying=false;startArcade();actionLocked=false;
+}
+
+function resetArcadeWorld() {
+    player.x = 1.5;
+    player.y = 1.5;
+    player.angle = 0;
+    player.stamina = 100;
+    teachers = [
+        { x: 27.5, y: 17.5, angle: 0, chasing: false, pathTimer: 0, path: null, direction: 0 },
+        { x: 37.5, y: 27.5, angle: Math.PI / 2, chasing: false, pathTimer: 0, path: null, direction: 1 },
+        { x: 49.5, y: 33.5, angle: Math.PI, chasing: false, pathTimer: 0, path: null, direction: 2 }
+    ];
+    exitPoint = { x: 53.5, y: 33.5 };
+    joystickX = 0;
+    joystickY = 0;
+    lookX = 0;
+    dashTouch = false;
+    document.getElementById("dashButton").classList.remove("active");
+    document.getElementById("captureTeacherFocus").classList.remove("active");
+    cameraBobTime = 0;
+    cameraBobAmount = 0;
+    screenLookActive = false;
+    screenLookPointerId = null;
+    resetJoystick();
+}
+
+function startArcade() {
+    resetArcadeWorld();
+    inArcade = true;
+    arcadeRunning = true;
+
+    document.getElementById("arcadeScreen").style.display = "block";
+    document.getElementById("dialogueBox").style.display = "none";
+    document.getElementById("choiceBox").style.display = "none";
+
+    document.getElementById("background").className = "arcade";
+    document.getElementById("miniMap").style.display = "block";
+
+    document.getElementById("captureOverlay").style.display = "none";
+    document.getElementById("darkFade").style.opacity = "0";
+
+    previousTime = performance.now();
+}
+
+/* =====================================================
+   ARCADE LOOP
+===================================================== */
+
+function arcadeLoop(time) {
+    const dt = Math.min(
+        .05,
+        (time - previousTime) / 1000
+    );
+
+    previousTime = time;
+
+    if (inArcade && arcadeRunning) {
+        updatePlayer(dt);
+        updateTeachers(dt);
+        updateCameraBob(dt);
+        checkArcadeExit();
+        drawArcade();
+    }
+
+    requestAnimationFrame(arcadeLoop);
+}
+
+requestAnimationFrame(arcadeLoop);
+
+/* =====================================================
+   CAPTURE
+===================================================== */
+
+function capturePlayer(caughtTeacher = null) {
+    if (!arcadeRunning) {
+        return;
+    }
+
+    if (caughtTeacher) {
+        player.angle = Math.atan2(caughtTeacher.y - player.y, caughtTeacher.x - player.x);
+    }
+
+    arcadeRunning = false;
+    lookX = 0;
+    resetJoystick();
+    captureStep = 0;
+
+    const focus = document.getElementById("captureTeacherFocus");
+    focus.innerHTML = characterArtSvg("Teacher");
+    focus.classList.remove("active");
+    void focus.offsetWidth;
+    focus.classList.add("active");
+
+    document.getElementById("captureOverlay").style.display = "block";
+    document.getElementById("captureSpeaker").textContent = "Teacher";
+    document.getElementById("captureText").textContent = "What are you doing!?!?";
+}
+
+function advanceCapture() {
+    if (!inArcade || arcadeRunning) {
+        return;
+    }
+
+    captureStep++;
+
+    if (captureStep === 1) {
+        document.getElementById("captureSpeaker").textContent = boyName();
+        document.getElementById("captureText").textContent =
+            mainName() +
+            " take me powerfully to here. I don't want to come here.";
+    } else {
+        document.getElementById("captureOverlay").style.display = "none";
+        heartBreakArcade();
+    }
+}
+
+document.getElementById("captureOverlay").addEventListener(
+    "click",
+    advanceCapture
+);
+
+document.addEventListener("keydown", event => {
+    if (
+        event.code === "Space" &&
+        inArcade &&
+        !arcadeRunning
+    ) {
+        event.preventDefault();
+        advanceCapture();
+    }
+});
+
+/* =====================================================
+   HEART BREAK
+===================================================== */
+
+function heartBreakArcade() {
+    const fade = document.getElementById("darkFade");
+    fade.style.opacity = 0;
+
+    let opacity = 0;
+
+    const timer = setInterval(() => {
+        opacity += .035;
+        fade.style.opacity = opacity;
+
+        if (opacity >= 1) {
+            clearInterval(timer);
+
+            inArcade = false;
+            arcadeRunning = false;
+
+            showGameOver("The teacher caught you.");
+        }
+    }, 40);
+}
+
+/* =====================================================
+   ARCADE SUCCESS
+===================================================== */
+
+async function arcadeSuccess(){
+    if(!inArcade||!arcadeRunning)return;arcadeRunning=false;inArcade=false;actionLocked=true;love+=80;updateLove();document.getElementById("arcadeScreen").style.display="none";document.getElementById("miniMap").style.display="none";document.getElementById("dialogueBox").style.display="block";document.getElementById("background").className="arcade";
+    await say(mainName(),"That was fun! I'm glad we made it.","happy","left");await waitForDialogueAdvance();await say(boyName(),"Yeah... We really made it.","happy","right");await waitForDialogueAdvance();await say(mainName(),"Yay!","happy","left");await waitForDialogueAdvance();await say(mainName(),"Um! Will you go out with me?","shy","left");await waitForDialogueAdvance();showEnding("HAPPY END","They escaped the game center together — and Hanako finally confessed.\n\nThey decided to start dating.","dating");
+}
+
+/* =====================================================
+   MOBILE JOYSTICK
+===================================================== */
+
+const joystick = document.getElementById("joystick");
+const knob = document.getElementById("joystickKnob");
+let joystickActive = false;
+
+function updateJoystick(clientX, clientY) {
+    const rect = joystick.getBoundingClientRect();
+
+    const centerX = rect.left + rect.width / 2;
+    const centerY = rect.top + rect.height / 2;
+
+    let dx = clientX - centerX;
+    let dy = clientY - centerY;
+
+    const max = rect.width / 2 - 32;
+    const distance = Math.hypot(dx, dy);
+
+    if (distance > max) {
+        dx = dx / distance * max;
+        dy = dy / distance * max;
+    }
+
+    knob.style.transform = `translate(${dx}px, ${dy}px)`;
+
+    joystickX = dx / max;
+    joystickY = dy / max;
+}
+
+function resetJoystick() {
+    joystickActive = false;
+    joystickX = 0;
+    joystickY = 0;
+    knob.style.transform = "translate(0, 0)";
+}
+
+joystick.addEventListener("pointerdown", event => {
+    joystickActive = true;
+    joystick.setPointerCapture(event.pointerId);
+    updateJoystick(event.clientX, event.clientY);
+});
+
+joystick.addEventListener("pointermove", event => {
+    if (joystickActive) {
+        updateJoystick(event.clientX, event.clientY);
+    }
+});
+
+joystick.addEventListener("pointerup", resetJoystick);
+joystick.addEventListener("pointercancel", resetJoystick);
+
+/* =====================================================
+   WHOLE-SCREEN LOOK CONTROL
+===================================================== */
+
+let screenLookActive = false;
+let screenLookPointerId = null;
+let screenLookLastX = 0;
+const arcadeScreenElement = document.getElementById("arcadeScreen");
+
+arcadeScreenElement.addEventListener("pointerdown", event => {
+    if (!inArcade || !arcadeRunning) return;
+    if (event.target.closest("#joystick, #dashButton, #miniMap, #arcadeHUD")) return;
+    screenLookActive = true;
+    screenLookPointerId = event.pointerId;
+    screenLookLastX = event.clientX;
+    arcadeScreenElement.setPointerCapture?.(event.pointerId);
+    event.preventDefault();
+});
+
+arcadeScreenElement.addEventListener("pointermove", event => {
+    if (!screenLookActive || event.pointerId !== screenLookPointerId) return;
+    const dx = event.clientX - screenLookLastX;
+    screenLookLastX = event.clientX;
+    player.angle = normalizeAngle(player.angle + dx * .014);
+    event.preventDefault();
+});
+
+function endScreenLook(event) {
+    if (!screenLookActive) return;
+    if (event && event.pointerId !== screenLookPointerId) return;
+    screenLookActive = false;
+    screenLookPointerId = null;
+}
+
+arcadeScreenElement.addEventListener("pointerup", endScreenLook);
+arcadeScreenElement.addEventListener("pointercancel", endScreenLook);
+
+/* =====================================================
+   MOBILE LOOK PAD
+===================================================== */
+
+const lookPad = document.getElementById("lookPad");
+let lookActive = false;
+let lookLastX = 0;
+
+lookPad.addEventListener("pointerdown", event => {
+    event.preventDefault();
+    lookActive = true;
+    lookLastX = event.clientX;
+    lookPad.setPointerCapture?.(event.pointerId);
+});
+
+lookPad.addEventListener("pointermove", event => {
+    if (!lookActive) return;
+    const dx = event.clientX - lookLastX;
+    lookLastX = event.clientX;
+    lookX = clamp(dx * .12, -1, 1);
+});
+
+function resetLook() {
+    lookActive = false;
+    lookX = 0;
+}
+
+lookPad.addEventListener("pointerup", resetLook);
+lookPad.addEventListener("pointercancel", resetLook);
+
+/* =====================================================
+   MOBILE DASH
+===================================================== */
+
+const dashButton = document.getElementById("dashButton");
+
+dashButton.addEventListener("pointerdown", event => {
+    event.preventDefault();
+    if (!inArcade || !arcadeRunning) return;
+    dashTouch = !dashTouch;
+    dashButton.classList.toggle("active", dashTouch);
+});
+
+dashButton.addEventListener("pointerup", event => event.preventDefault());
+dashButton.addEventListener("pointercancel", event => event.preventDefault());
+
+/* =====================================================
+   INITIAL SETTINGS
+===================================================== */
+
+setDeviceMode(savedMode || "pc");
+</script>
+</body>
+</html>
