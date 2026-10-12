@@ -3984,7 +3984,7 @@ let arcadeElapsed = 0;
 function makeTeacher(x,y,angle=0,kind="fast"){
     return {x,y,angle,kind,chasing:false,path:null,wanderTarget:null,wanderTimer:0,
         wanderDir:Math.floor(Math.random()*4),lastWanderTile:null,wanderHistory:[],trapApproachTimer:0,
-        chaseElapsed:0,farPathTimer:0,chaseCooldown:0};
+        chaseElapsed:0,farPathTimer:0,chaseCooldown:0, pathRefreshTimer:0, cachedPathDistance:Infinity, cachedPlayerTile:""};
 }
 function findNearestWalkable(x, y, minDistance = 0) {
     if (isWalkableTile(x, y) && distanceBetween({x, y}, player) >= minDistance) return {x, y};
@@ -4739,8 +4739,19 @@ function updateTeachers(dt) {
         teacher.trapApproachTimer=Math.max(0,(teacher.trapApproachTimer||0)-dt);
 
         const direct=distanceBetween(teacher,player);
-        const pathDistance=getPathDistance(teacher.x,teacher.y,player.x,player.y,WARNING_PATH_DISTANCE+1);
         const restricted=teacher.kind==="restricted";
+        // Path-distance BFS is only for deciding chase start/end, not movement.
+        // Keep the cached value for longer: refresh at most about twice per second,
+        // and only early-refresh when the player changes tile. Teacher tile changes
+        // alone do not trigger another BFS, which was a major source of chase stutter.
+        teacher.pathRefreshTimer=Math.max(0,(teacher.pathRefreshTimer||0)-dt);
+        const playerTileKey=`${Math.floor(player.x)},${Math.floor(player.y)}`;
+        if(teacher.pathRefreshTimer<=0 || teacher.cachedPlayerTile!==playerTileKey){
+            teacher.cachedPathDistance=getPathDistance(teacher.x,teacher.y,player.x,player.y,WARNING_PATH_DISTANCE+1);
+            teacher.cachedPlayerTile=playerTileKey;
+            teacher.pathRefreshTimer=.45;
+        }
+        const pathDistance=teacher.cachedPathDistance;
 
         const startDistance=restricted ? CHASE_PATH_START_DISTANCE_RESTRICTED : CHASE_PATH_START_DISTANCE_FAST;
         const maxChase=restricted ? CHASE_MAX_DURATION_RESTRICTED : CHASE_MAX_DURATION_FAST;
@@ -4764,7 +4775,7 @@ function updateTeachers(dt) {
 
         if(teacher.chasing){
             teacher.chaseElapsed+=dt;
-            const currentPathDistance=getPathDistance(teacher.x,teacher.y,player.x,player.y,WARNING_PATH_DISTANCE+1);
+            const currentPathDistance=pathDistance;
 
             if(currentPathDistance>=9.0) teacher.farPathTimer+=dt;
             else teacher.farPathTimer=0;
@@ -4785,10 +4796,14 @@ function updateTeachers(dt) {
             }
         }
 
-        if(teacher.chasing){
-            teacher.path=restricted ? nextRestrictedPathStep(teacher.x,teacher.y,player.x,player.y) : nextPathStep(teacher.x,teacher.y,player.x,player.y);
-        }else if(trapApproaching){
-            teacher.path=restricted ? nextRestrictedPathStep(teacher.x,teacher.y,player.x,player.y) : nextPathStep(teacher.x,teacher.y,player.x,player.y);
+        if(teacher.chasing || trapApproaching){
+            const targetTileKey=`${Math.floor(player.x)},${Math.floor(player.y)}`;
+            teacher.pathMoveRefreshTimer=Math.max(0,(teacher.pathMoveRefreshTimer||0)-dt);
+            if(teacher.pathMoveRefreshTimer<=0 || teacher.pathMoveTargetTile!==targetTileKey){
+                teacher.path=restricted ? nextRestrictedPathStep(teacher.x,teacher.y,player.x,player.y) : nextPathStep(teacher.x,teacher.y,player.x,player.y);
+                teacher.pathMoveTargetTile=targetTileKey;
+                teacher.pathMoveRefreshTimer=.10;
+            }
         }else{
             if(!teacher.wanderTarget || distanceBetween(teacher,teacher.wanderTarget)<.10){
                 chooseWanderDirection(teacher);
@@ -5969,6 +5984,24 @@ function drawExitBeacon() {
     ctx2.shadowBlur = Math.min(34,size*.45); ctx2.shadowColor="#aaffff";
     ctx2.strokeStyle="rgba(225,255,255,.98)"; ctx2.lineWidth=Math.max(1.5,size*.035);
     ctx2.beginPath(); ctx2.ellipse(x,y,size*.38,size*.17,0,0,Math.PI*2); ctx2.stroke();
+    // Restore the tall luminous pillar above the exit, layered over the ground glow.
+    const pillarHeight=clamp(360/Math.max(.8,projection.correctedDistance),10,190);
+    const pillarWidth=clamp(size*.10,2,10);
+    const pillarTop=y-pillarHeight;
+    const pillarGlow=ctx2.createLinearGradient(x,pillarTop,x,y+size*.08);
+    pillarGlow.addColorStop(0,"rgba(190,255,255,0)");
+    pillarGlow.addColorStop(.38,"rgba(125,250,255,.20)");
+    pillarGlow.addColorStop(.78,"rgba(220,255,255,.76)");
+    pillarGlow.addColorStop(1,"rgba(255,255,255,.98)");
+    ctx2.fillStyle=pillarGlow;
+    ctx2.shadowBlur=Math.min(30,pillarWidth*3);
+    ctx2.shadowColor="#8effff";
+    ctx2.beginPath();
+    ctx2.moveTo(x-pillarWidth*1.8,pillarTop);
+    ctx2.lineTo(x+pillarWidth*1.8,pillarTop);
+    ctx2.lineTo(x+pillarWidth,y+size*.08);
+    ctx2.lineTo(x-pillarWidth,y+size*.08);
+    ctx2.closePath();ctx2.fill();
     ctx2.restore();
 }
 
@@ -6028,6 +6061,29 @@ function drawExit(depthBuffer) {
     ctx.font = `900 ${Math.max(12,h*.18)}px Arial`;
     ctx.textAlign = "center"; ctx.textBaseline = "middle";
     ctx.fillText("EXIT",0,0);
+    ctx.restore();
+
+    // Tall luminous pillar above the doorway, restored alongside the bright exit glow.
+    const pillarTop = Math.max(8, top - h * 1.65);
+    const pillarBottom = top + h * .08;
+    const pillarWidth = Math.max(2, w * .075);
+    ctx.save();
+    ctx.globalCompositeOperation = "lighter";
+    const pillar = ctx.createLinearGradient(projection.screenX, pillarTop, projection.screenX, pillarBottom);
+    pillar.addColorStop(0, "rgba(150,255,255,0)");
+    pillar.addColorStop(.35, "rgba(100,245,255,.20)");
+    pillar.addColorStop(.82, "rgba(190,255,255,.78)");
+    pillar.addColorStop(1, "rgba(255,255,255,.98)");
+    ctx.fillStyle = pillar;
+    ctx.shadowBlur = Math.max(10, h * .18);
+    ctx.shadowColor = "#9fffff";
+    ctx.beginPath();
+    ctx.moveTo(projection.screenX - pillarWidth * 2.2, pillarTop);
+    ctx.lineTo(projection.screenX + pillarWidth * 2.2, pillarTop);
+    ctx.lineTo(projection.screenX + pillarWidth, pillarBottom);
+    ctx.lineTo(projection.screenX - pillarWidth, pillarBottom);
+    ctx.closePath();
+    ctx.fill();
     ctx.restore();
 }
 
@@ -6243,9 +6299,13 @@ function drawArcade() {
     // drawing the 3D sprite through walls. This keeps distant entities trackable
     // without ever defeating wall occlusion.
     for (const teacher of teachers) drawOffscreenEntityIndicator(teacher, "teacher");
-    for (const prop of arcadeProps) {
-        if (!prop.collected) drawOffscreenEntityIndicator(prop, prop.boost ? "boost" : "prop");
-    }
+    // Limit boost direction arrows to the three nearest uncollected boosts.
+    // This keeps useful navigation cues while avoiding per-frame work for every item.
+    const nearbyBoosts = arcadeProps
+        .filter(prop => prop.boost && !prop.collected && distanceBetween(player, prop) <= ARCADE_ENTITY_DRAW_DISTANCE)
+        .sort((a,b) => distanceBetween(player,a) - distanceBetween(player,b))
+        .slice(0,3);
+    for (const boost of nearbyBoosts) drawOffscreenEntityIndicator(boost, "boost");
     drawOffscreenEntityIndicator(exitPoint, "exit");
 
     const sortedSprites = [
