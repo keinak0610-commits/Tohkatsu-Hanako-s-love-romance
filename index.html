@@ -6251,26 +6251,38 @@ function drawArcade() {
     ctx.restore();
 
     try { drawSpeedLines(); } catch (e) { console.error("Speed-line error:", e); }
-    try { drawMiniMap(); } catch (e) {
-        console.error("Minimap error:", e);
+    try {
+        // The minimap does not need a full 60fps redraw; halving this work reduces mobile GPU/CPU load.
+        window.__miniMapFrame = (window.__miniMapFrame || 0) + 1;
+        if ((window.__miniMapFrame & 1) === 0) drawMiniMap();
+    } catch (e) {
+        // Avoid flooding the console every animation frame; show the actual cause on the map.
+        if (!window.__miniMapErrorLogged) {
+            window.__miniMapErrorLogged = true;
+            console.error("Minimap error:", e && (e.stack || e.message) || e);
+        }
         const map = document.getElementById("miniMap");
         if (map) {
             const mc = map.getContext("2d");
             if (mc) {
                 mc.fillStyle="#f7fcff"; mc.fillRect(0,0,map.width,map.height);
-                mc.fillStyle="#b00020"; mc.font="12px sans-serif"; mc.fillText("MAP ERROR",8,20);
+                mc.fillStyle="#b00020"; mc.font="bold 12px sans-serif";
+                mc.fillText("MAP ERROR",8,20);
+                mc.font="10px sans-serif";
+                mc.fillText(String(e && (e.message || e) || "Unknown error").slice(0,42),8,36);
             }
         }
     }
     try { drawBackMirror(); } catch (e) { console.error("Rear mirror error:", e); }
 }
 
-function drawBoostMapIcon(cx,cy,cellSize) {
+function drawBoostMapIcon(mapContext,cx,cy,cellSize) {
+    const c = mapContext;
     const r=Math.max(6,Math.min(9,cellSize*.42));
-    mctx.save(); mctx.lineJoin="round"; mctx.lineCap="round";
-    mctx.fillStyle="#24df68"; mctx.strokeStyle="#111"; mctx.lineWidth=1.5;
-    mctx.beginPath(); mctx.moveTo(cx-r*.15,cy-r); mctx.lineTo(cx+r*.45,cy-r*.12); mctx.lineTo(cx+r*.10,cy-r*.08); mctx.lineTo(cx+r*.25,cy+r); mctx.lineTo(cx-r*.45,cy+r*.08); mctx.lineTo(cx-r*.08,cy+r*.03); mctx.closePath(); mctx.fill(); mctx.stroke();
-    mctx.restore();
+    c.save(); c.lineJoin="round"; c.lineCap="round";
+    c.fillStyle="#24df68"; c.strokeStyle="#111"; c.lineWidth=1.5;
+    c.beginPath(); c.moveTo(cx-r*.15,cy-r); c.lineTo(cx+r*.45,cy-r*.12); c.lineTo(cx+r*.10,cy-r*.08); c.lineTo(cx+r*.25,cy+r); c.lineTo(cx-r*.45,cy+r*.08); c.lineTo(cx-r*.08,cy+r*.03); c.closePath(); c.fill(); c.stroke();
+    c.restore();
 }
 function drawMiniMap() {
     const map = document.getElementById("miniMap");
@@ -6327,7 +6339,7 @@ function drawMiniMap() {
         for (const prop of arcadeProps) {
             if (!prop.boost || prop.collected) continue;
             if (Math.hypot(prop.x - player.x, prop.y - player.y) <= MAP_LOCAL_RADIUS) {
-                drawBoostMapIcon((prop.x-minX)*cell,(prop.y-minY)*cell,cell);
+                drawBoostMapIcon(mctx,(prop.x-minX)*cell,(prop.y-minY)*cell,cell);
             }
         }
         if (Math.hypot(exitPoint.x - player.x, exitPoint.y - player.y) <= MAP_LOCAL_RADIUS) {
@@ -6365,7 +6377,7 @@ function drawMiniMap() {
 
         mctx.save(); mctx.lineWidth=1.5; mctx.strokeStyle="#111"; mctx.fillStyle="#2c72ff"; mctx.beginPath(); mctx.arc(player.x*cellW,player.y*cellH,7,0,Math.PI*2); mctx.fill(); mctx.stroke(); mctx.restore();
         for (const prop of arcadeProps) {
-            if (prop.boost && !prop.collected) drawBoostMapIcon(prop.x*cellW,prop.y*cellH,Math.min(cellW,cellH));
+            if (prop.boost && !prop.collected) drawBoostMapIcon(mctx,prop.x*cellW,prop.y*cellH,Math.min(cellW,cellH));
         }
         point(exitPoint, "#ffffff", 5, 0, 0, cellW, cellH);
     }
