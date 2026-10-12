@@ -968,6 +968,8 @@ button {
    ARCADE HUD / MINI MAP / LOOK PAD
 ===================================================== */
 
+#chaseEdgeFX { position:absolute; inset:0; z-index:35; pointer-events:none; opacity:0; transition:opacity .18s ease; background:linear-gradient(90deg,rgba(65,0,8,.70),transparent 13%,transparent 87%,rgba(65,0,8,.70)),linear-gradient(0deg,rgba(0,0,0,.68),transparent 17%,transparent 83%,rgba(0,0,0,.68)); box-shadow:inset 0 0 12vw 3vw rgba(130,0,18,.45); }
+#chaseEdgeFX.active { opacity:1; }
 #arcadeScreen {
     position: absolute;
     inset: 0;
@@ -2087,7 +2089,7 @@ body.smartphone #arcadeCrosshair {
 /* Marriage ending: time card -> church -> couple -> white doves flying away. */
 #endingScreen.marriageMode #endingTitle,
 #endingScreen.marriageMode #endingText { opacity:0; pointer-events:none; }
-#endingScreen.marriageMode .endButtons { opacity:0; pointer-events:none; animation:weddingUiIn .7s 4.6s ease-out forwards; }
+#endingScreen.marriageMode .endButtons { opacity:0; pointer-events:none; animation:weddingUiIn .7s 3s ease-out forwards; }
 #marriageScene {
     position:absolute;
     inset:0;
@@ -2155,7 +2157,8 @@ body.smartphone #arcadeCrosshair {
     font-size:clamp(24px,5vw,50px); color:white; text-shadow:0 2px 4px rgba(70,100,120,.28);
     opacity:1; pointer-events:none;
 }
-.weddingDoves span { position:absolute; display:block; }
+.weddingDoves span { position:absolute; display:block; width:clamp(42px,7vw,78px); height:auto; }
+.weddingDoves svg { width:100%; height:auto; overflow:visible; }
 .weddingDoves span:nth-child(1) { animation:doveFly1 2.6s 2.35s cubic-bezier(.2,.75,.2,1) forwards; }
 .weddingDoves span:nth-child(2) { animation:doveFly2 2.9s 2.45s cubic-bezier(.2,.75,.2,1) forwards; }
 .weddingDoves span:nth-child(3) { animation:doveFly3 2.7s 2.55s cubic-bezier(.2,.75,.2,1) forwards; }
@@ -2612,6 +2615,7 @@ body.smartphone #lookPad { pointer-events:none; opacity:.58; }
         <div style="width:min(320px,80vw);height:8px;background:#344452;border-radius:99px;overflow:hidden;margin-top:20px"><div id="arcadeLoadingBar" style="height:100%;width:0%;background:#64e5ff;transition:width .15s"></div></div>
     </div>
     <div id="arcadeScreen">
+        <div id="chaseEdgeFX" aria-hidden="true"></div>
         <button id="arcadeBackButton" class="arcadeBackButton" onclick="backFromArcade()" aria-label="Back from arcade">← BACK</button>
         <canvas id="arcadeCanvas"></canvas>
         <div id="trapSkillCheck" role="dialog" aria-label="Trap skill check" style="display:none;position:absolute;z-index:120;left:50%;top:58%;transform:translate(-50%,-50%);width:min(340px,82vw);padding:18px;background:rgba(8,12,18,.94);border:2px solid #ff4568;border-radius:14px;color:#fff;text-align:center;box-shadow:0 0 28px rgba(255,35,70,.45);font-family:Arial,sans-serif;touch-action:manipulation">
@@ -2683,7 +2687,7 @@ body.smartphone #lookPad { pointer-events:none; opacity:.58; }
         </div>
         <div id="weddingTimeCard" class="weddingTimeCard">10 YEARS AFTER...</div>
         <div class="weddingDoves" aria-hidden="true">
-            <span>🕊</span><span>🕊</span><span>🕊</span><span>🕊</span>
+            <span><svg viewBox="0 0 100 70" aria-hidden="true"><path d="M8 43 Q24 20 44 35 Q35 13 48 5 Q65 20 62 37 Q78 28 92 37 Q80 48 62 48 Q45 66 25 57 L8 60 19 48Z" fill="#fff" stroke="#6b8793" stroke-width="2.8" stroke-linejoin="round"/><circle cx="61" cy="30" r="2.5" fill="#243b4a"/><path d="M89 37 L99 33 L94 42Z" fill="#e5b04b"/></svg></span><span><svg viewBox="0 0 100 70" aria-hidden="true"><path d="M8 43 Q24 20 44 35 Q35 13 48 5 Q65 20 62 37 Q78 28 92 37 Q80 48 62 48 Q45 66 25 57 L8 60 19 48Z" fill="#fff" stroke="#6b8793" stroke-width="2.8" stroke-linejoin="round"/><circle cx="61" cy="30" r="2.5" fill="#243b4a"/><path d="M89 37 L99 33 L94 42Z" fill="#e5b04b"/></svg></span><span><svg viewBox="0 0 100 70" aria-hidden="true"><path d="M8 43 Q24 20 44 35 Q35 13 48 5 Q65 20 62 37 Q78 28 92 37 Q80 48 62 48 Q45 66 25 57 L8 60 19 48Z" fill="#fff" stroke="#6b8793" stroke-width="2.8" stroke-linejoin="round"/><circle cx="61" cy="30" r="2.5" fill="#243b4a"/><path d="M89 37 L99 33 L94 42Z" fill="#e5b04b"/></svg></span><span><svg viewBox="0 0 100 70" aria-hidden="true"><path d="M8 43 Q24 20 44 35 Q35 13 48 5 Q65 20 62 37 Q78 28 92 37 Q80 48 62 48 Q45 66 25 57 L8 60 19 48Z" fill="#fff" stroke="#6b8793" stroke-width="2.8" stroke-linejoin="round"/><circle cx="61" cy="30" r="2.5" fill="#243b4a"/><path d="M89 37 L99 33 L94 42Z" fill="#e5b04b"/></svg></span>
         </div>
         <div class="weddingCaption">MARRIAGE END</div>
     </div>
@@ -3364,7 +3368,16 @@ async function playStory() {
     setActionLock(false);
 }
 
+let dialoguePointerHandledAt = 0;
+document.getElementById("dialogueBox").addEventListener("pointerup", event => {
+    if (event.target.closest("button")) return;
+    if (advanceDialogue()) {
+        dialoguePointerHandledAt = Date.now();
+        event.stopPropagation();
+    }
+});
 document.addEventListener("click", event => {
+    if (Date.now() - dialoguePointerHandledAt < 500) { dialoguePointerHandledAt = 0; return; }
     const storyScreen=document.getElementById("storyScreen"); if(!storyScreen.classList.contains("active")) return;
     if(event.target.closest("button")||event.target.closest(".modal")||event.target.closest("#choiceBox")||event.target.closest("#captureOverlay")||event.target.closest("#mobileControls")) return;
     if(dismissSynopsis()) {
@@ -3623,6 +3636,17 @@ function showEnding(title,text,type){
     const marriage=document.getElementById("marriageScene");
     marriage.classList.remove("active");
     if (type === "marriage") {
+        const endButtons = document.querySelector("#endingScreen .endButtons");
+        endButtons.style.animation = "none";
+        endButtons.style.opacity = "0";
+        endButtons.style.pointerEvents = "none";
+        setTimeout(() => {
+            if (ending && document.getElementById("endingScreen").classList.contains("marriageMode")) {
+                endButtons.style.opacity = "1";
+                endButtons.style.pointerEvents = "auto";
+                endButtons.style.visibility = "visible";
+            }
+        }, 3000);
         document.getElementById("marriageHanako").innerHTML=characterArtSvg("Hanako");
         const boy=document.createElement("img");
         boy.className="weddingBoyArt";
@@ -3710,7 +3734,25 @@ function createArcadeMaze() {
         }
     }
     shuffle(loopCandidates);
-    for (const cell of loopCandidates.slice(0, 18)) logical[cell.y][cell.x] = ".";
+    for (const cell of loopCandidates.slice(0, 42)) logical[cell.y][cell.x] = ".";
+
+    // Braid many dead ends into alternate routes. This keeps some dead ends
+    // for tension, but avoids long single-file corridors dominating the maze.
+    const deadEnds = [];
+    for (let y = 1; y < logicalSize - 1; y++) for (let x = 1; x < logicalSize - 1; x++) {
+        if (logical[y][x] !== ".") continue;
+        const exits = [[1,0],[-1,0],[0,1],[0,-1]].filter(([dx,dy]) => logical[y+dy][x+dx] === ".").length;
+        if (exits === 1) deadEnds.push({x,y});
+    }
+    shuffle(deadEnds);
+    for (const cell of deadEnds) {
+        if (Math.random() > .72) continue;
+        const walls = shuffle([[1,0],[-1,0],[0,1],[0,-1]].filter(([dx,dy]) => {
+            const nx=cell.x+dx, ny=cell.y+dy;
+            return nx>0 && ny>0 && nx<logicalSize-1 && ny<logicalSize-1 && logical[ny][nx] === "#";
+        }));
+        if (walls.length) { const [dx,dy]=walls[0]; logical[cell.y+dy][cell.x+dx]="."; }
+    }
 
     // Expand each logical tile to 2×2 so the corridors are comfortably wide in the 40×40 maze.
     const grid = Array.from({ length: size }, () => Array(size).fill("#"));
@@ -3839,7 +3881,7 @@ const MAX_STAMINA = 200;
 const STAMINA_DRAIN_RATE = 42;
 const STAMINA_RECOVERY_RATE = 20;
 const DASH_RECOVERY_COOLDOWN = 2.0;
-const CHASE_PATH_START_DISTANCE_FAST = 9;
+const CHASE_PATH_START_DISTANCE_FAST = 12;
 const CHASE_PATH_START_DISTANCE_RESTRICTED = 14;
 const CHASE_RADIAL_START_DISTANCE = 10;
 const CHASE_PATH_END_DISTANCE_FAST = 9;
@@ -3916,13 +3958,25 @@ function findNearestWalkable(x, y, minDistance = 0) {
 
 let exitPoint = {
     x:38.5,
-    y:38.5
+    y:39.25
 };
 
 // Keep the two roaming teachers far from the exit and separated from each other.
 const teacherSpawnB = findNearestWalkable(32.5, 32.5, 12);
-const teacherSpawnC = findNearestWalkable(39.5, 9.5, 12);
-const teacherSpawnD = findNearestWalkable(8.5, 30.5, 12);
+function findSeparatedRoamerSpawn(preferred, other) {
+    const candidates=[];
+    for(let y=1;y<maze.length-1;y++) for(let x=1;x<maze[y].length-1;x++) {
+        const c={x:x+.5,y:y+.5};
+        if(!isWalkableTile(c.x,c.y) || distanceBetween(c,player)<12 || distanceBetween(c,exitPoint)<12) continue;
+        if(other && getPathDistance(c.x,c.y,other.x,other.y,Infinity)<12) continue;
+        candidates.push(c);
+    }
+    candidates.sort((a,b)=>Math.hypot(a.x-preferred.x,a.y-preferred.y)-Math.hypot(b.x-preferred.x,b.y-preferred.y));
+    const near=candidates.slice(0,Math.min(18,candidates.length));
+    return near.length ? near[Math.floor(Math.random()*near.length)] : findNearestWalkable(preferred.x,preferred.y,12);
+}
+const teacherSpawnC = findSeparatedRoamerSpawn({x:39.5,y:9.5},null);
+const teacherSpawnD = findSeparatedRoamerSpawn({x:8.5,y:30.5},teacherSpawnC);
 const TEACHER_SPAWNS=[
     {slot:"guard",x:teacherSpawnB.x,y:teacherSpawnB.y,angle:Math.PI,kind:"restricted"},
     {slot:"roamer1",x:teacherSpawnC.x,y:teacherSpawnC.y,angle:Math.PI/2,kind:"fast"},
@@ -4347,7 +4401,7 @@ function updatePlayer(dt) {
             player.stamina=Math.max(0,player.stamina-35);
             player.machineBoostTimer=0;
             teacherRevealTimer=4.0;
-            for(const teacher of teachers) teacher.trapApproachTimer=4.0;
+            for(const teacher of teachers) if(teacher.kind === "fast") teacher.trapApproachTimer=4.0;
             trapSkillActive=true;
             trapSkillStartedAt=performance.now();
             const skill=document.getElementById("trapSkillCheck"); if(skill) skill.style.display="block";
@@ -4645,7 +4699,9 @@ function updateTeachers(dt) {
 
         const sameStartLine=(Math.abs(teacher.x-player.x)<.55 || Math.abs(teacher.y-player.y)<.55) && hasLineOfSight(teacher,player);
         const trapApproaching=teacher.trapApproachTimer>0 && !teacher.chasing;
-        const canStart=!teacher.chasing && !trapApproaching && teacher.chaseCooldown<=0 &&
+        const continuationCondition=(direct<=2.0 || sameStartLine);
+        const canStart=!teacher.chasing && !trapApproaching &&
+            (teacher.chaseCooldown<=0 || continuationCondition) &&
             (pathDistance<=startDistance || sameStartLine);
 
         if(!teacher.chasing && canStart){
@@ -4688,7 +4744,9 @@ function updateTeachers(dt) {
         }else{
             if(!teacher.wanderTarget || distanceBetween(teacher,teacher.wanderTarget)<.10){
                 chooseWanderDirection(teacher);
+                teacher.wanderPause = .08 + Math.random()*.18;
             }
+            teacher.wanderPause = Math.max(0,(teacher.wanderPause||0)-dt);
             teacher.path=null;
         }
 
@@ -4754,6 +4812,8 @@ function updateTeachers(dt) {
         }
     }
 
+    const edgeFx=document.getElementById("chaseEdgeFX");
+    if(edgeFx) edgeFx.classList.toggle("active", teachers.some(t=>t.chasing));
     if(chaseStarted && teachers.some(teacher=>teacher.chasing)) showChaseSubtitle();
     if(!teachers.some(teacher=>teacher.chasing)) {
         const subtitle=document.getElementById("chaseSubtitle");
@@ -5859,6 +5919,9 @@ function drawExitBeacon() {
 }
 
 function drawExit(depthBuffer) {
+    // The goal is the open maze boundary itself, not a collectible-style billboard.
+    // The distant cyan beacon remains as a visual guide toward the actual opening.
+    return;
     if (!isVisibleArcadeEntity(exitPoint, ARCADE_ENTITY_DRAW_DISTANCE) || !hasLineOfSight(player,exitPoint)) return;
     const projection = projectSprite(exitPoint, "exit");
     if (!projection || projection.offscreen) return;
@@ -6202,6 +6265,13 @@ function drawArcade() {
     try { drawBackMirror(); } catch (e) { console.error("Rear mirror error:", e); }
 }
 
+function drawBoostMapIcon(cx,cy,cellSize) {
+    const r=Math.max(6,Math.min(9,cellSize*.42));
+    mctx.save(); mctx.lineJoin="round"; mctx.lineCap="round";
+    mctx.fillStyle="#24df68"; mctx.strokeStyle="#111"; mctx.lineWidth=1.5;
+    mctx.beginPath(); mctx.moveTo(cx-r*.15,cy-r); mctx.lineTo(cx+r*.45,cy-r*.12); mctx.lineTo(cx+r*.10,cy-r*.08); mctx.lineTo(cx+r*.25,cy+r); mctx.lineTo(cx-r*.45,cy+r*.08); mctx.lineTo(cx-r*.08,cy+r*.03); mctx.closePath(); mctx.fill(); mctx.stroke();
+    mctx.restore();
+}
 function drawMiniMap() {
     const map = document.getElementById("miniMap");
     if (!map || !map.getContext) return;
@@ -6253,12 +6323,11 @@ function drawMiniMap() {
             }
         }
 
-        point({ x: player.x - minX, y: player.y - minY }, "#2c72ff", 5, 0, 0, cell, cell);
-
+        // Player marker is drawn only at the live center point to avoid a lagging duplicate.
         for (const prop of arcadeProps) {
             if (!prop.boost || prop.collected) continue;
             if (Math.hypot(prop.x - player.x, prop.y - player.y) <= MAP_LOCAL_RADIUS) {
-                point({ x: prop.x - minX, y: prop.y - minY }, "#ffd84a", 3.5, 0, 0, cell, cell);
+                drawBoostMapIcon((prop.x-minX)*cell,(prop.y-minY)*cell,cell);
             }
         }
         if (Math.hypot(exitPoint.x - player.x, exitPoint.y - player.y) <= MAP_LOCAL_RADIUS) {
@@ -6271,7 +6340,7 @@ function drawMiniMap() {
         const dirRadius=cell*1.55, dirHalfAngle=.34;
         mctx.fillStyle="rgba(44,114,255,.22)";
         mctx.beginPath(); mctx.moveTo(w/2,h/2); mctx.arc(w/2,h/2,dirRadius,player.angle-dirHalfAngle,player.angle+dirHalfAngle); mctx.closePath(); mctx.fill();
-        mctx.fillStyle="#2c72ff"; mctx.beginPath(); mctx.arc(w/2,h/2,4.5,0,Math.PI*2); mctx.fill();
+        mctx.lineWidth=1.6; mctx.strokeStyle="#111"; mctx.fillStyle="#2c72ff"; mctx.beginPath(); mctx.arc(w/2,h/2,7,0,Math.PI*2); mctx.fill(); mctx.stroke();
         const fog=mctx.createRadialGradient(w/2,h/2,Math.min(w,h)*.28,w/2,h/2,Math.min(w,h)*.50);
         fog.addColorStop(0,"rgba(0,0,0,0)"); fog.addColorStop(.68,"rgba(0,0,0,.03)"); fog.addColorStop(.88,"rgba(0,0,0,.30)"); fog.addColorStop(1,"rgba(0,0,0,.78)");
         mctx.fillStyle=fog; mctx.fillRect(0,0,w,h);
@@ -6294,9 +6363,9 @@ function drawMiniMap() {
             }
         }
 
-        point(player, "#2c72ff", 5, 0, 0, cellW, cellH);
+        mctx.save(); mctx.lineWidth=1.5; mctx.strokeStyle="#111"; mctx.fillStyle="#2c72ff"; mctx.beginPath(); mctx.arc(player.x*cellW,player.y*cellH,7,0,Math.PI*2); mctx.fill(); mctx.stroke(); mctx.restore();
         for (const prop of arcadeProps) {
-            if (prop.boost && !prop.collected) point(prop, "#ffd84a", 3, 0, 0, cellW, cellH);
+            if (prop.boost && !prop.collected) drawBoostMapIcon(prop.x*cellW,prop.y*cellH,Math.min(cellW,cellH));
         }
         point(exitPoint, "#ffffff", 5, 0, 0, cellW, cellH);
     }
@@ -6420,7 +6489,7 @@ function resetArcadeWorld() {
         t.spawnSlot=spec.slot;
         return t;
     });
-    exitPoint = { x:38.5, y:38.5 };
+    exitPoint = { x:38.5, y:39.25 };
     for (const prop of arcadeProps) prop.collected=false;
     joystickX = 0; joystickY = 0; lookX = 0; dashTouch = false;
     teacherRevealTimer = 0;
@@ -6456,7 +6525,7 @@ function preloadArcadeAssets() {
         const startedAt = performance.now();
         let done = 0;
         const updateProgress = () => {
-            if (bar) bar.style.width = `${Math.round(done / Math.max(1, assets.length) * 100)}%`;
+            if (bar) bar.style.width = `${Math.round(done / Math.max(1, assets.length) * 90)}%`;
             if (label) label.textContent = `Checking assets... ${done}/${assets.length}`;
         };
         await Promise.all(assets.map(img => new Promise(resolve => {
@@ -6483,8 +6552,19 @@ function preloadArcadeAssets() {
         if (label) label.textContent = "Preparing maze and camera...";
         // Keep a visible loading screen for at least 4 seconds so the world is
         // prepared before the first playable frame; this is not a fake asset wait.
-        const remaining = 5000 - (performance.now() - startedAt);
-        if (remaining > 0) await new Promise(resolve => setTimeout(resolve, remaining));
+        const remaining = Math.max(0, 5000 - (performance.now() - startedAt));
+        if (remaining > 0) {
+            const prepStarted=performance.now();
+            await new Promise(resolve => {
+                const tick=()=>{
+                    const ratio=Math.min(1,(performance.now()-prepStarted)/remaining);
+                    if(bar) bar.style.width=`${Math.round(90+ratio*10)}%`;
+                    if(label) label.textContent=`Preparing maze and camera... ${Math.round(90+ratio*10)}%`;
+                    if(ratio>=1) resolve(); else requestAnimationFrame(tick);
+                };
+                requestAnimationFrame(tick);
+            });
+        }
         if (bar) bar.style.width = "100%";
         if (label) label.textContent = "Ready! Starting game...";
         // One short final beat makes the completed state visible to the player.
