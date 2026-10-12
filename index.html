@@ -2099,6 +2099,8 @@ body.smartphone #arcadeCrosshair {
     z-index:1;
 }
 #marriageScene.active { display:block; }
+#marriageBackButton { position:absolute; top:14px; left:14px; z-index:20; opacity:0; pointer-events:none; border:2px solid rgba(255,255,255,.95); border-radius:12px; padding:9px 14px; background:rgba(38,78,103,.86); color:#fff; font-weight:900; box-shadow:0 5px 16px rgba(0,0,0,.22); }
+#marriageBackButton.visible { opacity:1; pointer-events:auto; }
 .weddingSky {
     position:absolute; inset:0;
     background:radial-gradient(circle at 20% 18%,rgba(255,255,255,.95) 0 5%,transparent 6%),
@@ -2677,6 +2679,7 @@ body.smartphone #lookPad { pointer-events:none; opacity:.58; }
 
 <section id="endingScreen" class="screen">
     <div id="marriageScene" aria-hidden="true">
+        <button id="marriageBackButton" type="button" onclick="backToTitle()">← BACK</button>
         <div class="weddingSky"></div>
         <div class="weddingChurch"><div class="churchCross">✦</div></div>
         <div class="weddingConfetti confettiA">✦　✧　✦</div>
@@ -2687,7 +2690,10 @@ body.smartphone #lookPad { pointer-events:none; opacity:.58; }
         </div>
         <div id="weddingTimeCard" class="weddingTimeCard">10 YEARS AFTER...</div>
         <div class="weddingDoves" aria-hidden="true">
-            <span><svg viewBox="0 0 100 70" aria-hidden="true"><path d="M8 43 Q24 20 44 35 Q35 13 48 5 Q65 20 62 37 Q78 28 92 37 Q80 48 62 48 Q45 66 25 57 L8 60 19 48Z" fill="#fff" stroke="#6b8793" stroke-width="2.8" stroke-linejoin="round"/><circle cx="61" cy="30" r="2.5" fill="#243b4a"/><path d="M89 37 L99 33 L94 42Z" fill="#e5b04b"/></svg></span><span><svg viewBox="0 0 100 70" aria-hidden="true"><path d="M8 43 Q24 20 44 35 Q35 13 48 5 Q65 20 62 37 Q78 28 92 37 Q80 48 62 48 Q45 66 25 57 L8 60 19 48Z" fill="#fff" stroke="#6b8793" stroke-width="2.8" stroke-linejoin="round"/><circle cx="61" cy="30" r="2.5" fill="#243b4a"/><path d="M89 37 L99 33 L94 42Z" fill="#e5b04b"/></svg></span><span><svg viewBox="0 0 100 70" aria-hidden="true"><path d="M8 43 Q24 20 44 35 Q35 13 48 5 Q65 20 62 37 Q78 28 92 37 Q80 48 62 48 Q45 66 25 57 L8 60 19 48Z" fill="#fff" stroke="#6b8793" stroke-width="2.8" stroke-linejoin="round"/><circle cx="61" cy="30" r="2.5" fill="#243b4a"/><path d="M89 37 L99 33 L94 42Z" fill="#e5b04b"/></svg></span><span><svg viewBox="0 0 100 70" aria-hidden="true"><path d="M8 43 Q24 20 44 35 Q35 13 48 5 Q65 20 62 37 Q78 28 92 37 Q80 48 62 48 Q45 66 25 57 L8 60 19 48Z" fill="#fff" stroke="#6b8793" stroke-width="2.8" stroke-linejoin="round"/><circle cx="61" cy="30" r="2.5" fill="#243b4a"/><path d="M89 37 L99 33 L94 42Z" fill="#e5b04b"/></svg></span>
+            <span><svg viewBox="0 0 120 80" aria-hidden="true"><path d="M13 54 C20 42 32 35 47 36 C55 22 68 16 79 23 C86 27 88 34 85 40 C96 38 104 42 110 48 L98 53 L87 52 C79 63 63 66 49 61 L30 66 L35 57Z" fill="#fff" stroke="#738b96" stroke-width="2.4" stroke-linejoin="round"/><path d="M42 42 C46 25 58 13 69 13 C70 27 64 37 57 44 C68 39 77 41 82 49 C68 56 54 54 42 42Z" fill="#f3f8fb" stroke="#738b96" stroke-width="2.1" stroke-linejoin="round"/><circle cx="78" cy="31" r="2.3" fill="#243b4a"/><path d="M85 35 L97 38 L86 41Z" fill="#e7b24b"/><path d="M51 62 L49 69 M59 63 L60 69" stroke="#b98b56" stroke-width="2" stroke-linecap="round"/></svg></span>
+            <span><svg viewBox="0 0 120 80" aria-hidden="true"><path d="M13 54 C20 42 32 35 47 36 C55 22 68 16 79 23 C86 27 88 34 85 40 C96 38 104 42 110 48 L98 53 L87 52 C79 63 63 66 49 61 L30 66 L35 57Z" fill="#fff" stroke="#738b96" stroke-width="2.4" stroke-linejoin="round"/><path d="M42 42 C46 25 58 13 69 13 C70 27 64 37 57 44 C68 39 77 41 82 49 C68 56 54 54 42 42Z" fill="#f3f8fb" stroke="#738b96" stroke-width="2.1" stroke-linejoin="round"/><circle cx="78" cy="31" r="2.3" fill="#243b4a"/><path d="M85 35 L97 38 L86 41Z" fill="#e7b24b"/><path d="M51 62 L49 69 M59 63 L60 69" stroke="#b98b56" stroke-width="2" stroke-linecap="round"/></svg></span>
+            <span><svg viewBox="0 0 120 80" aria-hidden="true"><path d="M13 54 C20 42 32 35 47 36 C55 22 68 16 79 23 C86 27 88 34 85 40 C96 38 104 42 110 48 L98 53 L87 52 C79 63 63 66 49 61 L30 66 L35 57Z" fill="#fff" stroke="#738b96" stroke-width="2.4" stroke-linejoin="round"/><path d="M42 42 C46 25 58 13 69 13 C70 27 64 37 57 44 C68 39 77 41 82 49 C68 56 54 54 42 42Z" fill="#f3f8fb" stroke="#738b96" stroke-width="2.1" stroke-linejoin="round"/><circle cx="78" cy="31" r="2.3" fill="#243b4a"/><path d="M85 35 L97 38 L86 41Z" fill="#e7b24b"/><path d="M51 62 L49 69 M59 63 L60 69" stroke="#b98b56" stroke-width="2" stroke-linecap="round"/></svg></span>
+            <span><svg viewBox="0 0 120 80" aria-hidden="true"><path d="M13 54 C20 42 32 35 47 36 C55 22 68 16 79 23 C86 27 88 34 85 40 C96 38 104 42 110 48 L98 53 L87 52 C79 63 63 66 49 61 L30 66 L35 57Z" fill="#fff" stroke="#738b96" stroke-width="2.4" stroke-linejoin="round"/><path d="M42 42 C46 25 58 13 69 13 C70 27 64 37 57 44 C68 39 77 41 82 49 C68 56 54 54 42 42Z" fill="#f3f8fb" stroke="#738b96" stroke-width="2.1" stroke-linejoin="round"/><circle cx="78" cy="31" r="2.3" fill="#243b4a"/><path d="M85 35 L97 38 L86 41Z" fill="#e7b24b"/><path d="M51 62 L49 69 M59 63 L60 69" stroke="#b98b56" stroke-width="2" stroke-linecap="round"/></svg></span>
         </div>
         <div class="weddingCaption">MARRIAGE END</div>
     </div>
@@ -3640,11 +3646,14 @@ function showEnding(title,text,type){
         endButtons.style.animation = "none";
         endButtons.style.opacity = "0";
         endButtons.style.pointerEvents = "none";
+        const marriageBackButton = document.getElementById("marriageBackButton");
+        marriageBackButton.classList.remove("visible");
         setTimeout(() => {
             if (ending && document.getElementById("endingScreen").classList.contains("marriageMode")) {
                 endButtons.style.opacity = "1";
                 endButtons.style.pointerEvents = "auto";
                 endButtons.style.visibility = "visible";
+                marriageBackButton.classList.add("visible");
             }
         }, 3000);
         document.getElementById("marriageHanako").innerHTML=characterArtSvg("Hanako");
@@ -6277,11 +6286,38 @@ function drawArcade() {
 
 function drawBoostMapIcon(mapContext,cx,cy,cellSize) {
     const c = mapContext;
-    const r=Math.max(6,Math.min(9,cellSize*.42));
+    const r=Math.max(8,Math.min(13,cellSize*.68));
     c.save(); c.lineJoin="round"; c.lineCap="round";
-    c.fillStyle="#24f36b"; c.strokeStyle="rgba(0,55,22,.72)"; c.lineWidth=0.85;
+    c.fillStyle="#24f36b"; c.strokeStyle="rgba(0,35,12,.42)"; c.lineWidth=0.55;
     c.beginPath(); c.moveTo(cx-r*.15,cy-r); c.lineTo(cx+r*.45,cy-r*.12); c.lineTo(cx+r*.10,cy-r*.08); c.lineTo(cx+r*.25,cy+r); c.lineTo(cx-r*.45,cy+r*.08); c.lineTo(cx-r*.08,cy+r*.03); c.closePath(); c.fill(); c.stroke();
     c.restore();
+}
+// Static maze tiles are cached separately; the live map only redraws moving icons and overlays.
+let miniMapBaseCanvas = null;
+let miniMapBaseKey = "";
+let miniMapBaseMaze = null;
+function getMiniMapBase(w, h, expanded, cx, cy) {
+    const key = `${w}x${h}:${expanded ? "full" : `${cx},${cy}`}:${maze.length}:${maze[0]?.length || 0}`;
+    if (miniMapBaseCanvas && miniMapBaseKey === key && miniMapBaseMaze === maze) return miniMapBaseCanvas;
+    const base = document.createElement("canvas");
+    base.width = w; base.height = h;
+    const bctx = base.getContext("2d");
+    if (!bctx) return null;
+    bctx.fillStyle = "rgba(10,35,55,.95)"; bctx.fillRect(0,0,w,h);
+    const draw = (x,y,cw,ch,wx,wy) => {
+        if (wx < 0 || wy < 0 || wy >= maze.length || wx >= maze[wy].length) return;
+        bctx.fillStyle = maze[wy][wx] === "#" ? "#244f63" : "#f7fcff";
+        bctx.fillRect(Math.floor(x),Math.floor(y),Math.ceil(x+cw)-Math.floor(x)+1,Math.ceil(y+ch)-Math.floor(y)+1);
+    };
+    if (expanded) {
+        const cw=w/maze[0].length, ch=h/maze.length;
+        for(let y=0;y<maze.length;y++) for(let x=0;x<maze[y].length;x++) draw(x*cw,y*ch,cw,ch,x,y);
+    } else {
+        const size=MAP_LOCAL_RADIUS*2+1, cell=w/size, minX=cx-MAP_LOCAL_RADIUS, minY=cy-MAP_LOCAL_RADIUS;
+        for(let y=0;y<size;y++) for(let x=0;x<size;x++) draw(x*cell,y*cell,cell,cell,minX+x,minY+y);
+    }
+    miniMapBaseCanvas=base; miniMapBaseKey=key; miniMapBaseMaze=maze;
+    return base;
 }
 function drawMiniMap() {
     const map = document.getElementById("miniMap");
@@ -6295,18 +6331,16 @@ function drawMiniMap() {
 
     mctx.imageSmoothingEnabled = false;
     mctx.clearRect(0, 0, w, h);
-    mctx.fillStyle = "rgba(10,35,55,.95)";
-    mctx.fillRect(0, 0, w, h);
-
-    const drawCell = (x, y, cellW, cellH, wx, wy) => {
-        if (wx < 0 || wy < 0 || wy >= maze.length || wx >= maze[wy].length) return;
-        mctx.fillStyle = maze[wy][wx] === "#" ? "#244f63" : "#f7fcff";
-        const left = Math.floor(x);
-        const top = Math.floor(y);
-        const right = Math.ceil(x + cellW);
-        const bottom = Math.ceil(y + cellH);
-        mctx.fillRect(left, top, right - left + 1, bottom - top + 1);
-    };
+    const baseCx = Math.floor(player.x), baseCy = Math.floor(player.y);
+    const base = getMiniMapBase(w,h,expanded,baseCx,baseCy);
+    if (base) {
+        if (expanded) mctx.drawImage(base,0,0);
+        else {
+            const cell=w/(MAP_LOCAL_RADIUS*2+1);
+            // Shift the cached tile grid by the player's fractional movement for smooth scrolling.
+            mctx.drawImage(base,-(player.x-baseCx)*cell,-(player.y-baseCy)*cell);
+        }
+    }
 
     const point = (e, color, radius, offsetX = 0, offsetY = 0, cellW = 1, cellH = 1) => {
         mctx.fillStyle = color;
@@ -6328,21 +6362,16 @@ function drawMiniMap() {
         mctx.arc(w / 2, h / 2, Math.min(w, h) / 2 - 3, 0, Math.PI * 2);
         mctx.clip();
 
-        for (let y = 0; y < size; y++) {
-            for (let x = 0; x < size; x++) {
-                drawCell(x * cell, y * cell, cell, cell, minX + x, minY + y);
-            }
-        }
-
         // Player marker is drawn only at the live center point to avoid a lagging duplicate.
         for (const prop of arcadeProps) {
             if (!prop.boost || prop.collected) continue;
-            if (Math.hypot(prop.x - player.x, prop.y - player.y) <= MAP_LOCAL_RADIUS) {
-                drawBoostMapIcon(mctx,(prop.x-minX)*cell,(prop.y-minY)*cell,cell);
+            const dx=prop.x-player.x, dy=prop.y-player.y;
+            if (Math.hypot(dx,dy) <= MAP_LOCAL_RADIUS+0.8) {
+                drawBoostMapIcon(mctx,w/2+dx*cell,h/2+dy*cell,cell);
             }
         }
         if (Math.hypot(exitPoint.x - player.x, exitPoint.y - player.y) <= MAP_LOCAL_RADIUS) {
-            point({ x: exitPoint.x - minX, y: exitPoint.y - minY }, "#ffffff", 6, 0, 0, cell, cell);
+            point({ x: (MAP_LOCAL_RADIUS+0.5)+(exitPoint.x-player.x), y: (MAP_LOCAL_RADIUS+0.5)+(exitPoint.y-player.y) }, "#ffffff", 6, 0, 0, cell, cell);
             mctx.strokeStyle = "#72fbff";
             mctx.lineWidth = 2;
             mctx.stroke();
@@ -6367,12 +6396,6 @@ function drawMiniMap() {
         const rows = maze.length;
         const cellW = w / cols;
         const cellH = h / rows;
-
-        for (let y = 0; y < rows; y++) {
-            for (let x = 0; x < cols; x++) {
-                drawCell(x * cellW, y * cellH, cellW, cellH, x, y);
-            }
-        }
 
         mctx.save(); mctx.lineWidth=1.5; mctx.strokeStyle="#111"; mctx.fillStyle="#2c72ff"; mctx.beginPath(); mctx.arc(player.x*cellW,player.y*cellH,7,0,Math.PI*2); mctx.fill(); mctx.stroke(); mctx.restore();
         for (const prop of arcadeProps) {
