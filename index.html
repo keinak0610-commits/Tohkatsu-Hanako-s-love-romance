@@ -6252,9 +6252,8 @@ function drawArcade() {
 
     try { drawSpeedLines(); } catch (e) { console.error("Speed-line error:", e); }
     try {
-        // The minimap does not need a full 60fps redraw; halving this work reduces mobile GPU/CPU load.
-        window.__miniMapFrame = (window.__miniMapFrame || 0) + 1;
-        if ((window.__miniMapFrame & 1) === 0) drawMiniMap();
+        // Keep the minimap in sync with every game frame for smooth movement.
+        drawMiniMap();
     } catch (e) {
         // Avoid flooding the console every animation frame; show the actual cause on the map.
         if (!window.__miniMapErrorLogged) {
@@ -6280,7 +6279,7 @@ function drawBoostMapIcon(mapContext,cx,cy,cellSize) {
     const c = mapContext;
     const r=Math.max(6,Math.min(9,cellSize*.42));
     c.save(); c.lineJoin="round"; c.lineCap="round";
-    c.fillStyle="#24df68"; c.strokeStyle="#111"; c.lineWidth=1.5;
+    c.fillStyle="#24f36b"; c.strokeStyle="rgba(0,55,22,.72)"; c.lineWidth=0.85;
     c.beginPath(); c.moveTo(cx-r*.15,cy-r); c.lineTo(cx+r*.45,cy-r*.12); c.lineTo(cx+r*.10,cy-r*.08); c.lineTo(cx+r*.25,cy+r); c.lineTo(cx-r*.45,cy+r*.08); c.lineTo(cx-r*.08,cy+r*.03); c.closePath(); c.fill(); c.stroke();
     c.restore();
 }
@@ -6522,14 +6521,26 @@ function resetArcadeWorld() {
 }
 
 let arcadePreloadPromise = null;
-function preloadArcadeAssets() {
-    if (arcadePreloadPromise) return arcadePreloadPromise;
+async function preloadArcadeAssets() {
     const overlay = document.getElementById("arcadeLoading");
     const label = document.getElementById("arcadeLoadingText");
     const bar = document.getElementById("arcadeLoadingBar");
     if (overlay) overlay.style.display = "flex";
-    if (label) label.textContent = "Loading textures, placing items, and preparing the maze...";
+    if (label) label.textContent = "Loading... 0%";
     if (bar) bar.style.width = "0%";
+
+    // Give the browser one paint so the loading screen visibly starts at 0%.
+    await new Promise(resolve => requestAnimationFrame(() => resolve()));
+
+    // If the images were already preloaded on an earlier visit, still show a brief
+    // 0% starting point before completing; do not repeat the asset wait.
+    if (arcadePreloadPromise) {
+        if (bar) bar.style.width = "100%";
+        if (label) label.textContent = "Loading... 100%";
+        await new Promise(resolve => requestAnimationFrame(() => resolve()));
+        if (overlay) overlay.style.display = "none";
+        return;
+    }
 
     // Floor/ceiling textures are no longer used; avoid downloading and decoding them.
     const assets = [arcadeWallPhoto, arcadeExitPhoto, ...arcadeWallPhotos];
@@ -6537,8 +6548,9 @@ function preloadArcadeAssets() {
         const startedAt = performance.now();
         let done = 0;
         const updateProgress = () => {
-            if (bar) bar.style.width = `${Math.round(done / Math.max(1, assets.length) * 90)}%`;
-            if (label) label.textContent = `Checking assets... ${done}/${assets.length}`;
+            const percent = Math.round(done / Math.max(1, assets.length) * 90);
+            if (bar) bar.style.width = `${percent}%`;
+            if (label) label.textContent = `Loading... ${percent}%`;
         };
         await Promise.all(assets.map(img => new Promise(resolve => {
             let settled = false;
@@ -6561,7 +6573,7 @@ function preloadArcadeAssets() {
             setTimeout(finish, 15000);
         })));
         // Floor texture pre-caching is intentionally disabled: the floor is black.
-        if (label) label.textContent = "Preparing maze and camera...";
+        if (label) label.textContent = "Loading... 90%";
         // Keep a visible loading screen for at least 4 seconds so the world is
         // prepared before the first playable frame; this is not a fake asset wait.
         const remaining = Math.max(0, 5000 - (performance.now() - startedAt));
@@ -6571,7 +6583,7 @@ function preloadArcadeAssets() {
                 const tick=()=>{
                     const ratio=Math.min(1,(performance.now()-prepStarted)/remaining);
                     if(bar) bar.style.width=`${Math.round(90+ratio*10)}%`;
-                    if(label) label.textContent=`Preparing maze and camera... ${Math.round(90+ratio*10)}%`;
+                    if(label) label.textContent=`Loading... ${Math.round(90+ratio*10)}%`;
                     if(ratio>=1) resolve(); else requestAnimationFrame(tick);
                 };
                 requestAnimationFrame(tick);
