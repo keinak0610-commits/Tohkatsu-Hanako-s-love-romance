@@ -3178,8 +3178,8 @@ function closeModal(id) {
 function setDeviceMode(mode) {
     gameMode = mode;
 
-    /* Device selection changes controls only; maze geometry stays in PC proportions. */
-    document.body.classList.remove("smartphone");
+    /* Preserve the mobile control layer when smartphone mode is selected. */
+    document.body.classList.toggle("smartphone", mode === "smartphone");
 
     document.getElementById("pcButton").classList.toggle(
         "selected",
@@ -3221,7 +3221,7 @@ function refreshTeacherTexture() {
 }
 
 const savedMode = localStorage.getItem("deviceMode");
-setDeviceMode(savedMode || "pc");
+setDeviceMode(savedMode || (window.innerWidth <= 700 ? "smartphone" : "pc"));
 refreshTeacherTexture();
 
 /* =====================================================
@@ -3929,8 +3929,11 @@ const RESTRICTED_ZONE_MIN = 7.5;
 const RESTRICTED_ZONE_MAX = 32.5;
 const WARNING_PATH_DISTANCE = 17;
 
-const FIELD_OF_VIEW = Math.PI * 0.44; // natural field of view (~79 degrees)
-const HALF_FOV = FIELD_OF_VIEW / 2;
+// Keep the same vertical perspective on every device. The horizontal FOV adapts
+// to the actual viewport aspect ratio, so portrait phones do not squash the maze.
+const TARGET_VERTICAL_FOV = Math.PI * (50 / 180);
+let FIELD_OF_VIEW = Math.PI * 0.44;
+let HALF_FOV = FIELD_OF_VIEW / 2;
 
 const MAX_RAY_DISTANCE = 100;
 
@@ -4161,15 +4164,22 @@ window.addEventListener("blur", () => {
 ===================================================== */
 
 function resizeArcade() {
-    const width = window.innerWidth;
-    const height = window.innerHeight;
+    const width = Math.max(1, window.innerWidth);
+    const height = Math.max(1, window.innerHeight);
 
     arcadeCanvas.width = width;
     arcadeCanvas.height = height;
 
-    renderColumns = width < 700
-        ? RENDER_COLUMNS_MOBILE
-        : RENDER_COLUMNS_DESKTOP;
+    // Match the PC camera's vertical view instead of forcing the PC's horizontal
+    // FOV onto a tall phone screen. This keeps corridor proportions consistent.
+    const aspect = width / height;
+    FIELD_OF_VIEW = 2 * Math.atan(Math.tan(TARGET_VERTICAL_FOV / 2) * aspect);
+    FIELD_OF_VIEW = clamp(FIELD_OF_VIEW, Math.PI * 0.24, Math.PI * 0.62);
+    HALF_FOV = FIELD_OF_VIEW / 2;
+
+    // Keep the mobile renderer lightweight; ray density affects clarity, not
+    // corridor width, perspective, or collision geometry.
+    renderColumns = width < 700 ? RENDER_COLUMNS_MOBILE : RENDER_COLUMNS_DESKTOP;
 }
 
 window.addEventListener("resize", resizeArcade);
@@ -7107,15 +7117,13 @@ miniMapCanvas.addEventListener("click",event=>{
    INITIAL SETTINGS
 ===================================================== */
 
-setDeviceMode(savedMode || "pc");
+setDeviceMode(savedMode || (window.innerWidth <= 700 ? "smartphone" : "pc"));
 </script>
 </body>
 </html>
 
 <style id="sharedMazeGeometryFix">
-/* Keep the 3D maze projection identical on phone and desktop; only controls may adapt. */
-#arcadeCanvas { width:100% !important; height:100% !important; aspect-ratio:auto !important; }
+/* Keep the ending control visible and the minimap's exterior neutral. */
 #marriageBackButton { top:68% !important; left:50% !important; transform:translateX(-50%); }
-/* A darker, natural outside border makes the maze boundary unmistakable. */
 #miniMap { background:#252a31 !important; border-color:#59616b !important; }
 </style>
