@@ -2874,6 +2874,19 @@ function assetUrl(path) {
     return new URL(path, document.baseURI).href;
 }
 
+// Reuse one image object per character. Creating Image objects inside the render loop
+// caused the teacher sprite renderer to fail and repeatedly restart image loading.
+const teacherCharacterImageCache = Object.create(null);
+function getTeacherCharacterImage(character) {
+    if (!character || !character.image) return null;
+    if (!teacherCharacterImageCache[character.name]) {
+        const image = new Image();
+        image.src = assetUrl(character.image);
+        teacherCharacterImageCache[character.name] = image;
+    }
+    return teacherCharacterImageCache[character.name];
+}
+
 function imageWithFallback(img, name) {
     img.src = assetUrl(img.dataset.asset || img.getAttribute("src"));
     img.onerror = () => {
@@ -4439,7 +4452,7 @@ function updatePlayer(dt) {
             trap.revealed=true;
             trapSlowTimer=2.0;
             trapStopTimer=2.0;
-            player.stamina=Math.max(0,player.stamina-105);
+            player.stamina=Math.max(MAX_STAMINA * 0.01,player.stamina-105);
             player.machineBoostTimer=0;
             teacherRevealTimer=4.0;
             for(const teacher of teachers) if(teacher.kind === "fast") teacher.trapApproachTimer=4.0;
@@ -4705,6 +4718,7 @@ function spawnTeacherIfNeeded(){
             }
             const t=makeTeacher(spawn.x,spawn.y,spec.angle,spec.kind);
             t.spawnSlot=spec.slot;
+            t.characterName=spec.characterName;
             t.wanderTarget=null;
             t.stuckTimer=0;
             teachers.push(t);
@@ -5844,17 +5858,20 @@ function drawTeacherSprite(teacher, depthBuffer) {
     ctx.save();
     if(!clipSpriteByWallDepth(projection,depthBuffer,width*.65)){ctx.restore();return;}
 
-    const individualTeacherCharacter = characters.find(character => character.name === entity.characterName);
-    const individualTeacherImage = individualTeacherCharacter && individualTeacherCharacter.image;
-    if (individualTeacherImage) {
-        const image = new Image();
-        image.src = assetUrl(individualTeacherImage);
-        if (image.complete && image.naturalWidth) {
-            ctx.drawImage(image, projection.screenX-size*.5, projection.screenY-size, size, size*1.7);
-            return;
+    const individualTeacherCharacter = characters.find(character => character.name === teacher.characterName);
+    const individualTeacherImage = getTeacherCharacterImage(individualTeacherCharacter);
+    if (individualTeacherImage && individualTeacherImage.complete && individualTeacherImage.naturalWidth) {
+        const imageRatio = individualTeacherImage.naturalWidth / individualTeacherImage.naturalHeight;
+        let drawW = width;
+        let drawH = drawW / imageRatio;
+        if (drawH > height) {
+            drawH = height;
+            drawW = drawH * imageRatio;
         }
-    }
-    if (
+        ctx.globalAlpha = .98;
+        ctx.drawImage(individualTeacherImage, projection.screenX - drawW / 2,
+            projection.top + (height - drawH) * .02, drawW, drawH);
+    } else if (
         teacherTextureChoice !== "current" &&
         teacherTextureImage &&
         teacherTextureImage.complete &&
@@ -5966,53 +5983,76 @@ function drawTeacherSprite(teacher, depthBuffer) {
    DRAW EXIT BILLBOARD
 ===================================================== */
 
-function drawExitBeacon() {
-    // A compact, bright ground-level glow. Keep it within the same range as teachers
-    // and require line of sight, so it never shines through maze walls.
+function drawExitBeacon(depthBuffer) {
     const dist = distanceBetween(player, exitPoint);
-    if (dist > ARCADE_ENTITY_DRAW_DISTANCE || !hasLineOfSight(player, exitPoint)) return;
+    if (dist > ARCADE_ENTITY_DRAW_DISTANCE) return;
     const relative = normalizeAngle(Math.atan2(exitPoint.y-player.y, exitPoint.x-player.x)-player.angle);
     if (Math.abs(relative) > HALF_FOV * 1.12) return;
     const projection = projectSprite(exitPoint, "exit");
     if (!projection || projection.offscreen) return;
-    const ctx2 = ctx;
+
+    // If a wall blocks the ground-level view, allow only the part of the beacon
+    // that rises above that wall. This keeps the tall pillar visible from farther
+    // away without painting the beam over the wall itself.
+    const hasGroundLineOfSight = hasLineOfSight(player, exitPoint);
+    let wallTop = 0;
+    let occluded = !hasGroundLineOfSight;
+    if (occluded && depthBuffer && depthBuffer.length) {
+        const column = clamp(Math.floor(projection.screenX / arcadeCanvas.width * depthBuffer.length), 0, depthBuffer.length - 1);
+        const wallDistance = depthBuffer[column] || 0;
+        if (wallDistance <= 0 || wallDistance >= projection.correctedDistance - .35) {
+            occluded = false;
+        } else {
+            const wallHeight = Math.min(arcadeCanvas.height * 1.35,
+                (arcadeCanvas.height * WALL_HEIGHT) / Math.max(.2, wallDistance));
+            wallTop = clamp((arcadeCanvas.height - wallHeight) / 2, 0, arcadeCanvas.height);
+        }
+    }
+    if (occluded && (!depthBuffer || !depthBuffer.length)) return;
+
     const pulse = 1 + Math.sin(performance.now()/145)*.12;
     const size = clamp(190 / Math.max(.8, projection.correctedDistance), 5, 110) * pulse;
     const x = projection.screenX;
     const y = arcadeCanvas.height * .54 + clamp(projection.correctedDistance,0,ARCADE_ENTITY_DRAW_DISTANCE)*.08;
     const fade = clamp(1 - dist/ARCADE_ENTITY_DRAW_DISTANCE, .12, 1);
-    ctx2.save();
-    ctx2.globalAlpha = fade;
-    ctx2.globalCompositeOperation = "lighter";
-    const glow = ctx2.createRadialGradient(x,y,1,x,y,size);
-    glow.addColorStop(0,"rgba(255,255,255,.78)");
-    glow.addColorStop(.16,"rgba(135,255,255,.62)");
-    glow.addColorStop(.48,"rgba(40,225,255,.22)");
-    glow.addColorStop(1,"rgba(40,225,255,0)");
-    ctx2.fillStyle = glow;
-    ctx2.beginPath(); ctx2.ellipse(x,y,size*.72,size*.38,0,0,Math.PI*2); ctx2.fill();
-    ctx2.shadowBlur = Math.min(18,size*.25); ctx2.shadowColor="#aaffff";
-    ctx2.strokeStyle="rgba(225,255,255,.72)"; ctx2.lineWidth=Math.max(1.5,size*.035);
-    ctx2.beginPath(); ctx2.ellipse(x,y,size*.38,size*.17,0,0,Math.PI*2); ctx2.stroke();
-    // Restore the tall luminous pillar above the exit, layered over the ground glow.
-    const pillarHeight=clamp(360/Math.max(.8,projection.correctedDistance),10,190);
-    const pillarWidth=clamp(size*.10,2,10);
-    const pillarTop=y-pillarHeight;
-    const pillarGlow=ctx2.createLinearGradient(x,pillarTop,x,y+size*.08);
-    pillarGlow.addColorStop(0,"rgba(190,255,255,0)");
-    pillarGlow.addColorStop(.38,"rgba(125,250,255,.14)");
-    pillarGlow.addColorStop(.78,"rgba(220,255,255,.55)");
-    pillarGlow.addColorStop(1,"rgba(255,255,255,.78)");
-    ctx2.fillStyle=pillarGlow;
-    ctx2.shadowBlur=Math.min(30,pillarWidth*3);
-    ctx2.shadowColor="#8effff";
-    ctx2.beginPath();
-    ctx2.moveTo(x-pillarWidth*1.8,pillarTop);
-    ctx2.lineTo(x+pillarWidth*1.8,pillarTop);
-    ctx2.lineTo(x+pillarWidth,y+size*.08);
-    ctx2.lineTo(x-pillarWidth,y+size*.08);
-    ctx2.closePath();ctx2.fill();
-    ctx2.restore();
+    const pillarHeight = clamp(18000 / Math.max(.8, projection.correctedDistance), 24, arcadeCanvas.height * 1.15);
+    const pillarWidth = clamp(size*.12,3,14);
+    const pillarTop = y - pillarHeight;
+    const visibleBottom = occluded ? wallTop : y + size*.08;
+    if (occluded && pillarTop >= visibleBottom) return;
+
+    ctx.save();
+    ctx.globalAlpha = fade;
+    if (!occluded) {
+        ctx.globalCompositeOperation = "lighter";
+        const glow = ctx.createRadialGradient(x,y,1,x,y,size);
+        glow.addColorStop(0,"rgba(255,255,255,.78)");
+        glow.addColorStop(.16,"rgba(135,255,255,.62)");
+        glow.addColorStop(.48,"rgba(40,225,255,.22)");
+        glow.addColorStop(1,"rgba(40,225,255,0)");
+        ctx.fillStyle = glow;
+        ctx.beginPath(); ctx.ellipse(x,y,size*.72,size*.38,0,0,Math.PI*2); ctx.fill();
+        ctx.shadowBlur = Math.min(18,size*.25); ctx.shadowColor="#aaffff";
+        ctx.strokeStyle="rgba(225,255,255,.72)"; ctx.lineWidth=Math.max(1.5,size*.035);
+        ctx.beginPath(); ctx.ellipse(x,y,size*.38,size*.17,0,0,Math.PI*2); ctx.stroke();
+    }
+
+    ctx.globalCompositeOperation = "lighter";
+    ctx.shadowBlur = Math.min(30,pillarWidth*3);
+    ctx.shadowColor = "#8effff";
+    const pillarGlow = ctx.createLinearGradient(x,pillarTop,x,visibleBottom);
+    pillarGlow.addColorStop(0, occluded ? "rgba(190,255,255,.12)" : "rgba(190,255,255,0)");
+    pillarGlow.addColorStop(.38,"rgba(125,250,255,.22)");
+    pillarGlow.addColorStop(.78,"rgba(220,255,255,.58)");
+    pillarGlow.addColorStop(1,"rgba(255,255,255,.82)");
+    ctx.fillStyle = pillarGlow;
+    ctx.beginPath();
+    ctx.moveTo(x-pillarWidth*1.8,pillarTop);
+    ctx.lineTo(x+pillarWidth*1.8,pillarTop);
+    ctx.lineTo(x+pillarWidth,visibleBottom);
+    ctx.lineTo(x-pillarWidth,visibleBottom);
+    ctx.closePath(); ctx.fill();
+    ctx.restore();
 }
 
 function drawExit(depthBuffer) {
@@ -6303,7 +6343,7 @@ function drawArcade() {
         );
     }
 
-    drawExitBeacon();
+    drawExitBeacon(depthBuffer);
 
     // Outside the camera FOV, show a compact directional marker instead of
     // drawing the 3D sprite through walls. This keeps distant entities trackable
@@ -6658,6 +6698,7 @@ function resetArcadeWorld() {
     teachers = TEACHER_SPAWNS.map(spec => {
         const t=makeTeacher(spec.x,spec.y,spec.angle,spec.kind);
         t.spawnSlot=spec.slot;
+        t.characterName=spec.characterName;
         return t;
     });
     exitPoint = { x:38.5, y:39.25 };
