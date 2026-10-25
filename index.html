@@ -2324,6 +2324,18 @@ body.smartphone #lookPad { pointer-events:none; opacity:.58; }
     font-size: 12px;
     line-height: 1.5;
 }
+.sensitivitySetting { display:block; margin-top:14px; }
+.sensitivityChoice { display:flex; align-items:center; gap:10px; margin-top:8px; }
+.sensitivityChoice strong { display:inline-flex; min-width:32px; justify-content:center; font-size:18px; }
+.sensitivityChoice button { min-width:42px; }
+.sensitivityChoice button:last-child { min-width:72px; }
+@media (orientation: landscape) and (max-height: 500px) {
+    #arcadeScreen { width:100vw; height:100dvh; }
+    #arcadeCanvas { width:100%; height:100%; }
+    #rearMirror { top:8px; right:172px; width:142px; height:82px; transform:none; }
+    #rearMirrorCanvas { width:100%; height:100%; }
+    #chaseSubtitle { top:58px; }
+}
 .teacherTextureChoice button { min-width: 110px; }
 @media (max-width:900px) {
     #rearMirror { right:172px; width:142px; height:82px; }
@@ -2476,8 +2488,19 @@ body.smartphone #lookPad { pointer-events:none; opacity:.58; }
 
 
 
+        <div class="settingRow sensitivitySetting">
+            <div class="settingTitle">Maze View Sensitivity</div>
+            <div class="settingChoice sensitivityChoice">
+                <button type="button" onclick="adjustLookSensitivity(-1)" aria-label="Decrease sensitivity">−</button>
+                <strong id="lookSensitivityValue">0</strong>
+                <button type="button" onclick="adjustLookSensitivity(1)" aria-label="Increase sensitivity">+</button>
+                <button type="button" onclick="resetLookSensitivity()">Reset</button>
+            </div>
+            <p class="settingNote">−5 = slower · 0 = current setting · +5 = faster</p>
+        </div>
+
         <p>PC mode uses keyboard controls.</p>
-        <p>Smartphone mode uses a virtual joystick and DASH button.</p>
+        <p>Smartphone mode uses a virtual joystick and DASH button. For the PC-style game view on a phone, rotate the phone horizontally.</p>
     </div>
 </div>
 
@@ -3186,6 +3209,35 @@ function closeModal(id) {
     document.getElementById(id).classList.remove("active");
 }
 
+let lookSensitivity = 0;
+function lookSensitivityMultiplier() { return 1 + lookSensitivity * 0.16; }
+function updateLookSensitivityUI() {
+    const value = document.getElementById("lookSensitivityValue");
+    if (value) value.textContent = String(lookSensitivity);
+}
+function setLookSensitivity(value) {
+    lookSensitivity = clamp(Number(value) || 0, -5, 5);
+    lookSensitivity = Math.round(lookSensitivity);
+    try { localStorage.setItem("mazeLookSensitivity", String(lookSensitivity)); } catch (_) {}
+    updateLookSensitivityUI();
+}
+function adjustLookSensitivity(delta) { setLookSensitivity(lookSensitivity + delta); }
+function resetLookSensitivity() { setLookSensitivity(0); }
+try { setLookSensitivity(localStorage.getItem("mazeLookSensitivity") ?? 0); } catch (_) { setLookSensitivity(0); }
+
+function requestLandscapeOrientation() {
+    // Browsers that support orientation locking may honor this during gameplay;
+    // iOS Safari can require the player to rotate the device manually.
+    try {
+        if (screen.orientation && typeof screen.orientation.lock === "function") {
+            screen.orientation.lock("landscape").catch(() => {});
+        }
+    } catch (_) {}
+}
+function releaseOrientationLock() {
+    try { if (screen.orientation && typeof screen.orientation.unlock === "function") screen.orientation.unlock(); } catch (_) {}
+}
+
 /* =====================================================
    DEVICE MODE
 ===================================================== */
@@ -3536,6 +3588,7 @@ function showGameOver(text, showHeart = true, fromArcade = false) {
     arcadeIntroPlaying = false;
     inArcade = false;
     arcadeRunning = false;
+    releaseOrientationLock();
 
     document.getElementById("arcadeScreen").style.display = "none";
     document.getElementById("miniMap").style.display = "none";
@@ -3580,6 +3633,7 @@ function retryArcade() {
     try { drawMiniMap(); } catch (e) { console.warn("Initial map draw skipped", e); }
     inArcade = true;
     arcadeRunning = true;
+    requestLandscapeOrientation();
     const activeMiniMap = document.getElementById("miniMap"); if (activeMiniMap) { activeMiniMap.style.display = "block"; activeMiniMap.style.visibility = "visible"; activeMiniMap.style.opacity = "1"; }
     previousTime = performance.now();
     showScreen("storyScreen", false);
@@ -4191,7 +4245,7 @@ function resizeArcade() {
 
     // Keep the mobile renderer lightweight; ray density affects clarity, not
     // corridor width, perspective, or collision geometry.
-    renderColumns = width < 700 ? RENDER_COLUMNS_MOBILE : RENDER_COLUMNS_DESKTOP;
+    renderColumns = (width < 700 && window.innerWidth <= window.innerHeight) ? RENDER_COLUMNS_MOBILE : RENDER_COLUMNS_DESKTOP;
 }
 
 window.addEventListener("resize", resizeArcade);
@@ -4428,16 +4482,19 @@ function updatePlayer(dt) {
     const dashHeld=keys["shift"]||dashTouch;
     updateArcadeMachinePickups(dt);
     if(trapStopTimer>0){ forward=0; strafe=0; }
-    if(player.dashCooldown>0) player.dashCooldown=Math.max(0,player.dashCooldown-dt);
-    const canDash=dashHeld&&moving&&player.stamina>0&&!player.dashExhausted;
+    const wasTrapSlow = trapSlowTimer > 0;
+    // Cooldown pauses while stationary and throughout the trap's slow effect.
+    // Stopping grants quicker stamina recovery, but does not erase saved cooldown.
+    if(moving && trapSlowTimer<=0 && player.dashCooldown>0) player.dashCooldown=Math.max(0,player.dashCooldown-dt);
+    const canDash=dashHeld&&moving&&player.stamina>0&&!player.dashExhausted&&trapSlowTimer<=0;
     if(player.dashWasActive&&!canDash&&player.stamina>0) player.dashCooldown=DASH_RECOVERY_COOLDOWN;
     let speed=NORMAL_SPEED;
     if(player.machineBoostTimer>0){speed=MACHINE_BOOST_SPEED; player.stamina=Math.min(MAX_STAMINA,player.stamina+STAMINA_RECOVERY_RATE*1.8*dt);}
     else if(player.dashExhausted){speed=EXHAUSTED_SPEED;}
     if(trapSlowTimer>0 && !canDash) speed*=.45;
     else if(canDash){speed=DASH_SPEED;player.stamina=Math.max(0,player.stamina-STAMINA_DRAIN_RATE*dt);if(player.stamina<=0){player.dashExhausted=true;dashTouch=false;document.getElementById("dashButton").classList.remove("active");}}
-    else if(!player.dashExhausted&&player.dashCooldown<=0) player.stamina=Math.min(MAX_STAMINA,player.stamina+STAMINA_RECOVERY_RATE*dt);
-    if(player.dashExhausted){player.stamina=Math.min(MAX_STAMINA,player.stamina+STAMINA_RECOVERY_RATE*dt);if(player.stamina>=MAX_STAMINA){player.dashExhausted=false;player.dashCooldown=0;}}
+    else if(!player.dashExhausted && player.machineBoostTimer<=0 && (!moving || player.dashCooldown<=0)) player.stamina=Math.min(MAX_STAMINA,player.stamina+STAMINA_RECOVERY_RATE*(moving?1:1.5)*dt);
+    if(player.dashExhausted){player.stamina=Math.min(MAX_STAMINA,player.stamina+STAMINA_RECOVERY_RATE*(moving?1:1.5)*dt);if(player.stamina>=MAX_STAMINA){player.dashExhausted=false;}}
     player.dashWasActive=canDash;
     document.getElementById("staminaBar").style.width=(player.stamina/MAX_STAMINA*100)+"%";
     const boostText=document.getElementById("machineBoostStatus");
@@ -4449,7 +4506,7 @@ function updatePlayer(dt) {
         if(!trap.triggered && distanceBetween(player,trap)<.34){
             trap.triggered=true;
             trap.revealed=true;
-            trapSlowTimer=2.0;
+            trapSlowTimer=3.0;
             trapStopTimer=2.0;
             player.stamina=Math.max(MAX_STAMINA * 0.01,player.stamina-105);
             player.machineBoostTimer=0;
@@ -4462,6 +4519,7 @@ function updatePlayer(dt) {
     }
     if(teacherRevealTimer>0) teacherRevealTimer=Math.max(0,teacherRevealTimer-dt);
     if(trapSlowTimer>0) trapSlowTimer=Math.max(0,trapSlowTimer-dt);
+    if(wasTrapSlow && trapSlowTimer<=0) player.dashCooldown=DASH_RECOVERY_COOLDOWN;
     if(trapStopTimer>0 && !trapSkillActive) trapStopTimer=Math.max(0,trapStopTimer-dt);
 }
 function finishTrapSkill(success){
@@ -4473,8 +4531,9 @@ function finishTrapSkill(success){
     if (success) {
         player.stamina=Math.min(MAX_STAMINA,player.stamina+70); // successful timing reduces the stamina penalty substantially
         trapSlowTimer=0; // perfect timing cancels the slow effect
+        player.dashCooldown=DASH_RECOVERY_COOLDOWN;
     } else {
-        trapSlowTimer=2.0;
+        trapSlowTimer=3.0;
     }
 }
 
@@ -4682,18 +4741,20 @@ function getPathDistance(sx,sy,tx,ty,maxDistance=Infinity){
  while(qi<q.length){const c=q[qi++],cd=dist.get(`${c.x},${c.y}`);if(cd>=maxDistance)continue;for(const [dx,dy] of dirs){const nx=c.x+dx,ny=c.y+dy;if(ny<0||ny>=maze.length||nx<0||nx>=maze[ny].length||maze[ny][nx]==="#")continue;const k=`${nx},${ny}`;if(dist.has(k))continue;const nd=cd+1;if(nx===target.x&&ny===target.y)return nd;dist.set(k,nd);q.push({x:nx,y:ny});}}
  return Infinity;
 }
-function isForwardDiagonalLine(teacher, target, maxDistance = 6) {
+function isInTeacherDetectionCone(teacher, target, maxDistance = 6) {
     const dx = target.x - teacher.x;
     const dy = target.y - teacher.y;
     const distance = Math.hypot(dx, dy);
     if (distance > maxDistance || distance < 0.001) return false;
-    // The player must be approximately on a 45-degree grid diagonal.
-    if (Math.abs(Math.abs(dx) - Math.abs(dy)) > 0.55) return false;
-    if (!hasLineOfSight(teacher, target)) return false;
-    // Only the teacher's forward-facing diagonal half-plane counts; a target behind it is ignored.
-    const facingX = Math.cos(teacher.angle || 0);
-    const facingY = Math.sin(teacher.angle || 0);
-    return (dx * facingX + dy * facingY) / distance > 0.25;
+    const bearing = Math.atan2(dy, dx);
+    const angleFromFacing = Math.abs(normalizeAngle(bearing - (teacher.angle || 0)));
+    // 130-degree forward cone (65 degrees to either side), with clear line of sight.
+    return angleFromFacing <= (65 * Math.PI / 180) && hasLineOfSight(teacher, target);
+}
+
+function isForwardDiagonalLine(teacher, target, maxDistance = 6) {
+    // Kept as a continuation helper; the former exact-diagonal restriction is gone.
+    return isInTeacherDetectionCone(teacher, target, maxDistance);
 }
 
 function isSameChaseLine(teacher, target) {
@@ -4788,15 +4849,16 @@ function updateTeachers(dt) {
         }
         const pathDistance=teacher.cachedPathDistance;
 
-        const startDistance=restricted ? CHASE_PATH_START_DISTANCE_RESTRICTED : CHASE_PATH_START_DISTANCE_FAST;
         const maxChase=restricted ? CHASE_MAX_DURATION_RESTRICTED : CHASE_MAX_DURATION_FAST;
 
         const sameStartLine=isSameChaseLine(teacher,player);
+        const closePathDetection=pathDistance<=3;
+        const forwardConeDetection=isInTeacherDetectionCone(teacher,player,6);
         const trapApproaching=teacher.trapApproachTimer>0 && !teacher.chasing;
-        const continuationCondition=(direct<=2.0 || sameStartLine);
-        const canStart=!teacher.chasing && !trapApproaching &&
+        const continuationCondition=Number.isFinite(teacher.lastChaseEndedAt) && (direct<=2.0 || sameStartLine);
+        const canStart=!teacher.chasing && (!trapApproaching || closePathDetection) &&
             (teacher.chaseCooldown<=0 || continuationCondition) &&
-            (pathDistance<=startDistance || sameStartLine);
+            (closePathDetection || forwardConeDetection || continuationCondition);
 
         if(!teacher.chasing && canStart){
             const anotherChaseAlreadyActive = teachers.some(other => other !== teacher && other.chasing);
@@ -5546,13 +5608,14 @@ function drawOffscreenEntityIndicator(entity, kind) {
     // never exposes teacher positions, and the arrow is the permitted cue.
     const width=arcadeCanvas.width,height=arcadeCanvas.height;
     const directlyBehind=Math.abs(relative)>Math.PI*.5;
-    // Boost indicators never point backward; a boost directly behind must be found by turning around.
-    if(kind==="boost" && directlyBehind) return;
     const side=relative>=0?1:-1;
     const x=directlyBehind?width*.5:(side>0?width-34:34);
     const y=directlyBehind?height-38:clamp(height*.5+Math.sin(relative)*height*.30,72,height-72);
     const color=kind==="teacher"?"#ff315f":"#ffd84d",label=kind==="teacher"?"TEACHER":"BOOST";
-    ctx.save();ctx.globalCompositeOperation="lighter";ctx.shadowBlur=18;ctx.shadowColor=color;ctx.fillStyle=color;ctx.beginPath();ctx.moveTo(x+side*14,y);ctx.lineTo(x-side*5,y-11);ctx.lineTo(x-side*5,y+11);ctx.closePath();ctx.fill();ctx.globalCompositeOperation="source-over";ctx.font="900 11px Arial";ctx.textAlign=side>0?"right":"left";ctx.textBaseline="middle";ctx.fillStyle="#fff";ctx.fillText(label,x-side*16,y);ctx.restore();
+    ctx.save();ctx.globalCompositeOperation="lighter";ctx.shadowBlur=18;ctx.shadowColor=color;ctx.fillStyle=color;ctx.beginPath();
+    if(directlyBehind){ctx.moveTo(x,y+10);ctx.lineTo(x-11,y-5);ctx.lineTo(x+11,y-5);}
+    else {ctx.moveTo(x+side*14,y);ctx.lineTo(x-side*5,y-11);ctx.lineTo(x-side*5,y+11);}
+    ctx.closePath();ctx.fill();ctx.globalCompositeOperation="source-over";ctx.font="900 11px Arial";ctx.textAlign=directlyBehind?"center":(side>0?"right":"left");ctx.textBaseline="middle";ctx.fillStyle="#fff";ctx.fillText(label,directlyBehind?x:x-side*16,directlyBehind?y-17:y);ctx.restore();
 }
 
 function spriteDepthAllows(projection, depthBuffer) {
@@ -6229,7 +6292,7 @@ function drawBackMirror() {
         const x=width/2+(Math.tan(relative)/Math.tan(mirrorHalfFov))*(width/2);
         const col=clamp(Math.floor(x/width*columns),0,columns-1);
         if(corrected>rearDepth[col]+.15) return;
-        const size=clamp(height*.62/Math.max(.35,corrected),7,height*.72);
+        const size=clamp(height*.62/Math.max(.12,corrected),7,height*1.65);
         const y=horizon-size*.48;
         let color="#ffd84d";
         if(kind==="teacher") color=entity.chasing?"#ff174f":"#e91e63";
@@ -6832,6 +6895,7 @@ async function preloadArcadeAssets() {
 
 async function startArcade() {
     if (startArcade._loading) return;
+    requestLandscapeOrientation();
     startArcade._loading = true;
     try { await preloadArcadeAssets(); }
     finally { startArcade._loading = false; }
@@ -6840,6 +6904,7 @@ async function startArcade() {
     // for movement or a later state transition.
     try { drawMiniMap(); } catch (e) { console.warn("Initial map draw skipped", e); }
     inArcade = true;
+    requestLandscapeOrientation();
     arcadeRunning = true;
 
     document.getElementById("arcadeScreen").style.display = "block";
@@ -6928,6 +6993,11 @@ function capturePlayer(caughtTeacher = null) {
     if (!arcadeRunning) {
         return;
     }
+
+    trapSkillActive = false;
+    trapStopTimer = 0;
+    const trapSkillOverlay = document.getElementById("trapSkillCheck");
+    if (trapSkillOverlay) trapSkillOverlay.style.display = "none";
 
     if (caughtTeacher) {
         player.angle = Math.atan2(caughtTeacher.y - player.y, caughtTeacher.x - player.x);
@@ -7112,7 +7182,7 @@ arcadeScreenElement.addEventListener("pointermove", event => {
     if (!screenLookActive || event.pointerId !== screenLookPointerId) return;
     const dx = event.clientX - screenLookLastX;
     screenLookLastX = event.clientX;
-    player.angle = normalizeAngle(player.angle + dx * .024);
+    player.angle = normalizeAngle(player.angle + dx * .024 * lookSensitivityMultiplier());
     event.preventDefault();
 });
 
@@ -7145,7 +7215,7 @@ lookPad.addEventListener("pointermove", event => {
     if (!lookActive) return;
     const dx = event.clientX - lookLastX;
     lookLastX = event.clientX;
-    lookX = clamp(dx * .12, -1, 1);
+    lookX = clamp(dx * .12 * lookSensitivityMultiplier(), -1, 1);
 });
 
 function resetLook() {
