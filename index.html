@@ -5566,27 +5566,14 @@ function drawSkyAndFloor() {
     ctx.fillRect(0, 0, width, horizon);
 
     // Single flat floor color. Keep it brighter than before, with no gradient.
-    ctx.fillStyle = "#3a3942";
+    ctx.fillStyle = "#17171b";
     ctx.fillRect(0, horizon, width, height - horizon);
 
     // Removed the fixed red/cyan/yellow/purple screen-space glows. They did not
     // move with the camera, so they read as unexplained overlays rather than
     // environmental lighting. Keep the original subdued, abandoned-arcade mood.
 
-    /* Broken fluorescent ceiling strips. Several are deliberately dark,
-       as though half the arcade's electricity has died. */
-    for (let i = 0; i < 8; i++) {
-        const x = width * (.045 + i * .132);
-        const y = height * (.055 + (i % 3) * .035);
-        const active = i % 4 !== 1;
-        const flicker = active ? (.16 + (i % 3) * .08) : .025;
-        ctx.fillStyle = `rgba(215,235,255,${flicker})`;
-        ctx.fillRect(x, y, width * (.055 + (i % 2) * .018), 3);
-        if (active) {
-            ctx.fillStyle = `rgba(90,220,255,${flicker * .45})`;
-            ctx.fillRect(x, y + 4, width * (.055 + (i % 2) * .018), 2);
-        }
-    }
+    /* Removed the unexplained ceiling-strip lines from the upper maze view. */
 
     // No full-screen vignette here: it made the floor appear gradient-shaded.
 }
@@ -6377,7 +6364,7 @@ function drawBackMirror() {
     sky.addColorStop(0,"#0b0a20"); sky.addColorStop(1,"#342052");
     mctx.fillStyle=sky;mctx.fillRect(0,0,width,horizon);
     // Match the main camera's single-color floor.
-    mctx.fillStyle="#3a3942"; mctx.fillRect(0,horizon,width,height-horizon);
+    mctx.fillStyle="#17171b"; mctx.fillRect(0,horizon,width,height-horizon);
     mctx.save(); mctx.strokeStyle="rgba(160,205,225,.18)"; mctx.lineWidth=1;
     for(let k=1;k<=7;k++){const yy=horizon+(height-horizon)*Math.pow(k/7,1.7);mctx.beginPath();mctx.moveTo(0,yy);mctx.lineTo(width,yy);mctx.stroke();}
     for(let k=-5;k<=5;k++){mctx.beginPath();mctx.moveTo(width/2+k*2,horizon);mctx.lineTo(width/2+k*width/7,height);mctx.stroke();}mctx.restore();
