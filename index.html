@@ -3982,6 +3982,11 @@ const DASH_RECOVERY_COOLDOWN = 2.0;
 const CHASE_PATH_START_DISTANCE_FAST = 12;
 const CHASE_PATH_START_DISTANCE_RESTRICTED = 14;
 const CHASE_RADIAL_START_DISTANCE = 10;
+const CHASE_PATH_START_TILES = 4;
+const CHASE_CONE_START_DISTANCE = 15;
+const CHASE_COOLDOWN_SECONDS = 10;
+const VISION_FOG_START_DISTANCE = 6;
+const VISION_CUTOFF_DISTANCE = 10;
 const CHASE_PATH_END_DISTANCE_FAST = 9;
 const CHASE_PATH_END_DISTANCE_RESTRICTED = 9;
 const CHASE_END_HOLD = 3.0;
@@ -4758,8 +4763,10 @@ function isForwardDiagonalLine(teacher, target, maxDistance = 6) {
 }
 
 function isSameChaseLine(teacher, target) {
-    const axisAligned = Math.abs(teacher.x - target.x) < 0.55 || Math.abs(teacher.y - target.y) < 0.55;
-    return (axisAligned && hasLineOfSight(teacher, target)) || isForwardDiagonalLine(teacher, target, 6);
+    // Continuation uses the same bounded, forward-facing visibility rule for
+    // every direction. Never keep a chase alive merely because both entities
+    // happen to share a row/column far away.
+    return isInTeacherDetectionCone(teacher, target, 6);
 }
 
 function showChaseSubtitle() {
@@ -4852,13 +4859,17 @@ function updateTeachers(dt) {
         const maxChase=restricted ? CHASE_MAX_DURATION_RESTRICTED : CHASE_MAX_DURATION_FAST;
 
         const sameStartLine=isSameChaseLine(teacher,player);
-        const closePathDetection=pathDistance<=3;
-        const forwardConeDetection=isInTeacherDetectionCone(teacher,player,6);
+        const closePathDetection=pathDistance<=CHASE_PATH_START_TILES;
+        const forwardConeDetection=isInTeacherDetectionCone(teacher,player,CHASE_CONE_START_DISTANCE);
         const trapApproaching=teacher.trapApproachTimer>0 && !teacher.chasing;
-        const continuationCondition=Number.isFinite(teacher.lastChaseEndedAt) && (direct<=2.0 || sameStartLine);
+        // Start: regardless of facing or walls, within 4 walkable path tiles,
+        // OR within the forward 130-degree cone at up to 15 tiles with clear line of sight.
+        // A recently ended chase may resume under those same proximity rules.
+        const hasPreviousChase=Number.isFinite(teacher.lastChaseEndedAt);
+        const continuationCondition=hasPreviousChase && (direct<=2.0 || sameStartLine || closePathDetection);
         const canStart=!teacher.chasing && (!trapApproaching || closePathDetection) &&
             (teacher.chaseCooldown<=0 || continuationCondition) &&
-            (closePathDetection || forwardConeDetection || continuationCondition);
+            (closePathDetection || forwardConeDetection);
 
         if(!teacher.chasing && canStart){
             const anotherChaseAlreadyActive = teachers.some(other => other !== teacher && other.chasing);
@@ -4881,7 +4892,7 @@ function updateTeachers(dt) {
             else teacher.farPathTimer=0;
 
             const sameLine=isSameChaseLine(teacher,player);
-            const keepChase=direct<=2.0 || sameLine;
+            const keepChase=direct<=2.0 || currentPathDistance<=3 || sameLine;
             // Hard stop after 12 seconds, regardless of distance. The usual
             // distance-based end rule remains active before that limit.
             const normalEnd=(teacher.farPathTimer>=CHASE_END_HOLD);
@@ -4892,7 +4903,7 @@ function updateTeachers(dt) {
                 teacher.wanderTarget={x:Math.floor(teacher.x)+.5,y:Math.floor(teacher.y)+.5};
                 teacher.farPathTimer=0;
                 teacher.chaseElapsed=0;
-                teacher.chaseCooldown=15.0;
+                teacher.chaseCooldown=CHASE_COOLDOWN_SECONDS;
                 teacher.wanderHistory=teacher.wanderHistory||[];
             }
         }
@@ -4903,7 +4914,9 @@ function updateTeachers(dt) {
             if(teacher.pathMoveRefreshTimer<=0 || teacher.pathMoveTargetTile!==targetTileKey){
                 teacher.path=restricted ? nextRestrictedPathStep(teacher.x,teacher.y,player.x,player.y) : nextPathStep(teacher.x,teacher.y,player.x,player.y);
                 teacher.pathMoveTargetTile=targetTileKey;
-                teacher.pathMoveRefreshTimer=.10;
+                // Re-evaluate the route frequently while chasing so a moving
+                // player cannot leave the teacher following a stale direction.
+                teacher.pathMoveRefreshTimer=teacher.chasing ? .06 : .10;
             }
         }else{
             if(!teacher.wanderTarget || distanceBetween(teacher,teacher.wanderTarget)<.10){
@@ -4919,13 +4932,18 @@ function updateTeachers(dt) {
         const speed=base;
 
         if(teacher.chasing && !teacher.path && direct>.55){
-            // If BFS temporarily has no next tile, make a short wall-safe move
-            // toward the player; this prevents a silent, stationary chase.
-            const dx=player.x-teacher.x,dy=player.y-teacher.y,len=Math.hypot(dx,dy);
-            if(len>.01){
-                const step=Math.min(speed*dt,len);
-                moveTeacherEntity(teacher,dx/len*step,dy/len*step);
-                teacher.angle=Math.atan2(dy,dx);
+            // Only use direct pursuit when the route is genuinely unobstructed.
+            // If a wall blocks the straight line, do not slide along it in a
+            // misleading direction; force a fresh maze-path calculation instead.
+            if(hasLineOfSight(teacher,player)){
+                const dx=player.x-teacher.x,dy=player.y-teacher.y,len=Math.hypot(dx,dy);
+                if(len>.01){
+                    const step=Math.min(speed*dt,len);
+                    moveTeacherEntity(teacher,dx/len*step,dy/len*step);
+                    teacher.angle=Math.atan2(dy,dx);
+                }
+            }else{
+                teacher.pathMoveRefreshTimer=0;
             }
         }
 
@@ -5249,11 +5267,8 @@ buildCeilingTexture();
 ===================================================== */
 
 function getDistanceFog(distance) {
-    return clamp(
-        1 - distance / MAX_RAY_DISTANCE,
-        .08,
-        1
-    );
+    // Clear through 6 tiles, then a dense black haze that fully hides the world at 10.
+    return clamp((distance - VISION_FOG_START_DISTANCE) / (VISION_CUTOFF_DISTANCE - VISION_FOG_START_DISTANCE), 0, 1);
 }
 
 function shadeRGB(red, green, blue, brightness) {
@@ -5267,24 +5282,10 @@ function shadeRGB(red, green, blue, brightness) {
 }
 
 function drawVerticalFog(screenX, screenWidth, top, bottom, distance) {
-    const fogAmount = clamp(
-        distance / MAX_RAY_DISTANCE,
-        0,
-        .82
-    );
-
-    if (fogAmount <= 0) {
-        return;
-    }
-
-    ctx.fillStyle = `rgba(20,23,35,${fogAmount * .55})`;
-
-    ctx.fillRect(
-        screenX,
-        top,
-        screenWidth,
-        bottom - top
-    );
+    const fogAmount = getDistanceFog(distance);
+    if (fogAmount <= 0) return;
+    ctx.fillStyle = `rgba(0,0,0,${fogAmount})`;
+    ctx.fillRect(screenX, top, screenWidth, bottom - top);
 }
 
 /* =====================================================
@@ -5349,8 +5350,9 @@ function renderPerspectivePlane(list, fallback, isCeiling) {
                 const textureShade = seam * tile * (scuff===0 ? .78 : scuff===3 ? 1.12 : 1);
                 r=base*textureShade; g=(isCeiling?98:150)*textureShade; b=(isCeiling?116:164)*textureShade;
             }
-            const shade = clamp(1 - rowDistance / MAX_RAY_DISTANCE, isCeiling ? .30 : .36, isCeiling ? .90 : 1);
-            pixels[idx]=Math.floor(r*shade); pixels[idx+1]=Math.floor(g*shade); pixels[idx+2]=Math.floor(b*shade); pixels[idx+3]=255;
+            const shade = clamp(1.12 - rowDistance / (MAX_RAY_DISTANCE * 1.35), isCeiling ? .42 : .48, isCeiling ? 1 : 1.12);
+            const fog = getDistanceFog(rowDistance);
+            pixels[idx]=Math.floor(r*shade*(1-fog)); pixels[idx+1]=Math.floor(g*shade*(1-fog)); pixels[idx+2]=Math.floor(b*shade*(1-fog)); pixels[idx+3]=255;
         }
     }
     targetContext.putImageData(imageData,0,0);
@@ -5440,10 +5442,10 @@ function drawSkyAndFloor() {
     const horizon = height * .5;
 
     const ceiling = ctx.createLinearGradient(0, 0, 0, horizon);
-    ceiling.addColorStop(0, "#020305");
-    ceiling.addColorStop(.38, "#080b10");
-    ceiling.addColorStop(.76, "#11131a");
-    ceiling.addColorStop(1, "#211c25");
+    ceiling.addColorStop(0, "#10131a");
+    ceiling.addColorStop(.38, "#171b24");
+    ceiling.addColorStop(.76, "#242632");
+    ceiling.addColorStop(1, "#39303d");
     ctx.fillStyle = ceiling;
     ctx.fillRect(0, 0, width, horizon);
 
@@ -5454,10 +5456,10 @@ function drawSkyAndFloor() {
     /* Sickly, uneven neon spill: colorful enough to feel like an arcade,
        but weak enough that the darkness remains the dominant mood. */
     const glows = [
-        [width * .13, horizon * .62, "rgba(255,20,155,.13)"],
-        [width * .34, horizon * .28, "rgba(55,220,255,.10)"],
-        [width * .57, horizon * .48, "rgba(255,205,55,.08)"],
-        [width * .84, horizon * .66, "rgba(150,70,255,.11)"]
+        [width * .13, horizon * .62, "rgba(255,20,155,.19)"],
+        [width * .34, horizon * .28, "rgba(55,220,255,.16)"],
+        [width * .57, horizon * .48, "rgba(255,205,55,.13)"],
+        [width * .84, horizon * .66, "rgba(150,70,255,.17)"]
     ];
     for (const [x, y, color] of glows) {
         const g = ctx.createRadialGradient(x, y, 0, x, y, width * .26);
@@ -5485,8 +5487,8 @@ function drawSkyAndFloor() {
 
     const haze = ctx.createRadialGradient(width / 2, horizon * .92, width * .10, width / 2, horizon * .92, width * .72);
     haze.addColorStop(0, "rgba(20,22,30,.02)");
-    haze.addColorStop(.55, "rgba(5,7,10,.18)");
-    haze.addColorStop(1, "rgba(0,0,0,.82)");
+    haze.addColorStop(.55, "rgba(5,7,10,.10)");
+    haze.addColorStop(1, "rgba(0,0,0,.58)");
     ctx.fillStyle = haze;
     ctx.fillRect(0, 0, width, height);
 }
@@ -5532,13 +5534,13 @@ function drawWallSlice(screenX, screenWidth, ray) {
     const wallHeight = (height * WALL_HEIGHT) / safeDistance;
     const top = (height - wallHeight) / 2;
     const bottom = top + wallHeight;
-    const distanceLight = clamp(1 - safeDistance / MAX_RAY_DISTANCE, .06, 1);
-    const sideLight = ray.side === 1 ? .70 : .94;
+    const distanceLight = clamp(1 - safeDistance / (MAX_RAY_DISTANCE * .82), .16, 1);
+    const sideLight = ray.side === 1 ? .82 : 1.0;
     const centerAngle = normalizeAngle(ray.angle - player.angle);
     const coloredLight = .5 + .5 * Math.cos(centerAngle);
     const wallFacing = .62 + .38 * Math.abs(Math.cos(centerAngle));
     const arcadePulse = .96 + .04 * Math.sin(performance.now() / 420 + ray.mapX * .7 + ray.mapY * .31);
-    const brightness = clamp(distanceLight * sideLight * wallFacing * arcadePulse * (.74 + coloredLight * .26), .045, 1);
+    const brightness = clamp(distanceLight * sideLight * wallFacing * arcadePulse * (.82 + coloredLight * .18), .12, 1);
 
     const wallPhoto = chooseArcadeTexture(arcadeWallPhotos, ray.mapX, ray.mapY, arcadeWallPhoto);
     const usePhoto = loadedArcadePhoto(wallPhoto);
@@ -5567,7 +5569,7 @@ function drawWallSlice(screenX, screenWidth, ray) {
     }
 
     const grime = clamp(safeDistance / MAX_RAY_DISTANCE, 0, .9);
-    ctx.fillStyle = `rgba(0,0,0,${.10 + grime * .46})`;
+    ctx.fillStyle = `rgba(0,0,0,${.035 + grime * .16})`;
     ctx.fillRect(screenX, top, Math.ceil(screenWidth + 1), wallHeight);
     drawVerticalFog(screenX, Math.ceil(screenWidth + 1), top, bottom, safeDistance);
 
@@ -5585,7 +5587,7 @@ function drawWallSlice(screenX, screenWidth, ray) {
 function projectSprite(entity, kind) {
     const dx=entity.x-player.x, dy=entity.y-player.y;
     const distance=Math.hypot(dx,dy);
-    if(distance<=.1) return null;
+    if(distance<=.1 || (kind !== "exit" && distance >= VISION_CUTOFF_DISTANCE)) return null;
 
     const angle=normalizeAngle(Math.atan2(dy,dx)-player.angle);
     const offscreen=Math.abs(angle)>HALF_FOV;
@@ -5603,6 +5605,7 @@ function drawOffscreenEntityIndicator(entity, kind) {
     if(kind==="teacher" && !entity.chasing) return;
     if(kind!=="boost" && kind!=="teacher") return;
     const relative=normalizeAngle(Math.atan2(entity.y-player.y,entity.x-player.x)-player.angle);
+    if(distanceBetween(entity, player) >= VISION_CUTOFF_DISTANCE) return;
     if(Math.abs(relative)<=HALF_FOV) return;
     // Direction indicators are intentionally not blocked by walls; the map itself
     // never exposes teacher positions, and the arrow is the permitted cue.
@@ -5610,7 +5613,9 @@ function drawOffscreenEntityIndicator(entity, kind) {
     const directlyBehind=Math.abs(relative)>Math.PI*.5;
     const side=relative>=0?1:-1;
     const x=directlyBehind?width*.5:(side>0?width-34:34);
-    const y=directlyBehind?height-38:clamp(height*.5+Math.sin(relative)*height*.30,72,height-72);
+    // Keep the rear-facing marker comfortably inside the viewport; its tip
+    // must not sit on the bottom edge on short landscape/mobile canvases.
+    const y=directlyBehind?height-66:clamp(height*.5+Math.sin(relative)*height*.30,72,height-72);
     const color=kind==="teacher"?"#ff315f":"#ffd84d",label=kind==="teacher"?"TEACHER":"BOOST";
     ctx.save();ctx.globalCompositeOperation="lighter";ctx.shadowBlur=18;ctx.shadowColor=color;ctx.fillStyle=color;ctx.beginPath();
     if(directlyBehind){ctx.moveTo(x,y+10);ctx.lineTo(x-11,y-5);ctx.lineTo(x+11,y-5);}
