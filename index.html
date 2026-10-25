@@ -3990,7 +3990,7 @@ const VISION_CUTOFF_DISTANCE = 10;
 const VISION_FOG_COLOR = [12, 14, 18];
 const CHASE_PATH_END_DISTANCE_FAST = 9;
 const CHASE_PATH_END_DISTANCE_RESTRICTED = 9;
-const CHASE_END_HOLD = 7.0;
+const CHASE_END_HOLD = 4.0;
 const CHASE_MAX_DURATION_FAST = 12.0;
 const CHASE_MAX_DURATION_RESTRICTED = 12.0;
 const FAST_TEACHER_MULTIPLIER = 1.30;
@@ -4070,20 +4070,23 @@ let exitPoint = {
 
 // Keep the two roaming teachers far from the exit and separated from each other.
 const teacherSpawnB = findNearestWalkable(32.5, 32.5, 12);
-function findSeparatedRoamerSpawn(preferred, other) {
+function findSeparatedRoamerSpawn(preferred, others) {
     const candidates=[];
     for(let y=1;y<maze.length-1;y++) for(let x=1;x<maze[y].length-1;x++) {
         const c={x:x+.5,y:y+.5};
         if(!isWalkableTile(c.x,c.y) || distanceBetween(c,player)<12 || distanceBetween(c,exitPoint)<12) continue;
-        if(other && getPathDistance(c.x,c.y,other.x,other.y,Infinity)<12) continue;
+        if((others||[]).some(other => getPathDistance(c.x,c.y,other.x,other.y,Infinity)<14)) continue;
         candidates.push(c);
     }
-    candidates.sort((a,b)=>Math.hypot(a.x-preferred.x,a.y-preferred.y)-Math.hypot(b.x-preferred.x,b.y-preferred.y));
-    const near=candidates.slice(0,Math.min(18,candidates.length));
-    return near.length ? near[Math.floor(Math.random()*near.length)] : findNearestWalkable(preferred.x,preferred.y,12);
+    // Prefer broad geographic spread, but randomize across the whole valid set
+    // rather than repeatedly selecting from a tiny cluster near a fixed point.
+    const ranked=candidates.map(c=>({c,spread:Math.min(...(others||[]).map(o=>getPathDistance(c.x,c.y,o.x,o.y,Infinity)),Infinity)}));
+    ranked.sort((a,b)=>b.spread-a.spread);
+    const pool=ranked.slice(0,Math.max(1,Math.ceil(ranked.length*.45)));
+    return pool.length ? pool[Math.floor(Math.random()*pool.length)].c : findNearestWalkable(preferred.x,preferred.y,12);
 }
-const teacherSpawnC = findSeparatedRoamerSpawn({x:39.5,y:9.5},null);
-const teacherSpawnD = findSeparatedRoamerSpawn({x:8.5,y:30.5},teacherSpawnC);
+const teacherSpawnC = findSeparatedRoamerSpawn({x:39.5,y:9.5},[teacherSpawnB]);
+const teacherSpawnD = findSeparatedRoamerSpawn({x:8.5,y:30.5},[teacherSpawnB,teacherSpawnC]);
 const TEACHER_SPAWNS=[
     {slot:"guard",x:teacherSpawnB.x,y:teacherSpawnB.y,angle:Math.PI,kind:"restricted"},
     {slot:"roamer1",x:teacherSpawnC.x,y:teacherSpawnC.y,angle:Math.PI/2,kind:"fast"},
@@ -5433,7 +5436,7 @@ function renderPerspectivePlane(list, fallback, isCeiling) {
             // distant surfaces subdued by atmospheric perspective.
             const shade = isCeiling
                 ? clamp(1.12 - rowDistance / (MAX_RAY_DISTANCE * 1.35), .42, 1)
-                : clamp(1.30 - rowDistance / (MAX_RAY_DISTANCE * 1.55), .70, 1.24);
+                : clamp(1.42 - rowDistance / (MAX_RAY_DISTANCE * 1.55), .84, 1.30);
             const fog = getDistanceFog(rowDistance);
             const shadedR = r * shade, shadedG = g * shade, shadedB = b * shade;
             pixels[idx]   = Math.floor(shadedR * (1-fog) + VISION_FOG_COLOR[0] * fog);
@@ -5743,10 +5746,11 @@ function clipSpriteByWallDepth(projection, depthBuffer, halfWidth) {
 
 function drawTrapSprite(trap, depthBuffer){
     const projection=projectSprite(trap,"prop");
-    if(!projection || projection.offscreen) return;
+    if(!projection || projection.offscreen || projection.distance >= VISION_CUTOFF_DISTANCE) return;
     const col=Math.floor(projection.screenX);
     if(col<0||col>=arcadeCanvas.width) return;
     ctx.save();
+    ctx.globalAlpha = 1 - getDistanceFog(projection.distance);
     if(!clipSpriteByWallDepth(projection,depthBuffer,projection.size*.7)){ctx.restore();return;}
     const size=projection.size*.32;
     const x=projection.screenX, y=arcadeCanvas.height/2+projection.size*.38;
@@ -5759,7 +5763,9 @@ function drawTrapSprite(trap, depthBuffer){
 
 function drawArcadeProp(prop, depthBuffer) {
     const projection = projectSprite(prop, "prop");
-    if (!projection || projection.offscreen) return;
+    // The exit light is rendered by its own pass; all ordinary props, including
+    // boosts and traps, disappear into the same distance veil at ten tiles.
+    if (!projection || projection.offscreen || projection.distance >= VISION_CUTOFF_DISTANCE) return;
 
     const centerColumn = Math.floor(projection.screenX);
     if (centerColumn < 0 || centerColumn >= arcadeCanvas.width) return;
@@ -5889,7 +5895,7 @@ function drawArcadeProp(prop, depthBuffer) {
         ctx.fillStyle = "#252a36";
         ctx.fillRect(-fw*.40, -fh*.48, fw*.80, fh*.36);
         ctx.fillStyle = glow;
-        ctx.globalAlpha = .52;
+        ctx.globalAlpha = .52 * (1 - getDistanceFog(projection.distance));
         ctx.fillRect(-fw*.36, -fh*.44, fw*.72, Math.max(2, fh*.08));
         ctx.globalAlpha = 1 - getDistanceFog(projection.distance);
         ctx.fillStyle = "#11141b";
