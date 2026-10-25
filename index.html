@@ -2324,18 +2324,6 @@ body.smartphone #lookPad { pointer-events:none; opacity:.58; }
     font-size: 12px;
     line-height: 1.5;
 }
-.sensitivitySetting { display:block; margin-top:14px; }
-.sensitivityChoice { display:flex; align-items:center; gap:10px; margin-top:8px; }
-.sensitivityChoice strong { display:inline-flex; min-width:32px; justify-content:center; font-size:18px; }
-.sensitivityChoice button { min-width:42px; }
-.sensitivityChoice button:last-child { min-width:72px; }
-@media (orientation: landscape) and (max-height: 500px) {
-    #arcadeScreen { width:100vw; height:100dvh; }
-    #arcadeCanvas { width:100%; height:100%; }
-    #rearMirror { top:8px; right:172px; width:142px; height:82px; transform:none; }
-    #rearMirrorCanvas { width:100%; height:100%; }
-    #chaseSubtitle { top:58px; }
-}
 .teacherTextureChoice button { min-width: 110px; }
 @media (max-width:900px) {
     #rearMirror { right:172px; width:142px; height:82px; }
@@ -2486,21 +2474,8 @@ body.smartphone #lookPad { pointer-events:none; opacity:.58; }
             </div>
         </div>
 
-
-
-        <div class="settingRow sensitivitySetting">
-            <div class="settingTitle">Maze View Sensitivity</div>
-            <div class="settingChoice sensitivityChoice">
-                <button type="button" onclick="adjustLookSensitivity(-1)" aria-label="Decrease sensitivity">−</button>
-                <strong id="lookSensitivityValue">0</strong>
-                <button type="button" onclick="adjustLookSensitivity(1)" aria-label="Increase sensitivity">+</button>
-                <button type="button" onclick="resetLookSensitivity()">Reset</button>
-            </div>
-            <p class="settingNote">−5 = slower · 0 = current setting · +5 = faster</p>
-        </div>
-
         <p>PC mode uses keyboard controls.</p>
-        <p>Smartphone mode uses a virtual joystick and DASH button. For the PC-style game view on a phone, rotate the phone horizontally.</p>
+        <p>Smartphone mode uses a virtual joystick and DASH button.</p>
     </div>
 </div>
 
@@ -2702,10 +2677,10 @@ body.smartphone #lookPad { pointer-events:none; opacity:.58; }
         </div>
         <div id="weddingTimeCard" class="weddingTimeCard">10 YEARS AFTER...</div>
         <div class="weddingDoves" aria-hidden="true">
-            <span><svg viewBox="0 0 120 80" aria-hidden="true"><path d="M13 54 C20 42 32 35 47 36 C55 22 68 16 79 23 C86 27 88 34 85 40 C96 38 104 42 110 48 L98 53 L87 52 C79 63 63 66 49 61 L30 66 L35 57Z" fill="#fff" stroke="#738b96" stroke-width="2.4" stroke-linejoin="round"/><path d="M42 42 C46 25 58 13 69 13 C70 27 64 37 57 44 C68 39 77 41 82 49 C68 56 54 54 42 42Z" fill="#f3f8fb" stroke="#738b96" stroke-width="2.1" stroke-linejoin="round"/><circle cx="78" cy="31" r="2.3" fill="#243b4a"/><path d="M85 35 L97 38 L86 41Z" fill="#e7b24b"/><path d="M51 62 L49 69 M59 63 L60 69" stroke="#b98b56" stroke-width="2" stroke-linecap="round"/></svg></span>
-            <span><svg viewBox="0 0 120 80" aria-hidden="true"><path d="M13 54 C20 42 32 35 47 36 C55 22 68 16 79 23 C86 27 88 34 85 40 C96 38 104 42 110 48 L98 53 L87 52 C79 63 63 66 49 61 L30 66 L35 57Z" fill="#fff" stroke="#738b96" stroke-width="2.4" stroke-linejoin="round"/><path d="M42 42 C46 25 58 13 69 13 C70 27 64 37 57 44 C68 39 77 41 82 49 C68 56 54 54 42 42Z" fill="#f3f8fb" stroke="#738b96" stroke-width="2.1" stroke-linejoin="round"/><circle cx="78" cy="31" r="2.3" fill="#243b4a"/><path d="M85 35 L97 38 L86 41Z" fill="#e7b24b"/><path d="M51 62 L49 69 M59 63 L60 69" stroke="#b98b56" stroke-width="2" stroke-linecap="round"/></svg></span>
-            <span><svg viewBox="0 0 120 80" aria-hidden="true"><path d="M13 54 C20 42 32 35 47 36 C55 22 68 16 79 23 C86 27 88 34 85 40 C96 38 104 42 110 48 L98 53 L87 52 C79 63 63 66 49 61 L30 66 L35 57Z" fill="#fff" stroke="#738b96" stroke-width="2.4" stroke-linejoin="round"/><path d="M42 42 C46 25 58 13 69 13 C70 27 64 37 57 44 C68 39 77 41 82 49 C68 56 54 54 42 42Z" fill="#f3f8fb" stroke="#738b96" stroke-width="2.1" stroke-linejoin="round"/><circle cx="78" cy="31" r="2.3" fill="#243b4a"/><path d="M85 35 L97 38 L86 41Z" fill="#e7b24b"/><path d="M51 62 L49 69 M59 63 L60 69" stroke="#b98b56" stroke-width="2" stroke-linecap="round"/></svg></span>
-            <span><svg viewBox="0 0 120 80" aria-hidden="true"><path d="M13 54 C20 42 32 35 47 36 C55 22 68 16 79 23 C86 27 88 34 85 40 C96 38 104 42 110 48 L98 53 L87 52 C79 63 63 66 49 61 L30 66 L35 57Z" fill="#fff" stroke="#738b96" stroke-width="2.4" stroke-linejoin="round"/><path d="M42 42 C46 25 58 13 69 13 C70 27 64 37 57 44 C68 39 77 41 82 49 C68 56 54 54 42 42Z" fill="#f3f8fb" stroke="#738b96" stroke-width="2.1" stroke-linejoin="round"/><circle cx="78" cy="31" r="2.3" fill="#243b4a"/><path d="M85 35 L97 38 L86 41Z" fill="#e7b24b"/><path d="M51 62 L49 69 M59 63 L60 69" stroke="#b98b56" stroke-width="2" stroke-linecap="round"/></svg></span>
+            <span><svg viewBox="0 0 120 80" aria-hidden="true"><path d="M18 54 L4 42 L10 61 L24 60 C35 70 52 69 66 61 C77 58 83 51 86 43 C94 39 102 41 112 48 L99 53 L88 52 C79 64 62 67 48 61 L30 66 L35 57Z" fill="#fff" stroke="#738b96" stroke-width="2.2" stroke-linejoin="round"/><path d="M39 47 C37 29 51 9 69 8 C84 7 91 21 85 34 C80 43 68 49 57 51 C70 44 73 34 69 24 C61 32 55 43 53 53Z" fill="#eaf4f8" stroke="#738b96" stroke-width="2.1" stroke-linejoin="round"/><path d="M46 53 C56 57 67 57 76 51" fill="none" stroke="#c4d8e0" stroke-width="2" stroke-linecap="round"/><circle cx="83" cy="31" r="2.2" fill="#243b4a"/><path d="M89 35 L101 38 L90 41Z" fill="#e7b24b"/><path d="M52 63 L50 70 M60 63 L61 70" stroke="#b98b56" stroke-width="2" stroke-linecap="round"/></svg></span>
+            <span><svg viewBox="0 0 120 80" aria-hidden="true"><path d="M18 54 L4 42 L10 61 L24 60 C35 70 52 69 66 61 C77 58 83 51 86 43 C94 39 102 41 112 48 L99 53 L88 52 C79 64 62 67 48 61 L30 66 L35 57Z" fill="#fff" stroke="#738b96" stroke-width="2.2" stroke-linejoin="round"/><path d="M39 47 C37 29 51 9 69 8 C84 7 91 21 85 34 C80 43 68 49 57 51 C70 44 73 34 69 24 C61 32 55 43 53 53Z" fill="#eaf4f8" stroke="#738b96" stroke-width="2.1" stroke-linejoin="round"/><path d="M46 53 C56 57 67 57 76 51" fill="none" stroke="#c4d8e0" stroke-width="2" stroke-linecap="round"/><circle cx="83" cy="31" r="2.2" fill="#243b4a"/><path d="M89 35 L101 38 L90 41Z" fill="#e7b24b"/><path d="M52 63 L50 70 M60 63 L61 70" stroke="#b98b56" stroke-width="2" stroke-linecap="round"/></svg></span>
+            <span><svg viewBox="0 0 120 80" aria-hidden="true"><path d="M18 54 L4 42 L10 61 L24 60 C35 70 52 69 66 61 C77 58 83 51 86 43 C94 39 102 41 112 48 L99 53 L88 52 C79 64 62 67 48 61 L30 66 L35 57Z" fill="#fff" stroke="#738b96" stroke-width="2.2" stroke-linejoin="round"/><path d="M39 47 C37 29 51 9 69 8 C84 7 91 21 85 34 C80 43 68 49 57 51 C70 44 73 34 69 24 C61 32 55 43 53 53Z" fill="#eaf4f8" stroke="#738b96" stroke-width="2.1" stroke-linejoin="round"/><path d="M46 53 C56 57 67 57 76 51" fill="none" stroke="#c4d8e0" stroke-width="2" stroke-linecap="round"/><circle cx="83" cy="31" r="2.2" fill="#243b4a"/><path d="M89 35 L101 38 L90 41Z" fill="#e7b24b"/><path d="M52 63 L50 70 M60 63 L61 70" stroke="#b98b56" stroke-width="2" stroke-linecap="round"/></svg></span>
+            <span><svg viewBox="0 0 120 80" aria-hidden="true"><path d="M18 54 L4 42 L10 61 L24 60 C35 70 52 69 66 61 C77 58 83 51 86 43 C94 39 102 41 112 48 L99 53 L88 52 C79 64 62 67 48 61 L30 66 L35 57Z" fill="#fff" stroke="#738b96" stroke-width="2.2" stroke-linejoin="round"/><path d="M39 47 C37 29 51 9 69 8 C84 7 91 21 85 34 C80 43 68 49 57 51 C70 44 73 34 69 24 C61 32 55 43 53 53Z" fill="#eaf4f8" stroke="#738b96" stroke-width="2.1" stroke-linejoin="round"/><path d="M46 53 C56 57 67 57 76 51" fill="none" stroke="#c4d8e0" stroke-width="2" stroke-linecap="round"/><circle cx="83" cy="31" r="2.2" fill="#243b4a"/><path d="M89 35 L101 38 L90 41Z" fill="#e7b24b"/><path d="M52 63 L50 70 M60 63 L61 70" stroke="#b98b56" stroke-width="2" stroke-linecap="round"/></svg></span>
         </div>
         <div class="weddingCaption">MARRIAGE END</div>
     </div>
@@ -2897,21 +2872,6 @@ function assetUrl(path) {
     return new URL(path, document.baseURI).href;
 }
 
-// Reuse one image object per character. Creating Image objects inside the render loop
-// caused the teacher sprite renderer to fail and repeatedly restart image loading.
-const teacherCharacterImageCache = Object.create(null);
-function getTeacherCharacterImage(character) {
-    if (!character || !character.image) return null;
-    if (!teacherCharacterImageCache[character.name]) {
-        const image = new Image();
-        image.src = assetUrl(character.image);
-        teacherCharacterImageCache[character.name] = image;
-    }
-    return teacherCharacterImageCache[character.name];
-}
-// Preload every possible teacher portrait so the rear mirror never remains a red placeholder.
-for (const character of characters) getTeacherCharacterImage(character);
-
 function imageWithFallback(img, name) {
     img.src = assetUrl(img.dataset.asset || img.getAttribute("src"));
     img.onerror = () => {
@@ -2955,9 +2915,7 @@ let complimentUsed = false;
 let arcadeCleared = false;
 let gameOverFromArcade = false;
 let chaseMessageTimer = 0;
-let teacherTextureChoice = "random-per-teacher";
-const teacherCharacterNames = ["Masugu", "Mizuta", "Kowada", "Junya", "Takuto"];
-const teacherCharacterBySlot = {};
+let teacherTextureChoice = "current";
 let teacherTextureImage = null;
 let teacherTextureSrc = "";
 
@@ -3209,35 +3167,6 @@ function closeModal(id) {
     document.getElementById(id).classList.remove("active");
 }
 
-let lookSensitivity = 0;
-function lookSensitivityMultiplier() { return 1 + lookSensitivity * 0.16; }
-function updateLookSensitivityUI() {
-    const value = document.getElementById("lookSensitivityValue");
-    if (value) value.textContent = String(lookSensitivity);
-}
-function setLookSensitivity(value) {
-    lookSensitivity = clamp(Number(value) || 0, -5, 5);
-    lookSensitivity = Math.round(lookSensitivity);
-    try { localStorage.setItem("mazeLookSensitivity", String(lookSensitivity)); } catch (_) {}
-    updateLookSensitivityUI();
-}
-function adjustLookSensitivity(delta) { setLookSensitivity(lookSensitivity + delta); }
-function resetLookSensitivity() { setLookSensitivity(0); }
-try { setLookSensitivity(localStorage.getItem("mazeLookSensitivity") ?? 0); } catch (_) { setLookSensitivity(0); }
-
-function requestLandscapeOrientation() {
-    // Browsers that support orientation locking may honor this during gameplay;
-    // iOS Safari can require the player to rotate the device manually.
-    try {
-        if (screen.orientation && typeof screen.orientation.lock === "function") {
-            screen.orientation.lock("landscape").catch(() => {});
-        }
-    } catch (_) {}
-}
-function releaseOrientationLock() {
-    try { if (screen.orientation && typeof screen.orientation.unlock === "function") screen.orientation.unlock(); } catch (_) {}
-}
-
 /* =====================================================
    DEVICE MODE
 ===================================================== */
@@ -3245,8 +3174,10 @@ function releaseOrientationLock() {
 function setDeviceMode(mode) {
     gameMode = mode;
 
-    /* Preserve the mobile control layer when smartphone mode is selected. */
-    document.body.classList.toggle("smartphone", mode === "smartphone");
+    document.body.classList.toggle(
+        "smartphone",
+        mode === "smartphone"
+    );
 
     document.getElementById("pcButton").classList.toggle(
         "selected",
@@ -3261,35 +3192,29 @@ function setDeviceMode(mode) {
     localStorage.setItem("deviceMode", mode);
 }
 
-function setTeacherTexture(choice) { /* Teacher appearance is randomized independently for each of the three teachers. */ }
-
-function updateTeacherTextureButtons() {
-    document.querySelectorAll("[data-teacher-texture]").forEach(button => {
-        button.classList.toggle("selected", button.dataset.teacherTexture === teacherTextureChoice);
-    });
-}
-
-function refreshTeacherTexture() {
+function refreshTeacherTexture(randomize = false) {
+    if (randomize) {
+        const pool = characters;
+        const character = pool[Math.floor(Math.random() * pool.length)];
+        teacherTextureChoice = character ? character.name : "current";
+    }
     if (teacherTextureChoice === "current") {
         teacherTextureImage = null;
         teacherTextureSrc = "";
         return;
     }
-
     const character = characters.find(character => character.name === teacherTextureChoice);
     if (!character) return;
-
     const src = assetUrl(character.image);
     if (teacherTextureSrc === src && teacherTextureImage) return;
-
     teacherTextureSrc = src;
     teacherTextureImage = new Image();
     teacherTextureImage.src = src;
 }
 
 const savedMode = localStorage.getItem("deviceMode");
-setDeviceMode(savedMode || (window.innerWidth <= 700 ? "smartphone" : "pc"));
-refreshTeacherTexture();
+setDeviceMode(savedMode || "pc");
+refreshTeacherTexture(true);
 
 /* =====================================================
    STORY
@@ -3540,7 +3465,7 @@ async function complimentChoice(){
 }
 function talkChoice(){
     const f=boyData().favorites;
-    const questions=[{q:"What's your favorite food?",a:f.food},{q:"What's your favorite color?",a:f.color},{q:"What's your favorite animal?",a:f.animal},{q:"What sports do you like?",a:f.sport}];
+    const questions=[{q:"What's your favorite food?",a:f.food},{q:"What's your favorite color?",a:f.color},{q:"What's your favorite animal?",a:f.animal},{q:"What's your favorite sport?",a:f.sport}];
     const box=document.getElementById("choiceBox"); box.innerHTML=""; box.style.display="grid"; setActionLock(false);
     questions.forEach((q,index)=>{
         const button=document.createElement("button"); button.className="choice"; button.textContent=`${String.fromCharCode(65+index)}. ${q.q}`;
@@ -3560,14 +3485,14 @@ async function confess(){
     await say(mainName(),"I like you. Would you be my boyfriend?","shy","left");
     await waitForDialogueAdvance();
     if(love>=100){ await marriageEnding(); return; }
-    if(love<50){ await rejectionEnding(); return;}
+    if(love<=30){ await rejectionEnding(); return; }
     if(Math.random()*100 < love){ await datingEnding(); }
     else { await softRejectionEnding(); }
 }
 async function rejectionEnding(){await say(boyName(),"Who are you?","confused","right");await waitForDialogueAdvance();showGameOver("The confession was rejected.",true);}
 async function softRejectionEnding(){await say(boyName(),"Sorry, you are just a friend.","confused","right");await waitForDialogueAdvance();showGameOver("The confession was rejected.",true);}
 async function datingEnding(){await say(boyName(),"Yes.","shy","right");await waitForDialogueAdvance();showEnding("GAME CLEAR",mainName()+" and "+boyName()+" are finally together!","dating");}
-async function marriageEnding(){await say(boyName(),"Yes.","shy","right");await waitForDialogueAdvance();showEnding("MARRIAGE END","...after 10 years\n\n🕊️ A white dove flies away from a church.","marriage");}
+async function marriageEnding(){await say(boyName(),"Yes.","shy","right");await waitForDialogueAdvance();showEnding("MARRIAGE END","...after 10 years\n\nA white dove flies away from a church.","marriage");}
 /* =====================================================
    GAME OVER / ENDING
 ===================================================== */
@@ -3588,7 +3513,6 @@ function showGameOver(text, showHeart = true, fromArcade = false) {
     arcadeIntroPlaying = false;
     inArcade = false;
     arcadeRunning = false;
-    releaseOrientationLock();
 
     document.getElementById("arcadeScreen").style.display = "none";
     document.getElementById("miniMap").style.display = "none";
@@ -3628,12 +3552,12 @@ function retryArcade() {
     document.getElementById("rearMirror").style.display = "block";
 
     resetArcadeWorld();
+    refreshTeacherTexture(true);
     // Ensure the map and HUD are painted on the first frame instead of waiting
     // for movement or a later state transition.
     try { drawMiniMap(); } catch (e) { console.warn("Initial map draw skipped", e); }
     inArcade = true;
     arcadeRunning = true;
-    requestLandscapeOrientation();
     const activeMiniMap = document.getElementById("miniMap"); if (activeMiniMap) { activeMiniMap.style.display = "block"; activeMiniMap.style.visibility = "visible"; activeMiniMap.style.opacity = "1"; }
     previousTime = performance.now();
     showScreen("storyScreen", false);
@@ -3982,33 +3906,24 @@ const DASH_RECOVERY_COOLDOWN = 2.0;
 const CHASE_PATH_START_DISTANCE_FAST = 12;
 const CHASE_PATH_START_DISTANCE_RESTRICTED = 14;
 const CHASE_RADIAL_START_DISTANCE = 10;
-const CHASE_PATH_START_TILES = 4;
-const CHASE_CONE_START_DISTANCE = 15;
-const CHASE_COOLDOWN_SECONDS = 10;
-const VISION_FOG_START_DISTANCE = 7.5;
-const VISION_CUTOFF_DISTANCE = 11;
-const VISION_FOG_COLOR = [5, 6, 9];
 const CHASE_PATH_END_DISTANCE_FAST = 9;
 const CHASE_PATH_END_DISTANCE_RESTRICTED = 9;
-const CHASE_END_HOLD = 7.0;
-const CHASE_MAX_DURATION_FAST = 30.0;
-const CHASE_MAX_DURATION_RESTRICTED = 30.0;
+const CHASE_END_HOLD = 3.0;
+const CHASE_MAX_DURATION_FAST = 12.0;
+const CHASE_MAX_DURATION_RESTRICTED = 12.0;
 const FAST_TEACHER_MULTIPLIER = 1.30;
 const CHASE_SPEED_MULTIPLIER = 1.05;
 const RESTRICTED_TEACHER_MULTIPLIER = 0.90;
 const TEACHER_VISIBLE_DISTANCE = 100;
-const ARCADE_ENTITY_DRAW_DISTANCE = 140;
+const ARCADE_ENTITY_DRAW_DISTANCE = 100;
 const MAP_LOCAL_RADIUS = 13;
 const TRAP_REVEAL_DURATION = 2.0;
 const RESTRICTED_ZONE_MIN = 7.5;
 const RESTRICTED_ZONE_MAX = 32.5;
 const WARNING_PATH_DISTANCE = 17;
 
-// Keep the same vertical perspective on every device. The horizontal FOV adapts
-// to the actual viewport aspect ratio, so portrait phones do not squash the maze.
-const TARGET_VERTICAL_FOV = Math.PI * (50 / 180);
-let FIELD_OF_VIEW = Math.PI * 0.44;
-let HALF_FOV = FIELD_OF_VIEW / 2;
+const FIELD_OF_VIEW = Math.PI * 0.44; // natural field of view (~79 degrees)
+const HALF_FOV = FIELD_OF_VIEW / 2;
 
 const MAX_RAY_DISTANCE = 100;
 
@@ -4044,7 +3959,7 @@ let arcadeElapsed = 0;
 function makeTeacher(x,y,angle=0,kind="fast"){
     return {x,y,angle,kind,chasing:false,path:null,wanderTarget:null,wanderTimer:0,
         wanderDir:Math.floor(Math.random()*4),lastWanderTile:null,wanderHistory:[],trapApproachTimer:0,
-        chaseElapsed:0,farPathTimer:0,wallSeparatedTimer:0,chaseCooldown:0, pathRefreshTimer:0, cachedPathDistance:Infinity, cachedPlayerTile:"", lastChaseEndedAt:null};
+        chaseElapsed:0,farPathTimer:0,chaseCooldown:0, pathRefreshTimer:0, cachedPathDistance:Infinity, cachedPlayerTile:""};
 }
 function findNearestWalkable(x, y, minDistance = 0) {
     if (isWalkableTile(x, y) && distanceBetween({x, y}, player) >= minDistance) return {x, y};
@@ -4088,10 +4003,13 @@ const TEACHER_SPAWNS=[
     {slot:"guard",x:teacherSpawnB.x,y:teacherSpawnB.y,angle:Math.PI,kind:"restricted"},
     {slot:"roamer1",x:teacherSpawnC.x,y:teacherSpawnC.y,angle:Math.PI/2,kind:"fast"},
     {slot:"roamer2",x:teacherSpawnD.x,y:teacherSpawnD.y,angle:0,kind:"fast"}
-].map(spawn => ({...spawn, characterName: teacherCharacterNames.splice(Math.floor(Math.random()*teacherCharacterNames.length),1)[0]}));
+];
 
-/* Arcade cabinets are intentionally removed: they obstruct movement during chases. */
-const arcadeProps = [];
+/* Decorative arcade machines + 10 collectible acceleration items. */
+const arcadeProps = []; // Disable expensive decorative props and their collision checks
+
+
+/* Lightweight mode: extra cabinets, photographic cabinet collisions, posters, wires, chairs, and wall clutter are disabled. The original core arcadeProps list above is retained. */
 
 const boostCandidates = [];
 for (let y = 1; y < maze.length - 1; y++) {
@@ -4170,8 +4088,6 @@ while(selectedTraps.length<7 && trapCandidates.length){
     let bestIndex=0,bestScore=-Infinity;
     for(let i=0;i<trapCandidates.length;i++){
         const c=trapCandidates[i];
-        if (arcadeProps.some(p => p.boost && Math.hypot(p.x-c.x,p.y-c.y)<3.0)) continue;
-        if (selectedTraps.some(t => Math.hypot(t.x-c.x,t.y-c.y)<3.0)) continue;
         const nearest=Math.min(
             Math.hypot(c.x-1.5,c.y-1.5),
             Math.hypot(c.x-exitPoint.x,c.y-exitPoint.y),
@@ -4236,22 +4152,15 @@ window.addEventListener("blur", () => {
 ===================================================== */
 
 function resizeArcade() {
-    const width = Math.max(1, window.innerWidth);
-    const height = Math.max(1, window.innerHeight);
+    const width = window.innerWidth;
+    const height = window.innerHeight;
 
     arcadeCanvas.width = width;
     arcadeCanvas.height = height;
 
-    // Match the PC camera's vertical view instead of forcing the PC's horizontal
-    // FOV onto a tall phone screen. This keeps corridor proportions consistent.
-    const aspect = width / height;
-    FIELD_OF_VIEW = 2 * Math.atan(Math.tan(TARGET_VERTICAL_FOV / 2) * aspect);
-    FIELD_OF_VIEW = clamp(FIELD_OF_VIEW, Math.PI * 0.24, Math.PI * 0.62);
-    HALF_FOV = FIELD_OF_VIEW / 2;
-
-    // Keep the mobile renderer lightweight; ray density affects clarity, not
-    // corridor width, perspective, or collision geometry.
-    renderColumns = (width < 700 && window.innerWidth <= window.innerHeight) ? RENDER_COLUMNS_MOBILE : RENDER_COLUMNS_DESKTOP;
+    renderColumns = width < 700
+        ? RENDER_COLUMNS_MOBILE
+        : RENDER_COLUMNS_DESKTOP;
 }
 
 window.addEventListener("resize", resizeArcade);
@@ -4453,7 +4362,7 @@ function updateArcadeMachinePickups(dt) {
     for (const prop of arcadeProps) {
         if (prop.collected || !prop.boost) continue;
 
-        if (distanceBetween(player, prop) < 0.48) {
+        if (distanceBetween(player, prop) < 0.98) {
             prop.collected = true;
             player.machineBoostTimer = MACHINE_BOOST_DURATION;
             trapSlowTimer = 0;
@@ -4488,19 +4397,16 @@ function updatePlayer(dt) {
     const dashHeld=keys["shift"]||dashTouch;
     updateArcadeMachinePickups(dt);
     if(trapStopTimer>0){ forward=0; strafe=0; }
-    const wasTrapSlow = trapSlowTimer > 0;
-    // Cooldown pauses while stationary and throughout the trap's slow effect.
-    // Stopping grants quicker stamina recovery, but does not erase saved cooldown.
-    if(moving && trapSlowTimer<=0 && player.dashCooldown>0) player.dashCooldown=Math.max(0,player.dashCooldown-dt);
-    const canDash=dashHeld&&moving&&player.stamina>0&&!player.dashExhausted&&trapSlowTimer<=0;
+    if(player.dashCooldown>0) player.dashCooldown=Math.max(0,player.dashCooldown-dt);
+    const canDash=dashHeld&&moving&&player.stamina>0&&!player.dashExhausted;
     if(player.dashWasActive&&!canDash&&player.stamina>0) player.dashCooldown=DASH_RECOVERY_COOLDOWN;
     let speed=NORMAL_SPEED;
     if(player.machineBoostTimer>0){speed=MACHINE_BOOST_SPEED; player.stamina=Math.min(MAX_STAMINA,player.stamina+STAMINA_RECOVERY_RATE*1.8*dt);}
     else if(player.dashExhausted){speed=EXHAUSTED_SPEED;}
     if(trapSlowTimer>0 && !canDash) speed*=.45;
     else if(canDash){speed=DASH_SPEED;player.stamina=Math.max(0,player.stamina-STAMINA_DRAIN_RATE*dt);if(player.stamina<=0){player.dashExhausted=true;dashTouch=false;document.getElementById("dashButton").classList.remove("active");}}
-    else if(!player.dashExhausted && player.machineBoostTimer<=0 && (!moving || player.dashCooldown<=0)) player.stamina=Math.min(MAX_STAMINA,player.stamina+STAMINA_RECOVERY_RATE*(moving?1:1.5)*dt);
-    if(player.dashExhausted){player.stamina=Math.min(MAX_STAMINA,player.stamina+STAMINA_RECOVERY_RATE*(moving?1:1.5)*dt);if(player.stamina>=MAX_STAMINA){player.dashExhausted=false;}}
+    else if(!player.dashExhausted&&player.dashCooldown<=0) player.stamina=Math.min(MAX_STAMINA,player.stamina+STAMINA_RECOVERY_RATE*dt);
+    if(player.dashExhausted){player.stamina=Math.min(MAX_STAMINA,player.stamina+STAMINA_RECOVERY_RATE*dt);if(player.stamina>=MAX_STAMINA){player.dashExhausted=false;player.dashCooldown=0;}}
     player.dashWasActive=canDash;
     document.getElementById("staminaBar").style.width=(player.stamina/MAX_STAMINA*100)+"%";
     const boostText=document.getElementById("machineBoostStatus");
@@ -4509,12 +4415,13 @@ function updatePlayer(dt) {
     if(moving){const fd=forward*speed*dt,sd=strafe*speed*dt;moveEntity(player,Math.cos(player.angle)*fd+Math.cos(player.angle+Math.PI/2)*sd,Math.sin(player.angle)*fd+Math.sin(player.angle+Math.PI/2)*sd);cameraBobAmount=Math.min(1,cameraBobAmount+dt*(canDash?8:5));}
     else cameraBobAmount=Math.max(0,cameraBobAmount-dt*5);
     for(const trap of traps){
-        if(!trap.triggered && distanceBetween(player,trap)<.34){
+        if(!trap.triggered && distanceBetween(player,trap)<.55){
             trap.triggered=true;
             trap.revealed=true;
-            trapSlowTimer=3.0;
+            trapSlowTimer=2.0;
             trapStopTimer=2.0;
-            player.stamina=Math.max(MAX_STAMINA * 0.01,player.stamina-105);
+            // The needle result applies the requested penalty; do not touch ghost trap logic.
+            player.stamina=Math.max(1,player.stamina);
             player.machineBoostTimer=0;
             teacherRevealTimer=4.0;
             for(const teacher of teachers) if(teacher.kind === "fast") teacher.trapApproachTimer=4.0;
@@ -4525,22 +4432,23 @@ function updatePlayer(dt) {
     }
     if(teacherRevealTimer>0) teacherRevealTimer=Math.max(0,teacherRevealTimer-dt);
     if(trapSlowTimer>0) trapSlowTimer=Math.max(0,trapSlowTimer-dt);
-    if(wasTrapSlow && trapSlowTimer<=0) player.dashCooldown=DASH_RECOVERY_COOLDOWN;
     if(trapStopTimer>0 && !trapSkillActive) trapStopTimer=Math.max(0,trapStopTimer-dt);
 }
 function finishTrapSkill(success){
     if(!trapSkillActive) return;
     trapSkillActive=false;
     const skill=document.getElementById("trapSkillCheck"); if(skill) skill.style.display="none";
-    // Success cancels the remaining immobilization. Failure still allows movement after a brief one-second stop.
-    trapStopTimer=success?0:Math.min(trapStopTimer,1.0);
-    if (success) {
-        player.stamina=Math.min(MAX_STAMINA,player.stamina+70); // successful timing reduces the stamina penalty substantially
-        trapSlowTimer=0; // perfect timing cancels the slow effect
-        player.dashCooldown=DASH_RECOVERY_COOLDOWN;
-    } else {
-        trapSlowTimer=3.0;
+    if(success){
+        trapStopTimer=0;
+        player.stamina=Math.max(1,player.stamina-MAX_STAMINA*.15);
+        trapSlowTimer=0;
+    }else{
+        trapStopTimer=0;
+        trapSlowTimer=2.0;
+        player.stamina=Math.max(1,player.stamina-MAX_STAMINA*.60);
     }
+    const staminaBar=document.getElementById("staminaBar");
+    if(staminaBar) staminaBar.style.width=(player.stamina/MAX_STAMINA*100)+"%";
 }
 
 (function bindTrapSkillCheck(){
@@ -4552,12 +4460,7 @@ function finishTrapSkill(success){
         const elapsed=(performance.now()-trapSkillStartedAt)%2000;
         const phase=elapsed/2000;
         const position=phase<=.5?phase*2:(1-phase)*2;
-        const track=document.getElementById("trapSkillTrack");
-        const trackWidth=track ? track.clientWidth : 100;
-        const needleWidth=4;
-        const needleCenter=(position*(trackWidth-needleWidth)+needleWidth/2)/trackWidth;
-        // The needle's center must be inside the actual visible 46%-54% green band.
-        finishTrapSkill(needleCenter>=.46 && needleCenter<=.54);
+        finishTrapSkill(position>=.44 && position<=.56);
     },{passive:false});
 })();
 
@@ -4592,10 +4495,7 @@ function nextPathStep(sx, sy, tx, ty) {
 
     const parent = new Map();
 
-    const dirs = [
-        [1, 0], [-1, 0], [0, 1], [0, -1],
-        [1, 1], [1, -1], [-1, 1], [-1, -1]
-    ];
+    const dirs = [[1,0],[-1,0],[0,1],[0,-1],[1,1],[1,-1],[-1,1],[-1,-1]];
 
     while (queueIndex < queue.length) {
         const current = queue[queueIndex++];
@@ -4621,6 +4521,7 @@ function nextPathStep(sx, sy, tx, ty) {
             }
 
             if (maze[ny][nx] === "#") continue;
+            // Prevent diagonal corner-cutting through the meeting point of two walls.
             if (dx !== 0 && dy !== 0 && (maze[current.y][nx] === "#" || maze[ny][current.x] === "#")) continue;
 
             const key = `${nx},${ny}`;
@@ -4670,85 +4571,28 @@ function nextPathStep(sx, sy, tx, ty) {
 function chooseWanderDirection(teacher) {
     const cx = Math.floor(teacher.x), cy = Math.floor(teacher.y);
     const centerX = cx + .5, centerY = cy + .5;
-    // First return to the center of the current corridor tile. This avoids
-    // repeatedly trying to turn while the teacher is still against a corner.
     if (Math.hypot(teacher.x - centerX, teacher.y - centerY) > .18) {
         teacher.wanderTarget = { x:centerX, y:centerY };
         return;
     }
-
-    const dirs=[{dx:1,dy:0},{dx:0,dy:1},{dx:-1,dy:0},{dx:0,dy:-1}];
-    const reverse=((teacher.wanderDir ?? 0)+2)%4;
-    const open=dir=>{
-        const d=dirs[dir],nx=cx+d.dx,ny=cy+d.dy;
-        return ny>=0&&ny<maze.length&&nx>=0&&nx<maze[ny].length&&maze[ny][nx]!=="#";
-    };
+    const dirs=[{dx:1,dy:0},{dx:1,dy:1},{dx:0,dy:1},{dx:-1,dy:1},{dx:-1,dy:0},{dx:-1,dy:-1},{dx:0,dy:-1},{dx:1,dy:-1}];
+    const reverse=((teacher.wanderDir ?? 0)+4)%8;
+    const open=dir=>{const d=dirs[dir],nx=cx+d.dx,ny=cy+d.dy;if(!(ny>=0&&ny<maze.length&&nx>=0&&nx<maze[ny].length&&maze[ny][nx]!=="#"))return false;if(d.dx&&d.dy&&(maze[cy][nx]==="#"||maze[ny][cx]==="#"))return false;return true;};
     const history=teacher.wanderHistory||[];
-    const allOpen=[0,1,2,3].filter(open);
-    let available=allOpen.filter(dir=>{
-        const d=dirs[dir];
-        return !history.includes(`${cx+d.dx},${cy+d.dy}`);
-    });
-    if(!available.length) available=allOpen;
-
-    // Guardian-type teachers should patrol inside their designated area when
-    // possible. Previously, if every open exit was outside that area, this
-    // branch returned without assigning a target and could leave the guard
-    // idle indefinitely. Prefer in-zone steps, but retain a recovery fallback
-    // so a guard trapped at a zone boundary can still move and recover.
-    if(teacher.kind==="restricted"){
-        const insideAvailable=available.filter(dir=>{
-            const d=dirs[dir];
-            return isInsideRestrictedZone(cx+d.dx+.5,cy+d.dy+.5);
-        });
-        if(insideAvailable.length) available=insideAvailable;
-        else {
-            const insideAny=allOpen.filter(dir=>{
-                const d=dirs[dir];
-                return isInsideRestrictedZone(cx+d.dx+.5,cy+d.dy+.5);
-            });
-            if(insideAny.length) available=insideAny;
-            // If no walkable step remains inside the patrol area, allow one
-            // legal escape step rather than freezing permanently at the edge.
-        }
-    }
-
-    if(!available.length){
-        // Last-resort recovery: search nearby walkable cells and take the first
-        // path step toward one. This handles narrow/dead-end patrol layouts.
-        for(let radius=1;radius<=4;radius++){
-            let destination=null;
-            for(let yy=cy-radius;yy<=cy+radius&&!destination;yy++){
-                for(let xx=cx-radius;xx<=cx+radius;xx++){
-                    if(Math.max(Math.abs(xx-cx),Math.abs(yy-cy))!==radius) continue;
-                    if(yy<0||yy>=maze.length||xx<0||xx>=maze[yy].length||maze[yy][xx]==="#") continue;
-                    if(teacher.kind==="restricted"&&!isInsideRestrictedZone(xx+.5,yy+.5)) continue;
-                    destination={x:xx+.5,y:yy+.5}; break;
-                }
-            }
-            if(destination){
-                const step=nextPathStep(teacher.x,teacher.y,destination.x,destination.y);
-                if(step){teacher.wanderTarget={x:step.x+.5,y:step.y+.5};return;}
-            }
-        }
-        // If the guardian area has no reachable internal tile, use any open
-        // neighboring tile as a recovery step. This is preferable to a frozen
-        // enemy and the next selection will steer it back toward its patrol.
-        available=allOpen;
-    }
-    if(!available.length){teacher.wanderTarget=null;return;}
-
-    const forward=(teacher.wanderDir??0)%4;
-    let chosen;
-    if(available.includes(forward)&&Math.random()<.62) chosen=forward;
-    else {
-        const nonReverse=available.filter(d=>d!==reverse);
-        const pool=nonReverse.length?nonReverse:available;
-        chosen=pool[Math.floor(Math.random()*pool.length)];
-    }
+    let available=[0,1,2,3,4,5,6,7].filter(dir=>{if(!open(dir))return false;const d=dirs[dir];return !history.includes(`${cx+d.dx},${cy+d.dy}`);});
+    if(!available.length) available=[0,1,2,3,4,5,6,7].filter(open);
+    if(!available.length)return;
+    const forward=(teacher.wanderDir??0)%8;
+    let chosen;if(available.includes(forward)&&Math.random()<.62) chosen=forward; else {const nonReverse=available.filter(d=>d!==reverse);const pool=nonReverse.length?nonReverse:available;chosen=pool[Math.floor(Math.random()*pool.length)];}
     const d=dirs[chosen];
+    if(teacher.kind==="restricted" && !isInsideRestrictedZone(cx+d.dx+.5,cy+d.dy+.5)){
+        const insideAvailable=available.filter(dir=>{const dd=dirs[dir];return isInsideRestrictedZone(cx+dd.dx+.5,cy+dd.dy+.5);});
+        if(!insideAvailable.length) return;
+        chosen=insideAvailable[Math.floor(Math.random()*insideAvailable.length)];
+    }
+    const chosenDir=dirs[chosen];
     teacher.wanderDir=chosen;
-    teacher.wanderTarget={x:cx+d.dx+.5,y:cy+d.dy+.5};
+    teacher.wanderTarget={x:cx+chosenDir.dx+.5,y:cy+chosenDir.dy+.5};
     teacher.wanderHistory=[...history,`${cx},${cy}`].slice(-3);
 }
 
@@ -4800,46 +4644,12 @@ function hasLineOfSight(a, b) {
 function getPathDistance(sx,sy,tx,ty,maxDistance=Infinity){
  const start={x:Math.floor(sx),y:Math.floor(sy)},target={x:Math.floor(tx),y:Math.floor(ty)};
  if(start.x===target.x&&start.y===target.y)return 0;
- const q=[start],dist=new Map([[`${start.x},${start.y}`,0]]);let qi=0;const dirs=[[1,0],[-1,0],[0,1],[0,-1]];
- while(qi<q.length){const c=q[qi++],cd=dist.get(`${c.x},${c.y}`);if(cd>=maxDistance)continue;for(const [dx,dy] of dirs){const nx=c.x+dx,ny=c.y+dy;if(ny<0||ny>=maze.length||nx<0||nx>=maze[ny].length||maze[ny][nx]==="#")continue;const k=`${nx},${ny}`;if(dist.has(k))continue;const nd=cd+1;if(nx===target.x&&ny===target.y)return nd;dist.set(k,nd);q.push({x:nx,y:ny});}}
+ const q=[start],dist=new Map([[`${start.x},${start.y}`,0]]);let qi=0;const dirs=[[1,0],[-1,0],[0,1],[0,-1],[1,1],[1,-1],[-1,1],[-1,-1]];
+ while(qi<q.length){const c=q[qi++],cd=dist.get(`${c.x},${c.y}`);if(cd>=maxDistance)continue;for(const [dx,dy] of dirs){const nx=c.x+dx,ny=c.y+dy;if(ny<0||ny>=maze.length||nx<0||nx>=maze[ny].length||maze[ny][nx]==="#")continue;if(dx!==0&&dy!==0&&(maze[c.y][nx]==="#"||maze[ny][c.x]==="#"))continue;const k=`${nx},${ny}`;if(dist.has(k))continue;const nd=cd+1;if(nx===target.x&&ny===target.y)return nd;dist.set(k,nd);q.push({x:nx,y:ny});}}
  return Infinity;
 }
-function isInTeacherDetectionCone(teacher, target, maxDistance = 6) {
-    const dx = target.x - teacher.x;
-    const dy = target.y - teacher.y;
-    const distance = Math.hypot(dx, dy);
-    if (distance > maxDistance || distance < 0.001) return false;
-    const bearing = Math.atan2(dy, dx);
-    const angleFromFacing = Math.abs(normalizeAngle(bearing - (teacher.angle || 0)));
-    // 130-degree forward cone (65 degrees to either side), with clear line of sight.
-    return angleFromFacing <= (65 * Math.PI / 180) && hasLineOfSight(teacher, target);
-}
-
-function isForwardDiagonalLine(teacher, target, maxDistance = 2.5) {
-    // Continuation visibility outside the same straight line is limited to 2.5 tiles.
-    return isInTeacherDetectionCone(teacher, target, maxDistance);
-}
-
-function isSameChaseLine(teacher, target) {
-    // Same-line continuation detection is limited to 8 tiles; off-line detection is 2.5 tiles.
-    const dx = target.x - teacher.x;
-    const dy = target.y - teacher.y;
-    const distance = Math.hypot(dx, dy);
-    if (distance <= 0.001 || distance > 8 || !hasLineOfSight(teacher, target)) {
-        return isForwardDiagonalLine(teacher, target, 2.5);
-    }
-    const facingX = Math.cos(teacher.angle || 0);
-    const facingY = Math.sin(teacher.angle || 0);
-    const forwardDot = dx * facingX + dy * facingY;
-    const sameHorizontalLine = Math.abs(dy) <= 0.18 && Math.abs(facingY) <= 0.25;
-    const sameVerticalLine = Math.abs(dx) <= 0.18 && Math.abs(facingX) <= 0.25;
-    if (forwardDot > 0 && (sameHorizontalLine || sameVerticalLine)) return true;
-    return isForwardDiagonalLine(teacher, target, 2.5);
-}
-
 function showChaseSubtitle() {
     const subtitle = document.getElementById("chaseSubtitle");
-    subtitle.textContent = `Hanako, ${boyName()}! I found you!`;
     subtitle.classList.remove("active");
     void subtitle.offsetWidth;
     subtitle.classList.add("active");
@@ -4876,7 +4686,6 @@ function spawnTeacherIfNeeded(){
             }
             const t=makeTeacher(spawn.x,spawn.y,spec.angle,spec.kind);
             t.spawnSlot=spec.slot;
-            t.characterName=spec.characterName || characters[Math.floor(Math.random()*characters.length)].name;
             t.wanderTarget=null;
             t.stuckTimer=0;
             teachers.push(t);
@@ -4901,11 +4710,11 @@ function moveTeacherEntity(teacher,dx,dy){
 
 function updateTeachers(dt) {
     spawnTeacherIfNeeded();
-    let chaseSubtitleShouldShow = false;
+    const chaseWasAlreadyActive = teachers.some(t => t.chasing);
+    let chaseStarted = false;
 
     for (const teacher of teachers) {
         if(!Number.isFinite(teacher.stuckTimer)) teacher.stuckTimer=0;
-        if (!teacher.chasing && teacher.wanderTarget && distanceBetween(teacher,teacher.wanderTarget) < .14) teacher.wanderTarget=null;
         teacher.chaseCooldown=Math.max(0,(teacher.chaseCooldown||0)-dt);
         teacher.trapApproachTimer=Math.max(0,(teacher.trapApproachTimer||0)-dt);
 
@@ -4924,35 +4733,25 @@ function updateTeachers(dt) {
         }
         const pathDistance=teacher.cachedPathDistance;
 
+        const startDistance=restricted ? CHASE_PATH_START_DISTANCE_RESTRICTED : CHASE_PATH_START_DISTANCE_FAST;
         const maxChase=restricted ? CHASE_MAX_DURATION_RESTRICTED : CHASE_MAX_DURATION_FAST;
 
-        const sameStartLine=isSameChaseLine(teacher,player);
-        const closePathDetection=pathDistance<=CHASE_PATH_START_TILES;
-        const forwardConeDetection=isInTeacherDetectionCone(teacher,player,CHASE_CONE_START_DISTANCE);
+        const lineDX=Math.abs(teacher.x-player.x), lineDY=Math.abs(teacher.y-player.y);
+        const sameStartLine=(lineDX<.55 || lineDY<.55 || Math.abs(lineDX-lineDY)<.55) && hasLineOfSight(teacher,player);
         const trapApproaching=teacher.trapApproachTimer>0 && !teacher.chasing;
-        // Start: regardless of facing or walls, within 4 walkable path tiles,
-        // OR within the forward 130-degree cone at up to 15 tiles with clear line of sight.
-        // A recently ended chase may resume under those same proximity rules.
-        const hasPreviousChase=Number.isFinite(teacher.lastChaseEndedAt);
-        const continuationCondition=hasPreviousChase && (direct<=2.0 || sameStartLine || closePathDetection);
-        const canStart=!teacher.chasing && (!trapApproaching || closePathDetection) &&
+        const continuationCondition=(direct<=2.0 || sameStartLine);
+        const canStart=!teacher.chasing && !trapApproaching &&
             (teacher.chaseCooldown<=0 || continuationCondition) &&
-            (closePathDetection || forwardConeDetection);
+            (pathDistance<=startDistance || sameStartLine);
 
         if(!teacher.chasing && canStart){
-            const anotherChaseAlreadyActive = teachers.some(other => other !== teacher && other.chasing);
-            const hasPreviousChase = Number.isFinite(teacher.lastChaseEndedAt);
-            const waitedLongEnough = !hasPreviousChase || (performance.now() - teacher.lastChaseEndedAt >= 1000);
-            if (anotherChaseAlreadyActive || waitedLongEnough) chaseSubtitleShouldShow = true;
             teacher.chasing=true;
-            teacher.continuationChase=!!continuationCondition;
-            teacher.continuationLostTimer=0;
             teacher.path=null;
             teacher.wanderTarget=null;
             teacher.chaseElapsed=0;
             teacher.farPathTimer=0;
-            teacher.wallSeparatedTimer=0;
             teacher.chaseCooldown=0;
+            chaseStarted=true;
         }
 
         if(teacher.chasing){
@@ -4962,38 +4761,19 @@ function updateTeachers(dt) {
             if(currentPathDistance>=9.0) teacher.farPathTimer+=dt;
             else teacher.farPathTimer=0;
 
-            const lineClear=hasLineOfSight(teacher,player);
-            if(lineClear) teacher.wallSeparatedTimer=0;
-            else teacher.wallSeparatedTimer=(teacher.wallSeparatedTimer||0)+dt;
-
-            const sameLine=isSameChaseLine(teacher,player);
-            const continuationDetection = direct <= 2.0 || currentPathDistance <= CHASE_PATH_START_TILES || sameLine;
-            const keepChase=direct<=2.0 || currentPathDistance<=3 || sameLine;
-            if (teacher.continuationChase) {
-                teacher.continuationLostTimer = continuationDetection
-                    ? 0
-                    : (teacher.continuationLostTimer || 0) + dt;
-            } else {
-                teacher.continuationLostTimer = 0;
-            }
-            // End after 7 seconds at path distance >=9 when no continuation condition holds.
-            // A wall alone does not end a chase: after 30 seconds, a blocked direct line
-            // ends it even if the continuation condition is otherwise still satisfied.
-            // Continuation-triggered chases end 1.5 seconds after losing that condition.
-            const normalEnd=(teacher.farPathTimer>=CHASE_END_HOLD && !keepChase);
-            const wallAndTimeEnd=!lineClear && teacher.chaseElapsed>=30.0;
-            const continuationLostEnd=!!teacher.continuationChase && (teacher.continuationLostTimer||0)>=1.5;
-            if(teacher.chaseElapsed>=maxChase || normalEnd || wallAndTimeEnd || continuationLostEnd){
+            const lineDX2=Math.abs(teacher.x-player.x), lineDY2=Math.abs(teacher.y-player.y);
+            const sameLine=(lineDX2<.55 || lineDY2<.55 || Math.abs(lineDX2-lineDY2)<.55) && hasLineOfSight(teacher,player);
+            const keepChase=direct<=2.0 || sameLine;
+            // Hard stop after 12 seconds, regardless of distance. The usual
+            // distance-based end rule remains active before that limit.
+            const normalEnd=(teacher.farPathTimer>=CHASE_END_HOLD);
+            if(teacher.chaseElapsed>=maxChase || (normalEnd && !keepChase)){
                 teacher.chasing=false;
-                teacher.lastChaseEndedAt=performance.now();
                 teacher.path=null;
                 teacher.wanderTarget={x:Math.floor(teacher.x)+.5,y:Math.floor(teacher.y)+.5};
                 teacher.farPathTimer=0;
-                teacher.wallSeparatedTimer=0;
                 teacher.chaseElapsed=0;
-                teacher.continuationChase=false;
-                teacher.continuationLostTimer=0;
-                teacher.chaseCooldown=CHASE_COOLDOWN_SECONDS;
+                teacher.chaseCooldown=15.0;
                 teacher.wanderHistory=teacher.wanderHistory||[];
             }
         }
@@ -5004,24 +4784,12 @@ function updateTeachers(dt) {
             if(teacher.pathMoveRefreshTimer<=0 || teacher.pathMoveTargetTile!==targetTileKey){
                 teacher.path=restricted ? nextRestrictedPathStep(teacher.x,teacher.y,player.x,player.y) : nextPathStep(teacher.x,teacher.y,player.x,player.y);
                 teacher.pathMoveTargetTile=targetTileKey;
-                // Re-evaluate the route frequently while chasing so a moving
-                // player cannot leave the teacher following a stale direction.
-                teacher.pathMoveRefreshTimer=teacher.chasing ? .06 : .10;
+                teacher.pathMoveRefreshTimer=.10;
             }
         }else{
             if(!teacher.wanderTarget || distanceBetween(teacher,teacher.wanderTarget)<.10){
                 chooseWanderDirection(teacher);
-                teacher.wanderPause = .01;
-            }
-            // A non-chasing teacher that cannot make progress should discard its
-            // stale wander target and choose a fresh legal corridor step.
-            if((teacher.stuckTimer||0)>.35){
-                teacher.wanderTarget=null;
-                teacher.wanderHistory=teacher.wanderHistory||[];
-                const stuckTile=`${Math.floor(teacher.x)},${Math.floor(teacher.y)}`;
-                teacher.wanderHistory=[...teacher.wanderHistory,stuckTile].slice(-5);
-                teacher.stuckTimer=0;
-                chooseWanderDirection(teacher);
+                teacher.wanderPause = .015 + Math.random()*.045;
             }
             teacher.wanderPause = Math.max(0,(teacher.wanderPause||0)-dt);
             teacher.path=null;
@@ -5032,18 +4800,13 @@ function updateTeachers(dt) {
         const speed=base;
 
         if(teacher.chasing && !teacher.path && direct>.55){
-            // Only use direct pursuit when the route is genuinely unobstructed.
-            // If a wall blocks the straight line, do not slide along it in a
-            // misleading direction; force a fresh maze-path calculation instead.
-            if(hasLineOfSight(teacher,player)){
-                const dx=player.x-teacher.x,dy=player.y-teacher.y,len=Math.hypot(dx,dy);
-                if(len>.01){
-                    const step=Math.min(speed*dt,len);
-                    moveTeacherEntity(teacher,dx/len*step,dy/len*step);
-                    teacher.angle=Math.atan2(dy,dx);
-                }
-            }else{
-                teacher.pathMoveRefreshTimer=0;
+            // If BFS temporarily has no next tile, make a short wall-safe move
+            // toward the player; this prevents a silent, stationary chase.
+            const dx=player.x-teacher.x,dy=player.y-teacher.y,len=Math.hypot(dx,dy);
+            if(len>.01){
+                const step=Math.min(speed*dt,len);
+                moveTeacherEntity(teacher,dx/len*step,dy/len*step);
+                teacher.angle=Math.atan2(dy,dx);
             }
         }
 
@@ -5058,8 +4821,7 @@ function updateTeachers(dt) {
                     teacher.stuckTimer+=dt;
                     teacher.path=null;
                     if(teacher.stuckTimer>.35){
-                        teacher.wanderHistory=teacher.wanderHistory||[];
-                        teacher.wanderHistory=[...teacher.wanderHistory,`${Math.floor(teacher.x)},${Math.floor(teacher.y)}`].slice(-5);
+                        teacher.wanderHistory=[];
                         teacher.wanderTarget=null;
                         teacher.stuckTimer=0;
                     }
@@ -5097,7 +4859,7 @@ function updateTeachers(dt) {
 
     const edgeFx=document.getElementById("chaseEdgeFX");
     if(edgeFx) edgeFx.classList.toggle("active", teachers.some(t=>t.chasing));
-    if(chaseSubtitleShouldShow && teachers.some(teacher=>teacher.chasing)) showChaseSubtitle();
+    if(chaseStarted && !chaseWasAlreadyActive && teachers.some(teacher=>teacher.chasing)) showChaseSubtitle();
     if(!teachers.some(teacher=>teacher.chasing)) {
         const subtitle=document.getElementById("chaseSubtitle");
         if(subtitle && chaseMessageTimer<=0) subtitle.classList.remove("active");
@@ -5368,10 +5130,7 @@ buildCeilingTexture();
 ===================================================== */
 
 function getDistanceFog(distance) {
-    // Atmospheric perspective: blend all world geometry and sprites into the
-    // same near-black color as the space outside the maze between 7.5 and 11 tiles.
-    const t = clamp((distance - VISION_FOG_START_DISTANCE) / (VISION_CUTOFF_DISTANCE - VISION_FOG_START_DISTANCE), 0, 1);
-    return t * t * (3 - 2 * t);
+    return clamp(1 - Math.max(0, distance - 7.5) / 3.5, .08, 1);
 }
 
 function shadeRGB(red, green, blue, brightness) {
@@ -5385,10 +5144,16 @@ function shadeRGB(red, green, blue, brightness) {
 }
 
 function drawVerticalFog(screenX, screenWidth, top, bottom, distance) {
-    const fogAmount = getDistanceFog(distance);
+    const fogAmount = clamp((distance - 7.5) / 3.5, 0, .94);
     if (fogAmount <= 0) return;
-    ctx.fillStyle = `rgba(${VISION_FOG_COLOR[0]},${VISION_FOG_COLOR[1]},${VISION_FOG_COLOR[2]},${fogAmount})`;
-    ctx.fillRect(screenX, top, screenWidth, bottom - top);
+    ctx.fillStyle = `rgba(7,8,13,${fogAmount})`;
+
+    ctx.fillRect(
+        screenX,
+        top,
+        screenWidth,
+        bottom - top
+    );
 }
 
 /* =====================================================
@@ -5439,11 +5204,7 @@ function renderPerspectivePlane(list, fallback, isCeiling) {
             const idx = (py * lowW + px) * 4;
             // A readable fallback remains visible even if floor JPGs fail to load.
             let r, g, b;
-            if (!isCeiling) {
-                // The floor is a single near-black charcoal color. Only distance
-                // fog changes it, so there are no tile seams, gradients, or texture.
-                r=37; g=38; b=43;
-            } else if (loadedArcadePhoto(tex) && tex.__pixelCache && !tex.__pixelCacheFailed) {
+            if (loadedArcadePhoto(tex) && tex.__pixelCache && !tex.__pixelCacheFailed) {
                 const sx = Math.min(tex.naturalWidth - 1, Math.floor(localX * tex.naturalWidth));
                 const sy = Math.min(tex.naturalHeight - 1, Math.floor(localY * tex.naturalHeight));
                 const sample = tex.__pixelCache;
@@ -5453,21 +5214,12 @@ function renderPerspectivePlane(list, fallback, isCeiling) {
                 const seam = (localX < .035 || localY < .035) ? .56 : 1;
                 const tile = ((tileX + tileY) & 1) ? 1 : .82;
                 const scuff = (((Math.floor(localX*13)+Math.floor(localY*17)+tileX*3+tileY*5)%7)+7)%7;
-                const base = 92;
+                const base = isCeiling ? 92 : 148;
                 const textureShade = seam * tile * (scuff===0 ? .78 : scuff===3 ? 1.12 : 1);
-                r=base*textureShade; g=98*textureShade; b=116*textureShade;
+                r=base*textureShade; g=(isCeiling?98:150)*textureShade; b=(isCeiling?116:164)*textureShade;
             }
-            // Keep the floor flat in the foreground; atmospheric perspective alone
-            // fades it into the maze's outside background at longer distances.
-            const shade = isCeiling
-                ? clamp(1.12 - rowDistance / (MAX_RAY_DISTANCE * 1.35), .42, 1)
-                : 1;
-            const fog = getDistanceFog(rowDistance);
-            const shadedR = r * shade, shadedG = g * shade, shadedB = b * shade;
-            pixels[idx]   = Math.floor(shadedR * (1-fog) + VISION_FOG_COLOR[0] * fog);
-            pixels[idx+1] = Math.floor(shadedG * (1-fog) + VISION_FOG_COLOR[1] * fog);
-            pixels[idx+2] = Math.floor(shadedB * (1-fog) + VISION_FOG_COLOR[2] * fog);
-            pixels[idx+3] = 255;
+            const shade = clamp(1 - rowDistance / MAX_RAY_DISTANCE, isCeiling ? .30 : .36, isCeiling ? .90 : 1);
+            pixels[idx]=Math.floor(r*shade); pixels[idx+1]=Math.floor(g*shade); pixels[idx+2]=Math.floor(b*shade); pixels[idx+3]=255;
         }
     }
     targetContext.putImageData(imageData,0,0);
@@ -5557,24 +5309,55 @@ function drawSkyAndFloor() {
     const horizon = height * .5;
 
     const ceiling = ctx.createLinearGradient(0, 0, 0, horizon);
-    ceiling.addColorStop(0, "#10131a");
-    ceiling.addColorStop(.38, "#171b24");
-    ceiling.addColorStop(.76, "#242632");
-    ceiling.addColorStop(1, "#39303d");
+    ceiling.addColorStop(0, "#020305");
+    ceiling.addColorStop(.38, "#080b10");
+    ceiling.addColorStop(.76, "#11131a");
+    ceiling.addColorStop(1, "#211c25");
     ctx.fillStyle = ceiling;
     ctx.fillRect(0, 0, width, horizon);
 
-    // Single flat floor color. Keep it brighter than before, with no gradient.
-    ctx.fillStyle = "#17171b";
+    // User preference: the floor is deliberately pure black; no floor texture pass.
+    ctx.fillStyle = "#000000";
     ctx.fillRect(0, horizon, width, height - horizon);
 
-    // Removed the fixed red/cyan/yellow/purple screen-space glows. They did not
-    // move with the camera, so they read as unexplained overlays rather than
-    // environmental lighting. Keep the original subdued, abandoned-arcade mood.
+    /* Sickly, uneven neon spill: colorful enough to feel like an arcade,
+       but weak enough that the darkness remains the dominant mood. */
+    const glows = [
+        [width * .13, horizon * .62, "rgba(255,20,155,.13)"],
+        [width * .34, horizon * .28, "rgba(55,220,255,.10)"],
+        [width * .57, horizon * .48, "rgba(255,205,55,.08)"],
+        [width * .84, horizon * .66, "rgba(150,70,255,.11)"]
+    ];
+    for (const [x, y, color] of glows) {
+        const g = ctx.createRadialGradient(x, y, 0, x, y, width * .26);
+        g.addColorStop(0, color);
+        g.addColorStop(.45, "rgba(0,0,0,.025)");
+        g.addColorStop(1, "rgba(0,0,0,0)");
+        ctx.fillStyle = g;
+        ctx.fillRect(x - width * .28, y - width * .28, width * .56, width * .56);
+    }
 
-    /* Removed the unexplained ceiling-strip lines from the upper maze view. */
+    /* Broken fluorescent ceiling strips. Several are deliberately dark,
+       as though half the arcade's electricity has died. */
+    for (let i = 0; i < 8; i++) {
+        const x = width * (.045 + i * .132);
+        const y = height * (.055 + (i % 3) * .035);
+        const active = i % 4 !== 1;
+        const flicker = active ? (.16 + (i % 3) * .08) : .025;
+        ctx.fillStyle = `rgba(215,235,255,${flicker})`;
+        ctx.fillRect(x, y, width * (.055 + (i % 2) * .018), 3);
+        if (active) {
+            ctx.fillStyle = `rgba(90,220,255,${flicker * .45})`;
+            ctx.fillRect(x, y + 4, width * (.055 + (i % 2) * .018), 2);
+        }
+    }
 
-    // No full-screen vignette here: it made the floor appear gradient-shaded.
+    const haze = ctx.createRadialGradient(width / 2, horizon * .92, width * .10, width / 2, horizon * .92, width * .72);
+    haze.addColorStop(0, "rgba(20,22,30,.02)");
+    haze.addColorStop(.55, "rgba(5,7,10,.18)");
+    haze.addColorStop(1, "rgba(0,0,0,.82)");
+    ctx.fillStyle = haze;
+    ctx.fillRect(0, 0, width, height);
 }
 
 /* =====================================================
@@ -5618,13 +5401,13 @@ function drawWallSlice(screenX, screenWidth, ray) {
     const wallHeight = (height * WALL_HEIGHT) / safeDistance;
     const top = (height - wallHeight) / 2;
     const bottom = top + wallHeight;
-    const distanceLight = clamp(1 - safeDistance / (MAX_RAY_DISTANCE * .82), .16, 1);
-    const sideLight = ray.side === 1 ? .82 : 1.0;
+    const distanceLight = clamp(1 - safeDistance / MAX_RAY_DISTANCE, .06, 1);
+    const sideLight = ray.side === 1 ? .70 : .94;
     const centerAngle = normalizeAngle(ray.angle - player.angle);
     const coloredLight = .5 + .5 * Math.cos(centerAngle);
     const wallFacing = .62 + .38 * Math.abs(Math.cos(centerAngle));
     const arcadePulse = .96 + .04 * Math.sin(performance.now() / 420 + ray.mapX * .7 + ray.mapY * .31);
-    const brightness = clamp(distanceLight * sideLight * wallFacing * arcadePulse * (.82 + coloredLight * .18), .12, 1);
+    const brightness = clamp(distanceLight * sideLight * wallFacing * arcadePulse * (.74 + coloredLight * .26), .045, 1);
 
     const wallPhoto = chooseArcadeTexture(arcadeWallPhotos, ray.mapX, ray.mapY, arcadeWallPhoto);
     const usePhoto = loadedArcadePhoto(wallPhoto);
@@ -5653,7 +5436,7 @@ function drawWallSlice(screenX, screenWidth, ray) {
     }
 
     const grime = clamp(safeDistance / MAX_RAY_DISTANCE, 0, .9);
-    ctx.fillStyle = `rgba(0,0,0,${.035 + grime * .16})`;
+    ctx.fillStyle = `rgba(0,0,0,${.10 + grime * .46})`;
     ctx.fillRect(screenX, top, Math.ceil(screenWidth + 1), wallHeight);
     drawVerticalFog(screenX, Math.ceil(screenWidth + 1), top, bottom, safeDistance);
 
@@ -5671,7 +5454,7 @@ function drawWallSlice(screenX, screenWidth, ray) {
 function projectSprite(entity, kind) {
     const dx=entity.x-player.x, dy=entity.y-player.y;
     const distance=Math.hypot(dx,dy);
-    if(distance<=.1 || (kind !== "exit" && distance >= VISION_CUTOFF_DISTANCE)) return null;
+    if(distance<=.1) return null;
 
     const angle=normalizeAngle(Math.atan2(dy,dx)-player.angle);
     const offscreen=Math.abs(angle)>HALF_FOV;
@@ -5685,43 +5468,58 @@ function projectSprite(entity, kind) {
     return {distance,correctedDistance,screenX,size,top:height/2-size*.5,angle,offscreen};
 }
 
-function drawOffscreenEntityIndicator(entity, kind, bottomSlots = []) {
+function drawOffscreenEntityIndicator(entity, kind) {
     if(kind==="teacher" && !entity.chasing) return;
     if(kind!=="boost" && kind!=="teacher") return;
     const relative=normalizeAngle(Math.atan2(entity.y-player.y,entity.x-player.x)-player.angle);
-    if(distanceBetween(entity, player) >= VISION_CUTOFF_DISTANCE) return;
     if(Math.abs(relative)<=HALF_FOV) return;
-    // Direction indicators are intentionally not blocked by walls; the map itself
-    // never exposes teacher positions, and the arrow is the permitted cue.
+
     const width=arcadeCanvas.width,height=arcadeCanvas.height;
     const directlyBehind=Math.abs(relative)>Math.PI*.5;
-    const side=relative>=0?1:-1;
-    const preferredX=clamp(width*.5 + Math.sin(relative)*width*.44, 28, width-28);
-    let x, y;
+    const color=kind==="teacher"?"#ff315f":"#ffd84d";
+    const label=kind==="teacher"?"鬼":"BOOST";
+    ctx.save();
+    ctx.globalCompositeOperation="lighter";
+    ctx.shadowBlur=16;
+    ctx.shadowColor=color;
+    ctx.fillStyle=color;
+
     if(directlyBehind){
-        // Keep rear targets' arrows tied to their bearing, but separate overlapping
-        // targets so a ghost and a boost can never hide one another's indicator.
-        const spacing=width<520?43:58;
-        const candidates=[preferredX];
-        for(let step=1;step<=Math.ceil(width/spacing);step++){
-            candidates.push(preferredX-step*spacing,preferredX+step*spacing);
-        }
-        x=clamp(preferredX,28,width-28);
-        for(const candidate of candidates){
-            const bounded=clamp(candidate,28,width-28);
-            if(bottomSlots.every(slot=>Math.abs(slot-bounded)>=spacing*.88)){x=bounded;break;}
-        }
-        bottomSlots.push(x);
-        y=height- Math.max(64,height*.105);
-    }else{
-        x=side>0?width-34:34;
-        y=clamp(height*.5+Math.sin(relative)*height*.30,72,height-72);
+        // Rear targets use a downward triangle along the bottom edge. Its horizontal
+        // position follows the target's bearing: centered when directly behind.
+        const x=clamp(width*.5+Math.sin(relative)*width*.43,18,width-18);
+        const y=height-30;
+        const size=Math.max(8,Math.min(15,width*.018));
+        ctx.beginPath();
+        ctx.moveTo(x,y+size*.75);
+        ctx.lineTo(x-size,y-size*.55);
+        ctx.lineTo(x+size,y-size*.55);
+        ctx.closePath();
+        ctx.fill();
+        ctx.globalCompositeOperation="source-over";
+        ctx.font="900 10px Arial";
+        ctx.textAlign="center";
+        ctx.textBaseline="bottom";
+        ctx.fillStyle="#fff";
+        ctx.fillText(label,x,y-size*.85-2);
+    } else {
+        const side=relative>=0?1:-1;
+        const x=side>0?width-34:34;
+        const y=clamp(height*.5+Math.sin(relative)*height*.30,72,height-72);
+        ctx.beginPath();
+        ctx.moveTo(x+side*14,y);
+        ctx.lineTo(x-side*5,y-11);
+        ctx.lineTo(x-side*5,y+11);
+        ctx.closePath();
+        ctx.fill();
+        ctx.globalCompositeOperation="source-over";
+        ctx.font="900 11px Arial";
+        ctx.textAlign=side>0?"right":"left";
+        ctx.textBaseline="middle";
+        ctx.fillStyle="#fff";
+        ctx.fillText(label,x-side*16,y);
     }
-    const color=kind==="teacher"?"#ff315f":"#ffd84d",label=kind==="teacher"?"TEACHER":"BOOST";
-    ctx.save();ctx.globalCompositeOperation="lighter";ctx.shadowBlur=18;ctx.shadowColor=color;ctx.fillStyle=color;ctx.beginPath();
-    if(directlyBehind){ctx.moveTo(x,y+10);ctx.lineTo(x-11,y-5);ctx.lineTo(x+11,y-5);}
-    else {ctx.moveTo(x+side*14,y);ctx.lineTo(x-side*5,y-11);ctx.lineTo(x-side*5,y+11);}
-    ctx.closePath();ctx.fill();ctx.globalCompositeOperation="source-over";ctx.font="900 11px Arial";ctx.textAlign=directlyBehind?"center":(side>0?"right":"left");ctx.textBaseline="middle";ctx.fillStyle="#fff";ctx.fillText(label,directlyBehind?x:x-side*16,directlyBehind?y-17:y);ctx.restore();
+    ctx.restore();
 }
 
 function spriteDepthAllows(projection, depthBuffer) {
@@ -5782,7 +5580,6 @@ function drawArcadeProp(prop, depthBuffer) {
     const glow = prop.type === "guide" ? "#ffe45e" : prop.type === "wallArcade" ? "#4ae2ff" : prop.type === "crane" ? "#ff4aa8" : prop.type === "racing" ? "#4ae2ff" : prop.type === "prize" ? "#ffd85a" : "#7b65ff";
 
     ctx.save();
-    ctx.globalAlpha = 1 - getDistanceFog(distanceBetween(player, prop));
     if(!clipSpriteByWallDepth(projection,depthBuffer,w*.62)){ctx.restore();return;}
     const fogBlur=clamp((projection.distance-7)/18,0,1);
     ctx.filter=fogBlur>0 ? `blur(${fogBlur*2.2}px)` : "none";
@@ -5795,11 +5592,11 @@ function drawArcadeProp(prop, depthBuffer) {
         const photoH = prop.type === "machinePhoto" ? h * .72 : h;
         const photoX = projection.screenX - photoW / 2;
         const photoY = arcadeCanvas.height / 2 - photoH * .52;
-        ctx.globalAlpha = 1 - getDistanceFog(distanceBetween(player, prop));
+        ctx.globalAlpha = clamp(1 - projection.distance / ARCADE_ENTITY_DRAW_DISTANCE, .32, 1);
         ctx.shadowBlur = Math.max(8, h * .07);
         ctx.shadowColor = prop.type === "machinePhoto" ? "#4ae2ff" : "#ff4aa8";
         ctx.drawImage(photoProp, photoX, photoY, photoW, photoH);
-        ctx.globalAlpha = 1 - getDistanceFog(distanceBetween(player, prop));
+        ctx.globalAlpha = 1;
         ctx.fillStyle = "rgba(0,0,0,.28)";
         ctx.fillRect(photoX, photoY, photoW, photoH);
         ctx.fillStyle = "rgba(0,0,0,.52)";
@@ -5831,9 +5628,9 @@ function drawArcadeProp(prop, depthBuffer) {
         const pw=h*(prop.scale||1)*.58, ph=h*(prop.scale||1)*.82;
         const px=projection.screenX-pw/2, py=arcadeCanvas.height/2-ph*.82;
         if(loadedArcadePhoto(poster)){
-            ctx.globalAlpha=1-getDistanceFog(distanceBetween(player, prop));
+            ctx.globalAlpha=clamp(1-projection.distance/ARCADE_ENTITY_DRAW_DISTANCE,.18,.92);
             ctx.drawImage(poster,px,py,pw,ph);
-            ctx.globalAlpha=1-getDistanceFog(distanceBetween(player, prop));
+            ctx.globalAlpha=1;
         } else {
             ctx.fillStyle="#2b2b30"; ctx.fillRect(px,py,pw,ph);
         }
@@ -5901,7 +5698,7 @@ function drawArcadeProp(prop, depthBuffer) {
         ctx.fillStyle = glow;
         ctx.globalAlpha = .52;
         ctx.fillRect(-fw*.36, -fh*.44, fw*.72, Math.max(2, fh*.08));
-        ctx.globalAlpha = 1 - getDistanceFog(distanceBetween(player, prop));
+        ctx.globalAlpha = 1;
         ctx.fillStyle = "#11141b";
         ctx.fillRect(-fw*.28, -fh*.05, fw*.56, fh*.10);
         ctx.fillStyle = "#d2d5dc";
@@ -6000,7 +5797,7 @@ function drawArcadeProp(prop, depthBuffer) {
         ctx.rotate(.11);
         ctx.fillStyle="#0a0c10"; ctx.fillRect(-bw/2,-bh/2,bw,bh);
         ctx.fillStyle="#292d37"; ctx.fillRect(-bw*.39,-bh*.36,bw*.78,bh*.20);
-        ctx.fillStyle=glow; ctx.globalAlpha=.35; ctx.fillRect(-bw*.35,-bh*.30,bw*.70,Math.max(2,bh*.07)); ctx.globalAlpha=1-getDistanceFog(distanceBetween(player, prop));
+        ctx.fillStyle=glow; ctx.globalAlpha=.35; ctx.fillRect(-bw*.35,-bh*.30,bw*.70,Math.max(2,bh*.07)); ctx.globalAlpha=1;
         ctx.strokeStyle="#050609"; ctx.lineWidth=Math.max(2,bh*.035);
         ctx.beginPath(); ctx.moveTo(-bw*.18,-bh*.30); ctx.lineTo(-bw*.03,bh*.02); ctx.lineTo(bw*.10,-bh*.13); ctx.stroke();
         ctx.restore();
@@ -6051,23 +5848,9 @@ function drawTeacherSprite(teacher, depthBuffer) {
     if (centerColumn < 0 || centerColumn >= arcadeCanvas.width) return;
 
     ctx.save();
-    ctx.globalAlpha = 1 - getDistanceFog(distanceBetween(player, teacher));
     if(!clipSpriteByWallDepth(projection,depthBuffer,width*.65)){ctx.restore();return;}
 
-    const individualTeacherCharacter = characters.find(character => character.name === teacher.characterName) || characters[0];
-    const individualTeacherImage = getTeacherCharacterImage(individualTeacherCharacter);
-    if (individualTeacherImage && individualTeacherImage.complete && individualTeacherImage.naturalWidth) {
-        const imageRatio = individualTeacherImage.naturalWidth / individualTeacherImage.naturalHeight;
-        let drawW = width;
-        let drawH = drawW / imageRatio;
-        if (drawH > height) {
-            drawH = height;
-            drawW = drawH * imageRatio;
-        }
-        ctx.globalAlpha = .98 * (1 - getDistanceFog(distanceBetween(player, teacher)));
-        ctx.drawImage(individualTeacherImage, projection.screenX - drawW / 2,
-            projection.top + (height - drawH) * .02, drawW, drawH);
-    } else if (
+    if (
         teacherTextureChoice !== "current" &&
         teacherTextureImage &&
         teacherTextureImage.complete &&
@@ -6085,7 +5868,7 @@ function drawTeacherSprite(teacher, depthBuffer) {
             drawW = drawH * imageRatio;
         }
 
-        ctx.globalAlpha = .98 * (1 - getDistanceFog(distanceBetween(player, teacher)));
+        ctx.globalAlpha = .98;
         ctx.drawImage(
             teacherTextureImage,
             projection.screenX - drawW / 2,
@@ -6179,76 +5962,53 @@ function drawTeacherSprite(teacher, depthBuffer) {
    DRAW EXIT BILLBOARD
 ===================================================== */
 
-function drawExitBeacon(depthBuffer) {
+function drawExitBeacon() {
+    // A compact, bright ground-level glow. Keep it within the same range as teachers
+    // and require line of sight, so it never shines through maze walls.
     const dist = distanceBetween(player, exitPoint);
-    if (dist > ARCADE_ENTITY_DRAW_DISTANCE) return;
+    if (dist > Math.max(ARCADE_ENTITY_DRAW_DISTANCE, 22) || !hasLineOfSight(player, exitPoint)) return;
     const relative = normalizeAngle(Math.atan2(exitPoint.y-player.y, exitPoint.x-player.x)-player.angle);
     if (Math.abs(relative) > HALF_FOV * 1.12) return;
     const projection = projectSprite(exitPoint, "exit");
     if (!projection || projection.offscreen) return;
-
-    // If a wall blocks the ground-level view, allow only the part of the beacon
-    // that rises above that wall. This keeps the tall pillar visible from farther
-    // away without painting the beam over the wall itself.
-    const hasGroundLineOfSight = hasLineOfSight(player, exitPoint);
-    let wallTop = 0;
-    let occluded = !hasGroundLineOfSight;
-    if (occluded && depthBuffer && depthBuffer.length) {
-        const column = clamp(Math.floor(projection.screenX / arcadeCanvas.width * depthBuffer.length), 0, depthBuffer.length - 1);
-        const wallDistance = depthBuffer[column] || 0;
-        if (wallDistance <= 0 || wallDistance >= projection.correctedDistance - .35) {
-            occluded = false;
-        } else {
-            const wallHeight = Math.min(arcadeCanvas.height * 1.35,
-                (arcadeCanvas.height * WALL_HEIGHT) / Math.max(.2, wallDistance));
-            wallTop = clamp((arcadeCanvas.height - wallHeight) / 2, 0, arcadeCanvas.height);
-        }
-    }
-    if (occluded && (!depthBuffer || !depthBuffer.length)) return;
-
+    const ctx2 = ctx;
     const pulse = 1 + Math.sin(performance.now()/145)*.12;
-    const size = clamp(190 / Math.max(.8, projection.correctedDistance), 5, 110) * pulse;
+    const size = clamp(230 / Math.max(.8, projection.correctedDistance), 5, 125) * pulse;
     const x = projection.screenX;
     const y = arcadeCanvas.height * .54 + clamp(projection.correctedDistance,0,ARCADE_ENTITY_DRAW_DISTANCE)*.08;
     const fade = clamp(1 - dist/ARCADE_ENTITY_DRAW_DISTANCE, .12, 1);
-    const pillarHeight = clamp(18000 / Math.max(.8, projection.correctedDistance), 24, arcadeCanvas.height * 1.15);
-    const pillarWidth = clamp(size*.12,3,14);
-    const pillarTop = y - pillarHeight;
-    const visibleBottom = occluded ? wallTop : y + size*.08;
-    if (occluded && pillarTop >= visibleBottom) return;
-
-    ctx.save();
-    ctx.globalAlpha = fade;
-    if (!occluded) {
-        ctx.globalCompositeOperation = "lighter";
-        const glow = ctx.createRadialGradient(x,y,1,x,y,size);
-        glow.addColorStop(0,"rgba(255,255,255,.78)");
-        glow.addColorStop(.16,"rgba(135,255,255,.62)");
-        glow.addColorStop(.48,"rgba(40,225,255,.22)");
-        glow.addColorStop(1,"rgba(40,225,255,0)");
-        ctx.fillStyle = glow;
-        ctx.beginPath(); ctx.ellipse(x,y,size*.72,size*.38,0,0,Math.PI*2); ctx.fill();
-        ctx.shadowBlur = Math.min(18,size*.25); ctx.shadowColor="#aaffff";
-        ctx.strokeStyle="rgba(225,255,255,.72)"; ctx.lineWidth=Math.max(1.5,size*.035);
-        ctx.beginPath(); ctx.ellipse(x,y,size*.38,size*.17,0,0,Math.PI*2); ctx.stroke();
-    }
-
-    ctx.globalCompositeOperation = "lighter";
-    ctx.shadowBlur = Math.min(30,pillarWidth*3);
-    ctx.shadowColor = "#8effff";
-    const pillarGlow = ctx.createLinearGradient(x,pillarTop,x,visibleBottom);
-    pillarGlow.addColorStop(0, occluded ? "rgba(190,255,255,.12)" : "rgba(190,255,255,0)");
-    pillarGlow.addColorStop(.38,"rgba(125,250,255,.22)");
-    pillarGlow.addColorStop(.78,"rgba(220,255,255,.58)");
-    pillarGlow.addColorStop(1,"rgba(255,255,255,.82)");
-    ctx.fillStyle = pillarGlow;
-    ctx.beginPath();
-    ctx.moveTo(x-pillarWidth*1.8,pillarTop);
-    ctx.lineTo(x+pillarWidth*1.8,pillarTop);
-    ctx.lineTo(x+pillarWidth,visibleBottom);
-    ctx.lineTo(x-pillarWidth,visibleBottom);
-    ctx.closePath(); ctx.fill();
-    ctx.restore();
+    ctx2.save();
+    ctx2.globalAlpha = fade;
+    ctx2.globalCompositeOperation = "lighter";
+    const glow = ctx2.createRadialGradient(x,y,1,x,y,size);
+    glow.addColorStop(0,"rgba(255,255,255,.98)");
+    glow.addColorStop(.16,"rgba(135,255,255,.88)");
+    glow.addColorStop(.48,"rgba(40,225,255,.35)");
+    glow.addColorStop(1,"rgba(40,225,255,0)");
+    ctx2.fillStyle = glow;
+    ctx2.beginPath(); ctx2.ellipse(x,y,size*.72,size*.38,0,0,Math.PI*2); ctx2.fill();
+    ctx2.shadowBlur = Math.min(34,size*.45); ctx2.shadowColor="#aaffff";
+    ctx2.strokeStyle="rgba(225,255,255,.98)"; ctx2.lineWidth=Math.max(1.5,size*.035);
+    ctx2.beginPath(); ctx2.ellipse(x,y,size*.38,size*.17,0,0,Math.PI*2); ctx2.stroke();
+    // Restore the tall luminous pillar above the exit, layered over the ground glow.
+    const pillarHeight=clamp(520/Math.max(.8,projection.correctedDistance),12,260);
+    const pillarWidth=clamp(size*.10,2,10);
+    const pillarTop=y-pillarHeight;
+    const pillarGlow=ctx2.createLinearGradient(x,pillarTop,x,y+size*.08);
+    pillarGlow.addColorStop(0,"rgba(190,255,255,0)");
+    pillarGlow.addColorStop(.38,"rgba(125,250,255,.20)");
+    pillarGlow.addColorStop(.78,"rgba(220,255,255,.76)");
+    pillarGlow.addColorStop(1,"rgba(255,255,255,.98)");
+    ctx2.fillStyle=pillarGlow;
+    ctx2.shadowBlur=Math.min(30,pillarWidth*3);
+    ctx2.shadowColor="#8effff";
+    ctx2.beginPath();
+    ctx2.moveTo(x-pillarWidth*1.8,pillarTop);
+    ctx2.lineTo(x+pillarWidth*1.8,pillarTop);
+    ctx2.lineTo(x+pillarWidth,y+size*.08);
+    ctx2.lineTo(x-pillarWidth,y+size*.08);
+    ctx2.closePath();ctx2.fill();
+    ctx2.restore();
 }
 
 function drawExit(depthBuffer) {
@@ -6295,7 +6055,7 @@ function drawExit(depthBuffer) {
     ctx.fillRect(left + w, top - h*.01, h*.10, h*1.02);
     ctx.fillRect(left - h*.10, top - h*.06, w + h*.20, h*.09);
     ctx.globalCompositeOperation = "lighter";
-    ctx.fillStyle = "rgba(255,255,255,.78)";
+    ctx.fillStyle = "rgba(255,255,255,.98)";
     ctx.shadowBlur = Math.max(22,h*.32);
     ctx.shadowColor = "#ffffff";
     ctx.fillRect(left + w*.12, top + h*.10, w*.76, h*.76);
@@ -6319,7 +6079,7 @@ function drawExit(depthBuffer) {
     pillar.addColorStop(0, "rgba(150,255,255,0)");
     pillar.addColorStop(.35, "rgba(100,245,255,.20)");
     pillar.addColorStop(.82, "rgba(190,255,255,.78)");
-    pillar.addColorStop(1, "rgba(255,255,255,.78)");
+    pillar.addColorStop(1, "rgba(255,255,255,.98)");
     ctx.fillStyle = pillar;
     ctx.shadowBlur = Math.max(10, h * .18);
     ctx.shadowColor = "#9fffff";
@@ -6334,8 +6094,7 @@ function drawExit(depthBuffer) {
 }
 
 function isVisibleArcadeEntity(entity, maxDistance = ARCADE_ENTITY_DRAW_DISTANCE) {
-    const distance=distanceBetween(player,entity);
-    return distance < VISION_CUTOFF_DISTANCE && distance <= maxDistance;
+    return distanceBetween(player, entity) <= maxDistance;
 }
 
 function castRayFrom(angle, originX, originY) {
@@ -6362,8 +6121,11 @@ function drawBackMirror() {
     const sky=mctx.createLinearGradient(0,0,0,horizon);
     sky.addColorStop(0,"#0b0a20"); sky.addColorStop(1,"#342052");
     mctx.fillStyle=sky;mctx.fillRect(0,0,width,horizon);
-    // Match the main camera's single-color floor.
-    mctx.fillStyle="#17171b"; mctx.fillRect(0,horizon,width,height-horizon);
+    const floor=mctx.createLinearGradient(0,horizon,0,height);
+    floor.addColorStop(0,"#4b4657");floor.addColorStop(1,"#11151d");
+    mctx.fillStyle=floor;mctx.fillRect(0,horizon,width,height-horizon);
+    // Match the main camera: the floor is solid black and has no texture pass.
+    mctx.fillStyle="#000000"; mctx.fillRect(0,horizon,width,height-horizon);
     mctx.save(); mctx.strokeStyle="rgba(160,205,225,.18)"; mctx.lineWidth=1;
     for(let k=1;k<=7;k++){const yy=horizon+(height-horizon)*Math.pow(k/7,1.7);mctx.beginPath();mctx.moveTo(0,yy);mctx.lineTo(width,yy);mctx.stroke();}
     for(let k=-5;k<=5;k++){mctx.beginPath();mctx.moveTo(width/2+k*2,horizon);mctx.lineTo(width/2+k*width/7,height);mctx.stroke();}mctx.restore();
@@ -6398,21 +6160,13 @@ function drawBackMirror() {
         const x=width/2+(Math.tan(relative)/Math.tan(mirrorHalfFov))*(width/2);
         const col=clamp(Math.floor(x/width*columns),0,columns-1);
         if(corrected>rearDepth[col]+.15) return;
-        const size=clamp(height*.62/Math.max(.12,corrected),7,height*1.65);
+        const size=clamp(height*.78/Math.max(.28,corrected),5,height*.98);
         const y=horizon-size*.48;
         let color="#ffd84d";
         if(kind==="teacher") color=entity.chasing?"#ff174f":"#e91e63";
         if(kind==="exit") color="#72fbff";
         mctx.save();mctx.shadowBlur=10;mctx.shadowColor=color;
-        const rearTeacherCharacter = kind === "teacher"
-            ? (characters.find(character => character.name === entity.characterName) || characters[0])
-            : null;
-        const rearTeacherImage = getTeacherCharacterImage(rearTeacherCharacter);
-        if(kind === "teacher" && rearTeacherImage && rearTeacherImage.complete && rearTeacherImage.naturalWidth){
-            const ratio=rearTeacherImage.naturalWidth/rearTeacherImage.naturalHeight;
-            const drawH=size*.95, drawW=drawH*ratio;
-            mctx.drawImage(rearTeacherImage,x-drawW/2,y,drawW,drawH);
-        }else if(kind==="teacher" && teacherTextureImage && teacherTextureImage.complete && teacherTextureImage.naturalWidth){
+        if(kind==="teacher" && teacherTextureImage && teacherTextureImage.complete && teacherTextureImage.naturalWidth){
             const ratio=teacherTextureImage.naturalWidth/teacherTextureImage.naturalHeight;
             const drawH=size*.95, drawW=drawH*ratio;
             mctx.drawImage(teacherTextureImage,x-drawW/2,y,drawW,drawH);
@@ -6507,7 +6261,8 @@ function drawArcade() {
     ctx.save();
     ctx.translate(0, bobOffset * height);
 
-    // Preserve the current stable floor rendering path; see the audit notes for the remaining visual simplification.
+    // The floor texture renderer was expensive and unreliable on mobile Safari.
+    // Keep the floor black and skip the per-pixel perspective plane entirely.
 
     const depthBuffer = new Array(renderColumns);
 
@@ -6544,20 +6299,19 @@ function drawArcade() {
         );
     }
 
-    drawExitBeacon(depthBuffer);
+    drawExitBeacon();
 
     // Outside the camera FOV, show a compact directional marker instead of
     // drawing the 3D sprite through walls. This keeps distant entities trackable
     // without ever defeating wall occlusion.
-    const bottomIndicatorSlots = [];
-    for (const teacher of teachers) drawOffscreenEntityIndicator(teacher, "teacher", bottomIndicatorSlots);
+    for (const teacher of teachers) drawOffscreenEntityIndicator(teacher, "teacher");
     // Limit boost direction arrows to the three nearest uncollected boosts.
     // This keeps useful navigation cues while avoiding per-frame work for every item.
     const nearbyBoosts = arcadeProps
-        .filter(prop => prop.boost && !prop.collected && distanceBetween(player, prop) < VISION_CUTOFF_DISTANCE && distanceBetween(player, prop) <= ARCADE_ENTITY_DRAW_DISTANCE)
+        .filter(prop => prop.boost && !prop.collected && distanceBetween(player, prop) <= ARCADE_ENTITY_DRAW_DISTANCE)
         .sort((a,b) => distanceBetween(player,a) - distanceBetween(player,b))
         .slice(0,3);
-    for (const boost of nearbyBoosts) drawOffscreenEntityIndicator(boost, "boost", bottomIndicatorSlots);
+    for (const boost of nearbyBoosts) drawOffscreenEntityIndicator(boost, "boost");
     drawOffscreenEntityIndicator(exitPoint, "exit");
 
     const sortedSprites = [
@@ -6567,9 +6321,6 @@ function drawArcade() {
     ].sort((a,b)=>distanceBetween(b.entity,player)-distanceBetween(a.entity,player));
 
     for (const item of sortedSprites) {
-        const spriteFog = getDistanceFog(distanceBetween(player, item.entity));
-        ctx.save();
-        ctx.globalAlpha = 1 - spriteFog;
         if (item.kind === "trap") {
             const trapDistance=distanceBetween(player,item.entity);
             if(trapDistance<=1.0){ item.entity.revealed=true; drawTrapSprite(item.entity, depthBuffer); }
@@ -6582,14 +6333,19 @@ function drawArcade() {
         } else {
             drawTeacherSprite(item.entity, depthBuffer);
         }
-        ctx.restore();
     }
 
     drawExit(depthBuffer);
 
-    /* Keep the floor visually flat: no radial vignette over the full screen.
-       Scanlines remain subtle and are drawn only every third frame. */
+    /* Final in-camera grime: faint scanlines and a deep edge falloff. */
     ctx.globalCompositeOperation = "source-over";
+    const edge = ctx.createRadialGradient(width/2,height*.50,width*.14,width/2,height*.50,width*.78);
+    edge.addColorStop(0,"rgba(0,0,0,0)");
+    edge.addColorStop(.70,"rgba(0,0,0,.08)");
+    edge.addColorStop(1,"rgba(0,0,0,.55)");
+    ctx.fillStyle=edge;
+    ctx.fillRect(0,0,width,height);
+    // Scanlines are decorative; redraw them every third frame to reduce mobile canvas calls.
     window.__scanlineFrame = (window.__scanlineFrame || 0) + 1;
     if (window.__scanlineFrame % 3 === 0) {
         ctx.fillStyle="rgba(255,255,255,.018)";
@@ -6898,7 +6654,6 @@ function resetArcadeWorld() {
     teachers = TEACHER_SPAWNS.map(spec => {
         const t=makeTeacher(spec.x,spec.y,spec.angle,spec.kind);
         t.spawnSlot=spec.slot;
-        t.characterName=spec.characterName || characters[Math.floor(Math.random()*characters.length)].name;
         return t;
     });
     exitPoint = { x:38.5, y:39.25 };
@@ -6910,7 +6665,7 @@ function resetArcadeWorld() {
     trapSkillActive = false;
     const trapSkillPanel=document.getElementById("trapSkillCheck"); if(trapSkillPanel) trapSkillPanel.style.display="none";
     for (const trap of traps) { trap.triggered=false; trap.revealed=false; }
-    for (const teacher of teachers) { teacher.trapApproachTimer=0; teacher.wallSeparatedTimer=0; }
+    for (const teacher of teachers) teacher.trapApproachTimer=0;
     document.getElementById("dashButton").classList.remove("active");
     document.getElementById("captureTeacherFocus").classList.remove("active");
     document.getElementById("chaseSubtitle").classList.remove("active");
@@ -7000,16 +6755,15 @@ async function preloadArcadeAssets() {
 
 async function startArcade() {
     if (startArcade._loading) return;
-    requestLandscapeOrientation();
     startArcade._loading = true;
     try { await preloadArcadeAssets(); }
     finally { startArcade._loading = false; }
     resetArcadeWorld();
+    refreshTeacherTexture(true);
     // Ensure the map and HUD are painted on the first frame instead of waiting
     // for movement or a later state transition.
     try { drawMiniMap(); } catch (e) { console.warn("Initial map draw skipped", e); }
     inArcade = true;
-    requestLandscapeOrientation();
     arcadeRunning = true;
 
     document.getElementById("arcadeScreen").style.display = "block";
@@ -7098,11 +6852,6 @@ function capturePlayer(caughtTeacher = null) {
     if (!arcadeRunning) {
         return;
     }
-
-    trapSkillActive = false;
-    trapStopTimer = 0;
-    const trapSkillOverlay = document.getElementById("trapSkillCheck");
-    if (trapSkillOverlay) trapSkillOverlay.style.display = "none";
 
     if (caughtTeacher) {
         player.angle = Math.atan2(caughtTeacher.y - player.y, caughtTeacher.x - player.x);
@@ -7287,7 +7036,7 @@ arcadeScreenElement.addEventListener("pointermove", event => {
     if (!screenLookActive || event.pointerId !== screenLookPointerId) return;
     const dx = event.clientX - screenLookLastX;
     screenLookLastX = event.clientX;
-    player.angle = normalizeAngle(player.angle + dx * .024 * lookSensitivityMultiplier());
+    player.angle = normalizeAngle(player.angle + dx * .024);
     event.preventDefault();
 });
 
@@ -7320,7 +7069,7 @@ lookPad.addEventListener("pointermove", event => {
     if (!lookActive) return;
     const dx = event.clientX - lookLastX;
     lookLastX = event.clientX;
-    lookX = clamp(dx * .12 * lookSensitivityMultiplier(), -1, 1);
+    lookX = clamp(dx * .12, -1, 1);
 });
 
 function resetLook() {
@@ -7365,13 +7114,7 @@ miniMapCanvas.addEventListener("click",event=>{
    INITIAL SETTINGS
 ===================================================== */
 
-setDeviceMode(savedMode || (window.innerWidth <= 700 ? "smartphone" : "pc"));
+setDeviceMode(savedMode || "pc");
 </script>
 </body>
 </html>
-
-<style id="sharedMazeGeometryFix">
-/* Keep the ending control visible and the minimap's exterior neutral. */
-#marriageBackButton { top:68% !important; left:50% !important; transform:translateX(-50%); }
-#miniMap { background:#252a31 !important; border-color:#59616b !important; }
-</style>
