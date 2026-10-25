@@ -3991,8 +3991,8 @@ const VISION_FOG_COLOR = [5, 6, 9];
 const CHASE_PATH_END_DISTANCE_FAST = 9;
 const CHASE_PATH_END_DISTANCE_RESTRICTED = 9;
 const CHASE_END_HOLD = 7.0;
-const CHASE_MAX_DURATION_FAST = 12.0;
-const CHASE_MAX_DURATION_RESTRICTED = 12.0;
+const CHASE_MAX_DURATION_FAST = 30.0;
+const CHASE_MAX_DURATION_RESTRICTED = 30.0;
 const FAST_TEACHER_MULTIPLIER = 1.30;
 const CHASE_SPEED_MULTIPLIER = 1.05;
 const RESTRICTED_TEACHER_MULTIPLIER = 0.90;
@@ -4815,19 +4815,18 @@ function isInTeacherDetectionCone(teacher, target, maxDistance = 6) {
     return angleFromFacing <= (65 * Math.PI / 180) && hasLineOfSight(teacher, target);
 }
 
-function isForwardDiagonalLine(teacher, target, maxDistance = 5) {
-    // Continuation visibility outside the same straight line is limited to 5 tiles.
+function isForwardDiagonalLine(teacher, target, maxDistance = 2.5) {
+    // Continuation visibility outside the same straight line is limited to 2.5 tiles.
     return isInTeacherDetectionCone(teacher, target, maxDistance);
 }
 
 function isSameChaseLine(teacher, target) {
-    // A teacher can maintain long-range continuation detection up to 15 tiles
-    // only when the player is directly ahead on the same horizontal/vertical line.
+    // Same-line continuation detection is limited to 8 tiles; off-line detection is 2.5 tiles.
     const dx = target.x - teacher.x;
     const dy = target.y - teacher.y;
     const distance = Math.hypot(dx, dy);
-    if (distance <= 0.001 || distance > 15 || !hasLineOfSight(teacher, target)) {
-        return isForwardDiagonalLine(teacher, target, 5);
+    if (distance <= 0.001 || distance > 8 || !hasLineOfSight(teacher, target)) {
+        return isForwardDiagonalLine(teacher, target, 2.5);
     }
     const facingX = Math.cos(teacher.angle || 0);
     const facingY = Math.sin(teacher.angle || 0);
@@ -4835,7 +4834,7 @@ function isSameChaseLine(teacher, target) {
     const sameHorizontalLine = Math.abs(dy) <= 0.18 && Math.abs(facingY) <= 0.25;
     const sameVerticalLine = Math.abs(dx) <= 0.18 && Math.abs(facingX) <= 0.25;
     if (forwardDot > 0 && (sameHorizontalLine || sameVerticalLine)) return true;
-    return isForwardDiagonalLine(teacher, target, 5);
+    return isForwardDiagonalLine(teacher, target, 2.5);
 }
 
 function showChaseSubtitle() {
@@ -4977,14 +4976,14 @@ function updateTeachers(dt) {
             } else {
                 teacher.continuationLostTimer = 0;
             }
-            // End after 7 seconds at path distance >=9 when no continuation
-            // condition holds, or after 5 continuous seconds with a wall blocking
-            // direct sight. Continuation-triggered chases end 2 seconds after losing
-            // their continuation condition. The 12-second hard limit remains.
+            // End after 7 seconds at path distance >=9 when no continuation condition holds.
+            // A wall alone does not end a chase: after 30 seconds, a blocked direct line
+            // ends it even if the continuation condition is otherwise still satisfied.
+            // Continuation-triggered chases end 1.5 seconds after losing that condition.
             const normalEnd=(teacher.farPathTimer>=CHASE_END_HOLD && !keepChase);
-            const wallSeparatedEnd=teacher.wallSeparatedTimer>=5.0;
-            const continuationLostEnd=!!teacher.continuationChase && (teacher.continuationLostTimer||0)>=2.0;
-            if(teacher.chaseElapsed>=maxChase || normalEnd || wallSeparatedEnd || continuationLostEnd){
+            const wallAndTimeEnd=!lineClear && teacher.chaseElapsed>=30.0;
+            const continuationLostEnd=!!teacher.continuationChase && (teacher.continuationLostTimer||0)>=1.5;
+            if(teacher.chaseElapsed>=maxChase || normalEnd || wallAndTimeEnd || continuationLostEnd){
                 teacher.chasing=false;
                 teacher.lastChaseEndedAt=performance.now();
                 teacher.path=null;
