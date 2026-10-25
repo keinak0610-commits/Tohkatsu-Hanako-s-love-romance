@@ -3985,8 +3985,9 @@ const CHASE_RADIAL_START_DISTANCE = 10;
 const CHASE_PATH_START_TILES = 4;
 const CHASE_CONE_START_DISTANCE = 15;
 const CHASE_COOLDOWN_SECONDS = 10;
-const VISION_FOG_START_DISTANCE = 6;
+const VISION_FOG_START_DISTANCE = 7.5;
 const VISION_CUTOFF_DISTANCE = 10;
+const VISION_FOG_COLOR = [43, 48, 58];
 const CHASE_PATH_END_DISTANCE_FAST = 9;
 const CHASE_PATH_END_DISTANCE_RESTRICTED = 9;
 const CHASE_END_HOLD = 3.0;
@@ -5267,8 +5268,10 @@ buildCeilingTexture();
 ===================================================== */
 
 function getDistanceFog(distance) {
-    // Clear through 6 tiles, then a dense black haze that fully hides the world at 10.
-    return clamp((distance - VISION_FOG_START_DISTANCE) / (VISION_CUTOFF_DISTANCE - VISION_FOG_START_DISTANCE), 0, 1);
+    // Atmospheric perspective: objects retain their shape but gradually blend
+    // into a desaturated blue-grey veil from 7.5 to 10 tiles.
+    const t = clamp((distance - VISION_FOG_START_DISTANCE) / (VISION_CUTOFF_DISTANCE - VISION_FOG_START_DISTANCE), 0, 1);
+    return t * t * (3 - 2 * t);
 }
 
 function shadeRGB(red, green, blue, brightness) {
@@ -5284,7 +5287,7 @@ function shadeRGB(red, green, blue, brightness) {
 function drawVerticalFog(screenX, screenWidth, top, bottom, distance) {
     const fogAmount = getDistanceFog(distance);
     if (fogAmount <= 0) return;
-    ctx.fillStyle = `rgba(0,0,0,${fogAmount})`;
+    ctx.fillStyle = `rgba(${VISION_FOG_COLOR[0]},${VISION_FOG_COLOR[1]},${VISION_FOG_COLOR[2]},${fogAmount})`;
     ctx.fillRect(screenX, top, screenWidth, bottom - top);
 }
 
@@ -5350,9 +5353,17 @@ function renderPerspectivePlane(list, fallback, isCeiling) {
                 const textureShade = seam * tile * (scuff===0 ? .78 : scuff===3 ? 1.12 : 1);
                 r=base*textureShade; g=(isCeiling?98:150)*textureShade; b=(isCeiling?116:164)*textureShade;
             }
-            const shade = clamp(1.12 - rowDistance / (MAX_RAY_DISTANCE * 1.35), isCeiling ? .42 : .48, isCeiling ? 1 : 1.12);
+            // Lift the floor slightly so nearby paths are readable, while keeping
+            // distant surfaces subdued by atmospheric perspective.
+            const shade = isCeiling
+                ? clamp(1.12 - rowDistance / (MAX_RAY_DISTANCE * 1.35), .42, 1)
+                : clamp(1.24 - rowDistance / (MAX_RAY_DISTANCE * 1.55), .62, 1.20);
             const fog = getDistanceFog(rowDistance);
-            pixels[idx]=Math.floor(r*shade*(1-fog)); pixels[idx+1]=Math.floor(g*shade*(1-fog)); pixels[idx+2]=Math.floor(b*shade*(1-fog)); pixels[idx+3]=255;
+            const shadedR = r * shade, shadedG = g * shade, shadedB = b * shade;
+            pixels[idx]   = Math.floor(shadedR * (1-fog) + VISION_FOG_COLOR[0] * fog);
+            pixels[idx+1] = Math.floor(shadedG * (1-fog) + VISION_FOG_COLOR[1] * fog);
+            pixels[idx+2] = Math.floor(shadedB * (1-fog) + VISION_FOG_COLOR[2] * fog);
+            pixels[idx+3] = 255;
         }
     }
     targetContext.putImageData(imageData,0,0);
@@ -5453,22 +5464,9 @@ function drawSkyAndFloor() {
     ctx.fillStyle = "#000000";
     ctx.fillRect(0, horizon, width, height - horizon);
 
-    /* Sickly, uneven neon spill: colorful enough to feel like an arcade,
-       but weak enough that the darkness remains the dominant mood. */
-    const glows = [
-        [width * .13, horizon * .62, "rgba(255,20,155,.19)"],
-        [width * .34, horizon * .28, "rgba(55,220,255,.16)"],
-        [width * .57, horizon * .48, "rgba(255,205,55,.13)"],
-        [width * .84, horizon * .66, "rgba(150,70,255,.17)"]
-    ];
-    for (const [x, y, color] of glows) {
-        const g = ctx.createRadialGradient(x, y, 0, x, y, width * .26);
-        g.addColorStop(0, color);
-        g.addColorStop(.45, "rgba(0,0,0,.025)");
-        g.addColorStop(1, "rgba(0,0,0,0)");
-        ctx.fillStyle = g;
-        ctx.fillRect(x - width * .28, y - width * .28, width * .56, width * .56);
-    }
+    // Removed the fixed red/cyan/yellow/purple screen-space glows. They did not
+    // move with the camera, so they read as unexplained overlays rather than
+    // environmental lighting. Keep the original subdued, abandoned-arcade mood.
 
     /* Broken fluorescent ceiling strips. Several are deliberately dark,
        as though half the arcade's electricity has died. */
@@ -5601,7 +5599,7 @@ function projectSprite(entity, kind) {
     return {distance,correctedDistance,screenX,size,top:height/2-size*.5,angle,offscreen};
 }
 
-function drawOffscreenEntityIndicator(entity, kind) {
+function drawOffscreenEntityIndicator(entity, kind, bottomSlots = []) {
     if(kind==="teacher" && !entity.chasing) return;
     if(kind!=="boost" && kind!=="teacher") return;
     const relative=normalizeAngle(Math.atan2(entity.y-player.y,entity.x-player.x)-player.angle);
@@ -5612,11 +5610,28 @@ function drawOffscreenEntityIndicator(entity, kind) {
     const width=arcadeCanvas.width,height=arcadeCanvas.height;
     const directlyBehind=Math.abs(relative)>Math.PI*.5;
     const side=relative>=0?1:-1;
-    const x=directlyBehind?width*.5:(side>0?width-34:34);
-    // Keep the rear-facing marker comfortably inside the viewport; its tip
-    // must not sit on the bottom edge on short landscape/mobile canvases.
-    const y=directlyBehind?height-66:clamp(height*.5+Math.sin(relative)*height*.30,72,height-72);
-    const color=kind==="teacher"?"#ff315f":"#ffd84d",label=kind==="teacher"?"TEACHER":"BOOST";
+    const preferredX=clamp(width*.5 + Math.sin(relative)*width*.44, 28, width-28);
+    let x, y;
+    if(directlyBehind){
+        // Keep rear targets' arrows tied to their bearing, but separate overlapping
+        // targets so a ghost and a boost can never hide one another's indicator.
+        const spacing=width<520?43:58;
+        const candidates=[preferredX];
+        for(let step=1;step<=Math.ceil(width/spacing);step++){
+            candidates.push(preferredX-step*spacing,preferredX+step*spacing);
+        }
+        x=clamp(preferredX,28,width-28);
+        for(const candidate of candidates){
+            const bounded=clamp(candidate,28,width-28);
+            if(bottomSlots.every(slot=>Math.abs(slot-bounded)>=spacing*.88)){x=bounded;break;}
+        }
+        bottomSlots.push(x);
+        y=height- Math.max(64,height*.105);
+    }else{
+        x=side>0?width-34:34;
+        y=clamp(height*.5+Math.sin(relative)*height*.30,72,height-72);
+    }
+    const color=kind==="teacher"?"#ff315f":"#ffd84d",label=kind==="teacher"?"鬼":"BOOST";
     ctx.save();ctx.globalCompositeOperation="lighter";ctx.shadowBlur=18;ctx.shadowColor=color;ctx.fillStyle=color;ctx.beginPath();
     if(directlyBehind){ctx.moveTo(x,y+10);ctx.lineTo(x-11,y-5);ctx.lineTo(x+11,y-5);}
     else {ctx.moveTo(x+side*14,y);ctx.lineTo(x-side*5,y-11);ctx.lineTo(x-side*5,y+11);}
@@ -6448,14 +6463,15 @@ function drawArcade() {
     // Outside the camera FOV, show a compact directional marker instead of
     // drawing the 3D sprite through walls. This keeps distant entities trackable
     // without ever defeating wall occlusion.
-    for (const teacher of teachers) drawOffscreenEntityIndicator(teacher, "teacher");
+    const bottomIndicatorSlots = [];
+    for (const teacher of teachers) drawOffscreenEntityIndicator(teacher, "teacher", bottomIndicatorSlots);
     // Limit boost direction arrows to the three nearest uncollected boosts.
     // This keeps useful navigation cues while avoiding per-frame work for every item.
     const nearbyBoosts = arcadeProps
         .filter(prop => prop.boost && !prop.collected && distanceBetween(player, prop) <= ARCADE_ENTITY_DRAW_DISTANCE)
         .sort((a,b) => distanceBetween(player,a) - distanceBetween(player,b))
         .slice(0,3);
-    for (const boost of nearbyBoosts) drawOffscreenEntityIndicator(boost, "boost");
+    for (const boost of nearbyBoosts) drawOffscreenEntityIndicator(boost, "boost", bottomIndicatorSlots);
     drawOffscreenEntityIndicator(exitPoint, "exit");
 
     const sortedSprites = [
@@ -6465,6 +6481,9 @@ function drawArcade() {
     ].sort((a,b)=>distanceBetween(b.entity,player)-distanceBetween(a.entity,player));
 
     for (const item of sortedSprites) {
+        const spriteFog = getDistanceFog(distanceBetween(player, item.entity));
+        ctx.save();
+        ctx.globalAlpha = 1 - spriteFog;
         if (item.kind === "trap") {
             const trapDistance=distanceBetween(player,item.entity);
             if(trapDistance<=1.0){ item.entity.revealed=true; drawTrapSprite(item.entity, depthBuffer); }
@@ -6477,6 +6496,7 @@ function drawArcade() {
         } else {
             drawTeacherSprite(item.entity, depthBuffer);
         }
+        ctx.restore();
     }
 
     drawExit(depthBuffer);
