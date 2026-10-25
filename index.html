@@ -3985,9 +3985,9 @@ const CHASE_RADIAL_START_DISTANCE = 10;
 const CHASE_PATH_START_TILES = 4;
 const CHASE_CONE_START_DISTANCE = 15;
 const CHASE_COOLDOWN_SECONDS = 10;
-const VISION_FOG_START_DISTANCE = 8.5;
+const VISION_FOG_START_DISTANCE = 7.5;
 const VISION_CUTOFF_DISTANCE = 11;
-const VISION_FOG_COLOR = [12, 14, 18];
+const VISION_FOG_COLOR = [5, 6, 9];
 const CHASE_PATH_END_DISTANCE_FAST = 9;
 const CHASE_PATH_END_DISTANCE_RESTRICTED = 9;
 const CHASE_END_HOLD = 7.0;
@@ -5369,10 +5369,10 @@ buildCeilingTexture();
 ===================================================== */
 
 function getDistanceFog(distance) {
-    // Atmospheric perspective: every sprite gradually blends into the dark
-    // background between 8.5 and 11 tiles, rather than popping out at a cutoff.
+    // Atmospheric perspective: blend all world geometry and sprites into the
+    // same near-black color as the space outside the maze between 7.5 and 11 tiles.
     const t = clamp((distance - VISION_FOG_START_DISTANCE) / (VISION_CUTOFF_DISTANCE - VISION_FOG_START_DISTANCE), 0, 1);
-    return Math.pow(t, 0.9);
+    return t * t * (3 - 2 * t);
 }
 
 function shadeRGB(red, green, blue, brightness) {
@@ -5440,7 +5440,11 @@ function renderPerspectivePlane(list, fallback, isCeiling) {
             const idx = (py * lowW + px) * 4;
             // A readable fallback remains visible even if floor JPGs fail to load.
             let r, g, b;
-            if (loadedArcadePhoto(tex) && tex.__pixelCache && !tex.__pixelCacheFailed) {
+            if (!isCeiling) {
+                // The floor is a single near-black charcoal color. Only distance
+                // fog changes it, so there are no tile seams, gradients, or texture.
+                r=37; g=38; b=43;
+            } else if (loadedArcadePhoto(tex) && tex.__pixelCache && !tex.__pixelCacheFailed) {
                 const sx = Math.min(tex.naturalWidth - 1, Math.floor(localX * tex.naturalWidth));
                 const sy = Math.min(tex.naturalHeight - 1, Math.floor(localY * tex.naturalHeight));
                 const sample = tex.__pixelCache;
@@ -5450,15 +5454,15 @@ function renderPerspectivePlane(list, fallback, isCeiling) {
                 const seam = (localX < .035 || localY < .035) ? .56 : 1;
                 const tile = ((tileX + tileY) & 1) ? 1 : .82;
                 const scuff = (((Math.floor(localX*13)+Math.floor(localY*17)+tileX*3+tileY*5)%7)+7)%7;
-                const base = isCeiling ? 92 : 158;
+                const base = 92;
                 const textureShade = seam * tile * (scuff===0 ? .78 : scuff===3 ? 1.12 : 1);
-                r=base*textureShade; g=(isCeiling?98:150)*textureShade; b=(isCeiling?116:164)*textureShade;
+                r=base*textureShade; g=98*textureShade; b=116*textureShade;
             }
-            // Lift the floor slightly so nearby paths are readable, while keeping
-            // distant surfaces subdued by atmospheric perspective.
+            // Keep the floor flat in the foreground; atmospheric perspective alone
+            // fades it into the maze's outside background at longer distances.
             const shade = isCeiling
                 ? clamp(1.12 - rowDistance / (MAX_RAY_DISTANCE * 1.35), .42, 1)
-                : clamp(1.30 - rowDistance / (MAX_RAY_DISTANCE * 1.55), .70, 1.24);
+                : 1;
             const fog = getDistanceFog(rowDistance);
             const shadedR = r * shade, shadedG = g * shade, shadedB = b * shade;
             pixels[idx]   = Math.floor(shadedR * (1-fog) + VISION_FOG_COLOR[0] * fog);
