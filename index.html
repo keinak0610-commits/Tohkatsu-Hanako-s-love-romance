@@ -3985,8 +3985,8 @@ const CHASE_RADIAL_START_DISTANCE = 10;
 const CHASE_PATH_START_TILES = 4;
 const CHASE_CONE_START_DISTANCE = 15;
 const CHASE_COOLDOWN_SECONDS = 10;
-const VISION_FOG_START_DISTANCE = 7.5;
-const VISION_CUTOFF_DISTANCE = 10;
+const VISION_FOG_START_DISTANCE = 8.5;
+const VISION_CUTOFF_DISTANCE = 11;
 const VISION_FOG_COLOR = [12, 14, 18];
 const CHASE_PATH_END_DISTANCE_FAST = 9;
 const CHASE_PATH_END_DISTANCE_RESTRICTED = 9;
@@ -5369,11 +5369,10 @@ buildCeilingTexture();
 ===================================================== */
 
 function getDistanceFog(distance) {
-    // Atmospheric perspective: objects retain their shape but gradually blend
-    // into a desaturated blue-grey veil from 7.5 to 10 tiles.
+    // Atmospheric perspective: every sprite gradually blends into the dark
+    // background between 8.5 and 11 tiles, rather than popping out at a cutoff.
     const t = clamp((distance - VISION_FOG_START_DISTANCE) / (VISION_CUTOFF_DISTANCE - VISION_FOG_START_DISTANCE), 0, 1);
-    // Strong atmospheric fade: props and characters blend into the same distant background.
-    return Math.pow(t, 0.42);
+    return Math.pow(t, 0.9);
 }
 
 function shadeRGB(red, green, blue, brightness) {
@@ -5562,12 +5561,8 @@ function drawSkyAndFloor() {
     ctx.fillStyle = ceiling;
     ctx.fillRect(0, 0, width, horizon);
 
-    // Brighter muted floor, kept slightly darker than the background so corridors remain readable.
-    const floor = ctx.createLinearGradient(0, horizon, 0, height);
-    floor.addColorStop(0, "#4b4657");
-    floor.addColorStop(.45, "#34333e");
-    floor.addColorStop(1, "#252832");
-    ctx.fillStyle = floor;
+    // Single flat floor color. Keep it brighter than before, with no gradient.
+    ctx.fillStyle = "#3a3942";
     ctx.fillRect(0, horizon, width, height - horizon);
 
     // Removed the fixed red/cyan/yellow/purple screen-space glows. They did not
@@ -5589,12 +5584,7 @@ function drawSkyAndFloor() {
         }
     }
 
-    const haze = ctx.createRadialGradient(width / 2, horizon * .92, width * .10, width / 2, horizon * .92, width * .72);
-    haze.addColorStop(0, "rgba(20,22,30,.02)");
-    haze.addColorStop(.55, "rgba(5,7,10,.10)");
-    haze.addColorStop(1, "rgba(0,0,0,.58)");
-    ctx.fillStyle = haze;
-    ctx.fillRect(0, 0, width, height);
+    // No full-screen vignette here: it made the floor appear gradient-shaded.
 }
 
 /* =====================================================
@@ -6382,11 +6372,8 @@ function drawBackMirror() {
     const sky=mctx.createLinearGradient(0,0,0,horizon);
     sky.addColorStop(0,"#0b0a20"); sky.addColorStop(1,"#342052");
     mctx.fillStyle=sky;mctx.fillRect(0,0,width,horizon);
-    const floor=mctx.createLinearGradient(0,horizon,0,height);
-    floor.addColorStop(0,"#4b4657");floor.addColorStop(1,"#11151d");
-    mctx.fillStyle=floor;mctx.fillRect(0,horizon,width,height-horizon);
-    // Match the main camera: the floor is solid black and has no texture pass.
-    mctx.fillStyle="#000000"; mctx.fillRect(0,horizon,width,height-horizon);
+    // Match the main camera's single-color floor.
+    mctx.fillStyle="#3a3942"; mctx.fillRect(0,horizon,width,height-horizon);
     mctx.save(); mctx.strokeStyle="rgba(160,205,225,.18)"; mctx.lineWidth=1;
     for(let k=1;k<=7;k++){const yy=horizon+(height-horizon)*Math.pow(k/7,1.7);mctx.beginPath();mctx.moveTo(0,yy);mctx.lineTo(width,yy);mctx.stroke();}
     for(let k=-5;k<=5;k++){mctx.beginPath();mctx.moveTo(width/2+k*2,horizon);mctx.lineTo(width/2+k*width/7,height);mctx.stroke();}mctx.restore();
@@ -6610,15 +6597,9 @@ function drawArcade() {
 
     drawExit(depthBuffer);
 
-    /* Final in-camera grime: faint scanlines and a deep edge falloff. */
+    /* Keep the floor visually flat: no radial vignette over the full screen.
+       Scanlines remain subtle and are drawn only every third frame. */
     ctx.globalCompositeOperation = "source-over";
-    const edge = ctx.createRadialGradient(width/2,height*.50,width*.14,width/2,height*.50,width*.78);
-    edge.addColorStop(0,"rgba(0,0,0,0)");
-    edge.addColorStop(.70,"rgba(0,0,0,.08)");
-    edge.addColorStop(1,"rgba(0,0,0,.55)");
-    ctx.fillStyle=edge;
-    ctx.fillRect(0,0,width,height);
-    // Scanlines are decorative; redraw them every third frame to reduce mobile canvas calls.
     window.__scanlineFrame = (window.__scanlineFrame || 0) + 1;
     if (window.__scanlineFrame % 3 === 0) {
         ctx.fillStyle="rgba(255,255,255,.018)";
