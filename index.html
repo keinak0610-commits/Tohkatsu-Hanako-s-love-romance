@@ -3990,7 +3990,7 @@ const VISION_CUTOFF_DISTANCE = 10;
 const VISION_FOG_COLOR = [12, 14, 18];
 const CHASE_PATH_END_DISTANCE_FAST = 9;
 const CHASE_PATH_END_DISTANCE_RESTRICTED = 9;
-const CHASE_END_HOLD = 4.0;
+const CHASE_END_HOLD = 7.0;
 const CHASE_MAX_DURATION_FAST = 12.0;
 const CHASE_MAX_DURATION_RESTRICTED = 12.0;
 const FAST_TEACHER_MULTIPLIER = 1.30;
@@ -4070,23 +4070,20 @@ let exitPoint = {
 
 // Keep the two roaming teachers far from the exit and separated from each other.
 const teacherSpawnB = findNearestWalkable(32.5, 32.5, 12);
-function findSeparatedRoamerSpawn(preferred, others) {
+function findSeparatedRoamerSpawn(preferred, other) {
     const candidates=[];
     for(let y=1;y<maze.length-1;y++) for(let x=1;x<maze[y].length-1;x++) {
         const c={x:x+.5,y:y+.5};
         if(!isWalkableTile(c.x,c.y) || distanceBetween(c,player)<12 || distanceBetween(c,exitPoint)<12) continue;
-        if((others||[]).some(other => getPathDistance(c.x,c.y,other.x,other.y,Infinity)<14)) continue;
+        if(other && getPathDistance(c.x,c.y,other.x,other.y,Infinity)<12) continue;
         candidates.push(c);
     }
-    // Prefer broad geographic spread, but randomize across the whole valid set
-    // rather than repeatedly selecting from a tiny cluster near a fixed point.
-    const ranked=candidates.map(c=>({c,spread:Math.min(...(others||[]).map(o=>getPathDistance(c.x,c.y,o.x,o.y,Infinity)),Infinity)}));
-    ranked.sort((a,b)=>b.spread-a.spread);
-    const pool=ranked.slice(0,Math.max(1,Math.ceil(ranked.length*.45)));
-    return pool.length ? pool[Math.floor(Math.random()*pool.length)].c : findNearestWalkable(preferred.x,preferred.y,12);
+    candidates.sort((a,b)=>Math.hypot(a.x-preferred.x,a.y-preferred.y)-Math.hypot(b.x-preferred.x,b.y-preferred.y));
+    const near=candidates.slice(0,Math.min(18,candidates.length));
+    return near.length ? near[Math.floor(Math.random()*near.length)] : findNearestWalkable(preferred.x,preferred.y,12);
 }
-const teacherSpawnC = findSeparatedRoamerSpawn({x:39.5,y:9.5},[teacherSpawnB]);
-const teacherSpawnD = findSeparatedRoamerSpawn({x:8.5,y:30.5},[teacherSpawnB,teacherSpawnC]);
+const teacherSpawnC = findSeparatedRoamerSpawn({x:39.5,y:9.5},null);
+const teacherSpawnD = findSeparatedRoamerSpawn({x:8.5,y:30.5},teacherSpawnC);
 const TEACHER_SPAWNS=[
     {slot:"guard",x:teacherSpawnB.x,y:teacherSpawnB.y,angle:Math.PI,kind:"restricted"},
     {slot:"roamer1",x:teacherSpawnC.x,y:teacherSpawnC.y,angle:Math.PI/2,kind:"fast"},
@@ -4818,16 +4815,27 @@ function isInTeacherDetectionCone(teacher, target, maxDistance = 6) {
     return angleFromFacing <= (65 * Math.PI / 180) && hasLineOfSight(teacher, target);
 }
 
-function isForwardDiagonalLine(teacher, target, maxDistance = 6) {
-    // Kept as a continuation helper; the former exact-diagonal restriction is gone.
+function isForwardDiagonalLine(teacher, target, maxDistance = 5) {
+    // Continuation visibility outside the same straight line is limited to 5 tiles.
     return isInTeacherDetectionCone(teacher, target, maxDistance);
 }
 
 function isSameChaseLine(teacher, target) {
-    // Continuation uses the same bounded, forward-facing visibility rule for
-    // every direction. Never keep a chase alive merely because both entities
-    // happen to share a row/column far away.
-    return isInTeacherDetectionCone(teacher, target, 6);
+    // A teacher can maintain long-range continuation detection up to 15 tiles
+    // only when the player is directly ahead on the same horizontal/vertical line.
+    const dx = target.x - teacher.x;
+    const dy = target.y - teacher.y;
+    const distance = Math.hypot(dx, dy);
+    if (distance <= 0.001 || distance > 15 || !hasLineOfSight(teacher, target)) {
+        return isForwardDiagonalLine(teacher, target, 5);
+    }
+    const facingX = Math.cos(teacher.angle || 0);
+    const facingY = Math.sin(teacher.angle || 0);
+    const forwardDot = dx * facingX + dy * facingY;
+    const sameHorizontalLine = Math.abs(dy) <= 0.18 && Math.abs(facingY) <= 0.25;
+    const sameVerticalLine = Math.abs(dx) <= 0.18 && Math.abs(facingX) <= 0.25;
+    if (forwardDot > 0 && (sameHorizontalLine || sameVerticalLine)) return true;
+    return isForwardDiagonalLine(teacher, target, 5);
 }
 
 function showChaseSubtitle() {
@@ -4938,6 +4946,8 @@ function updateTeachers(dt) {
             const waitedLongEnough = !hasPreviousChase || (performance.now() - teacher.lastChaseEndedAt >= 1000);
             if (anotherChaseAlreadyActive || waitedLongEnough) chaseSubtitleShouldShow = true;
             teacher.chasing=true;
+            teacher.continuationChase=!!continuationCondition;
+            teacher.continuationLostTimer=0;
             teacher.path=null;
             teacher.wanderTarget=null;
             teacher.chaseElapsed=0;
@@ -4958,13 +4968,23 @@ function updateTeachers(dt) {
             else teacher.wallSeparatedTimer=(teacher.wallSeparatedTimer||0)+dt;
 
             const sameLine=isSameChaseLine(teacher,player);
+            const continuationDetection = direct <= 2.0 || currentPathDistance <= CHASE_PATH_START_TILES || sameLine;
             const keepChase=direct<=2.0 || currentPathDistance<=3 || sameLine;
+            if (teacher.continuationChase) {
+                teacher.continuationLostTimer = continuationDetection
+                    ? 0
+                    : (teacher.continuationLostTimer || 0) + dt;
+            } else {
+                teacher.continuationLostTimer = 0;
+            }
             // End after 7 seconds at path distance >=9 when no continuation
             // condition holds, or after 5 continuous seconds with a wall blocking
-            // direct sight. The 12-second hard limit remains as a safety cap.
+            // direct sight. Continuation-triggered chases end 2 seconds after losing
+            // their continuation condition. The 12-second hard limit remains.
             const normalEnd=(teacher.farPathTimer>=CHASE_END_HOLD && !keepChase);
             const wallSeparatedEnd=teacher.wallSeparatedTimer>=5.0;
-            if(teacher.chaseElapsed>=maxChase || normalEnd || wallSeparatedEnd){
+            const continuationLostEnd=!!teacher.continuationChase && (teacher.continuationLostTimer||0)>=2.0;
+            if(teacher.chaseElapsed>=maxChase || normalEnd || wallSeparatedEnd || continuationLostEnd){
                 teacher.chasing=false;
                 teacher.lastChaseEndedAt=performance.now();
                 teacher.path=null;
@@ -4972,6 +4992,8 @@ function updateTeachers(dt) {
                 teacher.farPathTimer=0;
                 teacher.wallSeparatedTimer=0;
                 teacher.chaseElapsed=0;
+                teacher.continuationChase=false;
+                teacher.continuationLostTimer=0;
                 teacher.chaseCooldown=CHASE_COOLDOWN_SECONDS;
                 teacher.wanderHistory=teacher.wanderHistory||[];
             }
@@ -5350,7 +5372,8 @@ function getDistanceFog(distance) {
     // Atmospheric perspective: objects retain their shape but gradually blend
     // into a desaturated blue-grey veil from 7.5 to 10 tiles.
     const t = clamp((distance - VISION_FOG_START_DISTANCE) / (VISION_CUTOFF_DISTANCE - VISION_FOG_START_DISTANCE), 0, 1);
-    return t * t * (3 - 2 * t);
+    // Strong atmospheric fade: props and characters blend into the same distant background.
+    return Math.pow(t, 0.42);
 }
 
 function shadeRGB(red, green, blue, brightness) {
@@ -5436,7 +5459,7 @@ function renderPerspectivePlane(list, fallback, isCeiling) {
             // distant surfaces subdued by atmospheric perspective.
             const shade = isCeiling
                 ? clamp(1.12 - rowDistance / (MAX_RAY_DISTANCE * 1.35), .42, 1)
-                : clamp(1.42 - rowDistance / (MAX_RAY_DISTANCE * 1.55), .84, 1.30);
+                : clamp(1.30 - rowDistance / (MAX_RAY_DISTANCE * 1.55), .70, 1.24);
             const fog = getDistanceFog(rowDistance);
             const shadedR = r * shade, shadedG = g * shade, shadedB = b * shade;
             pixels[idx]   = Math.floor(shadedR * (1-fog) + VISION_FOG_COLOR[0] * fog);
@@ -5539,8 +5562,12 @@ function drawSkyAndFloor() {
     ctx.fillStyle = ceiling;
     ctx.fillRect(0, 0, width, horizon);
 
-    // User preference: the floor is deliberately pure black; no floor texture pass.
-    ctx.fillStyle = "#000000";
+    // Brighter muted floor, kept slightly darker than the background so corridors remain readable.
+    const floor = ctx.createLinearGradient(0, horizon, 0, height);
+    floor.addColorStop(0, "#4b4657");
+    floor.addColorStop(.45, "#34333e");
+    floor.addColorStop(1, "#252832");
+    ctx.fillStyle = floor;
     ctx.fillRect(0, horizon, width, height - horizon);
 
     // Removed the fixed red/cyan/yellow/purple screen-space glows. They did not
@@ -5746,11 +5773,10 @@ function clipSpriteByWallDepth(projection, depthBuffer, halfWidth) {
 
 function drawTrapSprite(trap, depthBuffer){
     const projection=projectSprite(trap,"prop");
-    if(!projection || projection.offscreen || projection.distance >= VISION_CUTOFF_DISTANCE) return;
+    if(!projection || projection.offscreen) return;
     const col=Math.floor(projection.screenX);
     if(col<0||col>=arcadeCanvas.width) return;
     ctx.save();
-    ctx.globalAlpha = 1 - getDistanceFog(projection.distance);
     if(!clipSpriteByWallDepth(projection,depthBuffer,projection.size*.7)){ctx.restore();return;}
     const size=projection.size*.32;
     const x=projection.screenX, y=arcadeCanvas.height/2+projection.size*.38;
@@ -5763,9 +5789,7 @@ function drawTrapSprite(trap, depthBuffer){
 
 function drawArcadeProp(prop, depthBuffer) {
     const projection = projectSprite(prop, "prop");
-    // The exit light is rendered by its own pass; all ordinary props, including
-    // boosts and traps, disappear into the same distance veil at ten tiles.
-    if (!projection || projection.offscreen || projection.distance >= VISION_CUTOFF_DISTANCE) return;
+    if (!projection || projection.offscreen) return;
 
     const centerColumn = Math.floor(projection.screenX);
     if (centerColumn < 0 || centerColumn >= arcadeCanvas.width) return;
@@ -5778,7 +5802,7 @@ function drawArcadeProp(prop, depthBuffer) {
     const glow = prop.type === "guide" ? "#ffe45e" : prop.type === "wallArcade" ? "#4ae2ff" : prop.type === "crane" ? "#ff4aa8" : prop.type === "racing" ? "#4ae2ff" : prop.type === "prize" ? "#ffd85a" : "#7b65ff";
 
     ctx.save();
-    ctx.globalAlpha = 1 - getDistanceFog(projection.distance);
+    ctx.globalAlpha = 1 - getDistanceFog(distanceBetween(player, prop));
     if(!clipSpriteByWallDepth(projection,depthBuffer,w*.62)){ctx.restore();return;}
     const fogBlur=clamp((projection.distance-7)/18,0,1);
     ctx.filter=fogBlur>0 ? `blur(${fogBlur*2.2}px)` : "none";
@@ -5791,11 +5815,11 @@ function drawArcadeProp(prop, depthBuffer) {
         const photoH = prop.type === "machinePhoto" ? h * .72 : h;
         const photoX = projection.screenX - photoW / 2;
         const photoY = arcadeCanvas.height / 2 - photoH * .52;
-        ctx.globalAlpha = 1 - getDistanceFog(projection.distance);
+        ctx.globalAlpha = 1 - getDistanceFog(distanceBetween(player, prop));
         ctx.shadowBlur = Math.max(8, h * .07);
         ctx.shadowColor = prop.type === "machinePhoto" ? "#4ae2ff" : "#ff4aa8";
         ctx.drawImage(photoProp, photoX, photoY, photoW, photoH);
-        ctx.globalAlpha = 1 - getDistanceFog(projection.distance);
+        ctx.globalAlpha = 1 - getDistanceFog(distanceBetween(player, prop));
         ctx.fillStyle = "rgba(0,0,0,.28)";
         ctx.fillRect(photoX, photoY, photoW, photoH);
         ctx.fillStyle = "rgba(0,0,0,.52)";
@@ -5827,9 +5851,9 @@ function drawArcadeProp(prop, depthBuffer) {
         const pw=h*(prop.scale||1)*.58, ph=h*(prop.scale||1)*.82;
         const px=projection.screenX-pw/2, py=arcadeCanvas.height/2-ph*.82;
         if(loadedArcadePhoto(poster)){
-            ctx.globalAlpha=1-getDistanceFog(projection.distance);
+            ctx.globalAlpha=1-getDistanceFog(distanceBetween(player, prop));
             ctx.drawImage(poster,px,py,pw,ph);
-            ctx.globalAlpha=1-getDistanceFog(projection.distance);
+            ctx.globalAlpha=1-getDistanceFog(distanceBetween(player, prop));
         } else {
             ctx.fillStyle="#2b2b30"; ctx.fillRect(px,py,pw,ph);
         }
@@ -5895,9 +5919,9 @@ function drawArcadeProp(prop, depthBuffer) {
         ctx.fillStyle = "#252a36";
         ctx.fillRect(-fw*.40, -fh*.48, fw*.80, fh*.36);
         ctx.fillStyle = glow;
-        ctx.globalAlpha = .52 * (1 - getDistanceFog(projection.distance));
+        ctx.globalAlpha = .52;
         ctx.fillRect(-fw*.36, -fh*.44, fw*.72, Math.max(2, fh*.08));
-        ctx.globalAlpha = 1 - getDistanceFog(projection.distance);
+        ctx.globalAlpha = 1 - getDistanceFog(distanceBetween(player, prop));
         ctx.fillStyle = "#11141b";
         ctx.fillRect(-fw*.28, -fh*.05, fw*.56, fh*.10);
         ctx.fillStyle = "#d2d5dc";
@@ -5996,7 +6020,7 @@ function drawArcadeProp(prop, depthBuffer) {
         ctx.rotate(.11);
         ctx.fillStyle="#0a0c10"; ctx.fillRect(-bw/2,-bh/2,bw,bh);
         ctx.fillStyle="#292d37"; ctx.fillRect(-bw*.39,-bh*.36,bw*.78,bh*.20);
-        ctx.fillStyle=glow; ctx.globalAlpha=.35; ctx.fillRect(-bw*.35,-bh*.30,bw*.70,Math.max(2,bh*.07)); ctx.globalAlpha=1-getDistanceFog(projection.distance);
+        ctx.fillStyle=glow; ctx.globalAlpha=.35; ctx.fillRect(-bw*.35,-bh*.30,bw*.70,Math.max(2,bh*.07)); ctx.globalAlpha=1-getDistanceFog(distanceBetween(player, prop));
         ctx.strokeStyle="#050609"; ctx.lineWidth=Math.max(2,bh*.035);
         ctx.beginPath(); ctx.moveTo(-bw*.18,-bh*.30); ctx.lineTo(-bw*.03,bh*.02); ctx.lineTo(bw*.10,-bh*.13); ctx.stroke();
         ctx.restore();
@@ -6047,7 +6071,7 @@ function drawTeacherSprite(teacher, depthBuffer) {
     if (centerColumn < 0 || centerColumn >= arcadeCanvas.width) return;
 
     ctx.save();
-    ctx.globalAlpha = 1 - getDistanceFog(projection.distance);
+    ctx.globalAlpha = 1 - getDistanceFog(distanceBetween(player, teacher));
     if(!clipSpriteByWallDepth(projection,depthBuffer,width*.65)){ctx.restore();return;}
 
     const individualTeacherCharacter = characters.find(character => character.name === teacher.characterName) || characters[0];
@@ -6060,7 +6084,7 @@ function drawTeacherSprite(teacher, depthBuffer) {
             drawH = height;
             drawW = drawH * imageRatio;
         }
-        ctx.globalAlpha = .98 * (1 - getDistanceFog(projection.distance));
+        ctx.globalAlpha = .98 * (1 - getDistanceFog(distanceBetween(player, teacher)));
         ctx.drawImage(individualTeacherImage, projection.screenX - drawW / 2,
             projection.top + (height - drawH) * .02, drawW, drawH);
     } else if (
@@ -6081,7 +6105,7 @@ function drawTeacherSprite(teacher, depthBuffer) {
             drawW = drawH * imageRatio;
         }
 
-        ctx.globalAlpha = .98 * (1 - getDistanceFog(projection.distance));
+        ctx.globalAlpha = .98 * (1 - getDistanceFog(distanceBetween(player, teacher)));
         ctx.drawImage(
             teacherTextureImage,
             projection.screenX - drawW / 2,
